@@ -38,51 +38,47 @@ import net.minecraft.item.ItemStack;
  * @author Ordinastie
  *
  */
-public class WoodTrapDoor extends TrapDoorDescriptor
-{
+public class WoodTrapDoor extends TrapDoorDescriptor {
 
-	public static enum Type
-	{
-		//{"oak", "spruce", "birch", "jungle", "acacia", "big_oak"};
-		//@formatter:off
-//		OAK("fenceGate", 0),
-		ACACIA("trapdoor_acacia", 4),
-		BIRCH("trapdoor_birch", 2),
-		DARK_OAK("trapdoor_dark_oak", 5),
-		JUNGLE("trapdoor_jungle", 3),
-		SPRUCE("trapdoor_spruce", 1);
+    public static enum Type {
+        // {"oak", "spruce", "birch", "jungle", "acacia", "big_oak"};
+        // @formatter:off
+        //		OAK("fenceGate", 0),
+        ACACIA("trapdoor_acacia", 4),
+        BIRCH("trapdoor_birch", 2),
+        DARK_OAK("trapdoor_dark_oak", 5),
+        JUNGLE("trapdoor_jungle", 3),
+        SPRUCE("trapdoor_spruce", 1);
 
-		//@formatter:on
-		private int type;
-		private String name;
+        // @formatter:on
+        private int type;
+        private String name;
 
-		private Type(String name, int type)
-		{
-			this.name = name;
-			this.type = type;
-		}
-	}
+        private Type(String name, int type) {
+            this.name = name;
+            this.type = type;
+        }
+    }
 
-	public WoodTrapDoor(Type type)
-	{
-		//Block
-		setOpeningTime(6);
-		setMaterial(Material.wood);
-		setHardness(4.0F);
-		setSoundType(Block.soundTypeWood);
-		setName(type.name);
-		setTextureName(MalisisDoors.modid + ":" + type.name);
+    public WoodTrapDoor(Type type) {
+        // Block
+        setOpeningTime(6);
+        setMaterial(Material.wood);
+        setHardness(4.0F);
+        setSoundType(Block.soundTypeWood);
+        setName(type.name);
+        setTextureName(MalisisDoors.modid + ":" + type.name);
 
-		//te
-		setRequireRedstone(false);
-		setMovement(DoorRegistry.getMovement(TrapDoorMovement.class));
-		setSound(DoorRegistry.getSound(VanillaDoorSound.class));
+        // te
+        setRequireRedstone(false);
+        setMovement(DoorRegistry.getMovement(TrapDoorMovement.class));
+        setSound(DoorRegistry.getSound(VanillaDoorSound.class));
 
-		//item
-		setTab(MalisisDoors.tab);
+        // item
+        setTab(MalisisDoors.tab);
 
-		//recipe
-		setNumCrafted(2);
-		setRecipe("AAA", "AAA", 'A', new ItemStack(Blocks.planks, 1, type.type));
-	}
+        // recipe
+        setNumCrafted(2);
+        setRecipe("AAA", "AAA", 'A', new ItemStack(Blocks.planks, 1, type.type));
+    }
 }

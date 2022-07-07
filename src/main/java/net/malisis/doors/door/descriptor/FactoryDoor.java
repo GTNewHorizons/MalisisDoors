@@ -37,27 +37,25 @@ import net.minecraft.init.Items;
  * @author Ordinastie
  *
  */
-public class FactoryDoor extends DoorDescriptor
-{
-	public FactoryDoor()
-	{
-		//Block
-		setMaterial(Material.iron);
-		setHardness(4.0F);
-		setSoundType(Block.soundTypeMetal);
-		setName("factory_door");
-		setTextureName(MalisisDoors.modid + ":factory_door");
+public class FactoryDoor extends DoorDescriptor {
+    public FactoryDoor() {
+        // Block
+        setMaterial(Material.iron);
+        setHardness(4.0F);
+        setSoundType(Block.soundTypeMetal);
+        setName("factory_door");
+        setTextureName(MalisisDoors.modid + ":factory_door");
 
-		//TileEntity
-		setOpeningTime(12);
-		setDoubleDoor(true);
-		setMovement(DoorRegistry.getMovement(SlidingSplitDoorMovement.class));
-		setSound(DoorRegistry.getSound(PneumaticSound.class));
+        // TileEntity
+        setOpeningTime(12);
+        setDoubleDoor(true);
+        setMovement(DoorRegistry.getMovement(SlidingSplitDoorMovement.class));
+        setSound(DoorRegistry.getSound(PneumaticSound.class));
 
-		//Item
-		setTab(MalisisDoors.tab);
+        // Item
+        setTab(MalisisDoors.tab);
 
-		//Recipe
-		setRecipe("AA", "BB", "AA", 'A', Items.gold_ingot, 'B', Items.iron_ingot);
-	}
+        // Recipe
+        setRecipe("AA", "BB", "AA", 'A', Items.gold_ingot, 'B', Items.iron_ingot);
+    }
 }

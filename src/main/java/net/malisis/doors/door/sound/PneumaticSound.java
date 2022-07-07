@@ -29,19 +29,14 @@ import net.malisis.doors.door.DoorState;
 
 /**
  * @author Ordinastie
- * 
+ *
  */
-public class PneumaticSound implements IDoorSound
-{
+public class PneumaticSound implements IDoorSound {
 
-	@Override
-	public String getSoundPath(DoorState state)
-	{
-		if (state == DoorState.OPENING)
-			return MalisisDoors.modid + ":space_door_open";
-		else if (state == DoorState.CLOSING)
-			return MalisisDoors.modid + ":space_door_close";
-		return null;
-	}
-
+    @Override
+    public String getSoundPath(DoorState state) {
+        if (state == DoorState.OPENING) return MalisisDoors.modid + ":space_door_open";
+        else if (state == DoorState.CLOSING) return MalisisDoors.modid + ":space_door_close";
+        return null;
+    }
 }

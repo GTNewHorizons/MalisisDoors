@@ -25,6 +25,7 @@
 package net.malisis.doors.door.movement;
 
 import static net.malisis.doors.door.block.Door.*;
+
 import net.malisis.core.block.BoundingBoxType;
 import net.malisis.core.renderer.RenderParameters;
 import net.malisis.core.renderer.animation.Animation;
@@ -40,61 +41,54 @@ import net.minecraft.util.AxisAlignedBB;
  * @author Ordinastie
  *
  */
-public class SpinningDoorMovement implements IDoorMovement
-{
-	private Rotation rotBot = new Rotation(0).aroundAxis(0, 0, 1);
-	private Rotation rotTop = new Rotation(0).aroundAxis(0, 0, 1).offset(0, 1, 0);
-	private Scale scaleBot = new Scale(0, 0, 0);
-	private Scale scaleTop = new Scale(0, 0, 0).offset(0, 1, 0);
+public class SpinningDoorMovement implements IDoorMovement {
+    private Rotation rotBot = new Rotation(0).aroundAxis(0, 0, 1);
+    private Rotation rotTop = new Rotation(0).aroundAxis(0, 0, 1).offset(0, 1, 0);
+    private Scale scaleBot = new Scale(0, 0, 0);
+    private Scale scaleTop = new Scale(0, 0, 0).offset(0, 1, 0);
 
-	@Override
-	public AxisAlignedBB getBoundingBox(DoorTileEntity tileEntity, boolean topBlock, BoundingBoxType type)
-	{
-		if (tileEntity.isOpened() && type != BoundingBoxType.RAYTRACE)
-			return null;
+    @Override
+    public AxisAlignedBB getBoundingBox(DoorTileEntity tileEntity, boolean topBlock, BoundingBoxType type) {
+        if (tileEntity.isOpened() && type != BoundingBoxType.RAYTRACE) return null;
 
-		AxisAlignedBB aabb = AxisAlignedBB.getBoundingBox(0, 0, 0, 1, 1, DOOR_WIDTH);
-		if (type == BoundingBoxType.SELECTION)
-		{
-			if (!topBlock)
-				aabb.maxY++;
-			else
-				aabb.minY--;
-		}
+        AxisAlignedBB aabb = AxisAlignedBB.getBoundingBox(0, 0, 0, 1, 1, DOOR_WIDTH);
+        if (type == BoundingBoxType.SELECTION) {
+            if (!topBlock) aabb.maxY++;
+            else aabb.minY--;
+        }
 
-		return aabb;
-	}
+        return aabb;
+    }
 
-	@Override
-	public Animation[] getAnimations(DoorTileEntity tileEntity, MalisisModel model, RenderParameters rp)
-	{
-		float angle = tileEntity.isReversed() ? -720 : 720;
-		boolean closed = tileEntity.getState() == DoorState.CLOSING || tileEntity.getState() == DoorState.CLOSED;
-		int ot = tileEntity.getDescriptor().getOpeningTime();
+    @Override
+    public Animation[] getAnimations(DoorTileEntity tileEntity, MalisisModel model, RenderParameters rp) {
+        float angle = tileEntity.isReversed() ? -720 : 720;
+        boolean closed = tileEntity.getState() == DoorState.CLOSING || tileEntity.getState() == DoorState.CLOSED;
+        int ot = tileEntity.getDescriptor().getOpeningTime();
 
-		rotBot.from(angle);
-		rotBot.reversed(closed);
-		rotBot.forTicks(ot);
+        rotBot.from(angle);
+        rotBot.reversed(closed);
+        rotBot.forTicks(ot);
 
-		rotTop.from(angle);
-		rotTop.reversed(closed);
-		rotTop.forTicks(ot);
+        rotTop.from(angle);
+        rotTop.reversed(closed);
+        rotTop.forTicks(ot);
 
-		scaleBot.reversed(closed);
-		scaleBot.forTicks(ot);
+        scaleBot.reversed(closed);
+        scaleBot.forTicks(ot);
 
-		scaleTop.reversed(closed);
-		scaleTop.forTicks(ot);
+        scaleTop.reversed(closed);
+        scaleTop.forTicks(ot);
 
-		ParallelTransformation bot = new ParallelTransformation(rotBot, scaleBot);
-		ParallelTransformation top = new ParallelTransformation(rotTop, scaleTop);
+        ParallelTransformation bot = new ParallelTransformation(rotBot, scaleBot);
+        ParallelTransformation top = new ParallelTransformation(rotTop, scaleTop);
 
-		return new Animation[] { new Animation(model.getShape("bottom"), bot), new Animation(model.getShape("top"), top) };
-	}
+        return new Animation[] {new Animation(model.getShape("bottom"), bot), new Animation(model.getShape("top"), top)
+        };
+    }
 
-	@Override
-	public boolean isSpecial()
-	{
-		return false;
-	}
+    @Override
+    public boolean isSpecial() {
+        return false;
+    }
 }

@@ -36,95 +36,84 @@ import net.malisis.doors.door.tileentity.FenceGateTileEntity;
  * @author Ordinastie
  *
  */
-public class FenceGateRenderer extends DoorRenderer
-{
-	protected FenceGateTileEntity tileEntity;
+public class FenceGateRenderer extends DoorRenderer {
+    protected FenceGateTileEntity tileEntity;
 
-	@Override
-	protected void initialize()
-	{
-		float w = 0.125F; // fence depth and hinge width
-		float w2 = 0.1875F; //
+    @Override
+    protected void initialize() {
+        float w = 0.125F; // fence depth and hinge width
+        float w2 = 0.1875F; //
 
-		Shape hinge = new Cube().setSize(w, 0.6875F, w);
-		hinge.translate(0, 0.3125F, 0.5F - w / 2);
-		Shape gateH = new Cube().setSize(w, w2 * 3, w);
-		gateH.translate(0.5F - w, 0.375F, 0.5F - w / 2);
-		Shape gateBottom = new Cube().setSize(2 * w, w2, w);
-		gateBottom.translate(w, 0.375F, 0.5F - w / 2);
-		Shape gateTop = new Shape(gateBottom);
-		gateTop.translate(0, 2 * w2, 0);
+        Shape hinge = new Cube().setSize(w, 0.6875F, w);
+        hinge.translate(0, 0.3125F, 0.5F - w / 2);
+        Shape gateH = new Cube().setSize(w, w2 * 3, w);
+        gateH.translate(0.5F - w, 0.375F, 0.5F - w / 2);
+        Shape gateBottom = new Cube().setSize(2 * w, w2, w);
+        gateBottom.translate(w, 0.375F, 0.5F - w / 2);
+        Shape gateTop = new Shape(gateBottom);
+        gateTop.translate(0, 2 * w2, 0);
 
-		Shape right = Shape.fromShapes(hinge, gateH, gateBottom, gateTop);
-		right.applyMatrix();
-		right.interpolateUV();
+        Shape right = Shape.fromShapes(hinge, gateH, gateBottom, gateTop);
+        right.applyMatrix();
+        right.interpolateUV();
 
-		Shape left = new Shape(right);
-		left.rotate(180, 0, 1, 0);
+        Shape left = new Shape(right);
+        left.rotate(180, 0, 1, 0);
 
-		model = new MalisisModel();
-		model.addShape("right", right);
-		model.addShape("left", left);
+        model = new MalisisModel();
+        model.addShape("right", right);
+        model.addShape("left", left);
 
-		model.storeState();
+        model.storeState();
 
-		initParams();
-	}
+        initParams();
+    }
 
-	@Override
-	protected void setTileEntity()
-	{
-		super.setTileEntity();
-		this.tileEntity = (FenceGateTileEntity) super.tileEntity;
-	}
+    @Override
+    protected void setTileEntity() {
+        super.setTileEntity();
+        this.tileEntity = (FenceGateTileEntity) super.tileEntity;
+    }
 
-	@Override
-	protected void setup()
-	{
-		model.resetState();
-		if (direction == Door.DIR_NORTH || direction == Door.DIR_SOUTH)
-			model.rotate(90, 0, 1, 0, 0, 0, 0);
+    @Override
+    protected void setup() {
+        model.resetState();
+        if (direction == Door.DIR_NORTH || direction == Door.DIR_SOUTH) model.rotate(90, 0, 1, 0, 0, 0, 0);
 
-		if (tileEntity.isWall())
-			model.translate(0, -.19F, 0);
+        if (tileEntity.isWall()) model.translate(0, -.19F, 0);
 
-		rp.colorMultiplier.set(tileEntity.getCamoColor());
-		rp.brightness.set(block.getMixedBrightnessForBlock(world, x, y, z));
-	}
+        rp.colorMultiplier.set(tileEntity.getCamoColor());
+        rp.brightness.set(block.getMixedBrightnessForBlock(world, x, y, z));
+    }
 
-	@Override
-	public void render()
-	{
-		if (renderType == RenderType.ISBRH_INVENTORY)
-		{
-			model.resetState();
-			model.rotate(90, 0, 1, 0, 0, 0, 0);
-			model.render(this, rp);
-			return;
-		}
-		super.render();
-	}
+    @Override
+    public void render() {
+        if (renderType == RenderType.ISBRH_INVENTORY) {
+            model.resetState();
+            model.rotate(90, 0, 1, 0, 0, 0, 0);
+            model.render(this, rp);
+            return;
+        }
+        super.render();
+    }
 
-	@Override
-	protected void renderTileEntity()
-	{
-		enableBlending();
-		ar.setStartTime(tileEntity.getTimer().getStart());
+    @Override
+    protected void renderTileEntity() {
+        enableBlending();
+        ar.setStartTime(tileEntity.getTimer().getStart());
 
-		setup();
+        setup();
 
-		if (tileEntity.getMovement() != null)
-		{
-			Animation[] anims = tileEntity.getMovement().getAnimations(tileEntity, model, rp);
-			ar.animate(anims);
-		}
+        if (tileEntity.getMovement() != null) {
+            Animation[] anims = tileEntity.getMovement().getAnimations(tileEntity, model, rp);
+            ar.animate(anims);
+        }
 
-		model.render(this, rp);
-	}
+        model.render(this, rp);
+    }
 
-	@Override
-	public boolean shouldRender3DInInventory(int modelId)
-	{
-		return true;
-	}
+    @Override
+    public boolean shouldRender3DInInventory(int modelId) {
+        return true;
+    }
 }

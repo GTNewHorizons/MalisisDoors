@@ -38,28 +38,25 @@ import net.minecraft.item.ItemStack;
  * @author Ordinastie
  *
  */
-public class Curtain extends DoorDescriptor
-{
-	public Curtain(String color, int meta)
-	{
-		//Block
-		setMaterial(Material.cloth);
-		setHardness(2.0F);
-		setSoundType(Block.soundTypeCloth);
-		setName("curtain_" + color);
-		setTextureName(MalisisDoors.modid + ":curtains/curtain_" + color);
+public class Curtain extends DoorDescriptor {
+    public Curtain(String color, int meta) {
+        // Block
+        setMaterial(Material.cloth);
+        setHardness(2.0F);
+        setSoundType(Block.soundTypeCloth);
+        setName("curtain_" + color);
+        setTextureName(MalisisDoors.modid + ":curtains/curtain_" + color);
 
-		//TileEntity
-		setOpeningTime(6);
-		setDoubleDoor(true);
-		setMovement(DoorRegistry.getMovement(CurtainMovement.class));
-		setSound(DoorRegistry.getSound(SilentDoorSound.class));
+        // TileEntity
+        setOpeningTime(6);
+        setDoubleDoor(true);
+        setMovement(DoorRegistry.getMovement(CurtainMovement.class));
+        setSound(DoorRegistry.getSound(SilentDoorSound.class));
 
-		//Item
-		setTab(MalisisDoors.tab);
+        // Item
+        setTab(MalisisDoors.tab);
 
-		//Recipe
-		setRecipe("AA", "AA", "AA", 'A', new ItemStack(Blocks.wool, 1, meta));
-	}
-
+        // Recipe
+        setRecipe("AA", "AA", "AA", 'A', new ItemStack(Blocks.wool, 1, meta));
+    }
 }

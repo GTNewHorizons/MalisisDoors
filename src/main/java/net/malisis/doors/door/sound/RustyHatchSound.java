@@ -31,17 +31,12 @@ import net.malisis.doors.door.DoorState;
  * @author Ordinastie
  *
  */
-public class RustyHatchSound implements IDoorSound
-{
+public class RustyHatchSound implements IDoorSound {
 
-	@Override
-	public String getSoundPath(DoorState state)
-	{
-		if (state == DoorState.OPENING)
-			return MalisisDoors.modid + ":rustyhatch_open";
-		else if (state == DoorState.CLOSING)
-			return MalisisDoors.modid + ":rustyhatch_close";
-		return null;
-	}
-
+    @Override
+    public String getSoundPath(DoorState state) {
+        if (state == DoorState.OPENING) return MalisisDoors.modid + ":rustyhatch_open";
+        else if (state == DoorState.CLOSING) return MalisisDoors.modid + ":rustyhatch_close";
+        return null;
+    }
 }

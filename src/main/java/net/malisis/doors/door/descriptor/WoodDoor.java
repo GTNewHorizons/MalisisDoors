@@ -38,27 +38,24 @@ import net.minecraft.item.ItemStack;
  * @author Ordinastie
  *
  */
-public class WoodDoor extends DoorDescriptor
-{
-	public WoodDoor(String name, int metadata)
-	{
-		//Block
-		setOpeningTime(6);
-		setMaterial(Material.wood);
-		setHardness(3.0F);
-		setSoundType(Block.soundTypeWood);
-		setName(name);
-		setTextureName(MalisisDoors.modid + ":" + name);
+public class WoodDoor extends DoorDescriptor {
+    public WoodDoor(String name, int metadata) {
+        // Block
+        setOpeningTime(6);
+        setMaterial(Material.wood);
+        setHardness(3.0F);
+        setSoundType(Block.soundTypeWood);
+        setName(name);
+        setTextureName(MalisisDoors.modid + ":" + name);
 
-		//te
-		setRequireRedstone(false);
-		setMovement(DoorRegistry.getMovement(RotatingDoorMovement.class));
-		setSound(DoorRegistry.getSound(VanillaDoorSound.class));
+        // te
+        setRequireRedstone(false);
+        setMovement(DoorRegistry.getMovement(RotatingDoorMovement.class));
+        setSound(DoorRegistry.getSound(VanillaDoorSound.class));
 
-		//item
-		setTab(MalisisDoors.tab);
+        // item
+        setTab(MalisisDoors.tab);
 
-		setRecipe("AA", "AA", "AA", 'A', new ItemStack(Blocks.planks, 1, metadata));
-	}
-
+        setRecipe("AA", "AA", "AA", 'A', new ItemStack(Blocks.planks, 1, metadata));
+    }
 }

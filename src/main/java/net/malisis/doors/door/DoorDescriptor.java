@@ -24,6 +24,7 @@
 
 package net.malisis.doors.door;
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import net.malisis.doors.door.block.Door;
 import net.malisis.doors.door.item.DoorItem;
 import net.malisis.doors.door.movement.IDoorMovement;
@@ -39,333 +40,261 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.oredict.ShapedOreRecipe;
-
 import org.apache.commons.lang3.StringUtils;
-
-import cpw.mods.fml.common.registry.GameRegistry;
 
 /**
  * @author Ordinastie
  *
  */
-public class DoorDescriptor
-{
-	protected Block block;
-	protected Item item;
+public class DoorDescriptor {
+    protected Block block;
+    protected Item item;
 
-	//block
-	protected Material material = Material.wood;
-	protected float hardness = 3.0F;
-	protected SoundType soundType = Block.soundTypeWood;
-	protected String name;
-	protected String textureName;
-	protected int autoCloseTime = 0;
+    // block
+    protected Material material = Material.wood;
+    protected float hardness = 3.0F;
+    protected SoundType soundType = Block.soundTypeWood;
+    protected String name;
+    protected String textureName;
+    protected int autoCloseTime = 0;
 
-	//te
-	protected Class<? extends DoorTileEntity> tileEntityClass = DoorTileEntity.class;
-	protected IDoorMovement movement;
-	protected IDoorSound sound;
-	protected int openingTime = 6;
-	protected boolean doubleDoor = true;
-	protected boolean requireRedstone = false;
+    // te
+    protected Class<? extends DoorTileEntity> tileEntityClass = DoorTileEntity.class;
+    protected IDoorMovement movement;
+    protected IDoorSound sound;
+    protected int openingTime = 6;
+    protected boolean doubleDoor = true;
+    protected boolean requireRedstone = false;
 
-	//item
-	protected CreativeTabs tab;
-	protected int maxStackSize = 1;
+    // item
+    protected CreativeTabs tab;
+    protected int maxStackSize = 1;
 
-	//recipe
-	protected Object[] recipe;
-	protected int numCrafted = 1;
-	protected boolean oredict = false;
+    // recipe
+    protected Object[] recipe;
+    protected int numCrafted = 1;
+    protected boolean oredict = false;
 
-	//digicode
-	protected String code = null;
+    // digicode
+    protected String code = null;
 
-	public DoorDescriptor()
-	{
-		movement = DoorRegistry.getMovement(RotatingDoorMovement.class);
-		sound = DoorRegistry.getSound(VanillaDoorSound.class);
-	}
+    public DoorDescriptor() {
+        movement = DoorRegistry.getMovement(RotatingDoorMovement.class);
+        sound = DoorRegistry.getSound(VanillaDoorSound.class);
+    }
 
-	public DoorDescriptor(NBTTagCompound nbt)
-	{
-		if (nbt != null)
-			readNBT(nbt);
-		else
-		{
-			movement = DoorRegistry.getMovement(RotatingDoorMovement.class);
-			sound = DoorRegistry.getSound(VanillaDoorSound.class);
-		}
-	}
+    public DoorDescriptor(NBTTagCompound nbt) {
+        if (nbt != null) readNBT(nbt);
+        else {
+            movement = DoorRegistry.getMovement(RotatingDoorMovement.class);
+            sound = DoorRegistry.getSound(VanillaDoorSound.class);
+        }
+    }
 
-	//#region Getters/Setters
-	public Block getBlock()
-	{
-		return block;
-	}
+    // #region Getters/Setters
+    public Block getBlock() {
+        return block;
+    }
 
-	public Item getItem()
-	{
-		return item;
-	}
+    public Item getItem() {
+        return item;
+    }
 
-	public Material getMaterial()
-	{
-		return material;
-	}
+    public Material getMaterial() {
+        return material;
+    }
 
-	public void setMaterial(Material material)
-	{
-		this.material = material;
-	}
+    public void setMaterial(Material material) {
+        this.material = material;
+    }
 
-	public float getHardness()
-	{
-		return hardness;
-	}
+    public float getHardness() {
+        return hardness;
+    }
 
-	public void setHardness(float hardness)
-	{
-		this.hardness = hardness;
-	}
+    public void setHardness(float hardness) {
+        this.hardness = hardness;
+    }
 
-	public SoundType getSoundType()
-	{
-		return soundType;
-	}
+    public SoundType getSoundType() {
+        return soundType;
+    }
 
-	public void setSoundType(SoundType soundType)
-	{
-		this.soundType = soundType;
-	}
+    public void setSoundType(SoundType soundType) {
+        this.soundType = soundType;
+    }
 
-	public String getName()
-	{
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setName(String name)
-	{
-		this.name = name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public String getTextureName()
-	{
-		return textureName != null ? textureName : name;
-	}
+    public String getTextureName() {
+        return textureName != null ? textureName : name;
+    }
 
-	public void setTextureName(String textureName)
-	{
-		this.textureName = textureName;
-	}
+    public void setTextureName(String textureName) {
+        this.textureName = textureName;
+    }
 
-	public Class<? extends DoorTileEntity> getTileEntityClass()
-	{
-		return tileEntityClass;
-	}
+    public Class<? extends DoorTileEntity> getTileEntityClass() {
+        return tileEntityClass;
+    }
 
-	public void setTileEntityClass(Class<? extends DoorTileEntity> clazz)
-	{
-		this.tileEntityClass = clazz;
-	}
+    public void setTileEntityClass(Class<? extends DoorTileEntity> clazz) {
+        this.tileEntityClass = clazz;
+    }
 
-	public IDoorMovement getMovement()
-	{
-		return movement;
-	}
+    public IDoorMovement getMovement() {
+        return movement;
+    }
 
-	public void setMovement(IDoorMovement movement)
-	{
-		this.movement = movement;
-	}
+    public void setMovement(IDoorMovement movement) {
+        this.movement = movement;
+    }
 
-	public IDoorSound getSound()
-	{
-		return sound;
-	}
+    public IDoorSound getSound() {
+        return sound;
+    }
 
-	public void setSound(IDoorSound sound)
-	{
-		this.sound = sound;
-	}
+    public void setSound(IDoorSound sound) {
+        this.sound = sound;
+    }
 
-	public int getOpeningTime()
-	{
-		return openingTime;
-	}
+    public int getOpeningTime() {
+        return openingTime;
+    }
 
-	public void setOpeningTime(int openingTime)
-	{
-		this.openingTime = openingTime;
-	}
+    public void setOpeningTime(int openingTime) {
+        this.openingTime = openingTime;
+    }
 
-	public boolean isDoubleDoor()
-	{
-		return doubleDoor;
-	}
+    public boolean isDoubleDoor() {
+        return doubleDoor;
+    }
 
-	public void setDoubleDoor(boolean doubleDoor)
-	{
-		this.doubleDoor = doubleDoor;
-	}
+    public void setDoubleDoor(boolean doubleDoor) {
+        this.doubleDoor = doubleDoor;
+    }
 
-	public boolean requireRedstone()
-	{
-		return requireRedstone;
-	}
+    public boolean requireRedstone() {
+        return requireRedstone;
+    }
 
-	public void setRequireRedstone(boolean requireRedstone)
-	{
-		this.requireRedstone = requireRedstone;
-	}
+    public void setRequireRedstone(boolean requireRedstone) {
+        this.requireRedstone = requireRedstone;
+    }
 
-	public int getAutoCloseTime()
-	{
-		return autoCloseTime;
-	}
+    public int getAutoCloseTime() {
+        return autoCloseTime;
+    }
 
-	public void setAutoCloseTime(int autoCloseTime)
-	{
-		this.autoCloseTime = autoCloseTime;
-	}
+    public void setAutoCloseTime(int autoCloseTime) {
+        this.autoCloseTime = autoCloseTime;
+    }
 
-	public CreativeTabs getTab()
-	{
-		return tab;
-	}
+    public CreativeTabs getTab() {
+        return tab;
+    }
 
-	public void setTab(CreativeTabs tab)
-	{
-		this.tab = tab;
-	}
+    public void setTab(CreativeTabs tab) {
+        this.tab = tab;
+    }
 
-	public Object[] getRecipe()
-	{
-		return recipe;
-	}
+    public Object[] getRecipe() {
+        return recipe;
+    }
 
-	public void setRecipe(Object... recipe)
-	{
-		this.recipe = recipe;
-	}
+    public void setRecipe(Object... recipe) {
+        this.recipe = recipe;
+    }
 
-	public void setOreDictRecipe(Object... recipe)
-	{
-		this.recipe = recipe;
-		oredict = true;
-	}
+    public void setOreDictRecipe(Object... recipe) {
+        this.recipe = recipe;
+        oredict = true;
+    }
 
-	public int getNumCrafted()
-	{
-		return numCrafted;
-	}
+    public int getNumCrafted() {
+        return numCrafted;
+    }
 
-	public void setNumCrafted(int numCrafted)
-	{
-		this.numCrafted = numCrafted;
-	}
+    public void setNumCrafted(int numCrafted) {
+        this.numCrafted = numCrafted;
+    }
 
-	public int getMaxStackSize()
-	{
-		return maxStackSize;
-	}
+    public int getMaxStackSize() {
+        return maxStackSize;
+    }
 
-	public void setMaxStackSize(int maxStackSize)
-	{
-		this.maxStackSize = maxStackSize;
-	}
+    public void setMaxStackSize(int maxStackSize) {
+        this.maxStackSize = maxStackSize;
+    }
 
-	public void setCode(String code)
-	{
-		this.code = code;
-	}
+    public void setCode(String code) {
+        this.code = code;
+    }
 
-	public String getCode()
-	{
-		return code;
-	}
+    public String getCode() {
+        return code;
+    }
 
-	public boolean hasCode()
-	{
-		return !StringUtils.isEmpty(code);
-	}
+    public boolean hasCode() {
+        return !StringUtils.isEmpty(code);
+    }
 
-	//#end Getters/Setters
+    // #end Getters/Setters
 
-	public void readNBT(NBTTagCompound nbt)
-	{
-		if (nbt.hasKey("name"))
-			name = nbt.getString("name");
-		if (nbt.hasKey("textureName"))
-			textureName = nbt.getString("textureName");
-		if (nbt.hasKey("hardness"))
-			hardness = nbt.getFloat("hardness");
-		if (nbt.hasKey("block"))
-			block = Block.getBlockById(nbt.getInteger("block"));
-		if (nbt.hasKey("item"))
-			item = Item.getItemById(nbt.getInteger("item"));
-		if (nbt.hasKey("movement"))
-			setMovement(DoorRegistry.getMovement(nbt.getString("movement")));
-		if (nbt.hasKey("sound"))
-			setSound(DoorRegistry.getSound(nbt.getString("sound")));
-		if (nbt.hasKey("openingTime"))
-			setOpeningTime(nbt.getInteger("openingTime"));
-		if (nbt.hasKey("redstone"))
-			setRequireRedstone(nbt.getBoolean("redstone"));
-		if (nbt.hasKey("doubleDoor"))
-			setDoubleDoor(nbt.getBoolean("doubleDoor"));
-		if (nbt.hasKey("autoCloseTime"))
-			setAutoCloseTime(nbt.getInteger("autoCloseTime"));
-		if (nbt.hasKey("code"))
-			setCode(nbt.getString("code"));
-	}
+    public void readNBT(NBTTagCompound nbt) {
+        if (nbt.hasKey("name")) name = nbt.getString("name");
+        if (nbt.hasKey("textureName")) textureName = nbt.getString("textureName");
+        if (nbt.hasKey("hardness")) hardness = nbt.getFloat("hardness");
+        if (nbt.hasKey("block")) block = Block.getBlockById(nbt.getInteger("block"));
+        if (nbt.hasKey("item")) item = Item.getItemById(nbt.getInteger("item"));
+        if (nbt.hasKey("movement")) setMovement(DoorRegistry.getMovement(nbt.getString("movement")));
+        if (nbt.hasKey("sound")) setSound(DoorRegistry.getSound(nbt.getString("sound")));
+        if (nbt.hasKey("openingTime")) setOpeningTime(nbt.getInteger("openingTime"));
+        if (nbt.hasKey("redstone")) setRequireRedstone(nbt.getBoolean("redstone"));
+        if (nbt.hasKey("doubleDoor")) setDoubleDoor(nbt.getBoolean("doubleDoor"));
+        if (nbt.hasKey("autoCloseTime")) setAutoCloseTime(nbt.getInteger("autoCloseTime"));
+        if (nbt.hasKey("code")) setCode(nbt.getString("code"));
+    }
 
-	public void writeNBT(NBTTagCompound nbt)
-	{
-		nbt.setInteger("block", Block.getIdFromBlock(block));
-		nbt.setInteger("item", Item.getIdFromItem(item));
-		if (getMovement() != null)
-			nbt.setString("movement", DoorRegistry.getId(getMovement()));
-		if (getSound() != null)
-			nbt.setString("sound", DoorRegistry.getId(getSound()));
-		nbt.setInteger("openingTime", getOpeningTime());
-		nbt.setBoolean("redstone", requireRedstone());
-		nbt.setBoolean("doubleDoor", isDoubleDoor());
-		nbt.setInteger("autoCloseTime", getAutoCloseTime());
-		if (hasCode())
-			nbt.setString("code", getCode());
-		else
-			nbt.removeTag("code");
-	}
+    public void writeNBT(NBTTagCompound nbt) {
+        nbt.setInteger("block", Block.getIdFromBlock(block));
+        nbt.setInteger("item", Item.getIdFromItem(item));
+        if (getMovement() != null) nbt.setString("movement", DoorRegistry.getId(getMovement()));
+        if (getSound() != null) nbt.setString("sound", DoorRegistry.getId(getSound()));
+        nbt.setInteger("openingTime", getOpeningTime());
+        nbt.setBoolean("redstone", requireRedstone());
+        nbt.setBoolean("doubleDoor", isDoubleDoor());
+        nbt.setInteger("autoCloseTime", getAutoCloseTime());
+        if (hasCode()) nbt.setString("code", getCode());
+        else nbt.removeTag("code");
+    }
 
-	public void set(Block block, Item item)
-	{
-		this.block = block;
-		this.item = item;
-	}
+    public void set(Block block, Item item) {
+        this.block = block;
+        this.item = item;
+    }
 
-	public void create()
-	{
-		block = new Door(this);
-		item = new DoorItem(this);
-	}
+    public void create() {
+        block = new Door(this);
+        item = new DoorItem(this);
+    }
 
-	public DoorDescriptor register()
-	{
-		if (block == null || item == null)
-			create();
+    public DoorDescriptor register() {
+        if (block == null || item == null) create();
 
-		GameRegistry.registerBlock(block, block.getUnlocalizedName().substring(5));
-		GameRegistry.registerItem(item, item.getUnlocalizedName());
-		if (recipe != null)
-		{
-			if (oredict)
-				GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(item, numCrafted), recipe));
-			else
-				GameRegistry.addRecipe(new ItemStack(item, numCrafted), recipe);
-		}
+        GameRegistry.registerBlock(block, block.getUnlocalizedName().substring(5));
+        GameRegistry.registerItem(item, item.getUnlocalizedName());
+        if (recipe != null) {
+            if (oredict) GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(item, numCrafted), recipe));
+            else GameRegistry.addRecipe(new ItemStack(item, numCrafted), recipe);
+        }
 
-		return this;
-	}
-
+        return this;
+    }
 }

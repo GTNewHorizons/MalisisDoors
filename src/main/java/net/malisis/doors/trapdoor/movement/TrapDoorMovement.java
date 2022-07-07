@@ -41,68 +41,55 @@ import net.minecraft.util.AxisAlignedBB;
  * @author Ordinastie
  *
  */
-public class TrapDoorMovement implements IDoorMovement
-{
-	@Override
-	public AxisAlignedBB getBoundingBox(DoorTileEntity tileEntity, boolean topBlock, BoundingBoxType type)
-	{
-		int dir = tileEntity.getDirection();
-		float x = 0;
-		float y = 0;
-		float z = 0;
-		float X = 1;
-		float Y = 1;
-		float Z = 1;
+public class TrapDoorMovement implements IDoorMovement {
+    @Override
+    public AxisAlignedBB getBoundingBox(DoorTileEntity tileEntity, boolean topBlock, BoundingBoxType type) {
+        int dir = tileEntity.getDirection();
+        float x = 0;
+        float y = 0;
+        float z = 0;
+        float X = 1;
+        float Y = 1;
+        float Z = 1;
 
-		if (!tileEntity.isOpened())
-		{
-			if (topBlock)
-				y = 1 - Door.DOOR_WIDTH;
-			else
-				Y = Door.DOOR_WIDTH;
-		}
-		else
-		{
-			if (dir == TrapDoor.DIR_NORTH)
-				Z = Door.DOOR_WIDTH;
-			if (dir == TrapDoor.DIR_SOUTH)
-				z = 1 - Door.DOOR_WIDTH;
-			if (dir == TrapDoor.DIR_EAST)
-				x = 1 - Door.DOOR_WIDTH;
-			if (dir == TrapDoor.DIR_WEST)
-				X = Door.DOOR_WIDTH;
-		}
+        if (!tileEntity.isOpened()) {
+            if (topBlock) y = 1 - Door.DOOR_WIDTH;
+            else Y = Door.DOOR_WIDTH;
+        } else {
+            if (dir == TrapDoor.DIR_NORTH) Z = Door.DOOR_WIDTH;
+            if (dir == TrapDoor.DIR_SOUTH) z = 1 - Door.DOOR_WIDTH;
+            if (dir == TrapDoor.DIR_EAST) x = 1 - Door.DOOR_WIDTH;
+            if (dir == TrapDoor.DIR_WEST) X = Door.DOOR_WIDTH;
+        }
 
-		return AxisAlignedBB.getBoundingBox(x, y, z, X, Y, Z);
-	}
+        return AxisAlignedBB.getBoundingBox(x, y, z, X, Y, Z);
+    }
 
-	private Transformation getTransformation(DoorTileEntity tileEntity)
-	{
-		float f = 0.5F - Door.DOOR_WIDTH / 2;
-		float fromAngle = 0, toAngle = 90;
+    private Transformation getTransformation(DoorTileEntity tileEntity) {
+        float f = 0.5F - Door.DOOR_WIDTH / 2;
+        float fromAngle = 0, toAngle = 90;
 
-		if (tileEntity.isTopBlock(0, 0, 0))
-			toAngle = -toAngle;
+        if (tileEntity.isTopBlock(0, 0, 0)) toAngle = -toAngle;
 
-		if (tileEntity.getState() == DoorState.CLOSING || tileEntity.getState() == DoorState.CLOSED)
-		{
-			float tmp = toAngle;
-			toAngle = fromAngle;
-			fromAngle = tmp;
-		}
+        if (tileEntity.getState() == DoorState.CLOSING || tileEntity.getState() == DoorState.CLOSED) {
+            float tmp = toAngle;
+            toAngle = fromAngle;
+            fromAngle = tmp;
+        }
 
-		return new Rotation(fromAngle, toAngle).aroundAxis(1, 0, 0).offset(0, -f, f).forTicks(tileEntity.getDescriptor().getOpeningTime());
-	}
+        return new Rotation(fromAngle, toAngle)
+                .aroundAxis(1, 0, 0)
+                .offset(0, -f, f)
+                .forTicks(tileEntity.getDescriptor().getOpeningTime());
+    }
 
-	@Override
-	public Animation[] getAnimations(DoorTileEntity tileEntity, MalisisModel model, RenderParameters rp)
-	{
-		return new Animation[] { new Animation(model, getTransformation(tileEntity)) };
-	}
+    @Override
+    public Animation[] getAnimations(DoorTileEntity tileEntity, MalisisModel model, RenderParameters rp) {
+        return new Animation[] {new Animation(model, getTransformation(tileEntity))};
+    }
 
-	@Override
-	public boolean isSpecial()
-	{
-		return true;
-	}
+    @Override
+    public boolean isSpecial() {
+        return true;
+    }
 }

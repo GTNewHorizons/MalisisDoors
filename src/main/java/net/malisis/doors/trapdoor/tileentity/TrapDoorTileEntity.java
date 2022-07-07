@@ -32,17 +32,14 @@ import net.minecraft.util.AxisAlignedBB;
  * @author Ordinastie
  *
  */
-public class TrapDoorTileEntity extends DoorTileEntity
-{
-	@Override
-	public boolean isTopBlock(int x, int y, int z)
-	{
-		return (getBlockMetadata() & Door.FLAG_TOPBLOCK) != 0;
-	}
+public class TrapDoorTileEntity extends DoorTileEntity {
+    @Override
+    public boolean isTopBlock(int x, int y, int z) {
+        return (getBlockMetadata() & Door.FLAG_TOPBLOCK) != 0;
+    }
 
-	@Override
-	public AxisAlignedBB getRenderBoundingBox()
-	{
-		return AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1);
-	}
+    @Override
+    public AxisAlignedBB getRenderBoundingBox() {
+        return AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1);
+    }
 }

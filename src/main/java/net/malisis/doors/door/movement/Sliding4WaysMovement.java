@@ -25,6 +25,7 @@
 package net.malisis.doors.door.movement;
 
 import static net.malisis.doors.door.block.Door.*;
+
 import net.malisis.core.block.BoundingBoxType;
 import net.malisis.core.renderer.RenderParameters;
 import net.malisis.core.renderer.animation.Animation;
@@ -39,66 +40,53 @@ import net.minecraft.util.AxisAlignedBB;
  * @author Ordinastie
  *
  */
-public class Sliding4WaysMovement implements IDoorMovement
-{
+public class Sliding4WaysMovement implements IDoorMovement {
 
-	@Override
-	public AxisAlignedBB getBoundingBox(DoorTileEntity tileEntity, boolean topBlock, BoundingBoxType type)
-	{
-		if (tileEntity.isOpened() && type == BoundingBoxType.COLLISION && !topBlock)
-			return null;
+    @Override
+    public AxisAlignedBB getBoundingBox(DoorTileEntity tileEntity, boolean topBlock, BoundingBoxType type) {
+        if (tileEntity.isOpened() && type == BoundingBoxType.COLLISION && !topBlock) return null;
 
-		AxisAlignedBB aabb = AxisAlignedBB.getBoundingBox(0, 0, 0, 1, 1, DOOR_WIDTH);
-		if (!tileEntity.isOpened() && type == BoundingBoxType.SELECTION)
-		{
-			if (!topBlock)
-				aabb.maxY++;
-			else
-				aabb.minY--;
-		}
+        AxisAlignedBB aabb = AxisAlignedBB.getBoundingBox(0, 0, 0, 1, 1, DOOR_WIDTH);
+        if (!tileEntity.isOpened() && type == BoundingBoxType.SELECTION) {
+            if (!topBlock) aabb.maxY++;
+            else aabb.minY--;
+        }
 
-		float x = 0, y = 0;
-		if (topBlock == tileEntity.isReversed())
-			x = topBlock ? DOOR_WIDTH - 1 : 1 - DOOR_WIDTH;
-		else
-			y = topBlock ? 1 - DOOR_WIDTH : DOOR_WIDTH - 1;
+        float x = 0, y = 0;
+        if (topBlock == tileEntity.isReversed()) x = topBlock ? DOOR_WIDTH - 1 : 1 - DOOR_WIDTH;
+        else y = topBlock ? 1 - DOOR_WIDTH : DOOR_WIDTH - 1;
 
-		if (tileEntity.isOpened())
-			aabb.offset(x, y, 0);
+        if (tileEntity.isOpened()) aabb.offset(x, y, 0);
 
-		return aabb;
-	}
+        return aabb;
+    }
 
-	private Transformation getTransformation(DoorTileEntity tileEntity, boolean topBlock)
-	{
-		float dir = 1 - DOOR_WIDTH;
-		float toX = 0;
-		float toY = 0;
-		if (tileEntity.isReversed())
-			dir = -dir;
+    private Transformation getTransformation(DoorTileEntity tileEntity, boolean topBlock) {
+        float dir = 1 - DOOR_WIDTH;
+        float toX = 0;
+        float toY = 0;
+        if (tileEntity.isReversed()) dir = -dir;
 
-		if (topBlock != tileEntity.isReversed())
-			toY = dir;
-		else
-			toX = dir;
+        if (topBlock != tileEntity.isReversed()) toY = dir;
+        else toX = dir;
 
-		Translation translation = new Translation(toX, toY, 0);
-		translation.reversed(tileEntity.getState() == DoorState.CLOSING || tileEntity.getState() == DoorState.CLOSED);
-		translation.forTicks(tileEntity.getDescriptor().getOpeningTime());
+        Translation translation = new Translation(toX, toY, 0);
+        translation.reversed(tileEntity.getState() == DoorState.CLOSING || tileEntity.getState() == DoorState.CLOSED);
+        translation.forTicks(tileEntity.getDescriptor().getOpeningTime());
 
-		return translation;
-	}
+        return translation;
+    }
 
-	@Override
-	public Animation[] getAnimations(DoorTileEntity tileEntity, MalisisModel model, RenderParameters rp)
-	{
-		return new Animation[] { new Animation(model.getShape("top"), getTransformation(tileEntity, true)),
-				new Animation(model.getShape("bottom"), getTransformation(tileEntity, false)) };
-	}
+    @Override
+    public Animation[] getAnimations(DoorTileEntity tileEntity, MalisisModel model, RenderParameters rp) {
+        return new Animation[] {
+            new Animation(model.getShape("top"), getTransformation(tileEntity, true)),
+            new Animation(model.getShape("bottom"), getTransformation(tileEntity, false))
+        };
+    }
 
-	@Override
-	public boolean isSpecial()
-	{
-		return false;
-	}
+    @Override
+    public boolean isSpecial() {
+        return false;
+    }
 }

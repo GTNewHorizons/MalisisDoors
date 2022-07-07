@@ -24,6 +24,8 @@
 
 package net.malisis.doors.trapdoor.block;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.malisis.core.block.BoundingBoxType;
 import net.malisis.doors.door.DoorDescriptor;
 import net.malisis.doors.door.block.Door;
@@ -37,139 +39,119 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * @author Ordinastie
  *
  */
-public class TrapDoor extends BlockTrapDoor implements ITileEntityProvider
-{
-	public static final int DIR_SOUTH = 0;
-	public static final int DIR_NORTH = 1;
-	public static final int DIR_EAST = 2;
-	public static final int DIR_WEST = 3;
+public class TrapDoor extends BlockTrapDoor implements ITileEntityProvider {
+    public static final int DIR_SOUTH = 0;
+    public static final int DIR_NORTH = 1;
+    public static final int DIR_EAST = 2;
+    public static final int DIR_WEST = 3;
 
-	public static int renderId = -1;
+    public static int renderId = -1;
 
-	private TrapDoorDescriptor descriptor;
+    private TrapDoorDescriptor descriptor;
 
-	public TrapDoor(TrapDoorDescriptor desc)
-	{
-		super(desc.getMaterial());
+    public TrapDoor(TrapDoorDescriptor desc) {
+        super(desc.getMaterial());
 
-		this.descriptor = desc;
+        this.descriptor = desc;
 
-		setHardness(desc.getHardness());
-		setStepSound(desc.getSoundType());
-		setUnlocalizedName(desc.getName());
-		setTextureName(desc.getTextureName());
+        setHardness(desc.getHardness());
+        setStepSound(desc.getSoundType());
+        setUnlocalizedName(desc.getName());
+        setTextureName(desc.getTextureName());
 
-		setCreativeTab(desc.getTab());
+        setCreativeTab(desc.getTab());
 
-		disableStats();
-	}
+        disableStats();
+    }
 
-	public DoorDescriptor getDescriptor()
-	{
-		return descriptor;
-	}
+    public DoorDescriptor getDescriptor() {
+        return descriptor;
+    }
 
-	/**
-	 * Called upon block activation (right click on the block.)
-	 */
-	@Override
-	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ)
-	{
-		if (world.isRemote)
-			return true;
+    /**
+     * Called upon block activation (right click on the block.)
+     */
+    @Override
+    public boolean onBlockActivated(
+            World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
+        if (world.isRemote) return true;
 
-		DoorTileEntity te = Door.getDoor(world, x, y, z);
-		if (te == null)
-			return true;
+        DoorTileEntity te = Door.getDoor(world, x, y, z);
+        if (te == null) return true;
 
-		if (te.getDescriptor() == null)
-			return true;
+        if (te.getDescriptor() == null) return true;
 
-		if (te.getDescriptor().requireRedstone())
-			return true;
+        if (te.getDescriptor().requireRedstone()) return true;
 
-		te.openOrCloseDoor();
-		return true;
-	}
+        te.openOrCloseDoor();
+        return true;
+    }
 
-	@Override
-	public void func_150120_a(World world, int x, int y, int z, boolean opening)
-	{
-		DoorTileEntity te = Door.getDoor(world, x, y, z);
-		if (te != null)
-			te.setPowered(opening);
-	}
+    @Override
+    public void func_150120_a(World world, int x, int y, int z, boolean opening) {
+        DoorTileEntity te = Door.getDoor(world, x, y, z);
+        if (te != null) te.setPowered(opening);
+    }
 
-	//#region BoundingBox
-	protected AxisAlignedBB setBlockBounds(AxisAlignedBB aabb)
-	{
-		if (aabb == null)
-			return null;
-		setBlockBounds((float) aabb.minX, (float) aabb.minY, (float) aabb.minZ, (float) aabb.maxX, (float) aabb.maxY, (float) aabb.maxZ);
-		return aabb;
-	}
+    // #region BoundingBox
+    protected AxisAlignedBB setBlockBounds(AxisAlignedBB aabb) {
+        if (aabb == null) return null;
+        setBlockBounds(
+                (float) aabb.minX, (float) aabb.minY, (float) aabb.minZ, (float) aabb.maxX, (float) aabb.maxY, (float)
+                        aabb.maxZ);
+        return aabb;
+    }
 
-	@Override
-	public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z)
-	{
-		DoorTileEntity te = Door.getDoor(world, x, y, z);
-		if (te == null || te.isMoving() || te.getMovement() == null)
-			return;
+    @Override
+    public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
+        DoorTileEntity te = Door.getDoor(world, x, y, z);
+        if (te == null || te.isMoving() || te.getMovement() == null) return;
 
-		setBlockBounds(te.getMovement().getBoundingBox(te, te.isTopBlock(x, y, z), BoundingBoxType.RAYTRACE));
-	}
+        setBlockBounds(te.getMovement().getBoundingBox(te, te.isTopBlock(x, y, z), BoundingBoxType.RAYTRACE));
+    }
 
-	@SideOnly(Side.CLIENT)
-	@Override
-	public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int x, int y, int z)
-	{
-		DoorTileEntity te = Door.getDoor(world, x, y, z);
-		if (te == null || te.isMoving() || te.getMovement() == null)
-			return AxisAlignedBB.getBoundingBox(0, 0, 0, 0, 0, 0);
+    @SideOnly(Side.CLIENT)
+    @Override
+    public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int x, int y, int z) {
+        DoorTileEntity te = Door.getDoor(world, x, y, z);
+        if (te == null || te.isMoving() || te.getMovement() == null)
+            return AxisAlignedBB.getBoundingBox(0, 0, 0, 0, 0, 0);
 
-		AxisAlignedBB aabb = te.getMovement().getBoundingBox(te, te.isTopBlock(x, y, z), BoundingBoxType.SELECTION);
-		if (aabb == null)
-			return AxisAlignedBB.getBoundingBox(0, 0, 0, 0, 0, 0);
+        AxisAlignedBB aabb = te.getMovement().getBoundingBox(te, te.isTopBlock(x, y, z), BoundingBoxType.SELECTION);
+        if (aabb == null) return AxisAlignedBB.getBoundingBox(0, 0, 0, 0, 0, 0);
 
-		return aabb.offset(x, y, z);
-	}
+        return aabb.offset(x, y, z);
+    }
 
-	@Override
-	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z)
-	{
-		DoorTileEntity te = Door.getDoor(world, x, y, z);
-		if (te == null || te.isMoving() || te.getMovement() == null)
-			return null;
+    @Override
+    public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
+        DoorTileEntity te = Door.getDoor(world, x, y, z);
+        if (te == null || te.isMoving() || te.getMovement() == null) return null;
 
-		AxisAlignedBB aabb = te.getMovement().getBoundingBox(te, te.isTopBlock(x, y, z), BoundingBoxType.COLLISION);
-		if (aabb == null)
-			return null;
-		return setBlockBounds(aabb.offset(x, y, z));
-	}
+        AxisAlignedBB aabb = te.getMovement().getBoundingBox(te, te.isTopBlock(x, y, z), BoundingBoxType.COLLISION);
+        if (aabb == null) return null;
+        return setBlockBounds(aabb.offset(x, y, z));
+    }
 
-	//#end BoudingBox
+    // #end BoudingBox
 
-	@Override
-	public TileEntity createNewTileEntity(World world, int metadata)
-	{
-		TrapDoorTileEntity te = new TrapDoorTileEntity();
-		te.setDescriptor(descriptor);
-		return te;
-	}
+    @Override
+    public TileEntity createNewTileEntity(World world, int metadata) {
+        TrapDoorTileEntity te = new TrapDoorTileEntity();
+        te.setDescriptor(descriptor);
+        return te;
+    }
 
-	/**
-	 * The type of render function that is called for this block
-	 */
-	@Override
-	public int getRenderType()
-	{
-		return renderId;
-	}
+    /**
+     * The type of render function that is called for this block
+     */
+    @Override
+    public int getRenderType() {
+        return renderId;
+    }
 }

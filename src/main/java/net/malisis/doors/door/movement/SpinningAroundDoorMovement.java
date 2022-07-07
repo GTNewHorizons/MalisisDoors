@@ -25,6 +25,7 @@
 package net.malisis.doors.door.movement;
 
 import static net.malisis.doors.door.block.Door.*;
+
 import net.malisis.core.block.BoundingBoxType;
 import net.malisis.core.renderer.RenderParameters;
 import net.malisis.core.renderer.animation.Animation;
@@ -40,70 +41,63 @@ import net.minecraft.util.AxisAlignedBB;
  * @author Ordinastie
  *
  */
-public class SpinningAroundDoorMovement implements IDoorMovement
-{
-	private Rotation rotBot = new Rotation(720).aroundAxis(0, 0, 1);
-	private Rotation rotTop = new Rotation(720).aroundAxis(0, 0, 1);
-	private Rotation rotBot2 = new Rotation(-720).aroundAxis(0, 0, 1);
-	private Rotation rotTop2 = new Rotation(-720).aroundAxis(0, 0, 1).offset(0, 1, 0);
-	private Scale scaleBot = new Scale(0, 0, 0);
-	private Scale scaleTop = new Scale(0, 0, 0).offset(0, 1, 0);
+public class SpinningAroundDoorMovement implements IDoorMovement {
+    private Rotation rotBot = new Rotation(720).aroundAxis(0, 0, 1);
+    private Rotation rotTop = new Rotation(720).aroundAxis(0, 0, 1);
+    private Rotation rotBot2 = new Rotation(-720).aroundAxis(0, 0, 1);
+    private Rotation rotTop2 = new Rotation(-720).aroundAxis(0, 0, 1).offset(0, 1, 0);
+    private Scale scaleBot = new Scale(0, 0, 0);
+    private Scale scaleTop = new Scale(0, 0, 0).offset(0, 1, 0);
 
-	@Override
-	public AxisAlignedBB getBoundingBox(DoorTileEntity tileEntity, boolean topBlock, BoundingBoxType type)
-	{
-		if (tileEntity.isOpened() && type != BoundingBoxType.RAYTRACE)
-			return null;
+    @Override
+    public AxisAlignedBB getBoundingBox(DoorTileEntity tileEntity, boolean topBlock, BoundingBoxType type) {
+        if (tileEntity.isOpened() && type != BoundingBoxType.RAYTRACE) return null;
 
-		AxisAlignedBB aabb = AxisAlignedBB.getBoundingBox(0, 0, 0, 1, 1, DOOR_WIDTH);
-		if (type == BoundingBoxType.SELECTION)
-		{
-			if (!topBlock)
-				aabb.maxY++;
-			else
-				aabb.minY--;
-		}
+        AxisAlignedBB aabb = AxisAlignedBB.getBoundingBox(0, 0, 0, 1, 1, DOOR_WIDTH);
+        if (type == BoundingBoxType.SELECTION) {
+            if (!topBlock) aabb.maxY++;
+            else aabb.minY--;
+        }
 
-		return aabb;
-	}
+        return aabb;
+    }
 
-	@Override
-	public Animation[] getAnimations(DoorTileEntity tileEntity, MalisisModel model, RenderParameters rp)
-	{
-		boolean doubleDoor = tileEntity.getDoubleDoor() != null;
-		boolean closed = tileEntity.getState() == DoorState.CLOSING || tileEntity.getState() == DoorState.CLOSED;
-		int ot = tileEntity.getDescriptor().getOpeningTime();
-		float offsetX = doubleDoor ? (tileEntity.isReversed() ? 0.5F : -0.5F) : 0;
+    @Override
+    public Animation[] getAnimations(DoorTileEntity tileEntity, MalisisModel model, RenderParameters rp) {
+        boolean doubleDoor = tileEntity.getDoubleDoor() != null;
+        boolean closed = tileEntity.getState() == DoorState.CLOSING || tileEntity.getState() == DoorState.CLOSED;
+        int ot = tileEntity.getDescriptor().getOpeningTime();
+        float offsetX = doubleDoor ? (tileEntity.isReversed() ? 0.5F : -0.5F) : 0;
 
-		rotBot.offset(offsetX, 0.5F, 0);
-		rotBot.reversed(closed);
-		rotBot.forTicks(ot);
+        rotBot.offset(offsetX, 0.5F, 0);
+        rotBot.reversed(closed);
+        rotBot.forTicks(ot);
 
-		rotBot2.forTicks(ot);
-		rotBot2.reversed(closed);
+        rotBot2.forTicks(ot);
+        rotBot2.reversed(closed);
 
-		rotTop.offset(offsetX, 0.5F, 0);
-		rotTop.reversed(closed);
-		rotTop.forTicks(ot);
+        rotTop.offset(offsetX, 0.5F, 0);
+        rotTop.reversed(closed);
+        rotTop.forTicks(ot);
 
-		rotTop2.forTicks(ot);
-		rotTop2.reversed(closed);
+        rotTop2.forTicks(ot);
+        rotTop2.reversed(closed);
 
-		scaleBot.reversed(closed);
-		scaleBot.forTicks(ot);
+        scaleBot.reversed(closed);
+        scaleBot.forTicks(ot);
 
-		scaleTop.reversed(closed);
-		scaleTop.forTicks(ot);
+        scaleTop.reversed(closed);
+        scaleTop.forTicks(ot);
 
-		ParallelTransformation bot = new ParallelTransformation(rotBot, rotBot2, scaleBot);
-		ParallelTransformation top = new ParallelTransformation(rotTop, rotTop2, scaleTop);
+        ParallelTransformation bot = new ParallelTransformation(rotBot, rotBot2, scaleBot);
+        ParallelTransformation top = new ParallelTransformation(rotTop, rotTop2, scaleTop);
 
-		return new Animation[] { new Animation(model.getShape("bottom"), bot), new Animation(model.getShape("top"), top) };
-	}
+        return new Animation[] {new Animation(model.getShape("bottom"), bot), new Animation(model.getShape("top"), top)
+        };
+    }
 
-	@Override
-	public boolean isSpecial()
-	{
-		return false;
-	}
+    @Override
+    public boolean isSpecial() {
+        return false;
+    }
 }

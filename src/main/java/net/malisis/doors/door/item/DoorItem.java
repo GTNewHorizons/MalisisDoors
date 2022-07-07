@@ -24,6 +24,8 @@
 
 package net.malisis.doors.door.item;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.malisis.core.MalisisCore;
 import net.malisis.doors.door.DoorDescriptor;
 import net.minecraft.block.Block;
@@ -34,66 +36,65 @@ import net.minecraft.item.ItemDoor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
-public class DoorItem extends ItemDoor
-{
-	private DoorDescriptor descriptor;
+public class DoorItem extends ItemDoor {
+    private DoorDescriptor descriptor;
 
-	public DoorItem(DoorDescriptor desc)
-	{
-		super(desc.getMaterial());
+    public DoorItem(DoorDescriptor desc) {
+        super(desc.getMaterial());
 
-		this.descriptor = desc;
-		this.maxStackSize = desc.getMaxStackSize();
-		setUnlocalizedName(desc.getName());
-		setTextureName(desc.getTextureName());
-		setCreativeTab(desc.getTab());
-	}
+        this.descriptor = desc;
+        this.maxStackSize = desc.getMaxStackSize();
+        setUnlocalizedName(desc.getName());
+        setTextureName(desc.getTextureName());
+        setCreativeTab(desc.getTab());
+    }
 
-	public DoorItem()
-	{
-		super(Material.wood);
-	}
+    public DoorItem() {
+        super(Material.wood);
+    }
 
-	public DoorDescriptor getDescriptor(ItemStack itemStack)
-	{
-		return descriptor;
-	}
+    public DoorDescriptor getDescriptor(ItemStack itemStack) {
+        return descriptor;
+    }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerIcons(IIconRegister iconRegister)
-	{
-		this.itemIcon = iconRegister.registerIcon(descriptor.getTextureName());
-	}
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerIcons(IIconRegister iconRegister) {
+        this.itemIcon = iconRegister.registerIcon(descriptor.getTextureName());
+    }
 
-	@Override
-	public boolean onItemUse(ItemStack itemStack, EntityPlayer player, World world, int x, int y, int z, int side, float par8, float par9, float par10)
-	{
-		if (side != 1)
-			return false;
+    @Override
+    public boolean onItemUse(
+            ItemStack itemStack,
+            EntityPlayer player,
+            World world,
+            int x,
+            int y,
+            int z,
+            int side,
+            float par8,
+            float par9,
+            float par10) {
+        if (side != 1) return false;
 
-		y++;
-		Block block = getDescriptor(itemStack).getBlock();
-		if (block == null)
-		{
-			MalisisCore.log.error("Can't place Door : block is null for " + itemStack);
-			return false;
-		}
+        y++;
+        Block block = getDescriptor(itemStack).getBlock();
+        if (block == null) {
+            MalisisCore.log.error("Can't place Door : block is null for " + itemStack);
+            return false;
+        }
 
-		if (!player.canPlayerEdit(x, y, z, side, itemStack) || !player.canPlayerEdit(x, y + 1, z, side, itemStack))
-			return false;
+        if (!player.canPlayerEdit(x, y, z, side, itemStack) || !player.canPlayerEdit(x, y + 1, z, side, itemStack))
+            return false;
 
-		if (!block.canPlaceBlockAt(world, x, y, z))
-			return false;
+        if (!block.canPlaceBlockAt(world, x, y, z)) return false;
 
-		int i1 = MathHelper.floor_double((player.rotationYaw + 180.0F) * 4.0F / 360.0F - 0.5D) & 3;
-		placeDoorBlock(world, x, y, z, i1, block);
-		itemStack.stackSize--;
+        int i1 = MathHelper.floor_double((player.rotationYaw + 180.0F) * 4.0F / 360.0F - 0.5D) & 3;
+        placeDoorBlock(world, x, y, z, i1, block);
+        itemStack.stackSize--;
 
-		block.onBlockPlacedBy(world, x, y, z, player, itemStack);
-		return true;
-	}
+        block.onBlockPlacedBy(world, x, y, z, player, itemStack);
+        return true;
+    }
 }

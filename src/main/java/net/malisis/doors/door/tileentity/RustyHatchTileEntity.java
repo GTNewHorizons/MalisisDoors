@@ -40,132 +40,106 @@ import net.minecraftforge.common.util.ForgeDirection;
  * @author Ordinastie
  *
  */
-public class RustyHatchTileEntity extends DoorTileEntity implements MultiBlock.IProvider
-{
-	private MultiBlock multiBlock;
+public class RustyHatchTileEntity extends DoorTileEntity implements MultiBlock.IProvider {
+    private MultiBlock multiBlock;
 
-	public RustyHatchTileEntity()
-	{
-		DoorDescriptor descriptor = new DoorDescriptor();
-		descriptor.setMovement(DoorRegistry.getMovement(RustyHatchMovement.class));
-		descriptor.setSound(DoorRegistry.getSound(RustyHatchSound.class));
-		descriptor.setDoubleDoor(false);
-		descriptor.setOpeningTime(60);
-		setDescriptor(descriptor);
-	}
+    public RustyHatchTileEntity() {
+        DoorDescriptor descriptor = new DoorDescriptor();
+        descriptor.setMovement(DoorRegistry.getMovement(RustyHatchMovement.class));
+        descriptor.setSound(DoorRegistry.getSound(RustyHatchSound.class));
+        descriptor.setDoubleDoor(false);
+        descriptor.setOpeningTime(60);
+        setDescriptor(descriptor);
+    }
 
-	private int getOriginMetadata()
-	{
-		if (getWorld() == null || multiBlock == null)
-			return 0;
-		return getWorld().getBlockMetadata(multiBlock.getX(), multiBlock.getY(), multiBlock.getZ());
-	}
+    private int getOriginMetadata() {
+        if (getWorld() == null || multiBlock == null) return 0;
+        return getWorld().getBlockMetadata(multiBlock.getX(), multiBlock.getY(), multiBlock.getZ());
+    }
 
-	@Override
-	public boolean isTopBlock(int x, int y, int z)
-	{
-		return (getOriginMetadata() & Door.FLAG_TOPBLOCK) != 0;
-	}
+    @Override
+    public boolean isTopBlock(int x, int y, int z) {
+        return (getOriginMetadata() & Door.FLAG_TOPBLOCK) != 0;
+    }
 
-	@Override
-	public int getDirection()
-	{
-		return (getOriginMetadata() & 3) + 2;
-	}
+    @Override
+    public int getDirection() {
+        return (getOriginMetadata() & 3) + 2;
+    }
 
-	@Override
-	public boolean isOpened()
-	{
-		return (getOriginMetadata() & Door.FLAG_OPENED) != 0;
-	}
+    @Override
+    public boolean isOpened() {
+        return (getOriginMetadata() & Door.FLAG_OPENED) != 0;
+    }
 
-	@Override
-	public boolean isReversed()
-	{
-		return (getOriginMetadata() & Door.FLAG_REVERSED) != 0;
-	}
+    @Override
+    public boolean isReversed() {
+        return (getOriginMetadata() & Door.FLAG_REVERSED) != 0;
+    }
 
-	@Override
-	public boolean isPowered()
-	{
-		return false;
-	}
+    @Override
+    public boolean isPowered() {
+        return false;
+    }
 
-	public boolean shouldLadder(int x, int y, int z)
-	{
-		//		if (!isOpened()/* && y == multiBlock.getY()*/)
-		//			return false;
+    public boolean shouldLadder(int x, int y, int z) {
+        //		if (!isOpened()/* && y == multiBlock.getY()*/)
+        //			return false;
 
-		ForgeDirection dir = ForgeDirection.getOrientation(getDirection());
+        ForgeDirection dir = ForgeDirection.getOrientation(getDirection());
 
-		if (z == zCoord && (dir == ForgeDirection.NORTH || dir == ForgeDirection.SOUTH))
-			return false;
-		if (x == xCoord && (dir == ForgeDirection.WEST || dir == ForgeDirection.EAST))
-			return false;
+        if (z == zCoord && (dir == ForgeDirection.NORTH || dir == ForgeDirection.SOUTH)) return false;
+        if (x == xCoord && (dir == ForgeDirection.WEST || dir == ForgeDirection.EAST)) return false;
 
-		return getWorld().isSideSolid(x + dir.offsetX, y, z + dir.offsetZ, dir.getOpposite());
-	}
+        return getWorld().isSideSolid(x + dir.offsetX, y, z + dir.offsetZ, dir.getOpposite());
+    }
 
-	@Override
-	public void openOrCloseDoor()
-	{
-		RustyHatchTileEntity te = MultiBlock.getOriginProvider(this);
-		if (te == null)
-			return;
+    @Override
+    public void openOrCloseDoor() {
+        RustyHatchTileEntity te = MultiBlock.getOriginProvider(this);
+        if (te == null) return;
 
-		if (te != this)
-		{
-			te.openOrCloseDoor();
-			return;
-		}
+        if (te != this) {
+            te.openOrCloseDoor();
+            return;
+        }
 
-		if (getState() != DoorState.CLOSED && getState() != DoorState.OPENED)
-			return;
+        if (getState() != DoorState.CLOSED && getState() != DoorState.OPENED) return;
 
-		super.openOrCloseDoor();
-	}
+        super.openOrCloseDoor();
+    }
 
-	@Override
-	public void setMultiBlock(MultiBlock multiBlock)
-	{
-		this.multiBlock = multiBlock;
-	}
+    @Override
+    public void setMultiBlock(MultiBlock multiBlock) {
+        this.multiBlock = multiBlock;
+    }
 
-	@Override
-	public MultiBlock getMultiBlock()
-	{
-		return multiBlock;
-	}
+    @Override
+    public MultiBlock getMultiBlock() {
+        return multiBlock;
+    }
 
-	@Override
-	public void setWorldObj(World world)
-	{
-		super.setWorldObj(world);
-		if (multiBlock != null)
-			multiBlock.setWorld(world);
-	}
+    @Override
+    public void setWorldObj(World world) {
+        super.setWorldObj(world);
+        if (multiBlock != null) multiBlock.setWorld(world);
+    }
 
-	@Override
-	public void readFromNBT(NBTTagCompound tag)
-	{
-		super.readFromNBT(tag);
-		multiBlock = new MultiBlock(tag);
-	}
+    @Override
+    public void readFromNBT(NBTTagCompound tag) {
+        super.readFromNBT(tag);
+        multiBlock = new MultiBlock(tag);
+    }
 
-	@Override
-	public void writeToNBT(NBTTagCompound tag)
-	{
-		super.writeToNBT(tag);
-		if (multiBlock != null)
-			multiBlock.writeToNBT(tag);
-	}
+    @Override
+    public void writeToNBT(NBTTagCompound tag) {
+        super.writeToNBT(tag);
+        if (multiBlock != null) multiBlock.writeToNBT(tag);
+    }
 
-	@Override
-	public AxisAlignedBB getRenderBoundingBox()
-	{
-		if (multiBlock != null)
-			return multiBlock.getWorldBounds();
-		return super.getRenderBoundingBox();
-	}
-
+    @Override
+    public AxisAlignedBB getRenderBoundingBox() {
+        if (multiBlock != null) return multiBlock.getWorldBounds();
+        return super.getRenderBoundingBox();
+    }
 }

@@ -24,6 +24,7 @@
 
 package net.malisis.doors.door.tileentity;
 
+import com.google.common.base.Objects;
 import net.malisis.core.MalisisCore;
 import net.malisis.core.block.BoundingBoxType;
 import net.malisis.core.util.BlockState;
@@ -43,138 +44,120 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.google.common.base.Objects;
-
 /**
  * @author Ordinastie
  *
  */
-public class BigDoorTileEntity extends DoorTileEntity
-{
-	private boolean delete = false;
-	private boolean processed = true;
-	private ForgeDirection direction = ForgeDirection.NORTH;
+public class BigDoorTileEntity extends DoorTileEntity {
+    private boolean delete = false;
+    private boolean processed = true;
+    private ForgeDirection direction = ForgeDirection.NORTH;
 
-	private BlockState frameState;
+    private BlockState frameState;
 
-	public BigDoorTileEntity()
-	{
-		DoorDescriptor descriptor = new DoorDescriptor();
-		descriptor.setMovement(DoorRegistry.getMovement(CarriageDoorMovement.class));
-		descriptor.setSound(DoorRegistry.getSound(CarriageDoorSound.class));
-		descriptor.setDoubleDoor(false);
-		descriptor.setOpeningTime(20);
-		setDescriptor(descriptor);
+    public BigDoorTileEntity() {
+        DoorDescriptor descriptor = new DoorDescriptor();
+        descriptor.setMovement(DoorRegistry.getMovement(CarriageDoorMovement.class));
+        descriptor.setSound(DoorRegistry.getSound(CarriageDoorSound.class));
+        descriptor.setDoubleDoor(false);
+        descriptor.setOpeningTime(20);
+        setDescriptor(descriptor);
 
-		frameState = new BlockState(Blocks.quartz_block);
-	}
+        frameState = new BlockState(Blocks.quartz_block);
+    }
 
-	public BlockState getFrameState()
-	{
-		return frameState;
-	}
+    public BlockState getFrameState() {
+        return frameState;
+    }
 
-	public void setFrameState(BlockState state)
-	{
-		if (state != null)
-			frameState = state;
-	}
+    public void setFrameState(BlockState state) {
+        if (state != null) frameState = state;
+    }
 
-	@Override
-	public boolean isTopBlock(int x, int y, int z)
-	{
-		return false;
-	}
+    @Override
+    public boolean isTopBlock(int x, int y, int z) {
+        return false;
+    }
 
-	@Override
-	public boolean isReversed()
-	{
-		return false;
-	}
+    @Override
+    public boolean isReversed() {
+        return false;
+    }
 
-	@Override
-	public boolean isPowered()
-	{
-		return false;
-	}
+    @Override
+    public boolean isPowered() {
+        return false;
+    }
 
-	@Override
-	public void setDoorState(DoorState newState)
-	{
-		boolean moving = this.moving;
-		BlockState state = null;
-		if (getWorld() != null)
-		{
-			state = new BlockState(xCoord, yCoord, zCoord, getBlockType());
-			ChunkCollision.get().updateBlocks(getWorld(), state);
-		}
+    @Override
+    public void setDoorState(DoorState newState) {
+        boolean moving = this.moving;
+        BlockState state = null;
+        if (getWorld() != null) {
+            state = new BlockState(xCoord, yCoord, zCoord, getBlockType());
+            ChunkCollision.get().updateBlocks(getWorld(), state);
+        }
 
-		super.setDoorState(newState);
-		if (getWorld() != null && moving && !this.moving)
-			ChunkCollision.get().replaceBlocks(getWorld(), state);
+        super.setDoorState(newState);
+        if (getWorld() != null && moving && !this.moving) ChunkCollision.get().replaceBlocks(getWorld(), state);
+    }
 
-	}
+    @Override
+    public void updateEntity() {
+        if (!processed && getWorld() != null) {
+            if (delete) {
+                MalisisCore.log.info("Deleting " + xCoord + "," + yCoord + "," + zCoord);
+                getWorld().setBlockToAir(xCoord, yCoord, zCoord);
+            } else {
+                MalisisCore.log.info("Adding to chunk : " + xCoord + "," + yCoord + "," + zCoord);
+                ChunkBlockHandler.get()
+                        .updateCoordinates(
+                                getWorld().getChunkFromBlockCoords(xCoord, zCoord),
+                                xCoord,
+                                yCoord,
+                                zCoord,
+                                Blocks.air,
+                                getBlockType());
+                getWorld().setBlockMetadataWithNotify(xCoord, yCoord, zCoord, Door.dirToInt(direction), 2);
+                processed = true;
+            }
+            return;
+        }
+        super.updateEntity();
+    }
 
-	@Override
-	public void updateEntity()
-	{
-		if (!processed && getWorld() != null)
-		{
-			if (delete)
-			{
-				MalisisCore.log.info("Deleting " + xCoord + "," + yCoord + "," + zCoord);
-				getWorld().setBlockToAir(xCoord, yCoord, zCoord);
-			}
-			else
-			{
-				MalisisCore.log.info("Adding to chunk : " + xCoord + "," + yCoord + "," + zCoord);
-				ChunkBlockHandler.get().updateCoordinates(getWorld().getChunkFromBlockCoords(xCoord, zCoord), xCoord, yCoord, zCoord,
-						Blocks.air, getBlockType());
-				getWorld().setBlockMetadataWithNotify(xCoord, yCoord, zCoord, Door.dirToInt(direction), 2);
-				processed = true;
-			}
-			return;
-		}
-		super.updateEntity();
-	}
+    public ItemStack getDroppedItemStack() {
+        ItemStack itemStack = new ItemStack(getBlockType());
+        NBTTagCompound nbt = new NBTTagCompound();
+        BlockState.toNBT(nbt, frameState);
+        itemStack.setTagCompound(nbt);
+        return itemStack;
+    }
 
-	public ItemStack getDroppedItemStack()
-	{
-		ItemStack itemStack = new ItemStack(getBlockType());
-		NBTTagCompound nbt = new NBTTagCompound();
-		BlockState.toNBT(nbt, frameState);
-		itemStack.setTagCompound(nbt);
-		return itemStack;
-	}
+    @Override
+    public void readFromNBT(NBTTagCompound tag) {
+        super.readFromNBT(tag);
+        if (tag.hasKey("multiBlock")) {
+            MultiBlock mb = new MultiBlock(tag);
+            delete = !mb.isOrigin(xCoord, yCoord, zCoord);
+            direction = mb.getDirection();
+            processed = false;
+        }
 
-	@Override
-	public void readFromNBT(NBTTagCompound tag)
-	{
-		super.readFromNBT(tag);
-		if (tag.hasKey("multiBlock"))
-		{
-			MultiBlock mb = new MultiBlock(tag);
-			delete = !mb.isOrigin(xCoord, yCoord, zCoord);
-			direction = mb.getDirection();
-			processed = false;
-		}
+        frameState = Objects.firstNonNull(BlockState.fromNBT(tag), new BlockState(Blocks.quartz_block));
+    }
 
-		frameState = Objects.firstNonNull(BlockState.fromNBT(tag), new BlockState(Blocks.quartz_block));
-	}
+    @Override
+    public void writeToNBT(NBTTagCompound nbt) {
+        super.writeToNBT(nbt);
 
-	@Override
-	public void writeToNBT(NBTTagCompound nbt)
-	{
-		super.writeToNBT(nbt);
+        BlockState.toNBT(nbt, frameState);
+    }
 
-		BlockState.toNBT(nbt, frameState);
-	}
-
-	@Override
-	public AxisAlignedBB getRenderBoundingBox()
-	{
-		return ((BigDoor) getBlockType()).getBoundingBox(getWorld(), xCoord, yCoord, zCoord, BoundingBoxType.RENDER)[0].offset(xCoord,
-				yCoord, zCoord);
-	}
-
+    @Override
+    public AxisAlignedBB getRenderBoundingBox() {
+        return ((BigDoor) getBlockType())
+                .getBoundingBox(getWorld(), xCoord, yCoord, zCoord, BoundingBoxType.RENDER)[0].offset(
+                        xCoord, yCoord, zCoord);
+    }
 }

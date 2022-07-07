@@ -28,9 +28,8 @@ package net.malisis.doors.proxy;
  * @author Ordinastie
  *
  */
-public interface IProxy
-{
-	public void initRenderers();
+public interface IProxy {
+    public void initRenderers();
 
-	public void initFonts();
+    public void initFonts();
 }

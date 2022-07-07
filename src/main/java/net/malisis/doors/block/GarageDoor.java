@@ -24,6 +24,8 @@
 
 package net.malisis.doors.block;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.malisis.core.util.TileEntityUtils;
 import net.malisis.doors.MalisisDoors;
 import net.malisis.doors.door.DoorState;
@@ -43,149 +45,120 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * @author Ordinastie
  *
  */
-public class GarageDoor extends Block implements ITileEntityProvider
-{
-	private IIcon topBlockIcon;
+public class GarageDoor extends Block implements ITileEntityProvider {
+    private IIcon topBlockIcon;
 
-	public GarageDoor()
-	{
-		super(Material.wood);
-		setUnlocalizedName("garage_door");
-		setCreativeTab(MalisisDoors.tab);
-		setHardness(2.0F);
-		setStepSound(soundTypeWood);
-	}
+    public GarageDoor() {
+        super(Material.wood);
+        setUnlocalizedName("garage_door");
+        setCreativeTab(MalisisDoors.tab);
+        setHardness(2.0F);
+        setStepSound(soundTypeWood);
+    }
 
-	@Override
-	public void registerIcons(IIconRegister iconRegister)
-	{
-		this.blockIcon = iconRegister.registerIcon(MalisisDoors.modid + ":" + (this.getUnlocalizedName().substring(5)));
-		this.topBlockIcon = iconRegister.registerIcon(MalisisDoors.modid + ":" + (this.getUnlocalizedName().substring(5)) + "_top");
-	}
+    @Override
+    public void registerIcons(IIconRegister iconRegister) {
+        this.blockIcon = iconRegister.registerIcon(
+                MalisisDoors.modid + ":" + (this.getUnlocalizedName().substring(5)));
+        this.topBlockIcon = iconRegister.registerIcon(
+                MalisisDoors.modid + ":" + (this.getUnlocalizedName().substring(5)) + "_top");
+    }
 
-	@Override
-	public IIcon getIcon(int side, int metadata)
-	{
-		if ((metadata & Door.FLAG_TOPBLOCK) != 0 && (side == 4 || side == 5))
-			return topBlockIcon;
-		else
-			return blockIcon;
-	}
+    @Override
+    public IIcon getIcon(int side, int metadata) {
+        if ((metadata & Door.FLAG_TOPBLOCK) != 0 && (side == 4 || side == 5)) return topBlockIcon;
+        else return blockIcon;
+    }
 
-	@Override
-	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack itemStack)
-	{
-		int metadata = MathHelper.floor_double(player.rotationYaw * 4.0F / 360.0F - 0.5F) & 3;
-		Block block = world.getBlock(x, y + 1, z);
-		if (block instanceof GarageDoor)
-			metadata = world.getBlockMetadata(x, y + 1, z) & 3;
-		else
-		{
-			block = world.getBlock(x, y - 1, z);
-			if (block instanceof GarageDoor)
-				metadata = world.getBlockMetadata(x, y - 1, z) & 3;
-		}
+    @Override
+    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack itemStack) {
+        int metadata = MathHelper.floor_double(player.rotationYaw * 4.0F / 360.0F - 0.5F) & 3;
+        Block block = world.getBlock(x, y + 1, z);
+        if (block instanceof GarageDoor) metadata = world.getBlockMetadata(x, y + 1, z) & 3;
+        else {
+            block = world.getBlock(x, y - 1, z);
+            if (block instanceof GarageDoor) metadata = world.getBlockMetadata(x, y - 1, z) & 3;
+        }
 
-		world.setBlockMetadataWithNotify(x, y, z, metadata, 2);
-		setBlockBoundsBasedOnState(world, x, y, z);
-	}
+        world.setBlockMetadataWithNotify(x, y, z, metadata, 2);
+        setBlockBoundsBasedOnState(world, x, y, z);
+    }
 
-	@Override
-	public void onNeighborBlockChange(World world, int x, int y, int z, Block block)
-	{
-		GarageDoorTileEntity te = TileEntityUtils.getTileEntity(GarageDoorTileEntity.class, world, x, y, z);
-		if (te == null)
-			return;
+    @Override
+    public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {
+        GarageDoorTileEntity te = TileEntityUtils.getTileEntity(GarageDoorTileEntity.class, world, x, y, z);
+        if (te == null) return;
 
-		boolean powered = te.isPowered();
-		if ((powered || block.canProvidePower()) && block != this)
-			te.setPowered(powered);
-	}
+        boolean powered = te.isPowered();
+        if ((powered || block.canProvidePower()) && block != this) te.setPowered(powered);
+    }
 
-	@Override
-	public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z)
-	{
-		GarageDoorTileEntity te = TileEntityUtils.getTileEntity(GarageDoorTileEntity.class, world, x, y, z);
-		if (te == null)
-			setBlockBounds(0, 0, 0, 1, 1, 1);
-		else if (te.getState() != DoorState.CLOSED)
-			setBlockBounds(0, 0, 0, 0, 0, 0);
-		else
-		{
-			float w = Door.DOOR_WIDTH / 2;
+    @Override
+    public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
+        GarageDoorTileEntity te = TileEntityUtils.getTileEntity(GarageDoorTileEntity.class, world, x, y, z);
+        if (te == null) setBlockBounds(0, 0, 0, 1, 1, 1);
+        else if (te.getState() != DoorState.CLOSED) setBlockBounds(0, 0, 0, 0, 0, 0);
+        else {
+            float w = Door.DOOR_WIDTH / 2;
 
-			if (isEastOrWest(te.getBlockMetadata()))
-				setBlockBounds(0.5F - w, 0, 0, 0.5F + w, 1, 1);
-			else
-				setBlockBounds(0, 0, 0.5F - w, 1, 1, 0.5F + w);
-		}
-	}
+            if (isEastOrWest(te.getBlockMetadata())) setBlockBounds(0.5F - w, 0, 0, 0.5F + w, 1, 1);
+            else setBlockBounds(0, 0, 0.5F - w, 1, 1, 0.5F + w);
+        }
+    }
 
-	@Override
-	public MovingObjectPosition collisionRayTrace(World world, int x, int y, int z, Vec3 src, Vec3 dest)
-	{
-		setBlockBoundsBasedOnState(world, x, y, z);
-		return super.collisionRayTrace(world, x, y, z, src, dest);
-	}
+    @Override
+    public MovingObjectPosition collisionRayTrace(World world, int x, int y, int z, Vec3 src, Vec3 dest) {
+        setBlockBoundsBasedOnState(world, x, y, z);
+        return super.collisionRayTrace(world, x, y, z, src, dest);
+    }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int x, int y, int z)
-	{
-		setBlockBoundsBasedOnState(world, x, y, z);
-		return super.getSelectedBoundingBoxFromPool(world, x, y, z);
-	}
+    @Override
+    @SideOnly(Side.CLIENT)
+    public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int x, int y, int z) {
+        setBlockBoundsBasedOnState(world, x, y, z);
+        return super.getSelectedBoundingBoxFromPool(world, x, y, z);
+    }
 
-	@Override
-	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z)
-	{
-		int metadata = world.getBlockMetadata(x, y, z);
-		if ((metadata & Door.FLAG_OPENED) != 0)
-			return null;
+    @Override
+    public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
+        int metadata = world.getBlockMetadata(x, y, z);
+        if ((metadata & Door.FLAG_OPENED) != 0) return null;
 
-		setBlockBoundsBasedOnState(world, x, y, z);
-		return super.getCollisionBoundingBoxFromPool(world, x, y, z);
-	}
+        setBlockBoundsBasedOnState(world, x, y, z);
+        return super.getCollisionBoundingBoxFromPool(world, x, y, z);
+    }
 
-	@Override
-	public TileEntity createNewTileEntity(World world, int metadata)
-	{
-		return new GarageDoorTileEntity();
-	}
+    @Override
+    public TileEntity createNewTileEntity(World world, int metadata) {
+        return new GarageDoorTileEntity();
+    }
 
-	@Override
-	public boolean isNormalCube(IBlockAccess world, int x, int y, int z)
-	{
-		return false;
-	}
+    @Override
+    public boolean isNormalCube(IBlockAccess world, int x, int y, int z) {
+        return false;
+    }
 
-	@Override
-	public boolean renderAsNormalBlock()
-	{
-		return false;
-	}
+    @Override
+    public boolean renderAsNormalBlock() {
+        return false;
+    }
 
-	@Override
-	public boolean isOpaqueCube()
-	{
-		return false;
-	}
+    @Override
+    public boolean isOpaqueCube() {
+        return false;
+    }
 
-	@Override
-	public int getRenderType()
-	{
-		return -1;
-	}
+    @Override
+    public int getRenderType() {
+        return -1;
+    }
 
-	public static boolean isEastOrWest(int metadata)
-	{
-		return (metadata & 3) == Door.DIR_EAST || (metadata & 3) == Door.DIR_WEST;
-	}
+    public static boolean isEastOrWest(int metadata) {
+        return (metadata & 3) == Door.DIR_EAST || (metadata & 3) == Door.DIR_WEST;
+    }
 }

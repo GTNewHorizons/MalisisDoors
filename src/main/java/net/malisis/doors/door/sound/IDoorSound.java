@@ -28,9 +28,8 @@ import net.malisis.doors.door.DoorState;
 
 /**
  * @author Ordinastie
- * 
+ *
  */
-public interface IDoorSound
-{
-	public String getSoundPath(DoorState state);
+public interface IDoorSound {
+    public String getSoundPath(DoorState state);
 }

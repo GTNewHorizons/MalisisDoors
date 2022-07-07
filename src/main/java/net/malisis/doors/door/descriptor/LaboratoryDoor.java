@@ -37,27 +37,25 @@ import net.minecraft.init.Items;
  * @author Ordinastie
  *
  */
-public class LaboratoryDoor extends DoorDescriptor
-{
-	public LaboratoryDoor()
-	{
-		//Block
-		setMaterial(Material.iron);
-		setHardness(4.0F);
-		setSoundType(Block.soundTypeMetal);
-		setName("laboratory_door");
-		setTextureName(MalisisDoors.modid + ":laboratory_door");
+public class LaboratoryDoor extends DoorDescriptor {
+    public LaboratoryDoor() {
+        // Block
+        setMaterial(Material.iron);
+        setHardness(4.0F);
+        setSoundType(Block.soundTypeMetal);
+        setName("laboratory_door");
+        setTextureName(MalisisDoors.modid + ":laboratory_door");
 
-		//te
-		setOpeningTime(12);
-		setDoubleDoor(false);
-		setMovement(DoorRegistry.getMovement(SlidingUpDoorMovement.class));
-		setSound(DoorRegistry.getSound(PneumaticSound.class));
+        // te
+        setOpeningTime(12);
+        setDoubleDoor(false);
+        setMovement(DoorRegistry.getMovement(SlidingUpDoorMovement.class));
+        setSound(DoorRegistry.getSound(PneumaticSound.class));
 
-		//Item
-		setTab(MalisisDoors.tab);
+        // Item
+        setTab(MalisisDoors.tab);
 
-		//recipe
-		setRecipe("AA", "BB", "BB", 'A', Items.gold_ingot, 'B', Items.iron_ingot);
-	}
+        // recipe
+        setRecipe("AA", "BB", "BB", 'A', Items.gold_ingot, 'B', Items.iron_ingot);
+    }
 }

@@ -37,27 +37,25 @@ import net.minecraft.init.Items;
  * @author Ordinastie
  *
  */
-public class IronTrapDoor extends TrapDoorDescriptor
-{
-	public IronTrapDoor()
-	{
-		//Block
-		setOpeningTime(6);
-		setMaterial(Material.iron);
-		setHardness(5.0F);
-		setSoundType(Block.soundTypeMetal);
-		setName("iron_trapdoor");
-		setTextureName(MalisisDoors.modid + ":iron_trapdoor");
+public class IronTrapDoor extends TrapDoorDescriptor {
+    public IronTrapDoor() {
+        // Block
+        setOpeningTime(6);
+        setMaterial(Material.iron);
+        setHardness(5.0F);
+        setSoundType(Block.soundTypeMetal);
+        setName("iron_trapdoor");
+        setTextureName(MalisisDoors.modid + ":iron_trapdoor");
 
-		//te
-		setRequireRedstone(true);
-		setMovement(DoorRegistry.getMovement(TrapDoorMovement.class));
-		setSound(DoorRegistry.getSound(VanillaDoorSound.class));
+        // te
+        setRequireRedstone(true);
+        setMovement(DoorRegistry.getMovement(TrapDoorMovement.class));
+        setSound(DoorRegistry.getSound(VanillaDoorSound.class));
 
-		//item
-		setTab(MalisisDoors.tab);
+        // item
+        setTab(MalisisDoors.tab);
 
-		//recipe
-		setRecipe("AA", "AA", 'A', Items.iron_ingot);
-	}
+        // recipe
+        setRecipe("AA", "AA", 'A', Items.iron_ingot);
+    }
 }

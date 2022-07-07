@@ -1,3 +1,3 @@
 dependencies {
-    compile 'com.github.GTNewHorizons:MalisisCore:VERSION:dev' //TODO: replace VERSION
+	compile 'com.github.GTNewHorizons:MalisisCore:VERSION:dev' //TODO: replace VERSION
 }

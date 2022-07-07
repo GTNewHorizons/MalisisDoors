@@ -38,27 +38,25 @@ import net.minecraft.init.Items;
  * @author Ordinastie
  *
  */
-public class ShojiDoor extends DoorDescriptor
-{
+public class ShojiDoor extends DoorDescriptor {
 
-	public ShojiDoor()
-	{
-		//Block
-		setMaterial(Material.wood);
-		setHardness(1.0F);
-		setSoundType(Block.soundTypeCloth);
-		setName("shoji_door");
-		setTextureName(MalisisDoors.modid + ":shoji_door");
+    public ShojiDoor() {
+        // Block
+        setMaterial(Material.wood);
+        setHardness(1.0F);
+        setSoundType(Block.soundTypeCloth);
+        setName("shoji_door");
+        setTextureName(MalisisDoors.modid + ":shoji_door");
 
-		//te
-		setMovement(DoorRegistry.getMovement(SlidingDoorMovement.class));
-		setSound(DoorRegistry.getSound(ShojiDoorSound.class));
-		setOpeningTime(20);
+        // te
+        setMovement(DoorRegistry.getMovement(SlidingDoorMovement.class));
+        setSound(DoorRegistry.getSound(ShojiDoorSound.class));
+        setOpeningTime(20);
 
-		//Item
-		setTab(MalisisDoors.tab);
+        // Item
+        setTab(MalisisDoors.tab);
 
-		//recipe
-		setRecipe("AB", "AB", "AB", 'A', Blocks.planks, 'B', Items.paper);
-	}
+        // recipe
+        setRecipe("AB", "AB", "AB", 'A', Blocks.planks, 'B', Items.paper);
+    }
 }

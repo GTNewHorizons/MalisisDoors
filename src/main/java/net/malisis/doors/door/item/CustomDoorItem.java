@@ -26,7 +26,6 @@ package net.malisis.doors.door.item;
 
 import java.util.HashMap;
 import java.util.List;
-
 import net.malisis.doors.MalisisDoors;
 import net.malisis.doors.block.MixedBlock;
 import net.malisis.doors.door.DoorDescriptor;
@@ -50,166 +49,160 @@ import net.minecraft.world.World;
  * @author Ordinastie
  *
  */
-public class CustomDoorItem extends DoorItem
-{
-	private static HashMap<Item, Block> itemsAllowed = new HashMap<>();
-	static
-	{
-		itemsAllowed.put(Items.flint_and_steel, Blocks.fire);
-		itemsAllowed.put(Items.ender_pearl, Blocks.portal);
-		itemsAllowed.put(Items.water_bucket, Blocks.water);
-		itemsAllowed.put(Items.lava_bucket, Blocks.lava);
-	}
+public class CustomDoorItem extends DoorItem {
+    private static HashMap<Item, Block> itemsAllowed = new HashMap<>();
 
-	public CustomDoorItem()
-	{
-		super();
-		setUnlocalizedName("custom_door");
-		this.maxStackSize = 16;
-		setCreativeTab(null);
-	}
+    static {
+        itemsAllowed.put(Items.flint_and_steel, Blocks.fire);
+        itemsAllowed.put(Items.ender_pearl, Blocks.portal);
+        itemsAllowed.put(Items.water_bucket, Blocks.water);
+        itemsAllowed.put(Items.lava_bucket, Blocks.lava);
+    }
 
-	@Override
-	public DoorDescriptor getDescriptor(ItemStack itemStack)
-	{
-		return new DoorDescriptor(itemStack.stackTagCompound);
-	}
+    public CustomDoorItem() {
+        super();
+        setUnlocalizedName("custom_door");
+        this.maxStackSize = 16;
+        setCreativeTab(null);
+    }
 
-	@Override
-	public void registerIcons(IIconRegister par1IconRegister)
-	{
+    @Override
+    public DoorDescriptor getDescriptor(ItemStack itemStack) {
+        return new DoorDescriptor(itemStack.stackTagCompound);
+    }
 
-	}
+    @Override
+    public void registerIcons(IIconRegister par1IconRegister) {}
 
-	@Override
-	public boolean onItemUse(ItemStack itemStack, EntityPlayer player, World world, int x, int y, int z, int side, float par8, float par9, float par10)
-	{
-		boolean b = super.onItemUse(itemStack, player, world, x, y, z, side, par8, par9, par10);
-		//		if (b)
-		//		{
-		//			DoorTileEntity te = Door.getDoor(world, x, y + 1, z);
-		//			if (te instanceof CustomDoorTileEntity)
-		//				((CustomDoorTileEntity) te).onBlockPlaced(itemStack);
-		//		}
+    @Override
+    public boolean onItemUse(
+            ItemStack itemStack,
+            EntityPlayer player,
+            World world,
+            int x,
+            int y,
+            int z,
+            int side,
+            float par8,
+            float par9,
+            float par10) {
+        boolean b = super.onItemUse(itemStack, player, world, x, y, z, side, par8, par9, par10);
+        //		if (b)
+        //		{
+        //			DoorTileEntity te = Door.getDoor(world, x, y + 1, z);
+        //			if (te instanceof CustomDoorTileEntity)
+        //				((CustomDoorTileEntity) te).onBlockPlaced(itemStack);
+        //		}
 
-		return b;
-	}
+        return b;
+    }
 
-	public static ItemStack fromDoorFactory(DoorFactoryTileEntity te)
-	{
-		if (te.getDoorMovement() == null || te.getDoorSound() == null)
-			return null;
+    public static ItemStack fromDoorFactory(DoorFactoryTileEntity te) {
+        if (te.getDoorMovement() == null || te.getDoorSound() == null) return null;
 
-		ItemStack frameItemStack = te.frameSlot.getItemStack();
-		ItemStack topMaterialItemStack = te.topMaterialSlot.getItemStack();
-		ItemStack bottomMaterialItemStack = te.bottomMaterialSlot.getItemStack();
-		if (!canBeUsedForDoor(frameItemStack, true) || !canBeUsedForDoor(topMaterialItemStack, false)
-				|| !canBeUsedForDoor(bottomMaterialItemStack, false))
-			return null;
+        ItemStack frameItemStack = te.frameSlot.getItemStack();
+        ItemStack topMaterialItemStack = te.topMaterialSlot.getItemStack();
+        ItemStack bottomMaterialItemStack = te.bottomMaterialSlot.getItemStack();
+        if (!canBeUsedForDoor(frameItemStack, true)
+                || !canBeUsedForDoor(topMaterialItemStack, false)
+                || !canBeUsedForDoor(bottomMaterialItemStack, false)) return null;
 
-		//frame
-		Block frameBlock = Block.getBlockFromItem(frameItemStack.getItem());
-		int frameMetadata = ((ItemBlock) frameItemStack.getItem()).getMetadata(frameItemStack.getMetadata());
+        // frame
+        Block frameBlock = Block.getBlockFromItem(frameItemStack.getItem());
+        int frameMetadata = ((ItemBlock) frameItemStack.getItem()).getMetadata(frameItemStack.getMetadata());
 
-		//top material
-		Block topMaterialBlock = itemsAllowed.get(topMaterialItemStack.getItem());
-		if (topMaterialBlock == null)
-			topMaterialBlock = Block.getBlockFromItem(topMaterialItemStack.getItem());
+        // top material
+        Block topMaterialBlock = itemsAllowed.get(topMaterialItemStack.getItem());
+        if (topMaterialBlock == null) topMaterialBlock = Block.getBlockFromItem(topMaterialItemStack.getItem());
 
-		int topMaterialMetadata = topMaterialItemStack.getMetadata();
-		if (topMaterialItemStack.getItem() instanceof ItemBlock)
-			topMaterialMetadata = ((ItemBlock) topMaterialItemStack.getItem()).getMetadata(topMaterialItemStack.getMetadata());
+        int topMaterialMetadata = topMaterialItemStack.getMetadata();
+        if (topMaterialItemStack.getItem() instanceof ItemBlock)
+            topMaterialMetadata =
+                    ((ItemBlock) topMaterialItemStack.getItem()).getMetadata(topMaterialItemStack.getMetadata());
 
-		//bottom material
-		Block bottomMaterialBlock = itemsAllowed.get(bottomMaterialItemStack.getItem());
-		if (bottomMaterialBlock == null)
-			bottomMaterialBlock = Block.getBlockFromItem(bottomMaterialItemStack.getItem());
+        // bottom material
+        Block bottomMaterialBlock = itemsAllowed.get(bottomMaterialItemStack.getItem());
+        if (bottomMaterialBlock == null)
+            bottomMaterialBlock = Block.getBlockFromItem(bottomMaterialItemStack.getItem());
 
-		int bottomMaterialMetadata = bottomMaterialItemStack.getMetadata();
-		if (bottomMaterialItemStack.getItem() instanceof ItemBlock)
-			bottomMaterialMetadata = ((ItemBlock) bottomMaterialItemStack.getItem()).getMetadata(bottomMaterialItemStack.getMetadata());
+        int bottomMaterialMetadata = bottomMaterialItemStack.getMetadata();
+        if (bottomMaterialItemStack.getItem() instanceof ItemBlock)
+            bottomMaterialMetadata =
+                    ((ItemBlock) bottomMaterialItemStack.getItem()).getMetadata(bottomMaterialItemStack.getMetadata());
 
-		//NBT
-		NBTTagCompound nbt = new NBTTagCompound();
+        // NBT
+        NBTTagCompound nbt = new NBTTagCompound();
 
-		te.buildDescriptor().writeNBT(nbt);
+        te.buildDescriptor().writeNBT(nbt);
 
-		nbt.setInteger("frame", Block.getIdFromBlock(frameBlock));
-		nbt.setInteger("topMaterial", Block.getIdFromBlock(topMaterialBlock));
-		nbt.setInteger("bottomMaterial", Block.getIdFromBlock(bottomMaterialBlock));
-		nbt.setInteger("frameMetadata", frameMetadata);
-		nbt.setInteger("topMaterialMetadata", topMaterialMetadata);
-		nbt.setInteger("bottomMaterialMetadata", bottomMaterialMetadata);
+        nbt.setInteger("frame", Block.getIdFromBlock(frameBlock));
+        nbt.setInteger("topMaterial", Block.getIdFromBlock(topMaterialBlock));
+        nbt.setInteger("bottomMaterial", Block.getIdFromBlock(bottomMaterialBlock));
+        nbt.setInteger("frameMetadata", frameMetadata);
+        nbt.setInteger("topMaterialMetadata", topMaterialMetadata);
+        nbt.setInteger("bottomMaterialMetadata", bottomMaterialMetadata);
 
-		//ItemStack
-		ItemStack is = new ItemStack(MalisisDoors.Items.customDoorItem, 1);
-		is.stackTagCompound = nbt;
-		return is;
-	}
+        // ItemStack
+        ItemStack is = new ItemStack(MalisisDoors.Items.customDoorItem, 1);
+        is.stackTagCompound = nbt;
+        return is;
+    }
 
-	public static ItemStack fromTileEntity(CustomDoorTileEntity te)
-	{
-		NBTTagCompound nbt = new NBTTagCompound();
+    public static ItemStack fromTileEntity(CustomDoorTileEntity te) {
+        NBTTagCompound nbt = new NBTTagCompound();
 
-		if (te.getDescriptor() != null)
-			te.getDescriptor().writeNBT(nbt);
+        if (te.getDescriptor() != null) te.getDescriptor().writeNBT(nbt);
 
-		nbt.setInteger("frame", Block.getIdFromBlock(te.getFrame()));
-		nbt.setInteger("topMaterial", Block.getIdFromBlock(te.getTopMaterial()));
-		nbt.setInteger("bottomMaterial", Block.getIdFromBlock(te.getBottomMaterial()));
+        nbt.setInteger("frame", Block.getIdFromBlock(te.getFrame()));
+        nbt.setInteger("topMaterial", Block.getIdFromBlock(te.getTopMaterial()));
+        nbt.setInteger("bottomMaterial", Block.getIdFromBlock(te.getBottomMaterial()));
 
-		nbt.setInteger("frameMetadata", te.getFrameMetadata());
-		nbt.setInteger("topMaterialMetadata", te.getTopMaterialMetadata());
-		nbt.setInteger("bottomMaterialMetadata", te.getBottomMaterialMetadata());
+        nbt.setInteger("frameMetadata", te.getFrameMetadata());
+        nbt.setInteger("topMaterialMetadata", te.getTopMaterialMetadata());
+        nbt.setInteger("bottomMaterialMetadata", te.getBottomMaterialMetadata());
 
-		ItemStack is = new ItemStack(MalisisDoors.Items.customDoorItem, 1);
-		is.stackTagCompound = nbt;
-		return is;
-	}
+        ItemStack is = new ItemStack(MalisisDoors.Items.customDoorItem, 1);
+        is.stackTagCompound = nbt;
+        return is;
+    }
 
-	public static boolean canBeUsedForDoor(ItemStack itemStack, boolean frame)
-	{
-		if (!frame && itemsAllowed.get(itemStack.getItem()) != null)
-			return true;
+    public static boolean canBeUsedForDoor(ItemStack itemStack, boolean frame) {
+        if (!frame && itemsAllowed.get(itemStack.getItem()) != null) return true;
 
-		Block block = Block.getBlockFromItem(itemStack.getItem());
-		return !(block instanceof MixedBlock) && block.getRenderType() != -1;
-	}
+        Block block = Block.getBlockFromItem(itemStack.getItem());
+        return !(block instanceof MixedBlock) && block.getRenderType() != -1;
+    }
 
-	@Override
-	public String getItemStackDisplayName(ItemStack par1ItemStack)
-	{
-		return super.getItemStackDisplayName(par1ItemStack);
-	}
+    @Override
+    public String getItemStackDisplayName(ItemStack par1ItemStack) {
+        return super.getItemStackDisplayName(par1ItemStack);
+    }
 
-	@Override
-	public EnumRarity getRarity(ItemStack par1ItemStack)
-	{
-		return EnumRarity.rare;
-	}
+    @Override
+    public EnumRarity getRarity(ItemStack par1ItemStack) {
+        return EnumRarity.rare;
+    }
 
-	@Override
-	public void addInformation(ItemStack itemStack, EntityPlayer player, List list, boolean advancedTooltip)
-	{
-		if (itemStack.stackTagCompound == null)
-			return;
+    @Override
+    public void addInformation(ItemStack itemStack, EntityPlayer player, List list, boolean advancedTooltip) {
+        if (itemStack.stackTagCompound == null) return;
 
-		Block frame = Block.getBlockById(itemStack.stackTagCompound.getInteger("frame"));
-		int frameMetadata = itemStack.stackTagCompound.getInteger("frameMetadata");
-		ItemStack isFrame = new ItemStack(frame, 0, frameMetadata);
+        Block frame = Block.getBlockById(itemStack.stackTagCompound.getInteger("frame"));
+        int frameMetadata = itemStack.stackTagCompound.getInteger("frameMetadata");
+        ItemStack isFrame = new ItemStack(frame, 0, frameMetadata);
 
-		Block topMaterial = Block.getBlockById(itemStack.stackTagCompound.getInteger("topMaterial"));
-		int topMaterialMetadata = itemStack.stackTagCompound.getInteger("topMaterialMetadata");
-		ItemStack istopMaterial = new ItemStack(topMaterial, 0, topMaterialMetadata);
+        Block topMaterial = Block.getBlockById(itemStack.stackTagCompound.getInteger("topMaterial"));
+        int topMaterialMetadata = itemStack.stackTagCompound.getInteger("topMaterialMetadata");
+        ItemStack istopMaterial = new ItemStack(topMaterial, 0, topMaterialMetadata);
 
-		Block bottomMaterial = Block.getBlockById(itemStack.stackTagCompound.getInteger("bottomMaterial"));
-		int bottomMaterialMetadata = itemStack.stackTagCompound.getInteger("bottomMaterialMetadata");
-		ItemStack isBottomMaterial = new ItemStack(bottomMaterial, 0, bottomMaterialMetadata);
+        Block bottomMaterial = Block.getBlockById(itemStack.stackTagCompound.getInteger("bottomMaterial"));
+        int bottomMaterialMetadata = itemStack.stackTagCompound.getInteger("bottomMaterialMetadata");
+        ItemStack isBottomMaterial = new ItemStack(bottomMaterial, 0, bottomMaterialMetadata);
 
-		list.add(EnumChatFormatting.WHITE
-				+ StatCollector.translateToLocal("door_movement." + itemStack.stackTagCompound.getString("movement")));
-		list.addAll(isFrame.getTooltip(player, advancedTooltip));
-		list.addAll(istopMaterial.getTooltip(player, advancedTooltip));
-		list.addAll(isBottomMaterial.getTooltip(player, advancedTooltip));
-	}
+        list.add(EnumChatFormatting.WHITE
+                + StatCollector.translateToLocal("door_movement." + itemStack.stackTagCompound.getString("movement")));
+        list.addAll(isFrame.getTooltip(player, advancedTooltip));
+        list.addAll(istopMaterial.getTooltip(player, advancedTooltip));
+        list.addAll(isBottomMaterial.getTooltip(player, advancedTooltip));
+    }
 }

@@ -26,7 +26,6 @@ package net.malisis.doors.entity;
 
 import java.util.HashSet;
 import java.util.Set;
-
 import net.malisis.core.util.TileEntityUtils;
 import net.malisis.doors.block.GarageDoor;
 import net.malisis.doors.door.DoorState;
@@ -38,103 +37,88 @@ import net.minecraftforge.common.util.ForgeDirection;
  * @author Ordinastie
  *
  */
-public class GarageDoorTileEntity extends DoorTileEntity
-{
-	public static final int maxOpenTime = 10;
+public class GarageDoorTileEntity extends DoorTileEntity {
+    public static final int maxOpenTime = 10;
 
-	public GarageDoorTileEntity()
-	{
+    public GarageDoorTileEntity() {}
 
-	}
+    public boolean isTopDoor() {
+        return this == getTopDoor();
+    }
 
-	public boolean isTopDoor()
-	{
-		return this == getTopDoor();
-	}
+    @Override
+    public int getOpeningTime() {
+        return getDoors().size() * maxOpenTime;
+    }
 
-	@Override
-	public int getOpeningTime()
-	{
-		return getDoors().size() * maxOpenTime;
-	}
+    public GarageDoorTileEntity getTopDoor() {
+        GarageDoorTileEntity topDoor = getGarageDoor(ForgeDirection.UP);
+        return topDoor != null ? topDoor.getTopDoor() : this;
+    }
 
-	public GarageDoorTileEntity getTopDoor()
-	{
-		GarageDoorTileEntity topDoor = getGarageDoor(ForgeDirection.UP);
-		return topDoor != null ? topDoor.getTopDoor() : this;
-	}
+    public Set<GarageDoorTileEntity> getDoors() {
+        Set<GarageDoorTileEntity> childDoors = new HashSet<>();
+        getTopDoor().addChildDoors(childDoors);
+        return childDoors;
+    }
 
-	public Set<GarageDoorTileEntity> getDoors()
-	{
-		Set<GarageDoorTileEntity> childDoors = new HashSet<>();
-		getTopDoor().addChildDoors(childDoors);
-		return childDoors;
-	}
+    public void addChildDoors(Set<GarageDoorTileEntity> childDoors) {
+        childDoors.add(this);
+        GarageDoorTileEntity bottomDoor = getGarageDoor(ForgeDirection.DOWN);
+        if (bottomDoor != null) bottomDoor.addChildDoors(childDoors);
+    }
 
-	public void addChildDoors(Set<GarageDoorTileEntity> childDoors)
-	{
-		childDoors.add(this);
-		GarageDoorTileEntity bottomDoor = getGarageDoor(ForgeDirection.DOWN);
-		if (bottomDoor != null)
-			bottomDoor.addChildDoors(childDoors);
-	}
+    public GarageDoorTileEntity getGarageDoor(ForgeDirection dir) {
+        GarageDoorTileEntity te = TileEntityUtils.getTileEntity(
+                GarageDoorTileEntity.class,
+                getWorld(),
+                xCoord + dir.offsetX,
+                yCoord + dir.offsetY,
+                zCoord + dir.offsetZ);
+        if (te == null) return null;
+        if (te.getDirection() != getDirection()) return null;
 
-	public GarageDoorTileEntity getGarageDoor(ForgeDirection dir)
-	{
-		GarageDoorTileEntity te = TileEntityUtils.getTileEntity(GarageDoorTileEntity.class, getWorld(), xCoord + dir.offsetX, yCoord
-				+ dir.offsetY, zCoord + dir.offsetZ);
-		if (te == null)
-			return null;
-		if (te.getDirection() != getDirection())
-			return null;
+        return te;
+    }
 
-		return te;
-	}
+    @Override
+    public void setPowered(boolean powered) {
+        if (isMoving()) return;
+        if (isOpened() == powered) return;
+        if ((state == DoorState.OPENING && powered) || (state == DoorState.CLOSING && !powered)) return;
 
-	@Override
-	public void setPowered(boolean powered)
-	{
-		if (isMoving())
-			return;
-		if (isOpened() == powered)
-			return;
-		if ((state == DoorState.OPENING && powered) || (state == DoorState.CLOSING && !powered))
-			return;
+        DoorState newState = powered ? DoorState.OPENING : DoorState.CLOSING;
+        for (GarageDoorTileEntity te : getDoors()) {
+            te.setDoorState(newState);
+        }
 
-		DoorState newState = powered ? DoorState.OPENING : DoorState.CLOSING;
-		for (GarageDoorTileEntity te : getDoors())
-		{
-			te.setDoorState(newState);
-		}
+        GarageDoorTileEntity te =
+                getGarageDoor(GarageDoor.isEastOrWest(blockMetadata) ? ForgeDirection.NORTH : ForgeDirection.EAST);
+        if (te != null) te.setPowered(powered);
+        te = getGarageDoor(GarageDoor.isEastOrWest(blockMetadata) ? ForgeDirection.SOUTH : ForgeDirection.WEST);
+        if (te != null) te.setPowered(powered);
+    }
 
-		GarageDoorTileEntity te = getGarageDoor(GarageDoor.isEastOrWest(blockMetadata) ? ForgeDirection.NORTH : ForgeDirection.EAST);
-		if (te != null)
-			te.setPowered(powered);
-		te = getGarageDoor(GarageDoor.isEastOrWest(blockMetadata) ? ForgeDirection.SOUTH : ForgeDirection.WEST);
-		if (te != null)
-			te.setPowered(powered);
-	}
+    @Override
+    public void playSound() {}
 
-	@Override
-	public void playSound()
-	{}
+    @Override
+    public void updateEntity() {
+        if (state == DoorState.CLOSED || state == DoorState.OPENED) return;
 
-	@Override
-	public void updateEntity()
-	{
-		if (state == DoorState.CLOSED || state == DoorState.OPENED)
-			return;
+        if (timer.elapsedTick() > getOpeningTime())
+            setDoorState(state == DoorState.CLOSING ? DoorState.CLOSED : DoorState.OPENED);
+    }
 
-		if (timer.elapsedTick() > getOpeningTime())
-			setDoorState(state == DoorState.CLOSING ? DoorState.CLOSED : DoorState.OPENED);
-	}
-
-	@Override
-	public AxisAlignedBB getRenderBoundingBox()
-	{
-		Set<GarageDoorTileEntity> childDoors = getDoors();
-		return AxisAlignedBB.getBoundingBox(xCoord - childDoors.size(), yCoord - childDoors.size(), zCoord - childDoors.size(), xCoord
-				+ childDoors.size() + 1, yCoord + 1, zCoord + childDoors.size() + 1);
-	}
-
+    @Override
+    public AxisAlignedBB getRenderBoundingBox() {
+        Set<GarageDoorTileEntity> childDoors = getDoors();
+        return AxisAlignedBB.getBoundingBox(
+                xCoord - childDoors.size(),
+                yCoord - childDoors.size(),
+                zCoord - childDoors.size(),
+                xCoord + childDoors.size() + 1,
+                yCoord + 1,
+                zCoord + childDoors.size() + 1);
+    }
 }

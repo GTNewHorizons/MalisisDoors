@@ -37,62 +37,53 @@ import net.minecraftforge.common.util.ForgeDirection;
  * @author Ordinastie
  *
  */
-public class RustyLadderRenderer extends MalisisRenderer
-{
-	private Shape ladder;
+public class RustyLadderRenderer extends MalisisRenderer {
+    private Shape ladder;
 
-	@Override
-	protected void initialize()
-	{
-		ResourceLocation rl = new ResourceLocation(MalisisDoors.modid, "models/rustyhatch.obj");
-		MalisisModel model = new MalisisModel(rl);
-		ladder = model.getShape("ladder");
+    @Override
+    protected void initialize() {
+        ResourceLocation rl = new ResourceLocation(MalisisDoors.modid, "models/rustyhatch.obj");
+        MalisisModel model = new MalisisModel(rl);
+        ladder = model.getShape("ladder");
 
-		rp = new RenderParameters();
-		rp.useBlockBounds.set(false);
-	}
+        rp = new RenderParameters();
+        rp.useBlockBounds.set(false);
+    }
 
-	@Override
-	public void render()
-	{
-		ladder.resetState();
+    @Override
+    public void render() {
+        ladder.resetState();
 
-		ForgeDirection dir = ForgeDirection.getOrientation(blockMetadata);
-		switch (dir)
-		{
-			case NORTH:
-				ladder.rotate(-90, 0, 1, 0);
-				break;
-			case SOUTH:
-				ladder.rotate(90, 0, 1, 0);
-				break;
-			case EAST:
-				ladder.rotate(180, 0, 1, 0);
-				break;
-			case WEST:
-			default:
-				break;
-		}
+        ForgeDirection dir = ForgeDirection.getOrientation(blockMetadata);
+        switch (dir) {
+            case NORTH:
+                ladder.rotate(-90, 0, 1, 0);
+                break;
+            case SOUTH:
+                ladder.rotate(90, 0, 1, 0);
+                break;
+            case EAST:
+                ladder.rotate(180, 0, 1, 0);
+                break;
+            case WEST:
+            default:
+                break;
+        }
 
-		if (renderType == RenderType.ITEM_INVENTORY)
-		{
-			if (itemRenderType == ItemRenderType.INVENTORY)
-			{
-				ladder.rotate(-45, 0, 1, 0);
-				ladder.scale(1.5F);
-				ladder.translate(0, .15F, 0);
-			}
-			else if (itemRenderType == ItemRenderType.ENTITY)
-			{
-				ladder.translate(-1, 0, -0.5F);
-				ladder.scale(1.5F);
-			}
-		}
+        if (renderType == RenderType.ITEM_INVENTORY) {
+            if (itemRenderType == ItemRenderType.INVENTORY) {
+                ladder.rotate(-45, 0, 1, 0);
+                ladder.scale(1.5F);
+                ladder.translate(0, .15F, 0);
+            } else if (itemRenderType == ItemRenderType.ENTITY) {
+                ladder.translate(-1, 0, -0.5F);
+                ladder.scale(1.5F);
+            }
+        }
 
-		ladder.translate(-1, 0, 0);
+        ladder.translate(-1, 0, 0);
 
-		drawShape(ladder, rp);
-		return;
-	}
-
+        drawShape(ladder, rp);
+        return;
+    }
 }

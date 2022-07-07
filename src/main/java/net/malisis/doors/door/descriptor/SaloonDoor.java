@@ -38,27 +38,25 @@ import net.minecraft.init.Items;
  * @author Ordinastie
  *
  */
-public class SaloonDoor extends DoorDescriptor
-{
-	public SaloonDoor()
-	{
-		//Block
-		setMaterial(Material.wood);
-		setHardness(2.5F);
-		setSoundType(Block.soundTypeWood);
-		setName("saloon");
-		setTextureName(MalisisDoors.modid + ":saloon_door");
+public class SaloonDoor extends DoorDescriptor {
+    public SaloonDoor() {
+        // Block
+        setMaterial(Material.wood);
+        setHardness(2.5F);
+        setSoundType(Block.soundTypeWood);
+        setName("saloon");
+        setTextureName(MalisisDoors.modid + ":saloon_door");
 
-		//TileEntity
-		setOpeningTime(40);
-		setDoubleDoor(true);
-		setMovement(DoorRegistry.getMovement(SaloonDoorMovement.class));
-		setSound(DoorRegistry.getSound(SilentDoorSound.class));
+        // TileEntity
+        setOpeningTime(40);
+        setDoubleDoor(true);
+        setMovement(DoorRegistry.getMovement(SaloonDoorMovement.class));
+        setSound(DoorRegistry.getSound(SilentDoorSound.class));
 
-		//Item
-		setTab(MalisisDoors.tab);
+        // Item
+        setTab(MalisisDoors.tab);
 
-		//Recipe
-		setRecipe("AA", "BB", "AA", 'A', Blocks.planks, 'B', Items.stick);
-	}
+        // Recipe
+        setRecipe("AA", "BB", "AA", 'A', Blocks.planks, 'B', Items.stick);
+    }
 }

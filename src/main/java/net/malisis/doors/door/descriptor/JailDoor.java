@@ -37,27 +37,25 @@ import net.minecraft.init.Blocks;
  * @author Ordinastie
  *
  */
-public class JailDoor extends DoorDescriptor
-{
-	public JailDoor()
-	{
-		//Block
-		setMaterial(Material.iron);
-		setHardness(5.0F);
-		setSoundType(Block.soundTypeMetal);
-		setName("jail_door");
-		setTextureName(MalisisDoors.modid + ":jail_door");
+public class JailDoor extends DoorDescriptor {
+    public JailDoor() {
+        // Block
+        setMaterial(Material.iron);
+        setHardness(5.0F);
+        setSoundType(Block.soundTypeMetal);
+        setName("jail_door");
+        setTextureName(MalisisDoors.modid + ":jail_door");
 
-		//TileEntity
-		setRequireRedstone(true);
-		setOpeningTime(12);
-		setMovement(DoorRegistry.getMovement(SlidingDoorMovement.class));
-		setSound(DoorRegistry.getSound(JailDoorSound.class));
+        // TileEntity
+        setRequireRedstone(true);
+        setOpeningTime(12);
+        setMovement(DoorRegistry.getMovement(SlidingDoorMovement.class));
+        setSound(DoorRegistry.getSound(JailDoorSound.class));
 
-		//Item
-		setTab(MalisisDoors.tab);
+        // Item
+        setTab(MalisisDoors.tab);
 
-		//recipe
-		setRecipe("AA", "AA", "AA", 'A', Blocks.iron_bars);
-	}
+        // recipe
+        setRecipe("AA", "AA", "AA", 'A', Blocks.iron_bars);
+    }
 }

@@ -36,35 +36,30 @@ import net.minecraft.world.World;
  * @author Ordinastie
  *
  */
-public class RustyLadder extends BlockLadder
-{
-	public static int renderId = -1;
+public class RustyLadder extends BlockLadder {
+    public static int renderId = -1;
 
-	public RustyLadder()
-	{
-		setUnlocalizedName("rustyLadder");
-		this.setCreativeTab(MalisisDoors.tab);
-	}
+    public RustyLadder() {
+        setUnlocalizedName("rustyLadder");
+        this.setCreativeTab(MalisisDoors.tab);
+    }
 
-	@Override
-	public void registerIcons(IIconRegister p_149651_1_)
-	{}
+    @Override
+    public void registerIcons(IIconRegister p_149651_1_) {}
 
-	@Override
-	public IIcon getIcon(int side, int metadata)
-	{
-		return Blocks.rustyHatch.getHandleIcon();
-	}
+    @Override
+    public IIcon getIcon(int side, int metadata) {
+        return Blocks.rustyHatch.getHandleIcon();
+    }
 
-	@Override
-	public AxisAlignedBB getCollisionBoundingBoxFromPool(World p_149668_1_, int p_149668_2_, int p_149668_3_, int p_149668_4_)
-	{
-		return null;
-	}
+    @Override
+    public AxisAlignedBB getCollisionBoundingBoxFromPool(
+            World p_149668_1_, int p_149668_2_, int p_149668_3_, int p_149668_4_) {
+        return null;
+    }
 
-	@Override
-	public int getRenderType()
-	{
-		return renderId;
-	}
+    @Override
+    public int getRenderType() {
+        return renderId;
+    }
 }

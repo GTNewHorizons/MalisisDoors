@@ -24,8 +24,10 @@
 
 package net.malisis.doors.entity;
 
+import com.google.common.eventbus.Subscribe;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import java.util.HashMap;
-
 import net.malisis.core.client.gui.MalisisGui;
 import net.malisis.core.inventory.IInventoryProvider;
 import net.malisis.core.inventory.InventoryEvent;
@@ -43,191 +45,165 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.google.common.eventbus.Subscribe;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
 /**
  * @author Ordinastie
  *
  */
-public class VanishingDiamondTileEntity extends VanishingTileEntity implements IInventoryProvider
-{
-	protected MalisisInventory inventory;
-	protected MalisisSlot slot;
-	protected int changedPowerStateTimer;
-	protected HashMap<ForgeDirection, DirectionState> directionStates = new HashMap<>();
+public class VanishingDiamondTileEntity extends VanishingTileEntity implements IInventoryProvider {
+    protected MalisisInventory inventory;
+    protected MalisisSlot slot;
+    protected int changedPowerStateTimer;
+    protected HashMap<ForgeDirection, DirectionState> directionStates = new HashMap<>();
 
-	public VanishingDiamondTileEntity()
-	{
-		super(VanishingBlock.typeDiamondFrame);
-		inventory = new MalisisInventory(this, 1);
-		inventory.setInventoryStackLimit(1);
+    public VanishingDiamondTileEntity() {
+        super(VanishingBlock.typeDiamondFrame);
+        inventory = new MalisisInventory(this, 1);
+        inventory.setInventoryStackLimit(1);
 
-		slot = inventory.getSlot(0);
-		slot.register(this);
-		for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
-			directionStates.put(dir, new DirectionState(dir));
-	}
+        slot = inventory.getSlot(0);
+        slot.register(this);
+        for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) directionStates.put(dir, new DirectionState(dir));
+    }
 
-	public void setDuration(int duration)
-	{
-		this.duration = duration;
-	}
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
 
-	@Override
-	public boolean setPowerState(boolean powered)
-	{
-		if (!super.setPowerState(powered))
-			return false;
+    @Override
+    public boolean setPowerState(boolean powered) {
+        if (!super.setPowerState(powered)) return false;
 
-		changedPowerStateTimer = 0;
-		for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
-		{
-			directionStates.get(dir).resetPropagationState();
-			directionStates.get(dir).propagateState(changedPowerStateTimer);
-		}
+        changedPowerStateTimer = 0;
+        for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+            directionStates.get(dir).resetPropagationState();
+            directionStates.get(dir).propagateState(changedPowerStateTimer);
+        }
 
-		return true;
-	}
+        return true;
+    }
 
-	public DirectionState getDirectionState(ForgeDirection dir)
-	{
-		return directionStates.get(dir);
-	}
+    public DirectionState getDirectionState(ForgeDirection dir) {
+        return directionStates.get(dir);
+    }
 
-	@Override
-	public void updateEntity()
-	{
-		changedPowerStateTimer++;
+    @Override
+    public void updateEntity() {
+        changedPowerStateTimer++;
 
-		for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
-			directionStates.get(dir).propagateState(changedPowerStateTimer);
+        for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
+            directionStates.get(dir).propagateState(changedPowerStateTimer);
 
-		super.updateEntity();
-	}
+        super.updateEntity();
+    }
 
-	@Subscribe
-	public void onSlotChanged(InventoryEvent.SlotChanged event)
-	{
-		setBlock(event.getSlot().getItemStack(), null, 0, 0.5F, 0.5F, 0.5F);
-		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-	}
+    @Subscribe
+    public void onSlotChanged(InventoryEvent.SlotChanged event) {
+        setBlock(event.getSlot().getItemStack(), null, 0, 0.5F, 0.5F, 0.5F);
+        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+    }
 
-	@Override
-	public void readFromNBT(NBTTagCompound nbt)
-	{
-		super.readFromNBT(nbt);
-		inventory.readFromNBT(nbt);
+    @Override
+    public void readFromNBT(NBTTagCompound nbt) {
+        super.readFromNBT(nbt);
+        inventory.readFromNBT(nbt);
 
-		NBTTagList dirList = nbt.getTagList("Directions", NBT.TAG_COMPOUND);
-		for (int i = 0; i < dirList.tagCount(); ++i)
-		{
-			NBTTagCompound tag = dirList.getCompoundTagAt(i);
-			ForgeDirection dir = ForgeDirection.getOrientation(tag.getInteger("direction"));
-			directionStates.get(dir).readFromNBT(tag);
-		}
-	}
+        NBTTagList dirList = nbt.getTagList("Directions", NBT.TAG_COMPOUND);
+        for (int i = 0; i < dirList.tagCount(); ++i) {
+            NBTTagCompound tag = dirList.getCompoundTagAt(i);
+            ForgeDirection dir = ForgeDirection.getOrientation(tag.getInteger("direction"));
+            directionStates.get(dir).readFromNBT(tag);
+        }
+    }
 
-	@Override
-	public void writeToNBT(NBTTagCompound nbt)
-	{
-		super.writeToNBT(nbt);
-		inventory.writeToNBT(nbt);
+    @Override
+    public void writeToNBT(NBTTagCompound nbt) {
+        super.writeToNBT(nbt);
+        inventory.writeToNBT(nbt);
 
-		NBTTagList dirList = new NBTTagList();
-		for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
-			dirList.appendTag(directionStates.get(dir).writeToNBT(new NBTTagCompound()));
+        NBTTagList dirList = new NBTTagList();
+        for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
+            dirList.appendTag(directionStates.get(dir).writeToNBT(new NBTTagCompound()));
 
-		nbt.setTag("Directions", dirList);
-	}
+        nbt.setTag("Directions", dirList);
+    }
 
-	@Override
-	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet)
-	{
-		super.onDataPacket(net, packet);
-		TileEntityUtils.updateGui(this);
-	}
+    @Override
+    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet) {
+        super.onDataPacket(net, packet);
+        TileEntityUtils.updateGui(this);
+    }
 
-	@Override
-	public MalisisInventory[] getInventories(Object... data)
-	{
-		return new MalisisInventory[] { inventory };
-	}
+    @Override
+    public MalisisInventory[] getInventories(Object... data) {
+        return new MalisisInventory[] {inventory};
+    }
 
-	@Override
-	public MalisisInventory[] getInventories(ForgeDirection side, Object... data)
-	{
-		return getInventories(data);
-	}
+    @Override
+    public MalisisInventory[] getInventories(ForgeDirection side, Object... data) {
+        return getInventories(data);
+    }
 
-	@SideOnly(Side.CLIENT)
-	@Override
-	public MalisisGui getGui(MalisisInventoryContainer container)
-	{
-		return new VanishingDiamondGui(this, container);
-	}
+    @SideOnly(Side.CLIENT)
+    @Override
+    public MalisisGui getGui(MalisisInventoryContainer container) {
+        return new VanishingDiamondGui(this, container);
+    }
 
-	public class DirectionState
-	{
-		public ForgeDirection direction;
-		public boolean shouldPropagate;
-		public int delay;
-		public boolean inversed;
-		public boolean propagated;
+    public class DirectionState {
+        public ForgeDirection direction;
+        public boolean shouldPropagate;
+        public int delay;
+        public boolean inversed;
+        public boolean propagated;
 
-		public DirectionState(ForgeDirection direction, boolean shouldPropagate, int delay, boolean inversed)
-		{
-			this.direction = direction;
-			update(shouldPropagate, delay, inversed);
-		}
+        public DirectionState(ForgeDirection direction, boolean shouldPropagate, int delay, boolean inversed) {
+            this.direction = direction;
+            update(shouldPropagate, delay, inversed);
+        }
 
-		public DirectionState(ForgeDirection direction)
-		{
-			this(direction, false, 0, false);
-		}
+        public DirectionState(ForgeDirection direction) {
+            this(direction, false, 0, false);
+        }
 
-		public void update(boolean shouldPropagate, int delay, boolean inversed)
-		{
-			this.shouldPropagate = shouldPropagate;
-			this.delay = delay;
-			this.inversed = inversed;
-		}
+        public void update(boolean shouldPropagate, int delay, boolean inversed) {
+            this.shouldPropagate = shouldPropagate;
+            this.delay = delay;
+            this.inversed = inversed;
+        }
 
-		public void resetPropagationState()
-		{
-			this.propagated = false;
-		}
+        public void resetPropagationState() {
+            this.propagated = false;
+        }
 
-		public boolean propagateState(int timer)
-		{
-			if (!shouldPropagate || propagated || timer < delay)
-				return false;
+        public boolean propagateState(int timer) {
+            if (!shouldPropagate || propagated || timer < delay) return false;
 
-			Block block = worldObj.getBlock(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ);
-			if (block instanceof VanishingBlock)
-				((VanishingBlock) block).setPowerState(worldObj, xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord
-						+ direction.offsetZ, inversed ? !powered : powered);
-			propagated = true;
+            Block block = worldObj.getBlock(
+                    xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ);
+            if (block instanceof VanishingBlock)
+                ((VanishingBlock) block)
+                        .setPowerState(
+                                worldObj,
+                                xCoord + direction.offsetX,
+                                yCoord + direction.offsetY,
+                                zCoord + direction.offsetZ,
+                                inversed ? !powered : powered);
+            propagated = true;
 
-			return false;
-		}
+            return false;
+        }
 
-		public void readFromNBT(NBTTagCompound nbt)
-		{
-			update(nbt.getBoolean("shouldPropagate"), nbt.getInteger("delay"), nbt.getBoolean("inversed"));
-		}
+        public void readFromNBT(NBTTagCompound nbt) {
+            update(nbt.getBoolean("shouldPropagate"), nbt.getInteger("delay"), nbt.getBoolean("inversed"));
+        }
 
-		public NBTTagCompound writeToNBT(NBTTagCompound nbt)
-		{
-			nbt.setInteger("direction", direction.ordinal());
-			nbt.setBoolean("shouldPropagate", shouldPropagate);
-			nbt.setInteger("delay", delay);
-			nbt.setBoolean("inversed", inversed);
+        public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+            nbt.setInteger("direction", direction.ordinal());
+            nbt.setBoolean("shouldPropagate", shouldPropagate);
+            nbt.setInteger("delay", delay);
+            nbt.setBoolean("inversed", inversed);
 
-			return nbt;
-		}
-	}
-
+            return nbt;
+        }
+    }
 }

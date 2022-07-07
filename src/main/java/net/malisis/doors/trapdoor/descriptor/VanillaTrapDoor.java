@@ -36,24 +36,22 @@ import net.minecraft.creativetab.CreativeTabs;
  * @author Ordinastie
  *
  */
-public class VanillaTrapDoor extends TrapDoorDescriptor
-{
-	public VanillaTrapDoor()
-	{
-		//Block
-		setOpeningTime(6);
-		setMaterial(Material.wood);
-		setHardness(3.0F);
-		setSoundType(Block.soundTypeWood);
-		setName("trapdoor");
-		setTextureName("trapdoor");
+public class VanillaTrapDoor extends TrapDoorDescriptor {
+    public VanillaTrapDoor() {
+        // Block
+        setOpeningTime(6);
+        setMaterial(Material.wood);
+        setHardness(3.0F);
+        setSoundType(Block.soundTypeWood);
+        setName("trapdoor");
+        setTextureName("trapdoor");
 
-		//te
-		setRequireRedstone(false);
-		setMovement(DoorRegistry.getMovement(TrapDoorMovement.class));
-		setSound(DoorRegistry.getSound(VanillaDoorSound.class));
+        // te
+        setRequireRedstone(false);
+        setMovement(DoorRegistry.getMovement(TrapDoorMovement.class));
+        setSound(DoorRegistry.getSound(VanillaDoorSound.class));
 
-		//item
-		setTab(CreativeTabs.tabRedstone);
-	}
+        // item
+        setTab(CreativeTabs.tabRedstone);
+    }
 }

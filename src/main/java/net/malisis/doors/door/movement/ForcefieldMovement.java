@@ -38,51 +38,39 @@ import net.minecraft.util.AxisAlignedBB;
  * @author Ordinastie
  *
  */
-public class ForcefieldMovement implements IDoorMovement
-{
+public class ForcefieldMovement implements IDoorMovement {
 
-	@Override
-	public AxisAlignedBB getBoundingBox(DoorTileEntity tileEntity, boolean topBlock, BoundingBoxType type)
-	{
-		if (!(tileEntity instanceof ForcefieldTileEntity))
-			return null;
+    @Override
+    public AxisAlignedBB getBoundingBox(DoorTileEntity tileEntity, boolean topBlock, BoundingBoxType type) {
+        if (!(tileEntity instanceof ForcefieldTileEntity)) return null;
 
-		if (type == BoundingBoxType.COLLISION && tileEntity.getState() == DoorState.OPENED)
-			return null;
-		MultiBlock mb = ((ForcefieldTileEntity) tileEntity).getMultiBlock();
-		if (mb == null)
-			return null;
+        if (type == BoundingBoxType.COLLISION && tileEntity.getState() == DoorState.OPENED) return null;
+        MultiBlock mb = ((ForcefieldTileEntity) tileEntity).getMultiBlock();
+        if (mb == null) return null;
 
-		float f = 0.5F /*- Door.DOOR_WIDTH / 2*/;
-		AxisAlignedBB aabb = mb.getWorldBounds();
-		if (aabb.minY == aabb.maxY - 1)
-		{
-			aabb.minY += f;
-			aabb.maxY -= f;
-		}
-		else if (aabb.minX == aabb.maxX - 1)
-		{
-			aabb.minX += f;
-			aabb.maxX -= f;
-		}
-		else if (aabb.minZ == aabb.maxZ - 1)
-		{
-			aabb.minZ += f;
-			aabb.maxZ -= f;
-		}
+        float f = 0.5F /*- Door.DOOR_WIDTH / 2*/;
+        AxisAlignedBB aabb = mb.getWorldBounds();
+        if (aabb.minY == aabb.maxY - 1) {
+            aabb.minY += f;
+            aabb.maxY -= f;
+        } else if (aabb.minX == aabb.maxX - 1) {
+            aabb.minX += f;
+            aabb.maxX -= f;
+        } else if (aabb.minZ == aabb.maxZ - 1) {
+            aabb.minZ += f;
+            aabb.maxZ -= f;
+        }
 
-		return aabb;
-	}
+        return aabb;
+    }
 
-	@Override
-	public Animation[] getAnimations(DoorTileEntity tileEntity, MalisisModel model, RenderParameters rp)
-	{
-		return null;
-	}
+    @Override
+    public Animation[] getAnimations(DoorTileEntity tileEntity, MalisisModel model, RenderParameters rp) {
+        return null;
+    }
 
-	@Override
-	public boolean isSpecial()
-	{
-		return true;
-	}
+    @Override
+    public boolean isSpecial() {
+        return true;
+    }
 }

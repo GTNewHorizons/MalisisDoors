@@ -29,50 +29,45 @@ import net.malisis.core.client.gui.MalisisGui;
 import net.malisis.core.client.gui.component.container.UIWindow;
 import net.malisis.doors.door.tileentity.DoorTileEntity;
 import net.malisis.doors.network.DigicodeMessage;
-
 import org.lwjgl.input.Keyboard;
 
 /**
  * @author Ordinastie
  *
  */
-public class DigicodeGui extends MalisisGui
-{
-	DoorTileEntity te;
-	Digicode digicode;
-	String expected;
+public class DigicodeGui extends MalisisGui {
+    DoorTileEntity te;
+    Digicode digicode;
+    String expected;
 
-	public DigicodeGui(DoorTileEntity te)
-	{
-		this.te = te;
-		expected = te.getDescriptor().getCode();
-	}
+    public DigicodeGui(DoorTileEntity te) {
+        this.te = te;
+        expected = te.getDescriptor().getCode();
+    }
 
-	@Override
-	public void construct()
-	{
-		digicode = new Digicode(this, expected).setAnchor(Anchor.MIDDLE | Anchor.CENTER).register(this);
+    @Override
+    public void construct() {
+        digicode = new Digicode(this, expected)
+                .setAnchor(Anchor.MIDDLE | Anchor.CENTER)
+                .register(this);
 
-		UIWindow window = new UIWindow(this, digicode.getWidth() + 20, digicode.getHeight() + 20);
-		window.add(digicode);
+        UIWindow window = new UIWindow(this, digicode.getWidth() + 20, digicode.getHeight() + 20);
+        window.add(digicode);
 
-		addToScreen(window);
+        addToScreen(window);
 
-		registerKeyListener(digicode);
-	}
+        registerKeyListener(digicode);
+    }
 
-	@Override
-	protected void keyTyped(char keyChar, int keyCode)
-	{
-		super.keyTyped(keyChar, keyCode);
+    @Override
+    protected void keyTyped(char keyChar, int keyCode) {
+        super.keyTyped(keyChar, keyCode);
 
-		if (keyCode == Keyboard.KEY_RETURN || keyCode == Keyboard.KEY_NUMPADENTER)
-		{
-			if (digicode.isValidCode())
-			{
-				close();
-				DigicodeMessage.send(te);
-			}
-		}
-	}
+        if (keyCode == Keyboard.KEY_RETURN || keyCode == Keyboard.KEY_NUMPADENTER) {
+            if (digicode.isValidCode()) {
+                close();
+                DigicodeMessage.send(te);
+            }
+        }
+    }
 }

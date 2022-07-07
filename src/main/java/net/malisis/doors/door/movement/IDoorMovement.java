@@ -35,11 +35,10 @@ import net.minecraft.util.AxisAlignedBB;
  * @author Ordinastie
  *
  */
-public interface IDoorMovement
-{
-	public AxisAlignedBB getBoundingBox(DoorTileEntity tileEntity, boolean topBlock, BoundingBoxType type);
+public interface IDoorMovement {
+    public AxisAlignedBB getBoundingBox(DoorTileEntity tileEntity, boolean topBlock, BoundingBoxType type);
 
-	public Animation[] getAnimations(DoorTileEntity tileEntity, MalisisModel model, RenderParameters rp);
+    public Animation[] getAnimations(DoorTileEntity tileEntity, MalisisModel model, RenderParameters rp);
 
-	public boolean isSpecial();
+    public boolean isSpecial();
 }

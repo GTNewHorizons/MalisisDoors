@@ -31,56 +31,50 @@ import net.minecraft.entity.Entity;
  * @author Ordinastie
  *
  */
-public class SaloonDoorTileEntity extends DoorTileEntity
-{
-	private boolean openBackward = false;
+public class SaloonDoorTileEntity extends DoorTileEntity {
+    private boolean openBackward = false;
 
-	public boolean isBackward()
-	{
-		return openBackward;
-	}
+    public boolean isBackward() {
+        return openBackward;
+    }
 
-	public void setBackward(boolean backward)
-	{
-		this.openBackward = backward;
-	}
+    public void setBackward(boolean backward) {
+        this.openBackward = backward;
+    }
 
-	public void setOpenDirection(Entity entity)
-	{
-		double entityPos = 0;;
-		float tePos = 0;
+    public void setOpenDirection(Entity entity) {
+        double entityPos = 0;
+        ;
+        float tePos = 0;
 
-		switch (Door.intToDir(getDirection()))
-		{
-			case NORTH:
-				entityPos = entity.posZ;
-				tePos = zCoord + 0.5F;
-				break;
-			case SOUTH:
-				entityPos = -entity.posZ;
-				tePos = -zCoord - 0.5F;
-				break;
-			case EAST:
-				entityPos = -entity.posX;
-				tePos = -xCoord - 0.5F;
-				break;
-			case WEST:
-				entityPos = entity.posX;
-				tePos = xCoord + 0.5F;
-			default:
-				break;
-		}
+        switch (Door.intToDir(getDirection())) {
+            case NORTH:
+                entityPos = entity.posZ;
+                tePos = zCoord + 0.5F;
+                break;
+            case SOUTH:
+                entityPos = -entity.posZ;
+                tePos = -zCoord - 0.5F;
+                break;
+            case EAST:
+                entityPos = -entity.posX;
+                tePos = -xCoord - 0.5F;
+                break;
+            case WEST:
+                entityPos = entity.posX;
+                tePos = xCoord + 0.5F;
+            default:
+                break;
+        }
 
-		openBackward = entityPos > tePos;
-		//	MalisisCore.message(getDirection() + "  = B ? " + openBackward + " (" + entityPos + " > " + (tePos) + ")");
-	}
+        openBackward = entityPos > tePos;
+        //	MalisisCore.message(getDirection() + "  = B ? " + openBackward + " (" + entityPos + " > " + (tePos) + ")");
+    }
 
-	@Override
-	public DoorTileEntity getDoubleDoor()
-	{
-		SaloonDoorTileEntity te = (SaloonDoorTileEntity) super.getDoubleDoor();
-		if (te != null)
-			te.setBackward(openBackward);
-		return te;
-	}
+    @Override
+    public DoorTileEntity getDoubleDoor() {
+        SaloonDoorTileEntity te = (SaloonDoorTileEntity) super.getDoubleDoor();
+        if (te != null) te.setBackward(openBackward);
+        return te;
+    }
 }

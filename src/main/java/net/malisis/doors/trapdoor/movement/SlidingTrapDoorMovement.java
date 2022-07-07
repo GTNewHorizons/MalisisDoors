@@ -42,59 +42,51 @@ import net.minecraft.util.AxisAlignedBB;
  * @author Ordinastie
  *
  */
-public class SlidingTrapDoorMovement implements IDoorMovement
-{
-	@Override
-	public AxisAlignedBB getBoundingBox(DoorTileEntity tileEntity, boolean topBlock, BoundingBoxType type)
-	{
-		int dir = tileEntity.getDirection();
-		float w = Door.DOOR_WIDTH / 2;
+public class SlidingTrapDoorMovement implements IDoorMovement {
+    @Override
+    public AxisAlignedBB getBoundingBox(DoorTileEntity tileEntity, boolean topBlock, BoundingBoxType type) {
+        int dir = tileEntity.getDirection();
+        float w = Door.DOOR_WIDTH / 2;
 
-		AxisAlignedBB aabb = AxisAlignedBB.getBoundingBox(0, 0, 0, 1, w, 1);
-		if (topBlock)
-			aabb.offset(0, 1 - Door.DOOR_WIDTH, 0);
+        AxisAlignedBB aabb = AxisAlignedBB.getBoundingBox(0, 0, 0, 1, w, 1);
+        if (topBlock) aabb.offset(0, 1 - Door.DOOR_WIDTH, 0);
 
-		if (tileEntity.isOpened())
-			aabb.offset(0, 0, Door.DOOR_WIDTH - 1);
+        if (tileEntity.isOpened()) aabb.offset(0, 0, Door.DOOR_WIDTH - 1);
 
-		switch (dir)
-		{
-			case TrapDoor.DIR_EAST:
-				dir = 1;
-				break;
-			case TrapDoor.DIR_WEST:
-				dir = 3;
-				break;
-			case TrapDoor.DIR_SOUTH:
-				dir = 2;
-				break;
-			case TrapDoor.DIR_NORTH:
-			default:
-				dir = 0;
-				break;
-		}
-		AABBUtils.rotate(aabb, dir);
+        switch (dir) {
+            case TrapDoor.DIR_EAST:
+                dir = 1;
+                break;
+            case TrapDoor.DIR_WEST:
+                dir = 3;
+                break;
+            case TrapDoor.DIR_SOUTH:
+                dir = 2;
+                break;
+            case TrapDoor.DIR_NORTH:
+            default:
+                dir = 0;
+                break;
+        }
+        AABBUtils.rotate(aabb, dir);
 
-		return aabb;
-	}
+        return aabb;
+    }
 
-	private Transformation getTransformation(DoorTileEntity tileEntity)
-	{
-		Translation translation = new Translation(0, 0, 0, 0, 0, 1 - Door.DOOR_WIDTH);
-		translation.reversed(tileEntity.getState() == DoorState.CLOSING || tileEntity.getState() == DoorState.CLOSED);
-		translation.forTicks(tileEntity.getDescriptor().getOpeningTime());
-		return translation;
-	}
+    private Transformation getTransformation(DoorTileEntity tileEntity) {
+        Translation translation = new Translation(0, 0, 0, 0, 0, 1 - Door.DOOR_WIDTH);
+        translation.reversed(tileEntity.getState() == DoorState.CLOSING || tileEntity.getState() == DoorState.CLOSED);
+        translation.forTicks(tileEntity.getDescriptor().getOpeningTime());
+        return translation;
+    }
 
-	@Override
-	public Animation[] getAnimations(DoorTileEntity tileEntity, MalisisModel model, RenderParameters rp)
-	{
-		return new Animation[] { new Animation(model, getTransformation(tileEntity)) };
-	}
+    @Override
+    public Animation[] getAnimations(DoorTileEntity tileEntity, MalisisModel model, RenderParameters rp) {
+        return new Animation[] {new Animation(model, getTransformation(tileEntity))};
+    }
 
-	@Override
-	public boolean isSpecial()
-	{
-		return true;
-	}
+    @Override
+    public boolean isSpecial() {
+        return true;
+    }
 }

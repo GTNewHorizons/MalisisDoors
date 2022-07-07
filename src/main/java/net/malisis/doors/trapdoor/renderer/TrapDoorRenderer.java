@@ -42,105 +42,94 @@ import net.minecraftforge.common.util.ForgeDirection;
  * @author Ordinastie
  *
  */
-public class TrapDoorRenderer extends DoorRenderer
-{
-	RenderParameters rpTop;
-	MalisisModel trapDoorModel;
-	MalisisModel slidingTrapDoorModel;
+public class TrapDoorRenderer extends DoorRenderer {
+    RenderParameters rpTop;
+    MalisisModel trapDoorModel;
+    MalisisModel slidingTrapDoorModel;
 
-	@Override
-	protected void initialize()
-	{
-		Shape s = new Cube();
-		s.setSize(1, Door.DOOR_WIDTH, 1);
-		s.interpolateUV();
+    @Override
+    protected void initialize() {
+        Shape s = new Cube();
+        s.setSize(1, Door.DOOR_WIDTH, 1);
+        s.interpolateUV();
 
-		trapDoorModel = new MalisisModel();
-		trapDoorModel.addShape("shape", s);
-		trapDoorModel.storeState();
+        trapDoorModel = new MalisisModel();
+        trapDoorModel.addShape("shape", s);
+        trapDoorModel.storeState();
 
-		s.getFace(Face.nameFromDirection(ForgeDirection.UP)).getParameters().calculateAOColor.set(true);
+        s.getFace(Face.nameFromDirection(ForgeDirection.UP))
+                .getParameters()
+                .calculateAOColor
+                .set(true);
 
-		s = new Cube();
-		s.setSize(1, Door.DOOR_WIDTH / 2, 1);
-		s.interpolateUV();
+        s = new Cube();
+        s.setSize(1, Door.DOOR_WIDTH / 2, 1);
+        s.interpolateUV();
 
-		slidingTrapDoorModel = new MalisisModel();
-		slidingTrapDoorModel.addShape("shape", s);
-		slidingTrapDoorModel.storeState();
+        slidingTrapDoorModel = new MalisisModel();
+        slidingTrapDoorModel.addShape("shape", s);
+        slidingTrapDoorModel.storeState();
 
-		initParams();
-	}
+        initParams();
+    }
 
-	@Override
-	public void render()
-	{
-		if (renderType == RenderType.ISBRH_WORLD)
-			return;
+    @Override
+    public void render() {
+        if (renderType == RenderType.ISBRH_WORLD) return;
 
-		if (renderType == RenderType.ISBRH_INVENTORY)
-		{
-			model = block == MalisisDoors.Blocks.slidingTrapDoor ? slidingTrapDoorModel : trapDoorModel;
-			model.resetState();
-			model.translate(0, 0.5F, 0);
-			model.render(this, rp);
-			return;
-		}
+        if (renderType == RenderType.ISBRH_INVENTORY) {
+            model = block == MalisisDoors.Blocks.slidingTrapDoor ? slidingTrapDoorModel : trapDoorModel;
+            model.resetState();
+            model.translate(0, 0.5F, 0);
+            model.render(this, rp);
+            return;
+        }
 
-		super.render();
-	}
+        super.render();
+    }
 
-	@Override
-	protected void setup()
-	{
-		model = block == MalisisDoors.Blocks.slidingTrapDoor ? slidingTrapDoorModel : trapDoorModel;
-		model.resetState();
+    @Override
+    protected void setup() {
+        model = block == MalisisDoors.Blocks.slidingTrapDoor ? slidingTrapDoorModel : trapDoorModel;
+        model.resetState();
 
-		float angle = 0;
-		if (direction == TrapDoor.DIR_NORTH)
-			angle = 180;
-		else if (direction == TrapDoor.DIR_EAST)
-			angle = 90;
-		else if (direction == TrapDoor.DIR_WEST)
-			angle = 270;
-		model.rotate(angle, 0, 1, 0, 0, 0, 0);
+        float angle = 0;
+        if (direction == TrapDoor.DIR_NORTH) angle = 180;
+        else if (direction == TrapDoor.DIR_EAST) angle = 90;
+        else if (direction == TrapDoor.DIR_WEST) angle = 270;
+        model.rotate(angle, 0, 1, 0, 0, 0, 0);
 
-		if (topBlock)
-			model.translate(0, 1 - Door.DOOR_WIDTH, 0);
+        if (topBlock) model.translate(0, 1 - Door.DOOR_WIDTH, 0);
 
-		rp.brightness.set(block.getMixedBrightnessForBlock(world, x, y, z));
-	}
+        rp.brightness.set(block.getMixedBrightnessForBlock(world, x, y, z));
+    }
 
-	@Override
-	protected void renderTileEntity()
-	{
-		ar.setStartTime(tileEntity.getTimer().getStart());
+    @Override
+    protected void renderTileEntity() {
+        ar.setStartTime(tileEntity.getTimer().getStart());
 
-		setup();
+        setup();
 
-		if (tileEntity.getMovement() != null)
-		{
-			Animation[] anims = tileEntity.getMovement().getAnimations(tileEntity, model, rp);
-			ar.animate(anims);
-		}
+        if (tileEntity.getMovement() != null) {
+            Animation[] anims = tileEntity.getMovement().getAnimations(tileEntity, model, rp);
+            ar.animate(anims);
+        }
 
-		Shape s = model.getShape("shape");
-		Face f = s.getFace(Face.nameFromDirection(ForgeDirection.UP));
-		s.applyMatrix();
-		f.getParameters().aoMatrix.set(f.calculateAoMatrix(ForgeDirection.UP));
+        Shape s = model.getShape("shape");
+        Face f = s.getFace(Face.nameFromDirection(ForgeDirection.UP));
+        s.applyMatrix();
+        f.getParameters().aoMatrix.set(f.calculateAoMatrix(ForgeDirection.UP));
 
-		model.render(this, rp);
-	}
+        model.render(this, rp);
+    }
 
-	@Override
-	protected boolean isCurrentBlockDestroyProgress(DestroyBlockProgress dbp)
-	{
-		return dbp.getPartialBlockX() == x && dbp.getPartialBlockY() == y && dbp.getPartialBlockZ() == z;
-	}
+    @Override
+    protected boolean isCurrentBlockDestroyProgress(DestroyBlockProgress dbp) {
+        return dbp.getPartialBlockX() == x && dbp.getPartialBlockY() == y && dbp.getPartialBlockZ() == z;
+    }
 
-	@Override
-	public boolean shouldRender3DInInventory(int modelId)
-	{
-		return true;
-	}
+    @Override
+    public boolean shouldRender3DInInventory(int modelId) {
+        return true;
+    }
 }

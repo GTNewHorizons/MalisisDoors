@@ -41,95 +41,78 @@ import net.minecraft.world.World;
  * @author Ordinastie
  *
  */
-public class BigDoorRecipe implements IRecipe
-{
-	private BigDoor.Type type;
+public class BigDoorRecipe implements IRecipe {
+    private BigDoor.Type type;
 
-	public BigDoorRecipe(BigDoor.Type type)
-	{
-		this.type = type;
-	}
+    public BigDoorRecipe(BigDoor.Type type) {
+        this.type = type;
+    }
 
-	@Override
-	public boolean matches(InventoryCrafting inv, World world)
-	{
-		return getMatching(inv) != null;
-	}
+    @Override
+    public boolean matches(InventoryCrafting inv, World world) {
+        return getMatching(inv) != null;
+    }
 
-	public ItemStack getMatching(InventoryCrafting inv)
-	{
-		boolean doorMatch = false;
-		ItemStack frame = null;
-		int frameSize = 0;
-		for (int i = 0; i < inv.getSizeInventory(); i++)
-		{
-			ItemStack itemStack = inv.getStackInSlot(i);
-			if (itemStack == null)
-				continue;
-			if (itemStack.getItem() == type.door)
-			{
-				if (doorMatch == true) //two doors
-					return null;
-				doorMatch = true;
-				continue;
-			}
+    public ItemStack getMatching(InventoryCrafting inv) {
+        boolean doorMatch = false;
+        ItemStack frame = null;
+        int frameSize = 0;
+        for (int i = 0; i < inv.getSizeInventory(); i++) {
+            ItemStack itemStack = inv.getStackInSlot(i);
+            if (itemStack == null) continue;
+            if (itemStack.getItem() == type.door) {
+                if (doorMatch == true) // two doors
+                return null;
+                doorMatch = true;
+                continue;
+            }
 
-			Block block = Block.getBlockFromItem(itemStack.getItem());
-			if (block == null || (frame != null && !ItemUtils.areItemStacksStackable(frame, itemStack)))
-				return null;
-			frame = itemStack;
-			frameSize += 1;
-		}
+            Block block = Block.getBlockFromItem(itemStack.getItem());
+            if (block == null || (frame != null && !ItemUtils.areItemStacksStackable(frame, itemStack))) return null;
+            frame = itemStack;
+            frameSize += 1;
+        }
 
-		return !doorMatch || frame == null || frameSize != 5 ? null : frame;
-	}
+        return !doorMatch || frame == null || frameSize != 5 ? null : frame;
+    }
 
-	@Override
-	public ItemStack getCraftingResult(InventoryCrafting inv)
-	{
-		ItemStack frame = getMatching(inv);
-		if (frame == null)
-			return null;
+    @Override
+    public ItemStack getCraftingResult(InventoryCrafting inv) {
+        ItemStack frame = getMatching(inv);
+        if (frame == null) return null;
 
-		ItemStack itemStack = new ItemStack(type == Type.CARRIAGE ? Blocks.carriageDoor : Blocks.medievalDoor);
-		NBTTagCompound nbt = new NBTTagCompound();
-		BlockState.toNBT(nbt, ItemUtils.getStateFromItemStack(frame));
-		itemStack.setTagCompound(nbt);
-		return itemStack;
-	}
+        ItemStack itemStack = new ItemStack(type == Type.CARRIAGE ? Blocks.carriageDoor : Blocks.medievalDoor);
+        NBTTagCompound nbt = new NBTTagCompound();
+        BlockState.toNBT(nbt, ItemUtils.getStateFromItemStack(frame));
+        itemStack.setTagCompound(nbt);
+        return itemStack;
+    }
 
-	@Override
-	public ItemStack getRecipeOutput()
-	{
-		return new ItemStack(type == Type.CARRIAGE ? Blocks.carriageDoor : Blocks.medievalDoor);
-	}
+    @Override
+    public ItemStack getRecipeOutput() {
+        return new ItemStack(type == Type.CARRIAGE ? Blocks.carriageDoor : Blocks.medievalDoor);
+    }
 
-	@Override
-	public int getRecipeSize()
-	{
-		return 2;
-	}
+    @Override
+    public int getRecipeSize() {
+        return 2;
+    }
 
-	//@Override
-	public ItemStack[] getRemainingItems(InventoryCrafting inv)
-	{
-		ItemStack[] itemStacks = new ItemStack[inv.getSizeInventory()];
-		int left = 5;
-		for (int i = 0; i < inv.getSizeInventory(); i++)
-		{
-			ItemStack itemStack = inv.getStackInSlot(i);
-			inv.setInventorySlotContents(i, null);
-			if (itemStack == null)
-				continue;
+    // @Override
+    public ItemStack[] getRemainingItems(InventoryCrafting inv) {
+        ItemStack[] itemStacks = new ItemStack[inv.getSizeInventory()];
+        int left = 5;
+        for (int i = 0; i < inv.getSizeInventory(); i++) {
+            ItemStack itemStack = inv.getStackInSlot(i);
+            inv.setInventorySlotContents(i, null);
+            if (itemStack == null) continue;
 
-			ItemStackSplitter iss = new ItemStackSplitter(itemStack);
-			iss.split(itemStack.getItem() == type.door ? 1 : left);
-			itemStacks[i] = iss.source;
-			if (itemStack.getItem() != type.door)
-				left -= iss.amount;
-		}
+            ItemStackSplitter iss = new ItemStackSplitter(itemStack);
+            iss.split(itemStack.getItem() == type.door ? 1 : left);
+            itemStacks[i] = iss.source;
+            if (itemStack.getItem() != type.door) left -= iss.amount;
+        }
 
-		return itemStacks;
-	}
-
+        return itemStacks;
+    }
 }

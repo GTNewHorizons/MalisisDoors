@@ -28,13 +28,10 @@ package net.malisis.doors.proxy;
  * @author Ordinastie
  *
  */
-public class ServerProxy implements IProxy
-{
-	@Override
-	public void initRenderers()
-	{}
+public class ServerProxy implements IProxy {
+    @Override
+    public void initRenderers() {}
 
-	@Override
-	public void initFonts()
-	{}
+    @Override
+    public void initFonts() {}
 }

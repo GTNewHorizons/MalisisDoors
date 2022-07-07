@@ -33,123 +33,106 @@ import net.minecraft.nbt.NBTTagCompound;
  * @author Ordinastie
  *
  */
-public class CustomDoorTileEntity extends DoorTileEntity
-{
-	private Block frame;
-	private Block topMaterial;
-	private Block bottomMaterial;
+public class CustomDoorTileEntity extends DoorTileEntity {
+    private Block frame;
+    private Block topMaterial;
+    private Block bottomMaterial;
 
-	private int frameMetadata;
-	private int topMaterialMetadata;
-	private int bottomMaterialMetadata;
+    private int frameMetadata;
+    private int topMaterialMetadata;
+    private int bottomMaterialMetadata;
 
-	//#region Getters/setters
-	public Block getFrame()
-	{
-		return frame;
-	}
+    // #region Getters/setters
+    public Block getFrame() {
+        return frame;
+    }
 
-	public void setFrame(Block frame)
-	{
-		this.frame = frame;
-	}
+    public void setFrame(Block frame) {
+        this.frame = frame;
+    }
 
-	public Block getTopMaterial()
-	{
-		return topMaterial;
-	}
+    public Block getTopMaterial() {
+        return topMaterial;
+    }
 
-	public void setTopMaterial(Block topMaterial)
-	{
-		this.topMaterial = topMaterial;
-	}
+    public void setTopMaterial(Block topMaterial) {
+        this.topMaterial = topMaterial;
+    }
 
-	public Block getBottomMaterial()
-	{
-		return bottomMaterial;
-	}
+    public Block getBottomMaterial() {
+        return bottomMaterial;
+    }
 
-	public void setBottomMaterial(Block bottomMaterial)
-	{
-		this.bottomMaterial = bottomMaterial;
-	}
+    public void setBottomMaterial(Block bottomMaterial) {
+        this.bottomMaterial = bottomMaterial;
+    }
 
-	public int getFrameMetadata()
-	{
-		return frameMetadata;
-	}
+    public int getFrameMetadata() {
+        return frameMetadata;
+    }
 
-	public void setFrameMetadata(int frameMetadata)
-	{
-		this.frameMetadata = frameMetadata;
-	}
+    public void setFrameMetadata(int frameMetadata) {
+        this.frameMetadata = frameMetadata;
+    }
 
-	public int getTopMaterialMetadata()
-	{
-		return topMaterialMetadata;
-	}
+    public int getTopMaterialMetadata() {
+        return topMaterialMetadata;
+    }
 
-	public void setTopMaterialMetadata(int topMaterialMetadata)
-	{
-		this.topMaterialMetadata = topMaterialMetadata;
-	}
+    public void setTopMaterialMetadata(int topMaterialMetadata) {
+        this.topMaterialMetadata = topMaterialMetadata;
+    }
 
-	public int getBottomMaterialMetadata()
-	{
-		return bottomMaterialMetadata;
-	}
+    public int getBottomMaterialMetadata() {
+        return bottomMaterialMetadata;
+    }
 
-	public void setBottomMaterialMetadata(int bottomMaterialMetadata)
-	{
-		this.bottomMaterialMetadata = bottomMaterialMetadata;
-	}
+    public void setBottomMaterialMetadata(int bottomMaterialMetadata) {
+        this.bottomMaterialMetadata = bottomMaterialMetadata;
+    }
 
-	//#end Getters/setters
+    // #end Getters/setters
 
-	@Override
-	public void onBlockPlaced(Door door, ItemStack itemStack)
-	{
-		super.onBlockPlaced(door, itemStack);
+    @Override
+    public void onBlockPlaced(Door door, ItemStack itemStack) {
+        super.onBlockPlaced(door, itemStack);
 
-		NBTTagCompound nbt = itemStack.stackTagCompound;
+        NBTTagCompound nbt = itemStack.stackTagCompound;
 
-		frame = Block.getBlockById(nbt.getInteger("frame"));
-		topMaterial = Block.getBlockById(nbt.getInteger("topMaterial"));
-		bottomMaterial = Block.getBlockById(nbt.getInteger("bottomMaterial"));
+        frame = Block.getBlockById(nbt.getInteger("frame"));
+        topMaterial = Block.getBlockById(nbt.getInteger("topMaterial"));
+        bottomMaterial = Block.getBlockById(nbt.getInteger("bottomMaterial"));
 
-		frameMetadata = nbt.getInteger("frameMetadata");
-		topMaterialMetadata = nbt.getInteger("topMaterialMetadata");
-		bottomMaterialMetadata = nbt.getInteger("bottomMaterialMetadata");
+        frameMetadata = nbt.getInteger("frameMetadata");
+        topMaterialMetadata = nbt.getInteger("topMaterialMetadata");
+        bottomMaterialMetadata = nbt.getInteger("bottomMaterialMetadata");
 
-		setCentered(shouldCenter());
-	}
+        setCentered(shouldCenter());
+    }
 
-	@Override
-	public void readFromNBT(NBTTagCompound nbt)
-	{
-		super.readFromNBT(nbt);
+    @Override
+    public void readFromNBT(NBTTagCompound nbt) {
+        super.readFromNBT(nbt);
 
-		frame = Block.getBlockById(nbt.getInteger("frame"));
-		topMaterial = Block.getBlockById(nbt.getInteger("topMaterial"));
-		bottomMaterial = Block.getBlockById(nbt.getInteger("bottomMaterial"));
+        frame = Block.getBlockById(nbt.getInteger("frame"));
+        topMaterial = Block.getBlockById(nbt.getInteger("topMaterial"));
+        bottomMaterial = Block.getBlockById(nbt.getInteger("bottomMaterial"));
 
-		frameMetadata = nbt.getInteger("frameMetadata");
-		topMaterialMetadata = nbt.getInteger("topMaterialMetadata");
-		bottomMaterialMetadata = nbt.getInteger("bottomMaterialMetadata");
-	}
+        frameMetadata = nbt.getInteger("frameMetadata");
+        topMaterialMetadata = nbt.getInteger("topMaterialMetadata");
+        bottomMaterialMetadata = nbt.getInteger("bottomMaterialMetadata");
+    }
 
-	@Override
-	public void writeToNBT(NBTTagCompound nbt)
-	{
-		super.writeToNBT(nbt);
+    @Override
+    public void writeToNBT(NBTTagCompound nbt) {
+        super.writeToNBT(nbt);
 
-		nbt.setInteger("frame", Block.getIdFromBlock(frame));
-		nbt.setInteger("topMaterial", Block.getIdFromBlock(topMaterial));
-		nbt.setInteger("bottomMaterial", Block.getIdFromBlock(bottomMaterial));
+        nbt.setInteger("frame", Block.getIdFromBlock(frame));
+        nbt.setInteger("topMaterial", Block.getIdFromBlock(topMaterial));
+        nbt.setInteger("bottomMaterial", Block.getIdFromBlock(bottomMaterial));
 
-		nbt.setInteger("frameMetadata", frameMetadata);
-		nbt.setInteger("topMaterialMetadata", topMaterialMetadata);
-		nbt.setInteger("bottomMaterialMetadata", bottomMaterialMetadata);
-
-	}
+        nbt.setInteger("frameMetadata", frameMetadata);
+        nbt.setInteger("topMaterialMetadata", topMaterialMetadata);
+        nbt.setInteger("bottomMaterialMetadata", bottomMaterialMetadata);
+    }
 }

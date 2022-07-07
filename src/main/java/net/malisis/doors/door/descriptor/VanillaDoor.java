@@ -36,25 +36,23 @@ import net.minecraft.creativetab.CreativeTabs;
  * @author Ordinastie
  *
  */
-public class VanillaDoor extends DoorDescriptor
-{
-	public VanillaDoor(Material material)
-	{
-		boolean wood = material == Material.wood;
-		//Block
-		setOpeningTime(6);
-		setMaterial(material);
-		setHardness(wood ? 3.0F : 5.0F);
-		setSoundType(wood ? Block.soundTypeWood : Block.soundTypeMetal);
-		setName(wood ? "doorWood" : "doorIron");
-		setTextureName(wood ? "door_wood" : "door_iron");
+public class VanillaDoor extends DoorDescriptor {
+    public VanillaDoor(Material material) {
+        boolean wood = material == Material.wood;
+        // Block
+        setOpeningTime(6);
+        setMaterial(material);
+        setHardness(wood ? 3.0F : 5.0F);
+        setSoundType(wood ? Block.soundTypeWood : Block.soundTypeMetal);
+        setName(wood ? "doorWood" : "doorIron");
+        setTextureName(wood ? "door_wood" : "door_iron");
 
-		//te
-		setRequireRedstone(!wood);
-		setMovement(DoorRegistry.getMovement(RotatingDoorMovement.class));
-		setSound(DoorRegistry.getSound(VanillaDoorSound.class));
+        // te
+        setRequireRedstone(!wood);
+        setMovement(DoorRegistry.getMovement(RotatingDoorMovement.class));
+        setSound(DoorRegistry.getSound(VanillaDoorSound.class));
 
-		//item
-		setTab(CreativeTabs.tabRedstone);
-	}
+        // item
+        setTab(CreativeTabs.tabRedstone);
+    }
 }

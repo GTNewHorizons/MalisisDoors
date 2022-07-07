@@ -28,45 +28,38 @@ import net.malisis.core.renderer.animation.Animation;
 import net.malisis.core.renderer.model.MalisisModel;
 import net.malisis.doors.MalisisDoors;
 import net.minecraft.util.ResourceLocation;
-
 import org.lwjgl.opengl.GL11;
 
 /**
  * @author Ordinastie
  *
  */
-public class SaloonDoorRenderer extends DoorRenderer
-{
-	@Override
-	protected void initialize()
-	{
-		ResourceLocation rl = new ResourceLocation(MalisisDoors.modid + ":models/saloon_door.obj");
-		model = new MalisisModel(rl);
+public class SaloonDoorRenderer extends DoorRenderer {
+    @Override
+    protected void initialize() {
+        ResourceLocation rl = new ResourceLocation(MalisisDoors.modid + ":models/saloon_door.obj");
+        model = new MalisisModel(rl);
 
-		initParams();
-	}
+        initParams();
+    }
 
-	@Override
-	protected void renderTileEntity()
-	{
-		enableBlending();
-		ar.setStartTime(tileEntity.getTimer().getStart());
+    @Override
+    protected void renderTileEntity() {
+        enableBlending();
+        ar.setStartTime(tileEntity.getTimer().getStart());
 
-		setup();
+        setup();
 
-		if (tileEntity.isReversed())
-			model.rotate(180, 0, 1, 0, 0, 0, 0);
+        if (tileEntity.isReversed()) model.rotate(180, 0, 1, 0, 0, 0, 0);
 
-		if (tileEntity.getMovement() != null)
-		{
-			Animation[] anims = tileEntity.getMovement().getAnimations(tileEntity, model, rp);
-			ar.animate(anims);
-		}
+        if (tileEntity.getMovement() != null) {
+            Animation[] anims = tileEntity.getMovement().getAnimations(tileEntity, model, rp);
+            ar.animate(anims);
+        }
 
-		next(GL11.GL_POLYGON);
-		//model.render(this, rp);
-		rp.brightness.set(block.getMixedBrightnessForBlock(world, x, y, z));
-		model.render(this, rp);
-	}
-
+        next(GL11.GL_POLYGON);
+        // model.render(this, rp);
+        rp.brightness.set(block.getMixedBrightnessForBlock(world, x, y, z));
+        model.render(this, rp);
+    }
 }

@@ -32,17 +32,13 @@ import net.minecraft.item.Item;
  * @author Ordinastie
  *
  */
-public class MalisisDoorsTab extends CreativeTabs
-{
-	public MalisisDoorsTab()
-	{
-		super(MalisisDoors.modid);
-	}
+public class MalisisDoorsTab extends CreativeTabs {
+    public MalisisDoorsTab() {
+        super(MalisisDoors.modid);
+    }
 
-	@Override
-	public Item getTabIconItem()
-	{
-		return Items.jailDoorItem;
-	}
-
+    @Override
+    public Item getTabIconItem() {
+        return Items.jailDoorItem;
+    }
 }

@@ -24,6 +24,8 @@
 
 package net.malisis.doors.block;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.malisis.core.inventory.IInventoryProvider;
 import net.malisis.core.inventory.MalisisInventory;
 import net.malisis.core.util.TileEntityUtils;
@@ -41,79 +43,64 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
-public class BlockMixer extends Block implements ITileEntityProvider
-{
-	private IIcon frontIcon;
+public class BlockMixer extends Block implements ITileEntityProvider {
+    private IIcon frontIcon;
 
-	public BlockMixer()
-	{
-		super(Material.iron);
-		setCreativeTab(MalisisDoors.tab);
-		setHardness(3.0F);
-		setUnlocalizedName("block_mixer");
-	}
+    public BlockMixer() {
+        super(Material.iron);
+        setCreativeTab(MalisisDoors.tab);
+        setHardness(3.0F);
+        setUnlocalizedName("block_mixer");
+    }
 
-	@SideOnly(Side.CLIENT)
-	@Override
-	public void registerIcons(IIconRegister iconRegister)
-	{
-		this.blockIcon = iconRegister.registerIcon(MalisisDoors.modid + ":" + (this.getUnlocalizedName().substring(5)) + "_side");
-		this.frontIcon = iconRegister.registerIcon(MalisisDoors.modid + ":" + (this.getUnlocalizedName().substring(5)));
-	}
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void registerIcons(IIconRegister iconRegister) {
+        this.blockIcon = iconRegister.registerIcon(
+                MalisisDoors.modid + ":" + (this.getUnlocalizedName().substring(5)) + "_side");
+        this.frontIcon = iconRegister.registerIcon(
+                MalisisDoors.modid + ":" + (this.getUnlocalizedName().substring(5)));
+    }
 
-	@Override
-	public IIcon getIcon(int side, int metadata)
-	{
-		if ((metadata != 0 && side == metadata) || (metadata == 0 && side == 3))
-			return frontIcon;
-		return blockIcon;
-	}
+    @Override
+    public IIcon getIcon(int side, int metadata) {
+        if ((metadata != 0 && side == metadata) || (metadata == 0 && side == 3)) return frontIcon;
+        return blockIcon;
+    }
 
-	@Override
-	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack itemStack)
-	{
-		int side = MathHelper.floor_double(player.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
-		int metadata = 0;
-		if (side == 0)
-			metadata = 2;
-		if (side == 1)
-			metadata = 5;
-		if (side == 2)
-			metadata = 3;
-		if (side == 3)
-			metadata = 4;
-		world.setBlockMetadataWithNotify(x, y, z, metadata, 2);
-	}
+    @Override
+    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack itemStack) {
+        int side = MathHelper.floor_double(player.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+        int metadata = 0;
+        if (side == 0) metadata = 2;
+        if (side == 1) metadata = 5;
+        if (side == 2) metadata = 3;
+        if (side == 3) metadata = 4;
+        world.setBlockMetadataWithNotify(x, y, z, metadata, 2);
+    }
 
-	@Override
-	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int metadata, float hitX, float hitY, float hitZ)
-	{
-		if (world.isRemote)
-			return true;
+    @Override
+    public boolean onBlockActivated(
+            World world, int x, int y, int z, EntityPlayer player, int metadata, float hitX, float hitY, float hitZ) {
+        if (world.isRemote) return true;
 
-		if (player.isSneaking())
-			return false;
+        if (player.isSneaking()) return false;
 
-		IInventoryProvider te = TileEntityUtils.getTileEntity(IInventoryProvider.class, world, x, y, z);
-		MalisisInventory.open((EntityPlayerMP) player, te);
-		return true;
-	}
+        IInventoryProvider te = TileEntityUtils.getTileEntity(IInventoryProvider.class, world, x, y, z);
+        MalisisInventory.open((EntityPlayerMP) player, te);
+        return true;
+    }
 
-	@Override
-	public void breakBlock(World world, int x, int y, int z, Block block, int metadata)
-	{
-		IInventoryProvider provider = TileEntityUtils.getTileEntity(IInventoryProvider.class, world, x, y, z);
-		for (MalisisInventory inventory : provider.getInventories())
-			inventory.breakInventory(world, x, y, z);
-		super.breakBlock(world, x, y, z, block, metadata);
-	}
+    @Override
+    public void breakBlock(World world, int x, int y, int z, Block block, int metadata) {
+        IInventoryProvider provider = TileEntityUtils.getTileEntity(IInventoryProvider.class, world, x, y, z);
+        for (MalisisInventory inventory : provider.getInventories()) inventory.breakInventory(world, x, y, z);
+        super.breakBlock(world, x, y, z, block, metadata);
+    }
 
-	@Override
-	public TileEntity createNewTileEntity(World world, int metdata)
-	{
-		return new BlockMixerTileEntity();
-	}
+    @Override
+    public TileEntity createNewTileEntity(World world, int metdata) {
+        return new BlockMixerTileEntity();
+    }
 }

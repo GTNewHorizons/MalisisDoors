@@ -25,6 +25,7 @@
 package net.malisis.doors.door.movement;
 
 import static net.malisis.doors.door.block.Door.*;
+
 import net.malisis.core.block.BoundingBoxType;
 import net.malisis.core.renderer.RenderParameters;
 import net.malisis.core.renderer.animation.Animation;
@@ -41,59 +42,50 @@ import net.minecraft.util.AxisAlignedBB;
  * @author Ordinastie
  *
  */
-public class RotatingSplitMovement implements IDoorMovement
-{
+public class RotatingSplitMovement implements IDoorMovement {
 
-	@Override
-	public AxisAlignedBB getBoundingBox(DoorTileEntity tileEntity, boolean topBlock, BoundingBoxType type)
-	{
-		if (tileEntity.isOpened() && type == BoundingBoxType.COLLISION && !topBlock)
-			return null;
+    @Override
+    public AxisAlignedBB getBoundingBox(DoorTileEntity tileEntity, boolean topBlock, BoundingBoxType type) {
+        if (tileEntity.isOpened() && type == BoundingBoxType.COLLISION && !topBlock) return null;
 
-		AxisAlignedBB aabb = AxisAlignedBB.getBoundingBox(0, 0, 0, 1, 1, DOOR_WIDTH);
-		if (!tileEntity.isOpened() && type == BoundingBoxType.SELECTION)
-		{
-			if (!topBlock)
-				aabb.maxY++;
-			else
-				aabb.minY--;
-		}
+        AxisAlignedBB aabb = AxisAlignedBB.getBoundingBox(0, 0, 0, 1, 1, DOOR_WIDTH);
+        if (!tileEntity.isOpened() && type == BoundingBoxType.SELECTION) {
+            if (!topBlock) aabb.maxY++;
+            else aabb.minY--;
+        }
 
-		if (tileEntity.isOpened())
-			AABBUtils.rotate(aabb, topBlock ? 1 : -1, Axis.X);
+        if (tileEntity.isOpened()) AABBUtils.rotate(aabb, topBlock ? 1 : -1, Axis.X);
 
-		return aabb;
-	}
+        return aabb;
+    }
 
-	private Transformation getTransformation(DoorTileEntity tileEntity, boolean topBlock)
-	{
-		float angle = 90;
-		float hingeY = -0.5F + DOOR_WIDTH / 2;
-		float hingeZ = -0.5F + DOOR_WIDTH / 2;
+    private Transformation getTransformation(DoorTileEntity tileEntity, boolean topBlock) {
+        float angle = 90;
+        float hingeY = -0.5F + DOOR_WIDTH / 2;
+        float hingeZ = -0.5F + DOOR_WIDTH / 2;
 
-		if (topBlock)
-		{
-			angle = -angle;
-			hingeY = 1 - hingeY;
-		}
+        if (topBlock) {
+            angle = -angle;
+            hingeY = 1 - hingeY;
+        }
 
-		Rotation rotation = new Rotation(angle).aroundAxis(1, 0, 0).offset(0, hingeY, hingeZ);
-		rotation.reversed(tileEntity.getState() == DoorState.CLOSING || tileEntity.getState() == DoorState.CLOSED);
-		rotation.forTicks(tileEntity.getDescriptor().getOpeningTime());
+        Rotation rotation = new Rotation(angle).aroundAxis(1, 0, 0).offset(0, hingeY, hingeZ);
+        rotation.reversed(tileEntity.getState() == DoorState.CLOSING || tileEntity.getState() == DoorState.CLOSED);
+        rotation.forTicks(tileEntity.getDescriptor().getOpeningTime());
 
-		return rotation;
-	}
+        return rotation;
+    }
 
-	@Override
-	public Animation[] getAnimations(DoorTileEntity tileEntity, MalisisModel model, RenderParameters rp)
-	{
-		return new Animation[] { new Animation(model.getShape("top"), getTransformation(tileEntity, true)),
-				new Animation(model.getShape("bottom"), getTransformation(tileEntity, false)) };
-	}
+    @Override
+    public Animation[] getAnimations(DoorTileEntity tileEntity, MalisisModel model, RenderParameters rp) {
+        return new Animation[] {
+            new Animation(model.getShape("top"), getTransformation(tileEntity, true)),
+            new Animation(model.getShape("bottom"), getTransformation(tileEntity, false))
+        };
+    }
 
-	@Override
-	public boolean isSpecial()
-	{
-		return false;
-	}
+    @Override
+    public boolean isSpecial() {
+        return false;
+    }
 }

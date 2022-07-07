@@ -26,9 +26,11 @@ package net.malisis.doors.door;
 
 /**
  * @author Ordinastie
- * 
+ *
  */
-public enum DoorState
-{
-	CLOSED, CLOSING, OPENED, OPENING
+public enum DoorState {
+    CLOSED,
+    CLOSING,
+    OPENED,
+    OPENING
 }

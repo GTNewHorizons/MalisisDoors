@@ -25,6 +25,7 @@
 package net.malisis.doors.door.movement;
 
 import static net.malisis.doors.door.block.Door.*;
+
 import net.malisis.core.block.BoundingBoxType;
 import net.malisis.core.renderer.RenderParameters;
 import net.malisis.core.renderer.animation.Animation;
@@ -40,46 +41,36 @@ import net.minecraft.util.AxisAlignedBB;
  * @author Ordinastie
  *
  */
-public class SlidingDoorMovement implements IDoorMovement
-{
-	@Override
-	public AxisAlignedBB getBoundingBox(DoorTileEntity tileEntity, boolean topBlock, BoundingBoxType type)
-	{
-		AxisAlignedBB aabb = AxisAlignedBB.getBoundingBox(0, 0, 0, 1, 1, DOOR_WIDTH);
-		if (type == BoundingBoxType.SELECTION)
-		{
-			if (!topBlock)
-				aabb.maxY++;
-			else
-				aabb.minY--;
-		}
+public class SlidingDoorMovement implements IDoorMovement {
+    @Override
+    public AxisAlignedBB getBoundingBox(DoorTileEntity tileEntity, boolean topBlock, BoundingBoxType type) {
+        AxisAlignedBB aabb = AxisAlignedBB.getBoundingBox(0, 0, 0, 1, 1, DOOR_WIDTH);
+        if (type == BoundingBoxType.SELECTION) {
+            if (!topBlock) aabb.maxY++;
+            else aabb.minY--;
+        }
 
-		if (tileEntity.isOpened())
-			aabb.offset(tileEntity.isReversed() ? DOOR_WIDTH - 1 : 1 - DOOR_WIDTH, 0, 0);
+        if (tileEntity.isOpened()) aabb.offset(tileEntity.isReversed() ? DOOR_WIDTH - 1 : 1 - DOOR_WIDTH, 0, 0);
 
-		return aabb;
-	}
+        return aabb;
+    }
 
-	private Transformation getTransformation(DoorTileEntity tileEntity)
-	{
-		Translation translation = new Translation(0, 0, 0, tileEntity.isReversed() ? -1 + Door.DOOR_WIDTH : 1 - DOOR_WIDTH, 0, 0);
-		translation.reversed(tileEntity.getState() == DoorState.CLOSING || tileEntity.getState() == DoorState.CLOSED);
-		translation.forTicks(tileEntity.getDescriptor().getOpeningTime());
+    private Transformation getTransformation(DoorTileEntity tileEntity) {
+        Translation translation =
+                new Translation(0, 0, 0, tileEntity.isReversed() ? -1 + Door.DOOR_WIDTH : 1 - DOOR_WIDTH, 0, 0);
+        translation.reversed(tileEntity.getState() == DoorState.CLOSING || tileEntity.getState() == DoorState.CLOSED);
+        translation.forTicks(tileEntity.getDescriptor().getOpeningTime());
 
-		return translation;
+        return translation;
+    }
 
-	}
+    @Override
+    public Animation[] getAnimations(DoorTileEntity tileEntity, MalisisModel model, RenderParameters rp) {
+        return new Animation[] {new Animation(model, getTransformation(tileEntity))};
+    }
 
-	@Override
-	public Animation[] getAnimations(DoorTileEntity tileEntity, MalisisModel model, RenderParameters rp)
-	{
-		return new Animation[] { new Animation(model, getTransformation(tileEntity)) };
-	}
-
-	@Override
-	public boolean isSpecial()
-	{
-		return false;
-	}
-
+    @Override
+    public boolean isSpecial() {
+        return false;
+    }
 }

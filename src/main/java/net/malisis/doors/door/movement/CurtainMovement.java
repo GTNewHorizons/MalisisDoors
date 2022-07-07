@@ -27,7 +27,6 @@ package net.malisis.doors.door.movement;
 import static net.malisis.doors.door.block.Door.*;
 
 import java.util.List;
-
 import net.malisis.core.block.BoundingBoxType;
 import net.malisis.core.renderer.RenderParameters;
 import net.malisis.core.renderer.animation.Animation;
@@ -45,69 +44,57 @@ import net.minecraftforge.common.util.ForgeDirection;
  * @author Ordinastie
  *
  */
-public class CurtainMovement implements IDoorMovement
-{
+public class CurtainMovement implements IDoorMovement {
 
-	@Override
-	public AxisAlignedBB getBoundingBox(DoorTileEntity tileEntity, boolean topBlock, BoundingBoxType type)
-	{
-		AxisAlignedBB aabb = AxisAlignedBB.getBoundingBox(0, 0, 0, 1, 1, DOOR_WIDTH);
-		if (type == BoundingBoxType.SELECTION)
-		{
-			if (!topBlock)
-				aabb.maxY++;
-			else
-				aabb.minY--;
-		}
+    @Override
+    public AxisAlignedBB getBoundingBox(DoorTileEntity tileEntity, boolean topBlock, BoundingBoxType type) {
+        AxisAlignedBB aabb = AxisAlignedBB.getBoundingBox(0, 0, 0, 1, 1, DOOR_WIDTH);
+        if (type == BoundingBoxType.SELECTION) {
+            if (!topBlock) aabb.maxY++;
+            else aabb.minY--;
+        }
 
-		if (tileEntity.isOpened())
-		{
-			if (tileEntity.isReversed())
-				aabb.maxX = DOOR_WIDTH;
-			else
-				aabb.minX = 1 - DOOR_WIDTH;
-		}
+        if (tileEntity.isOpened()) {
+            if (tileEntity.isReversed()) aabb.maxX = DOOR_WIDTH;
+            else aabb.minX = 1 - DOOR_WIDTH;
+        }
 
-		return aabb;
-	}
+        return aabb;
+    }
 
-	@Override
-	public Animation[] getAnimations(DoorTileEntity tileEntity, MalisisModel model, RenderParameters rp)
-	{
-		float x = 1 - Door.DOOR_WIDTH;
-		String dir = "west";
-		ForgeDirection fd = ForgeDirection.WEST;
-		if (tileEntity.isReversed())
-		{
-			x = -1 + Door.DOOR_WIDTH;
-			dir = "east";
-			fd = ForgeDirection.EAST;
-		}
+    @Override
+    public Animation[] getAnimations(DoorTileEntity tileEntity, MalisisModel model, RenderParameters rp) {
+        float x = 1 - Door.DOOR_WIDTH;
+        String dir = "west";
+        ForgeDirection fd = ForgeDirection.WEST;
+        if (tileEntity.isReversed()) {
+            x = -1 + Door.DOOR_WIDTH;
+            dir = "east";
+            fd = ForgeDirection.EAST;
+        }
 
-		Translation translation = new Translation(x, 0, 0);
-		translation.reversed(tileEntity.getState() == DoorState.CLOSING || tileEntity.getState() == DoorState.CLOSED);
-		translation.forTicks(tileEntity.getDescriptor().getOpeningTime());
+        Translation translation = new Translation(x, 0, 0);
+        translation.reversed(tileEntity.getState() == DoorState.CLOSING || tileEntity.getState() == DoorState.CLOSED);
+        translation.forTicks(tileEntity.getDescriptor().getOpeningTime());
 
-		Shape top = model.getShape("top");
-		Shape bottom = model.getShape("bottom");
+        Shape top = model.getShape("top");
+        Shape bottom = model.getShape("bottom");
 
-		top.enableMergedVertexes();
-		bottom.enableMergedVertexes();
+        top.enableMergedVertexes();
+        bottom.enableMergedVertexes();
 
-		List<MergedVertex> vertexes = top.getMergedVertexes("bottom", dir);
-		vertexes.addAll(bottom.getMergedVertexes(fd));
+        List<MergedVertex> vertexes = top.getMergedVertexes("bottom", dir);
+        vertexes.addAll(bottom.getMergedVertexes(fd));
 
-		Animation[] anims = new Animation[vertexes.size()];
-		int i = 0;
-		for (MergedVertex mv : vertexes)
-			anims[i++] = new Animation(mv, translation);
+        Animation[] anims = new Animation[vertexes.size()];
+        int i = 0;
+        for (MergedVertex mv : vertexes) anims[i++] = new Animation(mv, translation);
 
-		return anims;
-	}
+        return anims;
+    }
 
-	@Override
-	public boolean isSpecial()
-	{
-		return true;
-	}
+    @Override
+    public boolean isSpecial() {
+        return true;
+    }
 }

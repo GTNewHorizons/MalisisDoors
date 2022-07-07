@@ -38,61 +38,49 @@ import net.minecraft.world.World;
  * @author Ordinastie
  *
  */
-public class SaloonDoorBlock extends Door
-{
-	public SaloonDoorBlock(DoorDescriptor desc)
-	{
-		super(desc);
-	}
+public class SaloonDoorBlock extends Door {
+    public SaloonDoorBlock(DoorDescriptor desc) {
+        super(desc);
+    }
 
-	@Override
-	public void registerIcons(IIconRegister register)
-	{
-		blockIcon = register.registerIcon(MalisisDoors.modid + ":saloon_door");
-	}
+    @Override
+    public void registerIcons(IIconRegister register) {
+        blockIcon = register.registerIcon(MalisisDoors.modid + ":saloon_door");
+    }
 
-	@Override
-	public IIcon getIcon(int side, int metadata)
-	{
-		return blockIcon;
-	}
+    @Override
+    public IIcon getIcon(int side, int metadata) {
+        return blockIcon;
+    }
 
-	@Override
-	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer p, int par6, float par7, float par8, float par9)
-	{
-		return true;
-	}
+    @Override
+    public boolean onBlockActivated(
+            World world, int x, int y, int z, EntityPlayer p, int par6, float par7, float par8, float par9) {
+        return true;
+    }
 
-	@Override
-	public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity)
-	{
-		if (!(entity instanceof EntityPlayer))
-			return;
+    @Override
+    public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity) {
+        if (!(entity instanceof EntityPlayer)) return;
 
-		SaloonDoorTileEntity te = (SaloonDoorTileEntity) getDoor(world, x, y, z);
-		if (te == null)
-			return;
+        SaloonDoorTileEntity te = (SaloonDoorTileEntity) getDoor(world, x, y, z);
+        if (te == null) return;
 
-		if (te.getDescriptor() == null)
-			return;
+        if (te.getDescriptor() == null) return;
 
-		if (te.isMoving())
-			return;
+        if (te.isMoving()) return;
 
-		te.setOpenDirection(entity);
+        te.setOpenDirection(entity);
 
-		if (world.isRemote)
-			return;
+        if (world.isRemote) return;
 
-		te.openOrCloseDoor();
-	}
+        te.openOrCloseDoor();
+    }
 
-	@Override
-	public TileEntity createNewTileEntity(World world, int metadata)
-	{
-		if ((metadata & FLAG_TOPBLOCK) != 0)
-			return null;
+    @Override
+    public TileEntity createNewTileEntity(World world, int metadata) {
+        if ((metadata & FLAG_TOPBLOCK) != 0) return null;
 
-		return new SaloonDoorTileEntity();
-	}
+        return new SaloonDoorTileEntity();
+    }
 }

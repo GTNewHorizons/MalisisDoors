@@ -26,7 +26,6 @@ package net.malisis.doors.renderer;
 
 import java.util.HashSet;
 import java.util.Set;
-
 import net.malisis.core.renderer.MalisisRenderer;
 import net.malisis.core.renderer.RenderParameters;
 import net.malisis.core.renderer.RenderType;
@@ -47,143 +46,132 @@ import net.minecraft.client.renderer.DestroyBlockProgress;
  * @author Ordinastie
  *
  */
-public class GarageDoorRenderer extends MalisisRenderer
-{
-	private GarageDoorTileEntity tileEntity;
-	protected int direction;
-	protected boolean opened;
-	protected boolean reversed;
-	protected boolean topBlock;
-	protected Set<GarageDoorTileEntity> childDoors = new HashSet<>();
+public class GarageDoorRenderer extends MalisisRenderer {
+    private GarageDoorTileEntity tileEntity;
+    protected int direction;
+    protected boolean opened;
+    protected boolean reversed;
+    protected boolean topBlock;
+    protected Set<GarageDoorTileEntity> childDoors = new HashSet<>();
 
-	protected AnimationRenderer ar = new AnimationRenderer();
+    protected AnimationRenderer ar = new AnimationRenderer();
 
-	@Override
-	protected void initialize()
-	{
-		shape = new Cube().setSize(Door.DOOR_WIDTH, 1, 1);
-		shape.storeState();
+    @Override
+    protected void initialize() {
+        shape = new Cube().setSize(Door.DOOR_WIDTH, 1, 1);
+        shape.storeState();
 
-		rp = new RenderParameters();
-		rp.renderAllFaces.set(true);
-		rp.calculateAOColor.set(false);
-		rp.useBlockBounds.set(false);
-		rp.useEnvironmentBrightness.set(false);
-		rp.calculateBrightness.set(false);
-		rp.interpolateUV.set(false);
-		rp.useWorldSensitiveIcon.set(false);
-	}
+        rp = new RenderParameters();
+        rp.renderAllFaces.set(true);
+        rp.calculateAOColor.set(false);
+        rp.useBlockBounds.set(false);
+        rp.useEnvironmentBrightness.set(false);
+        rp.calculateBrightness.set(false);
+        rp.interpolateUV.set(false);
+        rp.useWorldSensitiveIcon.set(false);
+    }
 
-	@Override
-	public void render()
-	{
+    @Override
+    public void render() {
 
-		if (renderType == RenderType.ITEM_INVENTORY)
-		{
-			enableBlending();
+        if (renderType == RenderType.ITEM_INVENTORY) {
+            enableBlending();
 
-			shape.resetState();
-			shape.translate(0.5F - Door.DOOR_WIDTH / 2, 0, 0);
-			rp.icon.set(null);
-			blockMetadata = Door.FLAG_TOPBLOCK;
-			drawShape(shape, rp);
-			return;
-		}
+            shape.resetState();
+            shape.translate(0.5F - Door.DOOR_WIDTH / 2, 0, 0);
+            rp.icon.set(null);
+            blockMetadata = Door.FLAG_TOPBLOCK;
+            drawShape(shape, rp);
+            return;
+        }
 
-		tileEntity = TileEntityUtils.getTileEntity(GarageDoorTileEntity.class, world, x, y, z);
-		if (tileEntity == null || !tileEntity.isTopDoor())
-		{
-			getBlockDamage = false;
-			return;
-		}
+        tileEntity = TileEntityUtils.getTileEntity(GarageDoorTileEntity.class, world, x, y, z);
+        if (tileEntity == null || !tileEntity.isTopDoor()) {
+            getBlockDamage = false;
+            return;
+        }
 
-		getBlockDamage = true;
+        getBlockDamage = true;
 
-		direction = tileEntity.getDirection();
-		opened = tileEntity.isOpened();
-		reversed = tileEntity.isReversed();
+        direction = tileEntity.getDirection();
+        opened = tileEntity.isOpened();
+        reversed = tileEntity.isReversed();
 
-		rp.icon.set(null);
+        rp.icon.set(null);
 
-		enableBlending();
-		renderTileEntity();
-	}
+        enableBlending();
+        renderTileEntity();
+    }
 
-	protected void renderTileEntity()
-	{
-		int t = GarageDoorTileEntity.maxOpenTime;
-		//set the start timer
-		ar.setStartTime(tileEntity.getTimer().getStart());
+    protected void renderTileEntity() {
+        int t = GarageDoorTileEntity.maxOpenTime;
+        // set the start timer
+        ar.setStartTime(tileEntity.getTimer().getStart());
 
-		//create door list from childs + top
-		childDoors.clear();
-		tileEntity.addChildDoors(childDoors);
-		for (GarageDoorTileEntity te : childDoors)
-		{
-			shape.resetState();
-			shape.rotate(-90 * tileEntity.getDirection(), 0, 1, 0);
-			shape.translate(0.5F - Door.DOOR_WIDTH / 2, 0, 0);
+        // create door list from childs + top
+        childDoors.clear();
+        tileEntity.addChildDoors(childDoors);
+        for (GarageDoorTileEntity te : childDoors) {
+            shape.resetState();
+            shape.rotate(-90 * tileEntity.getDirection(), 0, 1, 0);
+            shape.translate(0.5F - Door.DOOR_WIDTH / 2, 0, 0);
 
-			y = te.yCoord;
-			int delta = tileEntity.yCoord - te.yCoord;
-			int delta2 = childDoors.size() - (delta + 1);
+            y = te.yCoord;
+            int delta = tileEntity.yCoord - te.yCoord;
+            int delta2 = childDoors.size() - (delta + 1);
 
-			if (delta == 0)
-				blockMetadata |= Door.FLAG_TOPBLOCK;
-			else
-				blockMetadata &= ~Door.FLAG_TOPBLOCK;
+            if (delta == 0) blockMetadata |= Door.FLAG_TOPBLOCK;
+            else blockMetadata &= ~Door.FLAG_TOPBLOCK;
 
-			Transformation verticalAnim = new Translation(0, -delta, 0, 0, 0, 0).forTicks(t * delta, 0);
-			//@formatter:off
-			Transformation topRotate = new ParallelTransformation(
-					new Translation(0, 1, 0).forTicks(t, 0),
-					new Rotation(0, -90).aroundAxis(0, 0, 1).offset(-0.5F, -0.5F, 0).forTicks(t, 0)
-			);
-			//@formatter:on
-			Transformation horizontalAnim = new Translation(0, 0, 0, 0, delta2, 0).forTicks(t * delta2, 0);
+            Transformation verticalAnim = new Translation(0, -delta, 0, 0, 0, 0).forTicks(t * delta, 0);
+            // @formatter:off
+            Transformation topRotate = new ParallelTransformation(
+                    new Translation(0, 1, 0).forTicks(t, 0),
+                    new Rotation(0, -90)
+                            .aroundAxis(0, 0, 1)
+                            .offset(-0.5F, -0.5F, 0)
+                            .forTicks(t, 0));
+            // @formatter:on
+            Transformation horizontalAnim = new Translation(0, 0, 0, 0, delta2, 0).forTicks(t * delta2, 0);
 
-			Transformation chained = new ChainedTransformation(verticalAnim, topRotate, horizontalAnim);
-			if (tileEntity.getState() == DoorState.CLOSING || tileEntity.getState() == DoorState.CLOSED)
-				chained.reversed(true);
+            Transformation chained = new ChainedTransformation(verticalAnim, topRotate, horizontalAnim);
+            if (tileEntity.getState() == DoorState.CLOSING || tileEntity.getState() == DoorState.CLOSED)
+                chained.reversed(true);
 
-			rp.brightness.set(block.getMixedBrightnessForBlock(world, x, y, z));
+            rp.brightness.set(block.getMixedBrightnessForBlock(world, x, y, z));
 
-			ar.animate(shape, chained);
-			drawShape(shape, rp);
-		}
-		//restore correct y coord
-		y = tileEntity.yCoord;
-	}
+            ar.animate(shape, chained);
+            drawShape(shape, rp);
+        }
+        // restore correct y coord
+        y = tileEntity.yCoord;
+    }
 
-	@Override
-	public void renderDestroyProgress()
-	{
-		rp.icon.set(damagedIcons[destroyBlockProgress.getPartialBlockDamage()]);
-		int y = this.y - destroyBlockProgress.getPartialBlockY();
-		shape.resetState();
-		shape.rotate(-90 * tileEntity.getDirection(), 0, 1, 0);
-		shape.translate(0.505F - Door.DOOR_WIDTH / 2, -y, 0);
-		shape.scale(1.011F);
-		drawShape(shape, rp);
-	}
+    @Override
+    public void renderDestroyProgress() {
+        rp.icon.set(damagedIcons[destroyBlockProgress.getPartialBlockDamage()]);
+        int y = this.y - destroyBlockProgress.getPartialBlockY();
+        shape.resetState();
+        shape.rotate(-90 * tileEntity.getDirection(), 0, 1, 0);
+        shape.translate(0.505F - Door.DOOR_WIDTH / 2, -y, 0);
+        shape.scale(1.011F);
+        drawShape(shape, rp);
+    }
 
-	@Override
-	protected boolean isCurrentBlockDestroyProgress(DestroyBlockProgress dbp)
-	{
-		if (dbp.getPartialBlockX() == x && dbp.getPartialBlockY() == y && dbp.getPartialBlockZ() == z)
-			return true;
+    @Override
+    protected boolean isCurrentBlockDestroyProgress(DestroyBlockProgress dbp) {
+        if (dbp.getPartialBlockX() == x && dbp.getPartialBlockY() == y && dbp.getPartialBlockZ() == z) return true;
 
-		for (GarageDoorTileEntity te : childDoors)
-		{
-			if (dbp.getPartialBlockX() == te.xCoord && dbp.getPartialBlockY() == te.yCoord && dbp.getPartialBlockZ() == te.zCoord)
-				return true;
-		}
-		return false;
-	}
+        for (GarageDoorTileEntity te : childDoors) {
+            if (dbp.getPartialBlockX() == te.xCoord
+                    && dbp.getPartialBlockY() == te.yCoord
+                    && dbp.getPartialBlockZ() == te.zCoord) return true;
+        }
+        return false;
+    }
 
-	@Override
-	public boolean shouldRender3DInInventory(int modelId)
-	{
-		return true;
-	}
+    @Override
+    public boolean shouldRender3DInInventory(int modelId) {
+        return true;
+    }
 }

@@ -30,12 +30,9 @@ import net.malisis.doors.door.DoorState;
  * @author Ordinastie
  *
  */
-public class SilentDoorSound implements IDoorSound
-{
-	@Override
-	public String getSoundPath(DoorState state)
-	{
-		return null;
-	}
-
+public class SilentDoorSound implements IDoorSound {
+    @Override
+    public String getSoundPath(DoorState state) {
+        return null;
+    }
 }

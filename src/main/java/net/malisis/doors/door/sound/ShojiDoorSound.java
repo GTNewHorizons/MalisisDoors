@@ -29,18 +29,14 @@ import net.malisis.doors.door.DoorState;
 
 /**
  * @author Ordinastie
- * 
+ *
  */
-public class ShojiDoorSound implements IDoorSound
-{
+public class ShojiDoorSound implements IDoorSound {
 
-	@Override
-	public String getSoundPath(DoorState state)
-	{
-		if (state == DoorState.OPENING || state == DoorState.CLOSING)
-			return MalisisDoors.modid + ":shoji_door";
+    @Override
+    public String getSoundPath(DoorState state) {
+        if (state == DoorState.OPENING || state == DoorState.CLOSING) return MalisisDoors.modid + ":shoji_door";
 
-		return null;
-	}
-
+        return null;
+    }
 }

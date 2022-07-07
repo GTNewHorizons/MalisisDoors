@@ -28,20 +28,15 @@ import net.malisis.doors.door.DoorState;
 
 /**
  * @author Ordinastie
- * 
+ *
  */
-public class VanillaDoorSound implements IDoorSound
-{
+public class VanillaDoorSound implements IDoorSound {
 
-	@Override
-	public String getSoundPath(DoorState state)
-	{
-		if (state == DoorState.OPENING)
-			return "random.door_open";
-		else if (state == DoorState.CLOSED)
-			return "random.door_close";
+    @Override
+    public String getSoundPath(DoorState state) {
+        if (state == DoorState.OPENING) return "random.door_open";
+        else if (state == DoorState.CLOSED) return "random.door_close";
 
-		return null;
-	}
-
+        return null;
+    }
 }

@@ -44,210 +44,185 @@ import net.minecraft.nbt.NBTTagCompound;
  * @author Ordinastie
  *
  */
-public class CustomDoorRenderer extends DoorRenderer
-{
-	private Block frameBlock;
-	private Block topMaterialBlock;
-	private Block bottomMaterialBlock;
+public class CustomDoorRenderer extends DoorRenderer {
+    private Block frameBlock;
+    private Block topMaterialBlock;
+    private Block bottomMaterialBlock;
 
-	private int frameMetadata;
-	private int topMaterialMetadata;
-	private int bottomMaterialMetadata;
+    private int frameMetadata;
+    private int topMaterialMetadata;
+    private int bottomMaterialMetadata;
 
-	protected CustomDoorTileEntity tileEntity;
+    protected CustomDoorTileEntity tileEntity;
 
-	private float width;
+    private float width;
 
-	@Override
-	protected void initialize()
-	{
-		width = 1.0F / 8.0F;
-		/**
-		 * BOTTOM
-		 */
-		//frame right
-		Shape frameR = new Cube().setSize(width, 1, Door.DOOR_WIDTH);
-		//frame left
-		Shape frameL = new Shape(frameR);
-		frameL.translate(1 - width, 0, 0);
-		//frame horizontal
-		Shape frameH = new Shape(new NorthFace(), new SouthFace(), new TopFace(), new BottomFace());
-		frameH.setSize(1 - 2 * width, width, Door.DOOR_WIDTH);
-		frameH.translate(width, 0, 0);
+    @Override
+    protected void initialize() {
+        width = 1.0F / 8.0F;
+        /**
+         * BOTTOM
+         */
+        // frame right
+        Shape frameR = new Cube().setSize(width, 1, Door.DOOR_WIDTH);
+        // frame left
+        Shape frameL = new Shape(frameR);
+        frameL.translate(1 - width, 0, 0);
+        // frame horizontal
+        Shape frameH = new Shape(new NorthFace(), new SouthFace(), new TopFace(), new BottomFace());
+        frameH.setSize(1 - 2 * width, width, Door.DOOR_WIDTH);
+        frameH.translate(width, 0, 0);
 
-		//full bottom frame
-		Shape frame = Shape.fromShapes(frameR, frameL, frameH);
-		frame.scale(1, 1, 0.995F); //scale frame to prevent z-fighting when slid in walls
-		frame.applyMatrix();
+        // full bottom frame
+        Shape frame = Shape.fromShapes(frameR, frameL, frameH);
+        frame.scale(1, 1, 0.995F); // scale frame to prevent z-fighting when slid in walls
+        frame.applyMatrix();
 
-		//bottom material
-		Shape mat = new Shape(new SouthFace(), new NorthFace(), new TopFace());
-		mat.setSize(1 - 2 * width, 1 - width, Door.DOOR_WIDTH * 0.6F).translate(width, width, Door.DOOR_WIDTH * 0.2F);
-		mat.applyMatrix();
+        // bottom material
+        Shape mat = new Shape(new SouthFace(), new NorthFace(), new TopFace());
+        mat.setSize(1 - 2 * width, 1 - width, Door.DOOR_WIDTH * 0.6F).translate(width, width, Door.DOOR_WIDTH * 0.2F);
+        mat.applyMatrix();
 
-		Shape bottom = new Shape();
-		bottom.addFaces(frame.getFaces(), "frame");
-		bottom.addFaces(mat.getFaces(), "material");
-		bottom.interpolateUV();
-		bottom.storeState();
+        Shape bottom = new Shape();
+        bottom.addFaces(frame.getFaces(), "frame");
+        bottom.addFaces(mat.getFaces(), "material");
+        bottom.interpolateUV();
+        bottom.storeState();
 
-		/**
-		 * TOP
-		 */
-		frameR = new Shape(frameR);
-		frameL = new Shape(frameL);
-		frameH = new Shape(frameH);
-		frameH.translate(0, 1 - width, 0);
+        /**
+         * TOP
+         */
+        frameR = new Shape(frameR);
+        frameL = new Shape(frameL);
+        frameH = new Shape(frameH);
+        frameH.translate(0, 1 - width, 0);
 
-		//full top frame
-		frame = Shape.fromShapes(frameR, frameL, frameH);
-		frame.scale(1, 1, 0.995F); //scale frame to prevent z-fighting when slid in walls
-		frame.applyMatrix();
+        // full top frame
+        frame = Shape.fromShapes(frameR, frameL, frameH);
+        frame.scale(1, 1, 0.995F); // scale frame to prevent z-fighting when slid in walls
+        frame.applyMatrix();
 
-		//top material
-		mat = new Shape(mat);
-		mat.translate(0, -width, 0);
-		mat.applyMatrix();
+        // top material
+        mat = new Shape(mat);
+        mat.translate(0, -width, 0);
+        mat.applyMatrix();
 
-		Shape top = new Shape();
-		top.addFaces(frame.getFaces(), "frame");
-		top.addFaces(mat.getFaces(), "material");
-		top.translate(0, 1, 0);
-		top.interpolateUV();
-		top.storeState();
+        Shape top = new Shape();
+        top.addFaces(frame.getFaces(), "frame");
+        top.addFaces(mat.getFaces(), "material");
+        top.translate(0, 1, 0);
+        top.interpolateUV();
+        top.storeState();
 
-		//store top and bottom inside a model
-		model = new MalisisModel();
-		model.addShape("bottom", bottom);
-		model.addShape("top", top);
-		model.storeState();
+        // store top and bottom inside a model
+        model = new MalisisModel();
+        model.addShape("bottom", bottom);
+        model.addShape("top", top);
+        model.storeState();
 
-		initParams();
-	}
+        initParams();
+    }
 
-	@Override
-	public void render()
-	{
-		initialize();
-		if (renderType == RenderType.ITEM_INVENTORY)
-		{
-			if (itemStack.stackTagCompound == null)
-				return;
-			renderInventory();
-			return;
-		}
+    @Override
+    public void render() {
+        initialize();
+        if (renderType == RenderType.ITEM_INVENTORY) {
+            if (itemStack.stackTagCompound == null) return;
+            renderInventory();
+            return;
+        }
 
-		super.render();
-	}
+        super.render();
+    }
 
-	@Override
-	protected void setTileEntity()
-	{
-		super.setTileEntity();
-		this.tileEntity = (CustomDoorTileEntity) super.tileEntity;
-	}
+    @Override
+    protected void setTileEntity() {
+        super.setTileEntity();
+        this.tileEntity = (CustomDoorTileEntity) super.tileEntity;
+    }
 
-	private void setInfos(CustomDoorTileEntity te)
-	{
-		frameBlock = te.getFrame();
-		topMaterialBlock = te.getTopMaterial();
-		bottomMaterialBlock = te.getBottomMaterial();
+    private void setInfos(CustomDoorTileEntity te) {
+        frameBlock = te.getFrame();
+        topMaterialBlock = te.getTopMaterial();
+        bottomMaterialBlock = te.getBottomMaterial();
 
-		frameMetadata = te.getFrameMetadata();
-		topMaterialMetadata = te.getTopMaterialMetadata();
-		bottomMaterialMetadata = te.getBottomMaterialMetadata();
-	}
+        frameMetadata = te.getFrameMetadata();
+        topMaterialMetadata = te.getTopMaterialMetadata();
+        bottomMaterialMetadata = te.getBottomMaterialMetadata();
+    }
 
-	private void setInfos(NBTTagCompound nbt)
-	{
-		frameBlock = Block.getBlockById(nbt.getInteger("frame"));
-		topMaterialBlock = Block.getBlockById(nbt.getInteger("topMaterial"));
-		bottomMaterialBlock = Block.getBlockById(nbt.getInteger("bottomMaterial"));
+    private void setInfos(NBTTagCompound nbt) {
+        frameBlock = Block.getBlockById(nbt.getInteger("frame"));
+        topMaterialBlock = Block.getBlockById(nbt.getInteger("topMaterial"));
+        bottomMaterialBlock = Block.getBlockById(nbt.getInteger("bottomMaterial"));
 
-		frameMetadata = nbt.getInteger("frameMetadata");
-		topMaterialMetadata = nbt.getInteger("topMaterialMetadata");
-		bottomMaterialMetadata = nbt.getInteger("bottomMaterialMetadata");
-	}
+        frameMetadata = nbt.getInteger("frameMetadata");
+        topMaterialMetadata = nbt.getInteger("topMaterialMetadata");
+        bottomMaterialMetadata = nbt.getInteger("bottomMaterialMetadata");
+    }
 
-	@Override
-	protected void setup()
-	{
-		model.resetState();
+    @Override
+    protected void setup() {
+        model.resetState();
 
-		if (renderType == RenderType.TESR_WORLD)
-			setInfos(tileEntity);
-		else
-			setInfos(itemStack.stackTagCompound);
+        if (renderType == RenderType.TESR_WORLD) setInfos(tileEntity);
+        else setInfos(itemStack.stackTagCompound);
 
-		if (frameBlock == null)
-			return;
+        if (frameBlock == null) return;
 
-		setupParams(true);
-		setupParams(false);
+        setupParams(true);
+        setupParams(false);
 
-		if (renderType == RenderType.TESR_WORLD)
-			super.setup();
-		else
-		{
-			if (itemRenderType == ItemRenderType.INVENTORY)
-			{
-				model.rotate(45, 0, 1, 0, 0, 0, 0);
-				model.scale(0.9F, 0.8F, 1, 0, 0, 0);
-				model.translate(0, -1F, 0);
-			}
-			else if (itemRenderType == ItemRenderType.EQUIPPED_FIRST_PERSON)
-				model.rotate(90, 0, 1, 0, 0, 0, 0);
-			else if (itemRenderType == ItemRenderType.ENTITY)
-			{
-				model.translate(-0.5F, -0.5F, -0.25F);
-				model.scale(0.5F, 0.5F, 0.5F, 0, 0, 0);
-			}
-			else if (itemRenderType == ItemRenderType.EQUIPPED)
-				model.rotate(180, 0, 1, 0, 0, 0, 0);
-		}
-	}
+        if (renderType == RenderType.TESR_WORLD) super.setup();
+        else {
+            if (itemRenderType == ItemRenderType.INVENTORY) {
+                model.rotate(45, 0, 1, 0, 0, 0, 0);
+                model.scale(0.9F, 0.8F, 1, 0, 0, 0);
+                model.translate(0, -1F, 0);
+            } else if (itemRenderType == ItemRenderType.EQUIPPED_FIRST_PERSON) model.rotate(90, 0, 1, 0, 0, 0, 0);
+            else if (itemRenderType == ItemRenderType.ENTITY) {
+                model.translate(-0.5F, -0.5F, -0.25F);
+                model.scale(0.5F, 0.5F, 0.5F, 0, 0, 0);
+            } else if (itemRenderType == ItemRenderType.EQUIPPED) model.rotate(180, 0, 1, 0, 0, 0, 0);
+        }
+    }
 
-	private void setupParams(boolean topBlock)
-	{
-		//reset alpha before so it doesn't bleed to the shapes
-		rp.alpha.reset();
+    private void setupParams(boolean topBlock) {
+        // reset alpha before so it doesn't bleed to the shapes
+        rp.alpha.reset();
 
-		Shape s = model.getShape(topBlock ? "top" : "bottom");
-		rp.icon.set(frameBlock.getIcon(2, frameMetadata));
-		rp.colorMultiplier.set(getColor(frameBlock));
-		s.setParameters("frame", rp, true);
+        Shape s = model.getShape(topBlock ? "top" : "bottom");
+        rp.icon.set(frameBlock.getIcon(2, frameMetadata));
+        rp.colorMultiplier.set(getColor(frameBlock));
+        s.setParameters("frame", rp, true);
 
-		Block block = topBlock ? topMaterialBlock : bottomMaterialBlock;
-		int meta = topBlock ? topMaterialMetadata : bottomMaterialMetadata;
-		rp.icon.set(block.getIcon(2, meta));
-		rp.colorMultiplier.set(getColor(block));
-		s.setParameters("material", rp, true);
+        Block block = topBlock ? topMaterialBlock : bottomMaterialBlock;
+        int meta = topBlock ? topMaterialMetadata : bottomMaterialMetadata;
+        rp.icon.set(block.getIcon(2, meta));
+        rp.colorMultiplier.set(getColor(block));
+        s.setParameters("material", rp, true);
 
-		//reset the values to default as rp is used for the whole shape
-		rp.icon.reset();
-		rp.colorMultiplier.reset();
-	}
+        // reset the values to default as rp is used for the whole shape
+        rp.icon.reset();
+        rp.colorMultiplier.reset();
+    }
 
-	private int getColor(Block block)
-	{
-		if (block == Blocks.grass)
-			return 0xFFFFFF;
-		return renderType == RenderType.TESR_WORLD ? block.colorMultiplier(world, x, y, z) : block.getBlockColor();
-	}
+    private int getColor(Block block) {
+        if (block == Blocks.grass) return 0xFFFFFF;
+        return renderType == RenderType.TESR_WORLD ? block.colorMultiplier(world, x, y, z) : block.getBlockColor();
+    }
 
-	private void renderInventory()
-	{
-		bindTexture(TextureMap.locationBlocksTexture);
-		enableBlending();
+    private void renderInventory() {
+        bindTexture(TextureMap.locationBlocksTexture);
+        enableBlending();
 
-		setup();
+        setup();
 
-		model.render(this, rp);
-	}
+        model.render(this, rp);
+    }
 
-	@Override
-	public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper)
-	{
-		return true;
-	}
+    @Override
+    public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
+        return true;
+    }
 }

@@ -39,47 +39,43 @@ import net.minecraft.util.AxisAlignedBB;
  * @author Ordinastie
  *
  */
-public class CarriageDoorMovement implements IDoorMovement
-{
-	@Override
-	public AxisAlignedBB getBoundingBox(DoorTileEntity tileEntity, boolean left, BoundingBoxType type)
-	{
-		//not called
-		return null;
-	}
+public class CarriageDoorMovement implements IDoorMovement {
+    @Override
+    public AxisAlignedBB getBoundingBox(DoorTileEntity tileEntity, boolean left, BoundingBoxType type) {
+        // not called
+        return null;
+    }
 
-	/**
-	 * @param b
-	 * @return
-	 */
-	private Transformation getRotation(DoorTileEntity tileEntity, boolean right)
-	{
-		float fz = 0.5F - Door.DOOR_WIDTH / 2;
-		float fx = 0;
-		float angle = 105;
-		if (right)
-		{
-			fx = 3;
-			angle = -angle;
-		}
+    /**
+     * @param b
+     * @return
+     */
+    private Transformation getRotation(DoorTileEntity tileEntity, boolean right) {
+        float fz = 0.5F - Door.DOOR_WIDTH / 2;
+        float fx = 0;
+        float angle = 105;
+        if (right) {
+            fx = 3;
+            angle = -angle;
+        }
 
-		Rotation rotation = new Rotation(angle).aroundAxis(0, 1, 0).offset(fx, 0, fz);
-		rotation.reversed(tileEntity.getState() == DoorState.CLOSING || tileEntity.getState() == DoorState.CLOSED);
-		rotation.forTicks(tileEntity.getDescriptor().getOpeningTime());
+        Rotation rotation = new Rotation(angle).aroundAxis(0, 1, 0).offset(fx, 0, fz);
+        rotation.reversed(tileEntity.getState() == DoorState.CLOSING || tileEntity.getState() == DoorState.CLOSED);
+        rotation.forTicks(tileEntity.getDescriptor().getOpeningTime());
 
-		return rotation;
-	}
+        return rotation;
+    }
 
-	@Override
-	public Animation[] getAnimations(DoorTileEntity tileEntity, MalisisModel model, RenderParameters rp)
-	{
-		return new Animation[] { new Animation(model.getShape("left"), getRotation(tileEntity, false)),
-				new Animation(model.getShape("right"), getRotation(tileEntity, true)) };
-	}
+    @Override
+    public Animation[] getAnimations(DoorTileEntity tileEntity, MalisisModel model, RenderParameters rp) {
+        return new Animation[] {
+            new Animation(model.getShape("left"), getRotation(tileEntity, false)),
+            new Animation(model.getShape("right"), getRotation(tileEntity, true))
+        };
+    }
 
-	@Override
-	public boolean isSpecial()
-	{
-		return true;
-	}
+    @Override
+    public boolean isSpecial() {
+        return true;
+    }
 }

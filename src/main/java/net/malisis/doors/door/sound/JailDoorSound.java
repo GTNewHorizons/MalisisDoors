@@ -29,17 +29,13 @@ import net.malisis.doors.door.DoorState;
 
 /**
  * @author Ordinastie
- * 
+ *
  */
-public class JailDoorSound implements IDoorSound
-{
+public class JailDoorSound implements IDoorSound {
 
-	@Override
-	public String getSoundPath(DoorState state)
-	{
-		if (state == DoorState.OPENING || state == DoorState.CLOSING)
-			return MalisisDoors.modid + ":jaildoor";
-		return null;
-	}
-
+    @Override
+    public String getSoundPath(DoorState state) {
+        if (state == DoorState.OPENING || state == DoorState.CLOSING) return MalisisDoors.modid + ":jaildoor";
+        return null;
+    }
 }

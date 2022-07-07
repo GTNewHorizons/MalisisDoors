@@ -24,85 +24,77 @@
 
 package net.malisis.doors.network;
 
+import cpw.mods.fml.common.network.simpleimpl.IMessage;
+import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
+import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import cpw.mods.fml.relauncher.Side;
 import io.netty.buffer.ByteBuf;
 import net.malisis.core.network.MalisisMessage;
 import net.malisis.doors.MalisisDoors;
 import net.malisis.doors.door.block.Door;
 import net.malisis.doors.door.tileentity.DoorTileEntity;
 import net.minecraft.world.World;
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
-import cpw.mods.fml.relauncher.Side;
 
 /**
  * @author Ordinastie
  *
  */
 @MalisisMessage
-public class DigicodeMessage implements IMessageHandler<DigicodeMessage.Packet, IMessage>
-{
-	public DigicodeMessage()
-	{
-		MalisisDoors.network.registerMessage(this, DigicodeMessage.Packet.class, Side.SERVER);
-	}
+public class DigicodeMessage implements IMessageHandler<DigicodeMessage.Packet, IMessage> {
+    public DigicodeMessage() {
+        MalisisDoors.network.registerMessage(this, DigicodeMessage.Packet.class, Side.SERVER);
+    }
 
-	@Override
-	public IMessage onMessage(Packet message, MessageContext ctx)
-	{
-		World world = ctx.getServerHandler().playerEntity.worldObj;
-		DoorTileEntity te = Door.getDoor(world, message.x, message.y, message.z);
-		if (te == null)
-			return null;
+    @Override
+    public IMessage onMessage(Packet message, MessageContext ctx) {
+        World world = ctx.getServerHandler().playerEntity.worldObj;
+        DoorTileEntity te = Door.getDoor(world, message.x, message.y, message.z);
+        if (te == null) return null;
 
-		te.openOrCloseDoor();
+        te.openOrCloseDoor();
 
-		if (te.getDescriptor().getAutoCloseTime() > 0 && !te.isOpened())
-			world.scheduleBlockUpdate(message.x, message.y, message.z, world.getBlock(message.x, message.y, message.z), te.getDescriptor()
-					.getAutoCloseTime() + te.getDescriptor().getOpeningTime());
+        if (te.getDescriptor().getAutoCloseTime() > 0 && !te.isOpened())
+            world.scheduleBlockUpdate(
+                    message.x,
+                    message.y,
+                    message.z,
+                    world.getBlock(message.x, message.y, message.z),
+                    te.getDescriptor().getAutoCloseTime() + te.getDescriptor().getOpeningTime());
 
-		return null;
+        return null;
+    }
 
-	}
+    public static void send(DoorTileEntity te) {
+        MalisisDoors.network.sendToServer(new Packet(te));
+    }
 
-	public static void send(DoorTileEntity te)
-	{
-		MalisisDoors.network.sendToServer(new Packet(te));
-	}
+    /**
+     * @author Ordinastie
+     *
+     */
+    public static class Packet implements IMessage {
+        private int x, y, z;
 
-	/**
-	 * @author Ordinastie
-	 *
-	 */
-	public static class Packet implements IMessage
-	{
-		private int x, y, z;
+        public Packet(DoorTileEntity te) {
+            x = te.xCoord;
+            y = te.yCoord;
+            z = te.zCoord;
+        }
 
-		public Packet(DoorTileEntity te)
-		{
-			x = te.xCoord;
-			y = te.yCoord;
-			z = te.zCoord;
-		}
+        public Packet() {}
 
-		public Packet()
-		{}
+        @Override
+        public void fromBytes(ByteBuf buf) {
+            x = buf.readInt();
+            y = buf.readInt();
+            z = buf.readInt();
+        }
 
-		@Override
-		public void fromBytes(ByteBuf buf)
-		{
-			x = buf.readInt();
-			y = buf.readInt();
-			z = buf.readInt();
-		}
-
-		@Override
-		public void toBytes(ByteBuf buf)
-		{
-			buf.writeInt(x);
-			buf.writeInt(y);
-			buf.writeInt(z);
-		}
-	}
-
+        @Override
+        public void toBytes(ByteBuf buf) {
+            buf.writeInt(x);
+            buf.writeInt(y);
+            buf.writeInt(z);
+        }
+    }
 }

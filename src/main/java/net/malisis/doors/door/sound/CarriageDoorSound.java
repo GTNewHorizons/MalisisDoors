@@ -31,18 +31,12 @@ import net.malisis.doors.door.DoorState;
  * @author Ordinastie
  *
  */
-public class CarriageDoorSound implements IDoorSound
-{
-	@Override
-	public String getSoundPath(DoorState state)
-	{
-		if (state == DoorState.CLOSED)
-			return MalisisDoors.modid + ":carriage_closed";
-		else if (state == DoorState.OPENING)
-			return MalisisDoors.modid + ":carriage_opening";
-		else if (state == DoorState.CLOSING)
-			return MalisisDoors.modid + ":carriage_closing";
-		return null;
-	}
-
+public class CarriageDoorSound implements IDoorSound {
+    @Override
+    public String getSoundPath(DoorState state) {
+        if (state == DoorState.CLOSED) return MalisisDoors.modid + ":carriage_closed";
+        else if (state == DoorState.OPENING) return MalisisDoors.modid + ":carriage_opening";
+        else if (state == DoorState.CLOSING) return MalisisDoors.modid + ":carriage_closing";
+        return null;
+    }
 }

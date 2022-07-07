@@ -38,27 +38,25 @@ import net.minecraft.init.Items;
  * @author Ordinastie
  *
  */
-public class GlassDoor extends DoorDescriptor
-{
-	public GlassDoor(Material material)
-	{
-		boolean wood = material == Material.wood;
-		//Block
-		setMaterial(material);
-		setHardness(wood ? 2.0F : 3.0F);
-		setSoundType(wood ? Block.soundTypeWood : Block.soundTypeMetal);
-		setName(wood ? "wood_sliding_door" : "iron_sliding_door");
-		setTextureName(MalisisDoors.modid + ":" + (wood ? "sliding_door_wood" : "sliding_door_iron"));
+public class GlassDoor extends DoorDescriptor {
+    public GlassDoor(Material material) {
+        boolean wood = material == Material.wood;
+        // Block
+        setMaterial(material);
+        setHardness(wood ? 2.0F : 3.0F);
+        setSoundType(wood ? Block.soundTypeWood : Block.soundTypeMetal);
+        setName(wood ? "wood_sliding_door" : "iron_sliding_door");
+        setTextureName(MalisisDoors.modid + ":" + (wood ? "sliding_door_wood" : "sliding_door_iron"));
 
-		//te
-		setRequireRedstone(!wood);
-		setMovement(DoorRegistry.getMovement(SlidingDoorMovement.class));
-		setSound(DoorRegistry.getSound(GlassDoorSound.class));
+        // te
+        setRequireRedstone(!wood);
+        setMovement(DoorRegistry.getMovement(SlidingDoorMovement.class));
+        setSound(DoorRegistry.getSound(GlassDoorSound.class));
 
-		//Item
-		setTab(MalisisDoors.tab);
+        // Item
+        setTab(MalisisDoors.tab);
 
-		//recipe
-		setOreDictRecipe("AB", "AB", "AB", 'A', wood ? Blocks.planks : Items.iron_ingot, 'B', "blockGlassColorless");
-	}
+        // recipe
+        setOreDictRecipe("AB", "AB", "AB", 'A', wood ? Blocks.planks : Items.iron_ingot, 'B', "blockGlassColorless");
+    }
 }
