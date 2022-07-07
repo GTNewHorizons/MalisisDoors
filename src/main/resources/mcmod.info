@@ -1,16 +1,21 @@
-[
 {
-  "modid": "malisisdoors",
-  "name": "Malisis' Doors",
-  "description": "Better doors!",
-  "version": "${version}",
-  "logoFile": "malisisdoors.png",
-  "mcversion": "${mcversion}",
-  "url": "http://github.com/ordinastie",
-  "updateUrl": "",
-  "authors": [ "Ordinastie" ],
-  "parent":"",
-  "screenshots": []
-		
+	"modListVersion": 2,
+	"modList": [{
+		"modid": "${modId}",
+		"name": "${modName}",
+		"description": "Better doors!",
+		"version": "${modVersion}",
+		"mcversion": "${minecraftVersion}",
+		"url": "https://github.com/Ordinastie/MalisisDoors",
+		"updateUrl": "",
+		"authorList": ["Ordinastie"],
+		"credits": "",
+		"logoFile": "malisisdoors.png",
+		"screenshots": [],
+		"parent": "",
+		"requiredMods": [],
+		"dependencies": [],
+		"dependants": [],
+		"useDependencyInformation": true
+	}]
 }
-]

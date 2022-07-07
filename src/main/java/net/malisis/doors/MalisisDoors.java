@@ -36,7 +36,7 @@ public class MalisisDoors implements IMalisisMod
 
 	public static final String modid = "malisisdoors";
 	public static final String modname = "Malisis' Doors";
-	public static final String version = "${version}";
+	public static final String version = "GRADLETOKEN_VERSION";
 
 	public static MalisisDoors instance;
 	public static MalisisNetwork network;
