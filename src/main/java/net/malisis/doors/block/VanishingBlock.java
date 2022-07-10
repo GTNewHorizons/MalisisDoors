@@ -274,7 +274,7 @@ public class VanishingBlock extends BlockContainer {
         return Item.getItemFromBlock(MalisisDoors.Blocks.vanishingBlock);
     }
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @SuppressWarnings({"rawtypes", "unchecked"})
     @Override
     public void getSubBlocks(Item item, CreativeTabs tab, List list) {
         list.add(new ItemStack(item, 1, typeWoodFrame));

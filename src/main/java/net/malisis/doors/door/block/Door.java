@@ -310,7 +310,7 @@ public class Door extends BlockDoor implements ITileEntityProvider, IBoundingBox
         return new AxisAlignedBB[] {aabb};
     }
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @SuppressWarnings({"rawtypes", "unchecked"})
     @Override
     public void addCollisionBoxesToList(
             World world, int x, int y, int z, AxisAlignedBB mask, List list, Entity entity) {

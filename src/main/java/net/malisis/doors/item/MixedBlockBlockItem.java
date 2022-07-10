@@ -68,10 +68,12 @@ public class MixedBlockBlockItem extends ItemBlock {
 
         // metadatas
         int metadata1 = is1.getItemDamage();
-        if (is1.getItem() instanceof ItemBlock) metadata1 = ((ItemBlock) is1.getItem()).getMetadata(is1.getItemDamage());
+        if (is1.getItem() instanceof ItemBlock)
+            metadata1 = ((ItemBlock) is1.getItem()).getMetadata(is1.getItemDamage());
 
         int metadata2 = is2.getItemDamage();
-        if (is2.getItem() instanceof ItemBlock) metadata2 = ((ItemBlock) is2.getItem()).getMetadata(is2.getItemDamage());
+        if (is2.getItem() instanceof ItemBlock)
+            metadata2 = ((ItemBlock) is2.getItem()).getMetadata(is2.getItemDamage());
 
         // last check
         if (block1 == block2 && metadata1 == metadata2) return null;
@@ -105,7 +107,7 @@ public class MixedBlockBlockItem extends ItemBlock {
         return itemStack;
     }
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @SuppressWarnings({"rawtypes", "unchecked"})
     @Override
     public void addInformation(ItemStack itemStack, EntityPlayer player, List list, boolean advancedTooltip) {
         if (itemStack.stackTagCompound == null) return;

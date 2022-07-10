@@ -211,7 +211,8 @@ public class Registers {
         shojiDoorItem = desc.getItem();
 
         // Curtains
-        for (int i = 0; i < ItemDye.field_150921_b.length; i++) new Curtain(ItemDye.field_150921_b[i], ~i & 15).register();
+        for (int i = 0; i < ItemDye.field_150921_b.length; i++)
+            new Curtain(ItemDye.field_150921_b[i], ~i & 15).register();
     }
 
     private static void registerSaloonDoor() {

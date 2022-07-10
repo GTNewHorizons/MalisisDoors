@@ -29,7 +29,6 @@ import lombok.experimental.Delegate;
 import net.malisis.core.MalisisCore;
 import net.malisis.doors.entity.VanishingTileEntity;
 import net.minecraft.block.Block;
-import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.profiler.Profiler;
 import net.minecraft.tileentity.TileEntity;

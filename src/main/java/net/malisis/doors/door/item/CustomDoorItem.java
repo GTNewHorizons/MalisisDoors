@@ -127,8 +127,8 @@ public class CustomDoorItem extends DoorItem {
 
         int bottomMaterialMetadata = bottomMaterialItemStack.getItemDamage();
         if (bottomMaterialItemStack.getItem() instanceof ItemBlock)
-            bottomMaterialMetadata =
-                    ((ItemBlock) bottomMaterialItemStack.getItem()).getMetadata(bottomMaterialItemStack.getItemDamage());
+            bottomMaterialMetadata = ((ItemBlock) bottomMaterialItemStack.getItem())
+                    .getMetadata(bottomMaterialItemStack.getItemDamage());
 
         // NBT
         NBTTagCompound nbt = new NBTTagCompound();
@@ -183,7 +183,7 @@ public class CustomDoorItem extends DoorItem {
         return EnumRarity.rare;
     }
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @SuppressWarnings({"rawtypes", "unchecked"})
     @Override
     public void addInformation(ItemStack itemStack, EntityPlayer player, List list, boolean advancedTooltip) {
         if (itemStack.stackTagCompound == null) return;

@@ -53,8 +53,7 @@ public class RustyLadder extends BlockLadder {
     }
 
     @Override
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(
-            World worldIn, int x, int y, int z) {
+    public AxisAlignedBB getCollisionBoundingBoxFromPool(World worldIn, int x, int y, int z) {
         return null;
     }
 

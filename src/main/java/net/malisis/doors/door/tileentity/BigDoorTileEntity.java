@@ -99,7 +99,8 @@ public class BigDoorTileEntity extends DoorTileEntity {
         }
 
         super.setDoorState(newState);
-        if (getWorldObj() != null && moving && !this.moving) ChunkCollision.get().replaceBlocks(getWorldObj(), state);
+        if (getWorldObj() != null && moving && !this.moving)
+            ChunkCollision.get().replaceBlocks(getWorldObj(), state);
     }
 
     @Override
