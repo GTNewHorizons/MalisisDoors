@@ -59,7 +59,7 @@ public class MixedBlock extends Block implements ITileEntityProvider {
     }
 
     @Override
-    public void registerBlockIcons(IIconRegister p_149651_1_) {}
+    public void registerBlockIcons(IIconRegister reg) {}
 
     @Override
     public int onBlockPlaced(
