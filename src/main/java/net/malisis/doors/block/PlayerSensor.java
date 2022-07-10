@@ -22,12 +22,12 @@ public class PlayerSensor extends Block {
     public PlayerSensor() {
         super(Material.circuits);
         setCreativeTab(MalisisDoors.tab);
-        setUnlocalizedName("player_sensor");
+        setBlockName("player_sensor");
     }
 
     @SideOnly(Side.CLIENT)
     @Override
-    public void registerIcons(IIconRegister iconRegister) {
+    public void registerBlockIcons(IIconRegister iconRegister) {
         this.blockIcon = iconRegister.registerIcon(
                 MalisisDoors.modid + ":" + (this.getUnlocalizedName().substring(5)));
     }
@@ -163,6 +163,7 @@ public class PlayerSensor extends Block {
     /**
      * Ticks the block if it's been scheduled
      */
+    @SuppressWarnings("rawtypes")
     @Override
     public void updateTick(World world, int x, int y, int z, Random rand) {
         if (!world.isRemote) {

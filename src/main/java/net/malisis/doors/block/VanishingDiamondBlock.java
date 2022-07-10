@@ -45,7 +45,7 @@ public class VanishingDiamondBlock extends VanishingBlock {
 
     public VanishingDiamondBlock() {
         super();
-        setUnlocalizedName("vanishing_block_diamond");
+        setBlockName("vanishing_block_diamond");
     }
 
     @Override
@@ -83,6 +83,7 @@ public class VanishingDiamondBlock extends VanishingBlock {
         return true;
     }
 
+    @SuppressWarnings("rawtypes")
     @Override
     public void getSubBlocks(Item item, CreativeTabs tab, List list) {}
 

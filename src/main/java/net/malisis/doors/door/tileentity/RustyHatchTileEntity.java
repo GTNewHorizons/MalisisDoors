@@ -53,8 +53,8 @@ public class RustyHatchTileEntity extends DoorTileEntity implements MultiBlock.I
     }
 
     private int getOriginMetadata() {
-        if (getWorld() == null || multiBlock == null) return 0;
-        return getWorld().getBlockMetadata(multiBlock.getX(), multiBlock.getY(), multiBlock.getZ());
+        if (getWorldObj() == null || multiBlock == null) return 0;
+        return getWorldObj().getBlockMetadata(multiBlock.getX(), multiBlock.getY(), multiBlock.getZ());
     }
 
     @Override
@@ -91,7 +91,7 @@ public class RustyHatchTileEntity extends DoorTileEntity implements MultiBlock.I
         if (z == zCoord && (dir == ForgeDirection.NORTH || dir == ForgeDirection.SOUTH)) return false;
         if (x == xCoord && (dir == ForgeDirection.WEST || dir == ForgeDirection.EAST)) return false;
 
-        return getWorld().isSideSolid(x + dir.offsetX, y, z + dir.offsetZ, dir.getOpposite());
+        return getWorldObj().isSideSolid(x + dir.offsetX, y, z + dir.offsetZ, dir.getOpposite());
     }
 
     @Override

@@ -71,7 +71,7 @@ public class VanishingBlock extends BlockContainer {
 
     public VanishingBlock() {
         super(Material.wood);
-        setUnlocalizedName("vanishing_block");
+        setBlockName("vanishing_block");
         setCreativeTab(MalisisDoors.tab);
         setHardness(0.5F);
     }
@@ -79,7 +79,7 @@ public class VanishingBlock extends BlockContainer {
     // #region Icons
     @SideOnly(Side.CLIENT)
     @Override
-    public void registerIcons(IIconRegister register) {
+    public void registerBlockIcons(IIconRegister register) {
         icons[typeWoodFrame] = register.registerIcon(MalisisDoors.modid + ":vanishing_block_wood");
         icons[typeIronFrame] = register.registerIcon(MalisisDoors.modid + ":vanishing_block_iron");
         icons[typeGoldFrame] = register.registerIcon(MalisisDoors.modid + ":vanishing_block_gold");
@@ -214,6 +214,7 @@ public class VanishingBlock extends BlockContainer {
         }
     }
 
+    @SuppressWarnings("rawtypes")
     @Override
     public void addCollisionBoxesToList(
             World world, int x, int y, int z, AxisAlignedBB mask, List list, Entity entity) {
@@ -273,6 +274,7 @@ public class VanishingBlock extends BlockContainer {
         return Item.getItemFromBlock(MalisisDoors.Blocks.vanishingBlock);
     }
 
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
     public void getSubBlocks(Item item, CreativeTabs tab, List list) {
         list.add(new ItemStack(item, 1, typeWoodFrame));

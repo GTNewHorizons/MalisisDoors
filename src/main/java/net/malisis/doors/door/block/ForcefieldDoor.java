@@ -59,8 +59,8 @@ public class ForcefieldDoor extends Block implements ITileEntityProvider {
         setResistance(60000000);
         setBlockUnbreakable();
         setStepSound(soundTypePiston);
-        setUnlocalizedName("forcefieldDoor");
-        setTextureName(MalisisDoors.modid + ":forcefield");
+        setBlockName("forcefieldDoor");
+        setBlockTextureName(MalisisDoors.modid + ":forcefield");
     }
 
     @Override

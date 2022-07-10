@@ -80,12 +80,12 @@ public class BigDoor extends MalisisBlock implements ITileEntityProvider, IChunk
         setHardness(5.0F);
         setResistance(10.0F);
         setStepSound(soundTypeStone);
-        setUnlocalizedName(type.name);
+        setBlockName(type.name);
         setCreativeTab(MalisisDoors.tab);
     }
 
     @Override
-    public void registerIcons(IIconRegister register) {
+    public void registerBlockIcons(IIconRegister register) {
         blockIcon = register.registerIcon(MalisisDoors.modid + ":" + type.name);
     }
 

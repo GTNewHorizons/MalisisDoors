@@ -29,6 +29,7 @@ import lombok.experimental.Delegate;
 import net.malisis.core.MalisisCore;
 import net.malisis.doors.entity.VanishingTileEntity;
 import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.profiler.Profiler;
 import net.minecraft.tileentity.TileEntity;
@@ -39,7 +40,7 @@ import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.storage.WorldInfo;
 
 public class ProxyAccess {
-    private static WeakHashMap<IBlockAccess, IBlockAccess> cache = new WeakHashMap();
+    private static WeakHashMap<IBlockAccess, IBlockAccess> cache = new WeakHashMap<>();
     private static World tmpCache;
     private static boolean worldInstanciationFailed = false;
 
@@ -219,7 +220,7 @@ public class ProxyAccess {
         public void calculateInitialWeatherBody() {}
 
         @Override
-        protected int getRenderDistanceChunks() {
+        protected int func_152379_p() {
             return 0;
         }
     }

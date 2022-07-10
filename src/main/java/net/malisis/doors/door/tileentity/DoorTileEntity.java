@@ -121,8 +121,8 @@ public class DoorTileEntity extends TileEntity {
     }
 
     public boolean isPowered() {
-        return getWorld().isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord)
-                || getWorld().isBlockIndirectlyGettingPowered(xCoord, yCoord + 1, zCoord);
+        return getWorldObj().isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord)
+                || getWorldObj().isBlockIndirectlyGettingPowered(xCoord, yCoord + 1, zCoord);
     }
 
     public boolean isCentered() {
@@ -177,7 +177,7 @@ public class DoorTileEntity extends TileEntity {
         if (state == newState) return;
 
         state = newState;
-        if (getWorld() == null) return;
+        if (getWorldObj() == null) return;
 
         if (state == DoorState.CLOSING || state == DoorState.OPENING) {
             if (moving) {
@@ -208,7 +208,7 @@ public class DoorTileEntity extends TileEntity {
 
         String soundPath = null;
         if (descriptor.getSound() != null) soundPath = descriptor.getSound().getSoundPath(state);
-        if (soundPath != null) getWorld().playSoundEffect(xCoord, yCoord, zCoord, soundPath, 1F, 1F);
+        if (soundPath != null) getWorldObj().playSoundEffect(xCoord, yCoord, zCoord, soundPath, 1F, 1F);
     }
 
     /**
@@ -312,7 +312,7 @@ public class DoorTileEntity extends TileEntity {
 
     @Override
     public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet) {
-        this.readFromNBT(packet.getNbtCompound());
+        this.readFromNBT(packet.func_148857_g());
     }
 
     // #end NBT/Network

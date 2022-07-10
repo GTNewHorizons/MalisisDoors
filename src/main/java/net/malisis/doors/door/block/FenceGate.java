@@ -84,7 +84,7 @@ public class FenceGate extends BlockFenceGate implements ITileEntityProvider {
         setHardness(2.0F);
         setResistance(5.0F);
         setStepSound(soundTypeWood);
-        setUnlocalizedName(type.name);
+        setBlockName(type.name);
 
         if (type != Type.OAK) setCreativeTab(MalisisDoors.tab);
     }
@@ -107,7 +107,7 @@ public class FenceGate extends BlockFenceGate implements ITileEntityProvider {
     }
 
     @Override
-    public void registerIcons(IIconRegister register) {
+    public void registerBlockIcons(IIconRegister register) {
         if (type == Type.CAMO)
             camoIcon = new MalisisIcon(MalisisDoors.modid + ":camo_fencegate").register((TextureMap) register);
     }

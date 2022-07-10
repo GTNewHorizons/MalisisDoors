@@ -51,12 +51,12 @@ public class BlockMixer extends Block implements ITileEntityProvider {
         super(Material.iron);
         setCreativeTab(MalisisDoors.tab);
         setHardness(3.0F);
-        setUnlocalizedName("block_mixer");
+        setBlockName("block_mixer");
     }
 
     @SideOnly(Side.CLIENT)
     @Override
-    public void registerIcons(IIconRegister iconRegister) {
+    public void registerBlockIcons(IIconRegister iconRegister) {
         this.blockIcon = iconRegister.registerIcon(
                 MalisisDoors.modid + ":" + (this.getUnlocalizedName().substring(5)) + "_side");
         this.frontIcon = iconRegister.registerIcon(
