@@ -243,8 +243,8 @@ public class ForcefieldItem extends Item {
 
         if (getEnergy(itemStack) >= getMaxEnergy()) return;
 
-        int energy = getEnergy(itemStack) + 1;
-        if (((EntityPlayer) entity).capabilities.isCreativeMode) energy += 19;
+        int energy = getEnergy(itemStack) + 20;
+        if (((EntityPlayer) entity).capabilities.isCreativeMode) energy += 20;
         setEnergy(itemStack, energy);
     }
 
