@@ -1,32 +1,20 @@
 /*
- * The MIT License (MIT)
- *
- * Copyright (c) 2014 Ordinastie
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
+ * The MIT License (MIT) Copyright (c) 2014 Ordinastie Permission is hereby granted, free of charge, to any person
+ * obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software
+ * without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute,
+ * sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
+ * subject to the following conditions: The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE
+ * AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+ * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
 package net.malisis.doors.block;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import java.util.ArrayList;
+
 import net.malisis.core.util.EntityUtils;
 import net.malisis.core.util.TileEntityUtils;
 import net.malisis.doors.MalisisDoorsSettings;
@@ -49,7 +37,11 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 public class MixedBlock extends Block implements ITileEntityProvider {
+
     public static int renderId = -1;
 
     public MixedBlock() {
@@ -62,8 +54,8 @@ public class MixedBlock extends Block implements ITileEntityProvider {
     public void registerBlockIcons(IIconRegister reg) {}
 
     @Override
-    public int onBlockPlaced(
-            World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int metadata) {
+    public int onBlockPlaced(World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ,
+            int metadata) {
         return side;
     }
 
@@ -120,8 +112,8 @@ public class MixedBlock extends Block implements ITileEntityProvider {
         MixedBlockTileEntity te = (MixedBlockTileEntity) world.getTileEntity(x, y, z);
         if (te == null || te.block1 == null || te.block2 == null) return true;
 
-        Block[] blocks = {te.block1, te.block2};
-        int[] metadata = {te.metadata1, te.metadata2};
+        Block[] blocks = { te.block1, te.block2 };
+        int[] metadata = { te.metadata1, te.metadata2 };
 
         ForgeDirection side = ForgeDirection.getOrientation(target.sideHit);
 
@@ -170,8 +162,8 @@ public class MixedBlock extends Block implements ITileEntityProvider {
         MixedBlockTileEntity te = (MixedBlockTileEntity) world.getTileEntity(x, y, z);
         if (te == null || te.block1 == null || te.block2 == null) return true;
 
-        Block[] blocks = {te.block1, te.block2};
-        int[] metadata = {te.metadata1, te.metadata2};
+        Block[] blocks = { te.block1, te.block2 };
+        int[] metadata = { te.metadata1, te.metadata2 };
 
         for (int i = 0; i < nb; ++i) {
             for (int j = 0; j < nb; ++j) {
@@ -242,8 +234,8 @@ public class MixedBlock extends Block implements ITileEntityProvider {
         if (block != this && !(block instanceof BlockBreakable)) return !block.isOpaqueCube();
 
         ForgeDirection op = ForgeDirection.getOrientation(side).getOpposite();
-        MixedBlockTileEntity current = TileEntityUtils.getTileEntity(
-                MixedBlockTileEntity.class, world, x + op.offsetX, y + op.offsetY, z + op.offsetZ);
+        MixedBlockTileEntity current = TileEntityUtils
+                .getTileEntity(MixedBlockTileEntity.class, world, x + op.offsetX, y + op.offsetY, z + op.offsetZ);
 
         return !isOpaque(world, x, y, z) && current.isOpaque();
     }

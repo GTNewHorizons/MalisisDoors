@@ -1,25 +1,14 @@
 /*
- * The MIT License (MIT)
- *
- * Copyright (c) 2014 Ordinastie
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
+ * The MIT License (MIT) Copyright (c) 2014 Ordinastie Permission is hereby granted, free of charge, to any person
+ * obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software
+ * without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute,
+ * sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
+ * subject to the following conditions: The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE
+ * AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+ * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
 package net.malisis.doors;
@@ -27,7 +16,6 @@ package net.malisis.doors;
 import static net.malisis.doors.MalisisDoors.Blocks.*;
 import static net.malisis.doors.MalisisDoors.Items.*;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import net.malisis.core.util.replacement.ReplacementTool;
 import net.malisis.doors.block.BlockMixer;
 import net.malisis.doors.block.DoorFactory;
@@ -87,7 +75,10 @@ import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
+import cpw.mods.fml.common.registry.GameRegistry;
+
 public class Registers {
+
     public static void init() {
         if (MalisisDoorsSettings.modifyVanillaDoors.get()) {
             registerVanillaDoors();
@@ -131,10 +122,10 @@ public class Registers {
     private static void registerVanillaDoors() {
         VanillaDoor woodDoor = new VanillaDoor(Material.wood);
         woodDoor.create();
-        ReplacementTool.replaceVanillaItem(
-                324, "wooden_door", "field_151135_aq", woodDoor.getItem(), Items.wooden_door);
-        ReplacementTool.replaceVanillaBlock(
-                64, "wooden_door", "field_150466_ao", woodDoor.getBlock(), Blocks.wooden_door);
+        ReplacementTool
+                .replaceVanillaItem(324, "wooden_door", "field_151135_aq", woodDoor.getItem(), Items.wooden_door);
+        ReplacementTool
+                .replaceVanillaBlock(64, "wooden_door", "field_150466_ao", woodDoor.getBlock(), Blocks.wooden_door);
 
         VanillaDoor ironDoor = new VanillaDoor(Material.iron);
         ironDoor.create();
@@ -145,8 +136,8 @@ public class Registers {
     private static void registerVanillaTrapDoor() {
         VanillaTrapDoor vanillaTrapDoor = new VanillaTrapDoor();
         vanillaTrapDoor.create();
-        ReplacementTool.replaceVanillaBlock(
-                96, "trapdoor", "field_150415_aT", vanillaTrapDoor.getBlock(), Blocks.trapdoor);
+        ReplacementTool
+                .replaceVanillaBlock(96, "trapdoor", "field_150415_aT", vanillaTrapDoor.getBlock(), Blocks.trapdoor);
     }
 
     private static void registerVanillaFenceGate() {
@@ -254,20 +245,20 @@ public class Registers {
     private static void registerPlayerSensor() {
         playerSensor = new PlayerSensor();
 
-        GameRegistry.registerBlock(
-                playerSensor, playerSensor.getUnlocalizedName().substring(5));
+        GameRegistry.registerBlock(playerSensor, playerSensor.getUnlocalizedName().substring(5));
 
         // Sensor recipe
-        GameRegistry.addRecipe(new ShapedOreRecipe(
-                new ItemStack(playerSensor),
-                "ABA",
-                "CCC",
-                'A',
-                Items.iron_ingot,
-                'B',
-                Items.redstone,
-                'C',
-                "blockGlassColorless"));
+        GameRegistry.addRecipe(
+                new ShapedOreRecipe(
+                        new ItemStack(playerSensor),
+                        "ABA",
+                        "CCC",
+                        'A',
+                        Items.iron_ingot,
+                        'B',
+                        Items.redstone,
+                        'C',
+                        "blockGlassColorless"));
     }
 
     private static void registerVanishingBlock() {
@@ -278,9 +269,7 @@ public class Registers {
                 vanishingBlock,
                 VanishingBlockItem.class,
                 vanishingBlock.getUnlocalizedName().substring(5));
-        GameRegistry.registerBlock(
-                vanishingDiamondBlock,
-                vanishingDiamondBlock.getUnlocalizedName().substring(5));
+        GameRegistry.registerBlock(vanishingDiamondBlock, vanishingDiamondBlock.getUnlocalizedName().substring(5));
 
         // Vanishing Block Recipes
         GameRegistry.addRecipe(
@@ -337,14 +326,11 @@ public class Registers {
         mixedBlock = new MixedBlock();
 
         GameRegistry.registerBlock(blockMixer, blockMixer.getUnlocalizedName().substring(5));
-        GameRegistry.registerBlock(
-                mixedBlock,
-                MixedBlockBlockItem.class,
-                mixedBlock.getUnlocalizedName().substring(5));
+        GameRegistry.registerBlock(mixedBlock, MixedBlockBlockItem.class, mixedBlock.getUnlocalizedName().substring(5));
 
         // Block Mixer recipe
-        GameRegistry.addRecipe(
-                new ItemStack(blockMixer), "AAA", "B B", "AAA", 'A', Items.iron_ingot, 'B', Blocks.piston);
+        GameRegistry
+                .addRecipe(new ItemStack(blockMixer), "AAA", "B B", "AAA", 'A', Items.iron_ingot, 'B', Blocks.piston);
 
         GameRegistry.registerTileEntity(BlockMixerTileEntity.class, "blockMixerTileEntity");
         GameRegistry.registerTileEntity(MixedBlockTileEntity.class, "mixedBlockTileEntity");
@@ -396,9 +382,9 @@ public class Registers {
         rustyHatch.register();
 
         rustyHandle = new Item() {
+
             @Override
-            public void registerIcons(IIconRegister register) {}
-            ;
+            public void registerIcons(IIconRegister register) {};
         }.setUnlocalizedName("rustyHandle").setCreativeTab(MalisisDoors.tab);
         GameRegistry.registerItem(rustyHandle, rustyHandle.getUnlocalizedName());
 
@@ -420,7 +406,9 @@ public class Registers {
         medievalDoor.register();
 
         GameRegistry.registerTileEntityWithAlternatives(
-                BigDoorTileEntity.class, "bigDoorTileEntity", "carriageDoorTileEntity");
+                BigDoorTileEntity.class,
+                "bigDoorTileEntity",
+                "carriageDoorTileEntity");
 
         GameRegistry.addRecipe(new BigDoorRecipe(BigDoor.Type.CARRIAGE));
         GameRegistry.addRecipe(new BigDoorRecipe(BigDoor.Type.MEDIEVAL));
@@ -428,8 +416,7 @@ public class Registers {
 
     private static void registerForcefieldDoor() {
         forcefieldDoor = new ForcefieldDoor();
-        GameRegistry.registerBlock(
-                forcefieldDoor, forcefieldDoor.getUnlocalizedName().substring(5));
+        GameRegistry.registerBlock(forcefieldDoor, forcefieldDoor.getUnlocalizedName().substring(5));
 
         forcefieldItem = new ForcefieldItem();
         GameRegistry.registerItem(forcefieldItem, forcefieldItem.getUnlocalizedName());

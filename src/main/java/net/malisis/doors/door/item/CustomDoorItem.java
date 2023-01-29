@@ -1,31 +1,21 @@
 /*
- * The MIT License (MIT)
- *
- * Copyright (c) 2014 Ordinastie
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
+ * The MIT License (MIT) Copyright (c) 2014 Ordinastie Permission is hereby granted, free of charge, to any person
+ * obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software
+ * without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute,
+ * sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
+ * subject to the following conditions: The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE
+ * AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+ * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
 package net.malisis.doors.door.item;
 
 import java.util.HashMap;
 import java.util.List;
+
 import net.malisis.doors.MalisisDoors;
 import net.malisis.doors.block.MixedBlock;
 import net.malisis.doors.door.DoorDescriptor;
@@ -50,6 +40,7 @@ import net.minecraft.world.World;
  *
  */
 public class CustomDoorItem extends DoorItem {
+
     private static HashMap<Item, Block> itemsAllowed = new HashMap<>();
 
     static {
@@ -75,24 +66,15 @@ public class CustomDoorItem extends DoorItem {
     public void registerIcons(IIconRegister par1IconRegister) {}
 
     @Override
-    public boolean onItemUse(
-            ItemStack itemStack,
-            EntityPlayer player,
-            World world,
-            int x,
-            int y,
-            int z,
-            int side,
-            float par8,
-            float par9,
-            float par10) {
+    public boolean onItemUse(ItemStack itemStack, EntityPlayer player, World world, int x, int y, int z, int side,
+            float par8, float par9, float par10) {
         boolean b = super.onItemUse(itemStack, player, world, x, y, z, side, par8, par9, par10);
-        //		if (b)
-        //		{
-        //			DoorTileEntity te = Door.getDoor(world, x, y + 1, z);
-        //			if (te instanceof CustomDoorTileEntity)
-        //				((CustomDoorTileEntity) te).onBlockPlaced(itemStack);
-        //		}
+        // if (b)
+        // {
+        // DoorTileEntity te = Door.getDoor(world, x, y + 1, z);
+        // if (te instanceof CustomDoorTileEntity)
+        // ((CustomDoorTileEntity) te).onBlockPlaced(itemStack);
+        // }
 
         return b;
     }
@@ -103,9 +85,9 @@ public class CustomDoorItem extends DoorItem {
         ItemStack frameItemStack = te.frameSlot.getItemStack();
         ItemStack topMaterialItemStack = te.topMaterialSlot.getItemStack();
         ItemStack bottomMaterialItemStack = te.bottomMaterialSlot.getItemStack();
-        if (!canBeUsedForDoor(frameItemStack, true)
-                || !canBeUsedForDoor(topMaterialItemStack, false)
-                || !canBeUsedForDoor(bottomMaterialItemStack, false)) return null;
+        if (!canBeUsedForDoor(frameItemStack, true) || !canBeUsedForDoor(topMaterialItemStack, false)
+                || !canBeUsedForDoor(bottomMaterialItemStack, false))
+            return null;
 
         // frame
         Block frameBlock = Block.getBlockFromItem(frameItemStack.getItem());
@@ -117,8 +99,8 @@ public class CustomDoorItem extends DoorItem {
 
         int topMaterialMetadata = topMaterialItemStack.getItemDamage();
         if (topMaterialItemStack.getItem() instanceof ItemBlock)
-            topMaterialMetadata =
-                    ((ItemBlock) topMaterialItemStack.getItem()).getMetadata(topMaterialItemStack.getItemDamage());
+            topMaterialMetadata = ((ItemBlock) topMaterialItemStack.getItem())
+                    .getMetadata(topMaterialItemStack.getItemDamage());
 
         // bottom material
         Block bottomMaterialBlock = itemsAllowed.get(bottomMaterialItemStack.getItem());
@@ -183,7 +165,7 @@ public class CustomDoorItem extends DoorItem {
         return EnumRarity.rare;
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
     public void addInformation(ItemStack itemStack, EntityPlayer player, List list, boolean advancedTooltip) {
         if (itemStack.stackTagCompound == null) return;
@@ -200,8 +182,9 @@ public class CustomDoorItem extends DoorItem {
         int bottomMaterialMetadata = itemStack.stackTagCompound.getInteger("bottomMaterialMetadata");
         ItemStack isBottomMaterial = new ItemStack(bottomMaterial, 0, bottomMaterialMetadata);
 
-        list.add(EnumChatFormatting.WHITE
-                + StatCollector.translateToLocal("door_movement." + itemStack.stackTagCompound.getString("movement")));
+        list.add(
+                EnumChatFormatting.WHITE + StatCollector
+                        .translateToLocal("door_movement." + itemStack.stackTagCompound.getString("movement")));
         list.addAll(isFrame.getTooltip(player, advancedTooltip));
         list.addAll(istopMaterial.getTooltip(player, advancedTooltip));
         list.addAll(isBottomMaterial.getTooltip(player, advancedTooltip));

@@ -1,30 +1,20 @@
 /*
- * The MIT License (MIT)
- *
- * Copyright (c) 2014 Ordinastie
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
+ * The MIT License (MIT) Copyright (c) 2014 Ordinastie Permission is hereby granted, free of charge, to any person
+ * obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software
+ * without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute,
+ * sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
+ * subject to the following conditions: The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE
+ * AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+ * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
 package net.malisis.doors.entity;
 
 import java.util.Random;
+
 import net.malisis.doors.MalisisDoors;
 import net.malisis.doors.MalisisDoorsSettings;
 import net.malisis.doors.ProxyAccess;
@@ -39,9 +29,11 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+
 import org.apache.commons.lang3.ArrayUtils;
 
 public class VanishingTileEntity extends TileEntity {
+
     public static final int maxTransitionTime = 8;
     public static final int maxVibratingTime = 15;
 
@@ -59,15 +51,8 @@ public class VanishingTileEntity extends TileEntity {
 
     private final Random rand = new Random();
 
-    private Block[] excludes = new Block[] {
-        MalisisDoors.Blocks.vanishingBlock,
-        Blocks.air,
-        Blocks.ladder,
-        Blocks.stone_button,
-        Blocks.wooden_button,
-        Blocks.lever,
-        Blocks.vine
-    };
+    private Block[] excludes = new Block[] { MalisisDoors.Blocks.vanishingBlock, Blocks.air, Blocks.ladder,
+            Blocks.stone_button, Blocks.wooden_button, Blocks.lever, Blocks.vine };
 
     public VanishingTileEntity() {
         this.frameType = VanishingBlock.typeWoodFrame;
@@ -126,7 +111,11 @@ public class VanishingTileEntity extends TileEntity {
         this.powered = powered;
         this.inTransition = true;
         worldObj.setBlockMetadataWithNotify(
-                xCoord, yCoord, zCoord, getBlockMetadata() | VanishingBlock.flagInTransition, 2);
+                xCoord,
+                yCoord,
+                zCoord,
+                getBlockMetadata() | VanishingBlock.flagInTransition,
+                2);
 
         return true;
     }
@@ -140,14 +129,22 @@ public class VanishingTileEntity extends TileEntity {
                 vibrating = true;
                 vibratingTimer = 0;
                 worldObj.setBlockMetadataWithNotify(
-                        xCoord, yCoord, zCoord, getBlockMetadata() | VanishingBlock.flagInTransition, 2);
+                        xCoord,
+                        yCoord,
+                        zCoord,
+                        getBlockMetadata() | VanishingBlock.flagInTransition,
+                        2);
             }
 
             if (vibrating && vibratingTimer++ >= maxVibratingTime) {
                 vibrating = false;
                 vibratingTimer = 0;
                 worldObj.setBlockMetadataWithNotify(
-                        xCoord, yCoord, zCoord, getBlockMetadata() & ~VanishingBlock.flagInTransition, 2);
+                        xCoord,
+                        yCoord,
+                        zCoord,
+                        getBlockMetadata() & ~VanishingBlock.flagInTransition,
+                        2);
             }
 
         } else if (inTransition) {
@@ -161,7 +158,11 @@ public class VanishingTileEntity extends TileEntity {
                     inTransition = false;
                     worldObj.spawnParticle("smoke", xCoord + 0.5F, yCoord + 0.5F, zCoord + 0.5F, 0.0F, 0.0F, 0.0F);
                     worldObj.setBlockMetadataWithNotify(
-                            xCoord, yCoord, zCoord, getBlockMetadata() & ~VanishingBlock.flagInTransition, 2);
+                            xCoord,
+                            yCoord,
+                            zCoord,
+                            getBlockMetadata() & ~VanishingBlock.flagInTransition,
+                            2);
                 }
             } else
             // shutting down => going visible
@@ -170,7 +171,11 @@ public class VanishingTileEntity extends TileEntity {
                 if (transitionTimer <= 0) {
                     inTransition = false;
                     worldObj.setBlockMetadataWithNotify(
-                            xCoord, yCoord, zCoord, getBlockMetadata() & ~VanishingBlock.flagInTransition, 2);
+                            xCoord,
+                            yCoord,
+                            zCoord,
+                            getBlockMetadata() & ~VanishingBlock.flagInTransition,
+                            2);
                 }
             }
         }

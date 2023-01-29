@@ -10,6 +10,7 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 
 public class MixedBlockTileEntity extends TileEntity {
+
     public Block block1;
     public Block block2;
     public int metadata1;

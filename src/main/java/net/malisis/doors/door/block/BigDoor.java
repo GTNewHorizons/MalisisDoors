@@ -1,30 +1,20 @@
 /*
- * The MIT License (MIT)
- *
- * Copyright (c) 2014 Ordinastie
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
+ * The MIT License (MIT) Copyright (c) 2014 Ordinastie Permission is hereby granted, free of charge, to any person
+ * obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software
+ * without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute,
+ * sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
+ * subject to the following conditions: The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE
+ * AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+ * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
 package net.malisis.doors.door.block;
 
 import java.util.ArrayList;
+
 import net.malisis.core.block.BoundingBoxType;
 import net.malisis.core.block.MalisisBlock;
 import net.malisis.core.util.AABBUtils;
@@ -56,7 +46,9 @@ import net.minecraftforge.common.util.ForgeDirection;
  *
  */
 public class BigDoor extends MalisisBlock implements ITileEntityProvider, IChunkCollidable, IBlockListener {
+
     public enum Type {
+
         CARRIAGE("carriage_door", net.minecraft.init.Items.wooden_door),
         MEDIEVAL("medieval_door", Items.doorSpruceItem);
 
@@ -115,8 +107,8 @@ public class BigDoor extends MalisisBlock implements ITileEntityProvider, IChunk
     }
 
     @Override
-    public boolean onBlockActivated(
-            World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX,
+            float hitY, float hitZ) {
         if (world.isRemote) return true;
 
         BigDoorTileEntity te = TileEntityUtils.getTileEntity(BigDoorTileEntity.class, world, x, y, z);
@@ -127,10 +119,10 @@ public class BigDoor extends MalisisBlock implements ITileEntityProvider, IChunk
     }
 
     @Override
-    public AxisAlignedBB[] getPlacedBoundingBox(
-            IBlockAccess world, int x, int y, int z, int side, EntityPlayer player, ItemStack itemStack) {
+    public AxisAlignedBB[] getPlacedBoundingBox(IBlockAccess world, int x, int y, int z, int side, EntityPlayer player,
+            ItemStack itemStack) {
         ForgeDirection dir = EntityUtils.getEntityFacing(player);
-        return AABBUtils.rotate(new AxisAlignedBB[] {defaultBoundingBox.copy()}, dir);
+        return AABBUtils.rotate(new AxisAlignedBB[] { defaultBoundingBox.copy() }, dir);
     }
 
     @Override
@@ -140,19 +132,15 @@ public class BigDoor extends MalisisBlock implements ITileEntityProvider, IChunk
 
         // MalisisCore.message(te.getDirection());
 
-        AxisAlignedBB[] aabbs = new AxisAlignedBB[] {defaultBoundingBox.copy()};
+        AxisAlignedBB[] aabbs = new AxisAlignedBB[] { defaultBoundingBox.copy() };
         if (type == BoundingBoxType.RENDER) {
             aabbs[0].minZ = -.5F;
-        } else if ((type == BoundingBoxType.COLLISION
-                        || type == BoundingBoxType.CHUNKCOLLISION
-                        || type == BoundingBoxType.RAYTRACE)
-                && (te.isOpened() || te.isMoving())) {
-            aabbs = new AxisAlignedBB[] {
-                AxisAlignedBB.getBoundingBox(0, 0, -0.5F, 0.5F, 4, 1),
-                AxisAlignedBB.getBoundingBox(3.5F, 0, -0.5F, 4, 4, 1),
-                AxisAlignedBB.getBoundingBox(0, 4, 1 - Door.DOOR_WIDTH, 4, 5, 1)
-            };
-        }
+        } else if ((type == BoundingBoxType.COLLISION || type == BoundingBoxType.CHUNKCOLLISION
+                || type == BoundingBoxType.RAYTRACE) && (te.isOpened() || te.isMoving())) {
+                    aabbs = new AxisAlignedBB[] { AxisAlignedBB.getBoundingBox(0, 0, -0.5F, 0.5F, 4, 1),
+                            AxisAlignedBB.getBoundingBox(3.5F, 0, -0.5F, 4, 4, 1),
+                            AxisAlignedBB.getBoundingBox(0, 4, 1 - Door.DOOR_WIDTH, 4, 5, 1) };
+                }
 
         return AABBUtils.rotate(aabbs, Door.intToDir(te.getDirection()));
     }

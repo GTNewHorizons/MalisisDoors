@@ -1,34 +1,22 @@
 /*
- * The MIT License (MIT)
- *
- * Copyright (c) 2014 Ordinastie
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
+ * The MIT License (MIT) Copyright (c) 2014 Ordinastie Permission is hereby granted, free of charge, to any person
+ * obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software
+ * without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute,
+ * sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
+ * subject to the following conditions: The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE
+ * AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+ * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
 package net.malisis.doors.door;
 
-import com.google.common.base.Predicate;
-import com.google.common.collect.Maps;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+
 import net.malisis.doors.door.movement.CarriageDoorMovement;
 import net.malisis.doors.door.movement.CurtainMovement;
 import net.malisis.doors.door.movement.DoubleRotateMovement;
@@ -64,11 +52,15 @@ import net.malisis.doors.door.sound.VanillaDoorSound;
 import net.malisis.doors.trapdoor.movement.SlidingTrapDoorMovement;
 import net.malisis.doors.trapdoor.movement.TrapDoorMovement;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.Maps;
+
 /**
  * @author Ordinastie
  *
  */
 public class DoorRegistry {
+
     private static HashMap<String, IDoorMovement> movements = new HashMap<>();
     private static HashMap<String, IDoorSound> sounds = new HashMap<>();
 
@@ -158,13 +150,13 @@ public class DoorRegistry {
             if (entry.getValue() == movement) return entry.getKey();
         }
 
-        throw new IllegalArgumentException(String.format(
-                "Door movement %s not found in the registry",
-                movement.getClass().getSimpleName()));
+        throw new IllegalArgumentException(
+                String.format("Door movement %s not found in the registry", movement.getClass().getSimpleName()));
     }
 
     public static Map<String, IDoorMovement> listMovements() {
         return Maps.filterValues(movements, new Predicate<IDoorMovement>() {
+
             @Override
             public boolean apply(IDoorMovement input) {
                 return !input.isSpecial();
@@ -222,12 +214,13 @@ public class DoorRegistry {
             if (entry.getValue() == Sound) return entry.getKey();
         }
 
-        throw new IllegalArgumentException(String.format(
-                "Door sound %s not found in the registry", Sound.getClass().getSimpleName()));
+        throw new IllegalArgumentException(
+                String.format("Door sound %s not found in the registry", Sound.getClass().getSimpleName()));
     }
 
     public static Map<String, IDoorSound> listSounds() {
         return Maps.filterValues(sounds, new Predicate<IDoorSound>() {
+
             @Override
             public boolean apply(IDoorSound input) {
                 return !(input instanceof RustyHatchSound);

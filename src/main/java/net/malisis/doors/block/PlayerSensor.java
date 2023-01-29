@@ -2,10 +2,9 @@ package net.malisis.doors.block;
 
 import static net.minecraftforge.common.util.ForgeDirection.*;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import java.util.List;
 import java.util.Random;
+
 import net.malisis.doors.MalisisDoors;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -16,7 +15,11 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 public class PlayerSensor extends Block {
+
     public static int FLAG_POWERED = 8;
 
     public PlayerSensor() {
@@ -28,8 +31,7 @@ public class PlayerSensor extends Block {
     @SideOnly(Side.CLIENT)
     @Override
     public void registerBlockIcons(IIconRegister iconRegister) {
-        this.blockIcon = iconRegister.registerIcon(
-                MalisisDoors.modid + ":" + (this.getUnlocalizedName().substring(5)));
+        this.blockIcon = iconRegister.registerIcon(MalisisDoors.modid + ":" + (this.getUnlocalizedName().substring(5)));
     }
 
     @Override
@@ -62,8 +64,8 @@ public class PlayerSensor extends Block {
     }
 
     @Override
-    public int onBlockPlaced(
-            World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int metadata) {
+    public int onBlockPlaced(World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ,
+            int metadata) {
         return side + (world.getBlockMetadata(x, y, z) & FLAG_POWERED);
     }
 
@@ -104,8 +106,7 @@ public class PlayerSensor extends Block {
 
     @Override
     public int isProvidingStrongPower(IBlockAccess world, int x, int y, int z, int side) {
-        if (isPowered(world.getBlockMetadata(x, y, z))
-                && getDirection(world, x, y, z).ordinal() == side) return 15;
+        if (isPowered(world.getBlockMetadata(x, y, z)) && getDirection(world, x, y, z).ordinal() == side) return 15;
         return 0;
     }
 
@@ -174,7 +175,7 @@ public class PlayerSensor extends Block {
 
             if (list != null && !list.isEmpty()) {
                 if (isPowered(metadata)) // already active
-                return;
+                    return;
 
                 metadata |= FLAG_POWERED;
                 world.setBlockMetadataWithNotify(x, y, z, metadata, 3);

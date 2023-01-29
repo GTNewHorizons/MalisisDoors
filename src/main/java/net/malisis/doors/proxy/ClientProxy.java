@@ -39,6 +39,7 @@ import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 
 public class ClientProxy implements IProxy {
+
     @Override
     public void initRenderers() {
         // doors

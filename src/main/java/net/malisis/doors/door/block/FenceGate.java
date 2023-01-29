@@ -1,25 +1,14 @@
 /*
- * The MIT License (MIT)
- *
- * Copyright (c) 2014 Ordinastie
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
+ * The MIT License (MIT) Copyright (c) 2014 Ordinastie Permission is hereby granted, free of charge, to any person
+ * obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software
+ * without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute,
+ * sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
+ * subject to the following conditions: The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE
+ * AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+ * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
 package net.malisis.doors.door.block;
@@ -30,7 +19,6 @@ package net.malisis.doors.door.block;
  */
 import static net.malisis.doors.MalisisDoors.Blocks.*;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import net.malisis.core.renderer.icon.MalisisIcon;
 import net.malisis.core.util.TileEntityUtils;
 import net.malisis.doors.MalisisDoors;
@@ -53,8 +41,12 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import cpw.mods.fml.common.registry.GameRegistry;
+
 public class FenceGate extends BlockFenceGate implements ITileEntityProvider {
+
     public static enum Type {
+
         // {"oak", "spruce", "birch", "jungle", "acacia", "big_oak"};
         // @formatter:off
         OAK("fenceGate", 0),
@@ -91,18 +83,16 @@ public class FenceGate extends BlockFenceGate implements ITileEntityProvider {
 
     public FenceGate register() {
         GameRegistry.registerBlock(this, type.name);
-        if (type == Type.CAMO)
-            GameRegistry.addRecipe(
-                    new ItemStack(this), "ABC", 'A', acaciaFenceGate, 'B', jungleFenceGate, 'C', birchFenceGate);
-        else
-            GameRegistry.addRecipe(
-                    new ItemStack(this),
-                    "ABA",
-                    "ABA",
-                    'A',
-                    Items.stick,
-                    'B',
-                    new ItemStack(Blocks.planks, 1, type.type));
+        if (type == Type.CAMO) GameRegistry
+                .addRecipe(new ItemStack(this), "ABC", 'A', acaciaFenceGate, 'B', jungleFenceGate, 'C', birchFenceGate);
+        else GameRegistry.addRecipe(
+                new ItemStack(this),
+                "ABA",
+                "ABA",
+                'A',
+                Items.stick,
+                'B',
+                new ItemStack(Blocks.planks, 1, type.type));
         return this;
     }
 
@@ -142,8 +132,8 @@ public class FenceGate extends BlockFenceGate implements ITileEntityProvider {
      * Called upon block activation (right click on the block.)
      */
     @Override
-    public boolean onBlockActivated(
-            World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX,
+            float hitY, float hitZ) {
         if (world.isRemote) return true;
 
         DoorTileEntity te = Door.getDoor(world, x, y, z);
@@ -167,8 +157,8 @@ public class FenceGate extends BlockFenceGate implements ITileEntityProvider {
     }
 
     /**
-     * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are their own) Args: x,
-     * y, z, neighbor Block
+     * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
+     * their own) Args: x, y, z, neighbor Block
      */
     @Override
     public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {

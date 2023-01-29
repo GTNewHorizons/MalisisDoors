@@ -1,33 +1,21 @@
 /*
- * The MIT License (MIT)
- *
- * Copyright (c) 2014 Ordinastie
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
+ * The MIT License (MIT) Copyright (c) 2014 Ordinastie Permission is hereby granted, free of charge, to any person
+ * obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software
+ * without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute,
+ * sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
+ * subject to the following conditions: The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE
+ * AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+ * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
 package net.malisis.doors.block;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import java.util.List;
 import java.util.Random;
+
 import net.malisis.core.block.IBoundingBox;
 import net.malisis.core.util.TileEntityUtils;
 import net.malisis.doors.MalisisDoors;
@@ -51,11 +39,15 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 /**
  * @author Ordinastie
  *
  */
 public class VanishingBlock extends BlockContainer {
+
     public static final int typeWoodFrame = 0;
     public static final int typeIronFrame = 1;
     public static final int typeGoldFrame = 2;
@@ -105,9 +97,9 @@ public class VanishingBlock extends BlockContainer {
      */
     public void setPowerState(World world, int x, int y, int z, boolean powered) {
         if (world.getBlock(x, y, z) != this) // block is VanishingBlock ?
-        return;
+            return;
         if (isPowered(world, x, y, z) == powered) // same power state?
-        return;
+            return;
 
         VanishingTileEntity te = TileEntityUtils.getTileEntity(VanishingTileEntity.class, world, x, y, z);
         if (te == null) return;
@@ -124,7 +116,7 @@ public class VanishingBlock extends BlockContainer {
      */
     public boolean shouldPropagate(World world, int x, int y, int z, VanishingTileEntity source) {
         if (world.getBlock(x, y, z) != this) // block is VanishingBlock ?
-        return false;
+            return false;
 
         if ((source.getBlockMetadata() & 3) == typeWoodFrame) return true;
 
@@ -135,9 +127,9 @@ public class VanishingBlock extends BlockContainer {
 
         if ((source.getBlockMetadata() & 3) == typeIronFrame && source.copiedBlock == dest.copiedBlock) return true;
 
-        if ((source.getBlockMetadata() & 3) == typeGoldFrame
-                && source.copiedBlock == dest.copiedBlock
-                && source.copiedMetadata == dest.copiedMetadata) return true;
+        if ((source.getBlockMetadata() & 3) == typeGoldFrame && source.copiedBlock == dest.copiedBlock
+                && source.copiedMetadata == dest.copiedMetadata)
+            return true;
 
         return false;
     }
@@ -155,8 +147,8 @@ public class VanishingBlock extends BlockContainer {
 
     // #region Events
     @Override
-    public boolean onBlockActivated(
-            World world, int x, int y, int z, EntityPlayer p, int side, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer p, int side, float hitX, float hitY,
+            float hitZ) {
         ItemStack is = p.getHeldItem();
         if (is == null) return false;
 
@@ -216,8 +208,8 @@ public class VanishingBlock extends BlockContainer {
 
     @SuppressWarnings("rawtypes")
     @Override
-    public void addCollisionBoxesToList(
-            World world, int x, int y, int z, AxisAlignedBB mask, List list, Entity entity) {
+    public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB mask, List list,
+            Entity entity) {
         if ((world.getBlockMetadata(x, y, z) & (flagPowered | flagInTransition)) != 0) return;
 
         VanishingTileEntity te = TileEntityUtils.getTileEntity(VanishingTileEntity.class, world, x, y, z);
@@ -274,7 +266,7 @@ public class VanishingBlock extends BlockContainer {
         return Item.getItemFromBlock(MalisisDoors.Blocks.vanishingBlock);
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
     public void getSubBlocks(Item item, CreativeTabs tab, List list) {
         list.add(new ItemStack(item, 1, typeWoodFrame));

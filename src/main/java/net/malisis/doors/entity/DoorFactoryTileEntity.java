@@ -1,31 +1,18 @@
 /*
- * The MIT License (MIT)
- *
- * Copyright (c) 2014 Ordinastie
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
+ * The MIT License (MIT) Copyright (c) 2014 Ordinastie Permission is hereby granted, free of charge, to any person
+ * obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software
+ * without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute,
+ * sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
+ * subject to the following conditions: The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE
+ * AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+ * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
 package net.malisis.doors.entity;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.malisis.core.client.gui.MalisisGui;
 import net.malisis.core.inventory.IInventoryProvider;
 import net.malisis.core.inventory.MalisisInventory;
@@ -50,11 +37,15 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 /**
  * @author Ordinastie
  *
  */
 public class DoorFactoryTileEntity extends TileEntity implements IInventoryProvider {
+
     private MalisisInventory inventory;
     private IDoorMovement doorMovement;
     private IDoorSound doorSound;
@@ -81,7 +72,8 @@ public class DoorFactoryTileEntity extends TileEntity implements IInventoryProvi
         outputSlot.setOutputSlot();
 
         inventory = new MalisisInventory(
-                this, new MalisisSlot[] {frameSlot, topMaterialSlot, bottomMaterialSlot, doorEditSlot, outputSlot});
+                this,
+                new MalisisSlot[] { frameSlot, topMaterialSlot, bottomMaterialSlot, doorEditSlot, outputSlot });
     }
 
     public boolean isCreate() {
@@ -158,9 +150,9 @@ public class DoorFactoryTileEntity extends TileEntity implements IInventoryProvi
             ItemStack output = outputSlot.getItemStack();
             if (expected == null) return;
 
-            if (output != null
-                    && (!ItemStack.areItemStackTagsEqual(output, expected)
-                            || output.stackSize >= output.getMaxStackSize())) return;
+            if (output != null && (!ItemStack.areItemStackTagsEqual(output, expected)
+                    || output.stackSize >= output.getMaxStackSize()))
+                return;
 
             frameSlot.extract(1);
             topMaterialSlot.extract(1);
@@ -209,7 +201,7 @@ public class DoorFactoryTileEntity extends TileEntity implements IInventoryProvi
 
     @Override
     public MalisisInventory[] getInventories(Object... data) {
-        return new MalisisInventory[] {inventory};
+        return new MalisisInventory[] { inventory };
     }
 
     @Override
@@ -267,6 +259,7 @@ public class DoorFactoryTileEntity extends TileEntity implements IInventoryProvi
     }
 
     private class DoorFactorySlot extends MalisisSlot {
+
         public DoorFactorySlot(int index) {
             super(index);
         }
@@ -278,6 +271,7 @@ public class DoorFactoryTileEntity extends TileEntity implements IInventoryProvi
     }
 
     private class DoorEditSlot extends MalisisSlot {
+
         public DoorEditSlot(int index) {
             super(index);
         }

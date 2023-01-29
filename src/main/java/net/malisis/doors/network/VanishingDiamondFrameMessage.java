@@ -1,34 +1,18 @@
 /*
- * The MIT License (MIT)
- *
- * Copyright (c) 2014 Ordinastie
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
+ * The MIT License (MIT) Copyright (c) 2014 Ordinastie Permission is hereby granted, free of charge, to any person
+ * obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software
+ * without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute,
+ * sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
+ * subject to the following conditions: The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE
+ * AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+ * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
 package net.malisis.doors.network;
 
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
-import cpw.mods.fml.relauncher.Side;
-import io.netty.buffer.ByteBuf;
 import net.malisis.core.network.MalisisMessage;
 import net.malisis.core.util.TileEntityUtils;
 import net.malisis.doors.MalisisDoors;
@@ -36,12 +20,19 @@ import net.malisis.doors.entity.VanishingDiamondTileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import cpw.mods.fml.common.network.simpleimpl.IMessage;
+import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
+import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import cpw.mods.fml.relauncher.Side;
+import io.netty.buffer.ByteBuf;
+
 /**
  * @author Ordinastie
  *
  */
 @MalisisMessage
 public class VanishingDiamondFrameMessage implements IMessageHandler<VanishingDiamondFrameMessage.Packet, IMessage> {
+
     public static enum DataType {
         PROPAGATION,
         DELAY,
@@ -56,8 +47,8 @@ public class VanishingDiamondFrameMessage implements IMessageHandler<VanishingDi
     @Override
     public IMessage onMessage(Packet message, MessageContext ctx) {
         World world = ctx.getServerHandler().playerEntity.worldObj;
-        VanishingDiamondTileEntity te =
-                TileEntityUtils.getTileEntity(VanishingDiamondTileEntity.class, world, message.x, message.y, message.z);
+        VanishingDiamondTileEntity te = TileEntityUtils
+                .getTileEntity(VanishingDiamondTileEntity.class, world, message.x, message.y, message.z);
         if (te == null) return null;
 
         switch (message.type) {
@@ -79,13 +70,14 @@ public class VanishingDiamondFrameMessage implements IMessageHandler<VanishingDi
         return null;
     }
 
-    public static void sendConfiguration(
-            VanishingDiamondTileEntity te, ForgeDirection facing, DataType type, int time, boolean checked) {
+    public static void sendConfiguration(VanishingDiamondTileEntity te, ForgeDirection facing, DataType type, int time,
+            boolean checked) {
         Packet packet = new Packet(te.xCoord, te.yCoord, te.zCoord, type, facing, time, checked);
         MalisisDoors.network.sendToServer(packet);
     }
 
     public static class Packet implements IMessage {
+
         protected int x;
         protected int y;
         protected int z;

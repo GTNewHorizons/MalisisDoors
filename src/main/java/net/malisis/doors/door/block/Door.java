@@ -1,33 +1,21 @@
 /*
- * The MIT License (MIT)
- *
- * Copyright (c) 2014 Ordinastie
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
+ * The MIT License (MIT) Copyright (c) 2014 Ordinastie Permission is hereby granted, free of charge, to any person
+ * obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software
+ * without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute,
+ * sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
+ * subject to the following conditions: The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE
+ * AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+ * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
 package net.malisis.doors.door.block;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import java.util.List;
 import java.util.Random;
+
 import net.malisis.core.block.BoundingBoxType;
 import net.malisis.core.block.IBoundingBox;
 import net.malisis.core.renderer.icon.ClippedIcon;
@@ -60,14 +48,19 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
 import org.apache.commons.lang3.ArrayUtils;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * @author Ordinastie
  *
  */
 public class Door extends BlockDoor implements ITileEntityProvider, IBoundingBox {
-    public static Block[] centerBlocks = new Block[] {Blocks.iron_bars, Blocks.cobblestone_wall, Blocks.fence};
+
+    public static Block[] centerBlocks = new Block[] { Blocks.iron_bars, Blocks.cobblestone_wall, Blocks.fence };
 
     public static final int DIR_WEST = 0;
     public static final int DIR_NORTH = 1;
@@ -185,8 +178,8 @@ public class Door extends BlockDoor implements ITileEntityProvider, IBoundingBox
      * Called when right clicked by the player
      */
     @Override
-    public boolean onBlockActivated(
-            World world, int x, int y, int z, EntityPlayer p, int par6, float par7, float par8, float par9) {
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer p, int par6, float par7, float par8,
+            float par9) {
         DoorTileEntity te = getDoor(world, x, y, z);
         if (te == null) return true;
 
@@ -201,13 +194,12 @@ public class Door extends BlockDoor implements ITileEntityProvider, IBoundingBox
 
         if (te.getDescriptor().requireRedstone()) return true;
 
-        if (te.getDescriptor().getAutoCloseTime() > 0 && !te.isOpened())
-            world.scheduleBlockUpdate(
-                    x,
-                    y,
-                    z,
-                    this,
-                    te.getDescriptor().getAutoCloseTime() + te.getDescriptor().getOpeningTime());
+        if (te.getDescriptor().getAutoCloseTime() > 0 && !te.isOpened()) world.scheduleBlockUpdate(
+                x,
+                y,
+                z,
+                this,
+                te.getDescriptor().getAutoCloseTime() + te.getDescriptor().getOpeningTime());
 
         te.openOrCloseDoor();
 
@@ -307,13 +299,13 @@ public class Door extends BlockDoor implements ITileEntityProvider, IBoundingBox
         if (aabb != null && te.isCentered()) aabb.offset(0, 0, 0.5F - Door.DOOR_WIDTH / 2);
         AABBUtils.rotate(aabb, intToDir(te.getDirection()));
 
-        return new AxisAlignedBB[] {aabb};
+        return new AxisAlignedBB[] { aabb };
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
-    public void addCollisionBoxesToList(
-            World world, int x, int y, int z, AxisAlignedBB mask, List list, Entity entity) {
+    public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB mask, List list,
+            Entity entity) {
         for (AxisAlignedBB aabb : getBoundingBox(world, x, y, z, BoundingBoxType.COLLISION)) {
             if (aabb != null && mask.intersectsWith(aabb.offset(x, y, z))) list.add(aabb);
         }

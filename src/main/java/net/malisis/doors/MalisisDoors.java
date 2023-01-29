@@ -1,10 +1,5 @@
 package net.malisis.doors;
 
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import net.malisis.core.IMalisisMod;
 import net.malisis.core.MalisisCore;
 import net.malisis.core.configuration.Settings;
@@ -28,12 +23,19 @@ import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 
+import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.Mod.EventHandler;
+import cpw.mods.fml.common.SidedProxy;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+
 @Mod(
         modid = MalisisDoors.modid,
         name = MalisisDoors.modname,
         version = MalisisDoors.version,
         dependencies = "required-after:malisiscore")
 public class MalisisDoors implements IMalisisMod {
+
     @SidedProxy(clientSide = "net.malisis.doors.proxy.ClientProxy", serverSide = "net.malisis.doors.proxy.ServerProxy")
     public static IProxy proxy;
 
@@ -89,6 +91,7 @@ public class MalisisDoors implements IMalisisMod {
     }
 
     public static class Blocks {
+
         public static Block doorAcacia;
         public static Block doorBirch;
         public static Block doorDarkOak;
@@ -129,6 +132,7 @@ public class MalisisDoors implements IMalisisMod {
     }
 
     public static class Items {
+
         public static Item woodSlidingDoorItem;
         public static Item ironSlidingDoorItem;
         public static Item doorAcaciaItem;

@@ -1,30 +1,18 @@
 /*
- * The MIT License (MIT)
- *
- * Copyright (c) 2014 Ordinastie
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
+ * The MIT License (MIT) Copyright (c) 2014 Ordinastie Permission is hereby granted, free of charge, to any person
+ * obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software
+ * without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute,
+ * sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
+ * subject to the following conditions: The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE
+ * AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+ * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
 package net.malisis.doors.door.tileentity;
 
-import com.google.common.base.Objects;
 import net.malisis.core.MalisisCore;
 import net.malisis.core.block.BoundingBoxType;
 import net.malisis.core.util.BlockState;
@@ -44,11 +32,14 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.google.common.base.Objects;
+
 /**
  * @author Ordinastie
  *
  */
 public class BigDoorTileEntity extends DoorTileEntity {
+
     private boolean delete = false;
     private boolean processed = true;
     private ForgeDirection direction = ForgeDirection.NORTH;
@@ -99,8 +90,7 @@ public class BigDoorTileEntity extends DoorTileEntity {
         }
 
         super.setDoorState(newState);
-        if (getWorldObj() != null && moving && !this.moving)
-            ChunkCollision.get().replaceBlocks(getWorldObj(), state);
+        if (getWorldObj() != null && moving && !this.moving) ChunkCollision.get().replaceBlocks(getWorldObj(), state);
     }
 
     @Override
@@ -111,14 +101,13 @@ public class BigDoorTileEntity extends DoorTileEntity {
                 getWorldObj().setBlockToAir(xCoord, yCoord, zCoord);
             } else {
                 MalisisCore.log.info("Adding to chunk : " + xCoord + "," + yCoord + "," + zCoord);
-                ChunkBlockHandler.get()
-                        .updateCoordinates(
-                                getWorldObj().getChunkFromBlockCoords(xCoord, zCoord),
-                                xCoord,
-                                yCoord,
-                                zCoord,
-                                Blocks.air,
-                                getBlockType());
+                ChunkBlockHandler.get().updateCoordinates(
+                        getWorldObj().getChunkFromBlockCoords(xCoord, zCoord),
+                        xCoord,
+                        yCoord,
+                        zCoord,
+                        Blocks.air,
+                        getBlockType());
                 getWorldObj().setBlockMetadataWithNotify(xCoord, yCoord, zCoord, Door.dirToInt(direction), 2);
                 processed = true;
             }
@@ -158,7 +147,7 @@ public class BigDoorTileEntity extends DoorTileEntity {
     @Override
     public AxisAlignedBB getRenderBoundingBox() {
         return ((BigDoor) getBlockType())
-                .getBoundingBox(getWorldObj(), xCoord, yCoord, zCoord, BoundingBoxType.RENDER)[0].offset(
-                        xCoord, yCoord, zCoord);
+                .getBoundingBox(getWorldObj(), xCoord, yCoord, zCoord, BoundingBoxType.RENDER)[0]
+                        .offset(xCoord, yCoord, zCoord);
     }
 }

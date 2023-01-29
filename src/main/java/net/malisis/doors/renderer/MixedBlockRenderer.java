@@ -1,30 +1,20 @@
 /*
- * The MIT License (MIT)
- *
- * Copyright (c) 2014 Ordinastie
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
+ * The MIT License (MIT) Copyright (c) 2014 Ordinastie Permission is hereby granted, free of charge, to any person
+ * obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software
+ * without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute,
+ * sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
+ * subject to the following conditions: The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE
+ * AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+ * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
 package net.malisis.doors.renderer;
 
 import java.util.List;
+
 import net.malisis.core.renderer.MalisisRenderer;
 import net.malisis.core.renderer.RenderParameters;
 import net.malisis.core.renderer.RenderType;
@@ -41,10 +31,12 @@ import net.minecraft.block.BlockGrass;
 import net.minecraft.client.Minecraft;
 import net.minecraft.init.Blocks;
 import net.minecraftforge.common.util.ForgeDirection;
+
 import org.apache.commons.lang3.ArrayUtils;
 import org.lwjgl.opengl.GL11;
 
 public class MixedBlockRenderer extends MalisisRenderer {
+
     private int mixedBlockMetadata;
     private MixedBlockTileEntity tileEntity;
     private Shape simpleShape;
@@ -58,16 +50,14 @@ public class MixedBlockRenderer extends MalisisRenderer {
     protected void initialize() {
         simpleShape = new Cube();
 
-        shapes = new Shape[][] {new Shape[6], new Shape[6]};
+        shapes = new Shape[][] { new Shape[6], new Shape[6] };
         for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
             Shape s0 = new Cube();
             Shape s1 = new Cube();
             s0.enableMergedVertexes();
             s1.enableMergedVertexes();
-            shapes[0][dir.ordinal()] =
-                    s0.removeFace(s0.getFace(Face.nameFromDirection(dir))).storeState();
-            shapes[1][dir.ordinal()] = s1.shrink(dir, 0.999F)
-                    .removeFace(s1.getFace(Face.nameFromDirection(dir)))
+            shapes[0][dir.ordinal()] = s0.removeFace(s0.getFace(Face.nameFromDirection(dir))).storeState();
+            shapes[1][dir.ordinal()] = s1.shrink(dir, 0.999F).removeFace(s1.getFace(Face.nameFromDirection(dir)))
                     .storeState();
         }
 
@@ -129,8 +119,8 @@ public class MixedBlockRenderer extends MalisisRenderer {
     }
 
     private void setColor() {
-        int color =
-                renderType == RenderType.ISBRH_WORLD ? block.colorMultiplier(world, x, y, z) : block.getBlockColor();
+        int color = renderType == RenderType.ISBRH_WORLD ? block.colorMultiplier(world, x, y, z)
+                : block.getBlockColor();
         rp.colorMultiplier.set(color);
         shape.setParameters("Top", rp, true);
         if (block instanceof BlockGrass) {
@@ -201,7 +191,7 @@ public class MixedBlockRenderer extends MalisisRenderer {
     }
 
     protected boolean shouldShadeFace(Boolean firstBlock) {
-        Block[] shaded = new Block[] {Blocks.glass, Blocks.leaves, Blocks.leaves2};
+        Block[] shaded = new Block[] { Blocks.glass, Blocks.leaves, Blocks.leaves2 };
         if (block.canRenderInPass(1)) return true;
         Block other = firstBlock ? block2 : block1;
         if (other.canRenderInPass(1)) return true;

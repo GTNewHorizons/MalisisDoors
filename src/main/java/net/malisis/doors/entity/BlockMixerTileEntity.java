@@ -1,7 +1,5 @@
 package net.malisis.doors.entity;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.malisis.core.client.gui.MalisisGui;
 import net.malisis.core.inventory.IInventoryProvider;
 import net.malisis.core.inventory.MalisisInventory;
@@ -14,7 +12,11 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 public class BlockMixerTileEntity extends TileEntity implements IInventoryProvider {
+
     private MalisisInventory inventory;
     private int mixTimer = 0;
     private int mixTotalTime = 100;
@@ -27,7 +29,7 @@ public class BlockMixerTileEntity extends TileEntity implements IInventoryProvid
         secondInput = new MixerSlot(1);
         output = new MalisisSlot(2);
         output.setOutputSlot();
-        inventory = new MalisisInventory(this, new MalisisSlot[] {firstInput, secondInput, output});
+        inventory = new MalisisInventory(this, new MalisisSlot[] { firstInput, secondInput, output });
     }
 
     @Override
@@ -84,7 +86,7 @@ public class BlockMixerTileEntity extends TileEntity implements IInventoryProvid
 
     @Override
     public MalisisInventory[] getInventories(Object... data) {
-        return new MalisisInventory[] {inventory};
+        return new MalisisInventory[] { inventory };
     }
 
     @Override
@@ -99,6 +101,7 @@ public class BlockMixerTileEntity extends TileEntity implements IInventoryProvid
     }
 
     public class MixerSlot extends MalisisSlot {
+
         public MixerSlot(int index) {
             super(index);
         }

@@ -1,25 +1,14 @@
 /*
- * The MIT License (MIT)
- *
- * Copyright (c) 2014 Ordinastie
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
+ * The MIT License (MIT) Copyright (c) 2014 Ordinastie Permission is hereby granted, free of charge, to any person
+ * obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software
+ * without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute,
+ * sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
+ * subject to the following conditions: The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE
+ * AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+ * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
 package net.malisis.doors.door.block;
@@ -49,6 +38,7 @@ import net.minecraftforge.common.util.ForgeDirection;
  *
  */
 public class RustyHatch extends MalisisBlock implements ITileEntityProvider {
+
     private IIcon handleIcon;
 
     public static int renderId;
@@ -86,8 +76,8 @@ public class RustyHatch extends MalisisBlock implements ITileEntityProvider {
     }
 
     @Override
-    public int onBlockPlaced(
-            World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int metadata) {
+    public int onBlockPlaced(World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ,
+            int metadata) {
         return (side - 2) | (hitY > 0.5F ? Door.FLAG_TOPBLOCK : 0);
     }
 
@@ -104,8 +94,8 @@ public class RustyHatch extends MalisisBlock implements ITileEntityProvider {
     }
 
     @Override
-    public boolean onBlockActivated(
-            World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX,
+            float hitY, float hitZ) {
         if (world.isRemote) return true;
 
         RustyHatchTileEntity te = TileEntityUtils.getTileEntity(RustyHatchTileEntity.class, world, x, y, z);
@@ -130,7 +120,7 @@ public class RustyHatch extends MalisisBlock implements ITileEntityProvider {
 
         AxisAlignedBB aabb = te.getMovement().getBoundingBox(te, te.isTopBlock(x, y, z), type);
         if (aabb != null) aabb.offset(-x, -y, -z);
-        return new AxisAlignedBB[] {aabb};
+        return new AxisAlignedBB[] { aabb };
     }
 
     @Override

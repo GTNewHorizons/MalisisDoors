@@ -1,25 +1,14 @@
 /*
- * The MIT License (MIT)
- *
- * Copyright (c) 2014 Ordinastie
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
+ * The MIT License (MIT) Copyright (c) 2014 Ordinastie Permission is hereby granted, free of charge, to any person
+ * obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software
+ * without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute,
+ * sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
+ * subject to the following conditions: The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE
+ * AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+ * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
 package net.malisis.doors.door.tileentity;
@@ -38,6 +27,7 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
+
 import org.apache.commons.lang3.ArrayUtils;
 
 /**
@@ -45,6 +35,7 @@ import org.apache.commons.lang3.ArrayUtils;
  *
  */
 public class DoorTileEntity extends TileEntity {
+
     protected DoorDescriptor descriptor;
     protected int lastMetadata = -1;
     protected Timer timer = new Timer();
@@ -130,7 +121,7 @@ public class DoorTileEntity extends TileEntity {
     }
 
     public boolean shouldCenter() {
-        if (getMovement() == null /*|| !getMovement().canCenter()*/) return false;
+        if (getMovement() == null /* || !getMovement().canCenter() */) return false;
 
         int ox = 0, oz = 0;
         if (getDirection() == Door.DIR_NORTH || getDirection() == Door.DIR_SOUTH) ox = 1;
@@ -151,8 +142,7 @@ public class DoorTileEntity extends TileEntity {
     // #end Getter/Setter
 
     public void onBlockPlaced(Door door, ItemStack itemStack) {
-        DoorDescriptor desc = itemStack.getTagCompound() != null
-                ? new DoorDescriptor(itemStack.getTagCompound())
+        DoorDescriptor desc = itemStack.getTagCompound() != null ? new DoorDescriptor(itemStack.getTagCompound())
                 : door.getDescriptor();
         setDescriptor(desc);
     }
@@ -244,20 +234,20 @@ public class DoorTileEntity extends TileEntity {
      */
     public boolean isMatchingDoubleDoor(DoorTileEntity te) {
         if (getBlockType() != te.getBlockType()) // different block
-        return false;
+            return false;
 
         if (getDirection() != te.getDirection()) // different direction
-        return false;
+            return false;
 
         if (getMovement() != te.getMovement()) // different movement type
-        return false;
+            return false;
 
         if ((getBlockMetadata() & Door.FLAG_OPENED) != (te.getBlockMetadata() & Door.FLAG_OPENED)) // different state
-        return false;
+            return false;
 
-        if ((getBlockMetadata() & Door.FLAG_REVERSED)
-                == (te.getBlockMetadata() & Door.FLAG_REVERSED)) // handle same side
-        return false;
+        if ((getBlockMetadata() & Door.FLAG_REVERSED) == (te.getBlockMetadata() & Door.FLAG_REVERSED)) // handle same
+                                                                                                       // side
+            return false;
 
         return true;
     }
@@ -318,7 +308,8 @@ public class DoorTileEntity extends TileEntity {
     // #end NBT/Network
 
     /**
-     * Specify the bounding box ourselves otherwise, the block bounding box would be use. (And it should be at this point {0, 0, 0})
+     * Specify the bounding box ourselves otherwise, the block bounding box would be use. (And it should be at this
+     * point {0, 0, 0})
      */
     @Override
     public AxisAlignedBB getRenderBoundingBox() {
@@ -326,8 +317,8 @@ public class DoorTileEntity extends TileEntity {
     }
 
     @Override
-    public boolean shouldRefresh(
-            Block oldBlock, Block newBlock, int oldMeta, int newMeta, World world, int x, int y, int z) {
+    public boolean shouldRefresh(Block oldBlock, Block newBlock, int oldMeta, int newMeta, World world, int x, int y,
+            int z) {
         return oldBlock != newBlock;
     }
 }
