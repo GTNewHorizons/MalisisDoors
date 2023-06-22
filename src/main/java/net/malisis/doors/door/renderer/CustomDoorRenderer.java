@@ -45,11 +45,10 @@ public class CustomDoorRenderer extends DoorRenderer {
 
     protected CustomDoorTileEntity tileEntity;
 
-    private float width;
-
     @Override
     protected void initialize() {
-        width = 1.0F / 8.0F;
+        float width = 1.0F / 8.0F;
+
         /*
          * BOTTOM
          */

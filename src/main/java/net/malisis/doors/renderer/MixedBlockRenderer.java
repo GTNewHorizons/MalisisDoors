@@ -38,7 +38,6 @@ import org.lwjgl.opengl.GL11;
 public class MixedBlockRenderer extends MalisisRenderer {
 
     private int mixedBlockMetadata;
-    private MixedBlockTileEntity tileEntity;
     private Shape simpleShape;
     private Shape[][] shapes;
     private Block block1;
@@ -78,7 +77,7 @@ public class MixedBlockRenderer extends MalisisRenderer {
 
             mixedBlockMetadata = 3;
         } else if (renderType == RenderType.ISBRH_WORLD) {
-            tileEntity = TileEntityUtils.getTileEntity(MixedBlockTileEntity.class, world, x, y, z);
+            MixedBlockTileEntity tileEntity = TileEntityUtils.getTileEntity(MixedBlockTileEntity.class, world, x, y, z);
             if (tileEntity == null) return false;
 
             block1 = tileEntity.block1;

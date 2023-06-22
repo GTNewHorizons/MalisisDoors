@@ -38,7 +38,6 @@ import org.lwjgl.opengl.GL11;
  */
 public class RustyHatchRenderer extends MalisisRenderer {
 
-    private ResourceLocation rl;
     private MalisisModel model;
     private Shape frame;
     private Shape hatch;
@@ -56,7 +55,7 @@ public class RustyHatchRenderer extends MalisisRenderer {
 
     @Override
     protected void initialize() {
-        rl = new ResourceLocation(MalisisDoors.modid, "models/rustyhatch.obj");
+        ResourceLocation rl = new ResourceLocation(MalisisDoors.modid, "models/rustyhatch.obj");
         model = new MalisisModel(rl);
         frame = model.getShape("frame");
         hatch = model.getShape("door");
