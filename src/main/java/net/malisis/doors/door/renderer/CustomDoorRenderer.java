@@ -50,7 +50,7 @@ public class CustomDoorRenderer extends DoorRenderer {
     @Override
     protected void initialize() {
         width = 1.0F / 8.0F;
-        /**
+        /*
          * BOTTOM
          */
         // frame right
@@ -79,7 +79,7 @@ public class CustomDoorRenderer extends DoorRenderer {
         bottom.interpolateUV();
         bottom.storeState();
 
-        /**
+        /*
          * TOP
          */
         frameR = new Shape(frameR);
