@@ -52,18 +52,10 @@ public class VanishingDiamondFrameMessage implements IMessageHandler<VanishingDi
         if (te == null) return null;
 
         switch (message.type) {
-            case PROPAGATION:
-                te.getDirectionState(message.facing).shouldPropagate = message.checked;
-                break;
-            case DELAY:
-                te.getDirectionState(message.facing).delay = message.time;
-                break;
-            case INVERSED:
-                te.getDirectionState(message.facing).inversed = message.checked;
-                break;
-            case DURATION:
-                te.setDuration(message.time);
-                break;
+            case PROPAGATION -> te.getDirectionState(message.facing).shouldPropagate = message.checked;
+            case DELAY -> te.getDirectionState(message.facing).delay = message.time;
+            case INVERSED -> te.getDirectionState(message.facing).inversed = message.checked;
+            case DURATION -> te.setDuration(message.time);
         }
         world.markBlockForUpdate(message.x, message.y, message.z);
 

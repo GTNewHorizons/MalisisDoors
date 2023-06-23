@@ -43,21 +43,13 @@ public class SlidingTrapDoorMovement implements IDoorMovement {
 
         if (tileEntity.isOpened()) aabb.offset(0, 0, Door.DOOR_WIDTH - 1);
 
-        switch (dir) {
-            case TrapDoor.DIR_EAST:
-                dir = 1;
-                break;
-            case TrapDoor.DIR_WEST:
-                dir = 3;
-                break;
-            case TrapDoor.DIR_SOUTH:
-                dir = 2;
-                break;
-            case TrapDoor.DIR_NORTH:
-            default:
-                dir = 0;
-                break;
-        }
+        dir = switch (dir) {
+            case TrapDoor.DIR_EAST -> 1;
+            case TrapDoor.DIR_WEST -> 3;
+            case TrapDoor.DIR_SOUTH -> 2;
+            case TrapDoor.DIR_NORTH -> 0;
+            default -> 0;
+        };
         AABBUtils.rotate(aabb, dir);
 
         return aabb;

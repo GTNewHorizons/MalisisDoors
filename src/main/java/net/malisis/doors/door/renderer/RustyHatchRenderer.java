@@ -79,18 +79,11 @@ public class RustyHatchRenderer extends MalisisRenderer {
 
             ForgeDirection dir = ForgeDirection.getOrientation(blockMetadata);
             switch (dir) {
-                case NORTH:
-                    ladder.rotate(-90, 0, 1, 0);
-                    break;
-                case SOUTH:
-                    ladder.rotate(90, 0, 1, 0);
-                    break;
-                case EAST:
-                    ladder.rotate(180, 0, 1, 0);
-                    break;
-                case WEST:
-                default:
-                    break;
+                case NORTH -> ladder.rotate(-90, 0, 1, 0);
+                case SOUTH -> ladder.rotate(90, 0, 1, 0);
+                case EAST -> ladder.rotate(180, 0, 1, 0);
+                case WEST -> {}
+                default -> {}
             }
 
             ladder.translate(-1, 0, 0);

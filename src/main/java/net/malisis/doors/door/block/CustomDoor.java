@@ -115,26 +115,13 @@ public class CustomDoor extends Door {
         double fxZ = z + world.rand.nextDouble();
 
         switch (side) {
-            case DOWN:
-                fxY = y + getBlockBoundsMinY() - 0.1F;
-                break;
-            case UP:
-                fxY = y + getBlockBoundsMaxY() + 0.1F;
-                break;
-            case NORTH:
-                fxZ = z + getBlockBoundsMinZ() - 0.1F;
-                break;
-            case SOUTH:
-                fxZ = z + getBlockBoundsMaxY() + 0.1F;
-                break;
-            case EAST:
-                fxX = x + getBlockBoundsMaxX() + 0.1F;
-                break;
-            case WEST:
-                fxX = x + getBlockBoundsMinX() + 0.1F;
-                break;
-            default:
-                break;
+            case DOWN -> fxY = y + getBlockBoundsMinY() - 0.1F;
+            case UP -> fxY = y + getBlockBoundsMaxY() + 0.1F;
+            case NORTH -> fxZ = z + getBlockBoundsMinZ() - 0.1F;
+            case SOUTH -> fxZ = z + getBlockBoundsMaxY() + 0.1F;
+            case EAST -> fxX = x + getBlockBoundsMaxX() + 0.1F;
+            case WEST -> fxX = x + getBlockBoundsMinX() + 0.1F;
+            default -> {}
         }
 
         int i = world.rand.nextInt(blocks.length);

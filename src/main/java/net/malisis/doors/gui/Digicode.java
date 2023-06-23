@@ -134,17 +134,14 @@ public class Digicode extends UIContainer<Digicode> {
     @Subscribe
     public void onButtonClick(UIButton.ClickEvent event) {
         switch (event.getComponent().getName()) {
-            case "C":
-                setEnteredCode("");
-                break;
-            case "V":
+            case "C" -> setEnteredCode("");
+            case "V" -> {
                 if (isValidCode()) {
                     getGui().close();
                     DigicodeMessage.send(((DigicodeGui) getGui()).te);
                 }
-                break;
-            default:
-                setEnteredCode(enteredCode + event.getComponent().getName());
+            }
+            default -> setEnteredCode(enteredCode + event.getComponent().getName());
         }
     }
 
