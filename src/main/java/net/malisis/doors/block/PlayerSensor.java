@@ -152,7 +152,7 @@ public class PlayerSensor extends Block {
             z2 += 1;
         }
 
-        boolean isAir = world.isAirBlock(x, y + 1 * factor, z);
+        boolean isAir = world.isAirBlock(x, y + factor, z);
         while (isAir && yOffset < 6) isAir = world.isAirBlock(x, y + (factor * yOffset++), z);
 
         int y2 = Math.max(y, y + (factor * yOffset));
