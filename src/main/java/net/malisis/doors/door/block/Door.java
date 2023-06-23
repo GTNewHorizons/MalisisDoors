@@ -13,6 +13,7 @@
 
 package net.malisis.doors.door.block;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Random;
 
@@ -350,8 +351,9 @@ public class Door extends BlockDoor implements ITileEntityProvider, IBoundingBox
 
         DoorTileEntity te;
         try {
-            te = descriptor.getTileEntityClass().newInstance();
-        } catch (InstantiationException | IllegalAccessException e) {
+            te = descriptor.getTileEntityClass().getDeclaredConstructor().newInstance();
+        } catch (InstantiationException | IllegalAccessException | NoSuchMethodException
+                | InvocationTargetException e) {
             te = new DoorTileEntity();
         }
         te.setDescriptor(descriptor);
