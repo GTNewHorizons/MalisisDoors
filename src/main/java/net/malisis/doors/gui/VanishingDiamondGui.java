@@ -115,7 +115,7 @@ public class VanishingDiamondGui extends MalisisGui {
     public void onConfigChanged(ComponentEvent.ValueChange event) {
         Pair<ForgeDirection, DataType> data = (Pair<ForgeDirection, DataType>) event.getComponent().getData();
         int time = event.getComponent() instanceof UITextField ? NumberUtils.toInt((String) event.getNewValue()) : 0;
-        boolean checked = event.getComponent() instanceof UICheckBox ? (boolean) event.getNewValue() : false;
+        boolean checked = event.getComponent() instanceof UICheckBox && (boolean) event.getNewValue();
         VanishingDiamondFrameMessage.sendConfiguration(tileEntity, data.getLeft(), data.getRight(), time, checked);
     }
 
