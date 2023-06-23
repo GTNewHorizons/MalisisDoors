@@ -13,10 +13,6 @@
 
 package net.malisis.doors.door.block;
 
-/**
- * @author Ordinastie
- *
- */
 import static net.malisis.doors.MalisisDoors.Blocks.*;
 
 import net.malisis.core.renderer.icon.MalisisIcon;
