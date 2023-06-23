@@ -14,7 +14,9 @@
 package net.malisis.doors.gui;
 
 import java.util.Comparator;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import net.malisis.core.client.gui.Anchor;
 import net.malisis.core.client.gui.ComponentPosition;
@@ -47,8 +49,6 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 
-import com.google.common.collect.FluentIterable;
-import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.Subscribe;
 
 /**
@@ -172,15 +172,15 @@ public class DoorFactoryGui extends MalisisGui {
         return propContainer;
     }
 
-    private ImmutableList<String> getSortedList(Set<String> set, final String prefix) {
-        return FluentIterable.from(set).toSortedList(new Comparator<String>() {
+    private List<String> getSortedList(Set<String> set, final String prefix) {
+        return set.stream().sorted(new Comparator<String>() {
 
             @Override
             public int compare(String s1, String s2) {
                 return StatCollector.translateToLocal(prefix + s1)
                         .compareTo(StatCollector.translateToLocal(prefix + s2));
             }
-        });
+        }).collect(Collectors.toList());
     }
 
     private UIContainer getMaterialsContainer() {
