@@ -13,6 +13,7 @@
 
 package net.malisis.doors.gui;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -172,10 +173,7 @@ public class DoorFactoryGui extends MalisisGui {
     }
 
     private List<String> getSortedList(Set<String> set, final String prefix) {
-        return set.stream()
-                .sorted(
-                        (s1, s2) -> StatCollector.translateToLocal(prefix + s1)
-                                .compareTo(StatCollector.translateToLocal(prefix + s2)))
+        return set.stream().sorted(Comparator.comparing(s -> StatCollector.translateToLocal(prefix + s)))
                 .collect(Collectors.toList());
     }
 
