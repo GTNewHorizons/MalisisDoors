@@ -32,7 +32,7 @@ import net.minecraft.world.World;
  */
 public class BigDoorRecipe implements IRecipe {
 
-    private BigDoor.Type type;
+    private final BigDoor.Type type;
 
     public BigDoorRecipe(BigDoor.Type type) {
         this.type = type;

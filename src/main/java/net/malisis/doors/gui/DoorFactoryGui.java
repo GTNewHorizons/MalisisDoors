@@ -65,7 +65,7 @@ public class DoorFactoryGui extends MalisisGui {
     public static IIcon matIcon = tabTexture.getIcon(64, 0, 64, 64);
     public static IIcon dcIcon = tabTexture.getIcon(0, 64, 64, 64);
 
-    private DoorFactoryTileEntity tileEntity;
+    private final DoorFactoryTileEntity tileEntity;
     private UISelect<String> selDoorMovement;
     private UITextField tfOpenTime;
     private UITextField tfAutoCloseTime;

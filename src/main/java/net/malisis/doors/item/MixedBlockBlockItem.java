@@ -31,7 +31,7 @@ import net.minecraft.world.World;
 
 public class MixedBlockBlockItem extends ItemBlock {
 
-    private static HashMap<Item, Block> itemsAllowed = new HashMap<>();
+    private static final HashMap<Item, Block> itemsAllowed = new HashMap<>();
 
     static {
         itemsAllowed.put(Items.ender_pearl, Blocks.portal);

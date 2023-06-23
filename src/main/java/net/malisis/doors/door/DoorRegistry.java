@@ -61,8 +61,8 @@ import com.google.common.collect.Maps;
  */
 public class DoorRegistry {
 
-    private static HashMap<String, IDoorMovement> movements = new HashMap<>();
-    private static HashMap<String, IDoorSound> sounds = new HashMap<>();
+    private static final HashMap<String, IDoorMovement> movements = new HashMap<>();
+    private static final HashMap<String, IDoorSound> sounds = new HashMap<>();
 
     static {
         registerMovement("rotating_door", new RotatingDoorMovement());

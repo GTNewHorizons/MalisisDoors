@@ -64,7 +64,7 @@ public class FenceGate extends BlockFenceGate implements ITileEntityProvider {
         }
     }
 
-    private Type type;
+    private final Type type;
     private IIcon camoIcon;
     public static int renderId = -1;
 

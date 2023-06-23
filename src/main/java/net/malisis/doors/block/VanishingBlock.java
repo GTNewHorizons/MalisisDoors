@@ -56,7 +56,7 @@ public class VanishingBlock extends BlockContainer {
     public static final int flagPowered = 1 << 2;
     public static final int flagInTransition = 1 << 3;
 
-    private static IIcon[] icons = new IIcon[4];
+    private static final IIcon[] icons = new IIcon[4];
 
     public static int renderId = -1;
     public int renderPass = -1;

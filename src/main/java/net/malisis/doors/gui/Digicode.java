@@ -150,7 +150,7 @@ public class Digicode extends UIContainer<Digicode> {
 
     public static class CodeChangeEvent extends ComponentEvent<Digicode> {
 
-        private String code;
+        private final String code;
 
         public CodeChangeEvent(Digicode digicode) {
             super(digicode);

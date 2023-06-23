@@ -31,7 +31,7 @@ import lombok.experimental.Delegate;
 
 public class ProxyAccess {
 
-    private static WeakHashMap<IBlockAccess, IBlockAccess> cache = new WeakHashMap<>();
+    private static final WeakHashMap<IBlockAccess, IBlockAccess> cache = new WeakHashMap<>();
     private static World tmpCache;
     private static boolean worldInstanciationFailed = false;
 

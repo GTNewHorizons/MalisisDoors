@@ -43,7 +43,7 @@ public class RustyHatchRenderer extends MalisisRenderer {
     private Shape hatch;
     private Shape handle;
     private Shape ladder;
-    private AnimationRenderer ar = new AnimationRenderer();
+    private final AnimationRenderer ar = new AnimationRenderer();
     private RustyHatchTileEntity tileEntity;
 
     private boolean topBlock;

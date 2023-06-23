@@ -41,7 +41,7 @@ import net.minecraft.world.World;
  */
 public class CustomDoorItem extends DoorItem {
 
-    private static HashMap<Item, Block> itemsAllowed = new HashMap<>();
+    private static final HashMap<Item, Block> itemsAllowed = new HashMap<>();
 
     static {
         itemsAllowed.put(Items.flint_and_steel, Blocks.fire);

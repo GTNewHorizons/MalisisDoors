@@ -51,7 +51,7 @@ public class VanishingTileEntity extends TileEntity {
 
     private final Random rand = new Random();
 
-    private Block[] excludes = new Block[] { MalisisDoors.Blocks.vanishingBlock, Blocks.air, Blocks.ladder,
+    private final Block[] excludes = new Block[] { MalisisDoors.Blocks.vanishingBlock, Blocks.air, Blocks.ladder,
             Blocks.stone_button, Blocks.wooden_button, Blocks.lever, Blocks.vine };
 
     public VanishingTileEntity() {

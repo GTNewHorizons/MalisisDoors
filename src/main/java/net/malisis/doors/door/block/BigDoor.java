@@ -63,8 +63,8 @@ public class BigDoor extends MalisisBlock implements ITileEntityProvider, IChunk
 
     public static int renderId;
     public static int renderPass = -1;
-    private AxisAlignedBB defaultBoundingBox = AxisAlignedBB.getBoundingBox(0, 0, 1 - Door.DOOR_WIDTH, 4, 5, 1);
-    private Type type;
+    private final AxisAlignedBB defaultBoundingBox = AxisAlignedBB.getBoundingBox(0, 0, 1 - Door.DOOR_WIDTH, 4, 5, 1);
+    private final Type type;
 
     public BigDoor(Type type) {
         super(Material.wood);

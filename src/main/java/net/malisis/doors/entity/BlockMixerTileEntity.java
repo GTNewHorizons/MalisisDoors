@@ -17,9 +17,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockMixerTileEntity extends TileEntity implements IInventoryProvider {
 
-    private MalisisInventory inventory;
+    private final MalisisInventory inventory;
     private int mixTimer = 0;
-    private int mixTotalTime = 100;
+    private final int mixTotalTime = 100;
     public MixerSlot firstInput;
     public MixerSlot secondInput;
     public MalisisSlot output;

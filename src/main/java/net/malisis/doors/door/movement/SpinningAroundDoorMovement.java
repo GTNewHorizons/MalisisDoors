@@ -32,12 +32,12 @@ import net.minecraft.util.AxisAlignedBB;
  */
 public class SpinningAroundDoorMovement implements IDoorMovement {
 
-    private Rotation rotBot = new Rotation(720).aroundAxis(0, 0, 1);
-    private Rotation rotTop = new Rotation(720).aroundAxis(0, 0, 1);
-    private Rotation rotBot2 = new Rotation(-720).aroundAxis(0, 0, 1);
-    private Rotation rotTop2 = new Rotation(-720).aroundAxis(0, 0, 1).offset(0, 1, 0);
-    private Scale scaleBot = new Scale(0, 0, 0);
-    private Scale scaleTop = new Scale(0, 0, 0).offset(0, 1, 0);
+    private final Rotation rotBot = new Rotation(720).aroundAxis(0, 0, 1);
+    private final Rotation rotTop = new Rotation(720).aroundAxis(0, 0, 1);
+    private final Rotation rotBot2 = new Rotation(-720).aroundAxis(0, 0, 1);
+    private final Rotation rotTop2 = new Rotation(-720).aroundAxis(0, 0, 1).offset(0, 1, 0);
+    private final Scale scaleBot = new Scale(0, 0, 0);
+    private final Scale scaleTop = new Scale(0, 0, 0).offset(0, 1, 0);
 
     @Override
     public AxisAlignedBB getBoundingBox(DoorTileEntity tileEntity, boolean topBlock, BoundingBoxType type) {

@@ -17,7 +17,7 @@ import com.google.common.eventbus.Subscribe;
 
 public class BlockMixerGui extends MalisisGui {
 
-    private BlockMixerTileEntity tileEntity;
+    private final BlockMixerTileEntity tileEntity;
 
     private UIProgressBar progressBar;
     private UIProgressBar progressBarReversed;

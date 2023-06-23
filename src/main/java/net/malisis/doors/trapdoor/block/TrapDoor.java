@@ -43,7 +43,7 @@ public class TrapDoor extends BlockTrapDoor implements ITileEntityProvider {
 
     public static int renderId = -1;
 
-    private TrapDoorDescriptor descriptor;
+    private final TrapDoorDescriptor descriptor;
 
     public TrapDoor(TrapDoorDescriptor desc) {
         super(desc.getMaterial());

@@ -72,8 +72,8 @@ public class DoorFactoryMessage implements IMessageHandler<DoorFactoryMessage.Pa
 
     public static class Packet implements IMessage {
 
-        private static int TYPE_DOORINFOS = 0;
-        private static int TYPE_CREATEDOOR = 1;
+        private static final int TYPE_DOORINFOS = 0;
+        private static final int TYPE_CREATEDOOR = 1;
         private int x, y, z;
         private int type;
         private boolean isCreate;

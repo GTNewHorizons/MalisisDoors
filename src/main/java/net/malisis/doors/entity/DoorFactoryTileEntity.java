@@ -46,7 +46,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public class DoorFactoryTileEntity extends TileEntity implements IInventoryProvider {
 
-    private MalisisInventory inventory;
+    private final MalisisInventory inventory;
     private IDoorMovement doorMovement;
     private IDoorSound doorSound;
     private int openingTime = 6;
