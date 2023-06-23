@@ -177,12 +177,10 @@ public class DoorFactoryTileEntity extends TileEntity implements IInventoryProvi
         if (isCreate) {
             if (frameSlot.getItemStack() == null) return false;
             if (topMaterialSlot.getItemStack() == null) return false;
-            if (bottomMaterialSlot.getItemStack() == null) return false;
+            return bottomMaterialSlot.getItemStack() != null;
         } else {
-            if (doorEditSlot.getItemStack() == null) return false;
+            return doorEditSlot.getItemStack() != null;
         }
-
-        return true;
     }
 
     public DoorDescriptor buildDescriptor() {

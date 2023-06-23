@@ -106,8 +106,8 @@ public class FenceGateTileEntity extends DoorTileEntity {
         BlockState state = new BlockState(worldObj, pos.offset(dir));
         if (state.getBlock() == Blocks.cobblestone_wall) return true;
         state = new BlockState(worldObj, pos.offset(dir.getOpposite()));
-        if (state.getBlock() == Blocks.cobblestone_wall) return true;
-        return false;
+
+        return state.getBlock() == Blocks.cobblestone_wall;
     }
 
     public IIcon getCamoIcon() {
@@ -163,10 +163,8 @@ public class FenceGateTileEntity extends DoorTileEntity {
         if (getMovement() != te.getMovement()) // different movement type
             return false;
 
-        if ((getBlockMetadata() & Door.FLAG_OPENED) != (te.getBlockMetadata() & Door.FLAG_OPENED)) // different state
-            return false;
-
-        return true;
+        // different state
+        return (getBlockMetadata() & Door.FLAG_OPENED) == (te.getBlockMetadata() & Door.FLAG_OPENED);
     }
 
     @Override

@@ -89,9 +89,7 @@ public class MixedBlockRenderer extends MalisisRenderer {
             mixedBlockMetadata = blockMetadata;
         }
 
-        if (block1 == null || block2 == null) return false;
-
-        return true;
+        return block1 != null && block2 != null;
     }
 
     @Override

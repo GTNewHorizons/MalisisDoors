@@ -127,11 +127,8 @@ public class VanishingBlock extends BlockContainer {
 
         if ((source.getBlockMetadata() & 3) == typeIronFrame && source.copiedBlock == dest.copiedBlock) return true;
 
-        if ((source.getBlockMetadata() & 3) == typeGoldFrame && source.copiedBlock == dest.copiedBlock
-                && source.copiedMetadata == dest.copiedMetadata)
-            return true;
-
-        return false;
+        return (source.getBlockMetadata() & 3) == typeGoldFrame && source.copiedBlock == dest.copiedBlock
+                && source.copiedMetadata == dest.copiedMetadata;
     }
 
     /**

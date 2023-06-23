@@ -245,11 +245,8 @@ public class DoorTileEntity extends TileEntity {
         if ((getBlockMetadata() & Door.FLAG_OPENED) != (te.getBlockMetadata() & Door.FLAG_OPENED)) // different state
             return false;
 
-        if ((getBlockMetadata() & Door.FLAG_REVERSED) == (te.getBlockMetadata() & Door.FLAG_REVERSED)) // handle same
-                                                                                                       // side
-            return false;
-
-        return true;
+        // handle same side
+        return (getBlockMetadata() & Door.FLAG_REVERSED) != (te.getBlockMetadata() & Door.FLAG_REVERSED);
     }
 
     /**
