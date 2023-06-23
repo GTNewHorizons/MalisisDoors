@@ -36,10 +36,6 @@ public class CarriageDoorMovement implements IDoorMovement {
         return null;
     }
 
-    /**
-     * @param b
-     * @return
-     */
     private Transformation getRotation(DoorTileEntity tileEntity, boolean right) {
         float fz = 0.5F - Door.DOOR_WIDTH / 2;
         float fx = 0;

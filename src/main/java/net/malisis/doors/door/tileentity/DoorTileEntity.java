@@ -161,7 +161,7 @@ public class DoorTileEntity extends TileEntity {
     /**
      * Change the current state of this DoorTileEntity
      *
-     * @param newSate
+     * @param newState
      */
     public void setDoorState(DoorState newState) {
         if (state == newState) return;
