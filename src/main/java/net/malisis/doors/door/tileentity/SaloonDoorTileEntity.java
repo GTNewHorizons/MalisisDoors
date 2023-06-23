@@ -33,7 +33,7 @@ public class SaloonDoorTileEntity extends DoorTileEntity {
     }
 
     public void setOpenDirection(Entity entity) {
-        double entityPos = 0;;
+        double entityPos = 0;
         float tePos = 0;
 
         switch (Door.intToDir(getDirection())) {

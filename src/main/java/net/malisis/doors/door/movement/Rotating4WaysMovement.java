@@ -74,7 +74,7 @@ public class Rotating4WaysMovement implements IDoorMovement {
         }
 
         Rotation rotation = new Rotation(angle);
-        rotation.aroundAxis(axisX, axisY, 0).offset(hingeX, hingeY, hingeZ);;
+        rotation.aroundAxis(axisX, axisY, 0).offset(hingeX, hingeY, hingeZ);
         rotation.reversed(tileEntity.getState() == DoorState.CLOSING || tileEntity.getState() == DoorState.CLOSED);
         rotation.forTicks(tileEntity.getDescriptor().getOpeningTime());
 

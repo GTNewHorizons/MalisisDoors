@@ -37,7 +37,7 @@ public class VanishingDiamondFrameMessage implements IMessageHandler<VanishingDi
         PROPAGATION,
         DELAY,
         INVERSED,
-        DURATION;
+        DURATION
     }
 
     public VanishingDiamondFrameMessage() {

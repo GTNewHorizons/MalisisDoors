@@ -384,7 +384,7 @@ public class Registers {
         rustyHandle = new Item() {
 
             @Override
-            public void registerIcons(IIconRegister register) {};
+            public void registerIcons(IIconRegister register) {}
         }.setUnlocalizedName("rustyHandle").setCreativeTab(MalisisDoors.tab);
         GameRegistry.registerItem(rustyHandle, rustyHandle.getUnlocalizedName());
 
