@@ -19,7 +19,6 @@ import net.malisis.core.MalisisCore;
 import net.malisis.doors.entity.VanishingTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
-import net.minecraft.profiler.Profiler;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -139,12 +138,7 @@ public class ProxyAccess {
         public World original;
 
         public ProxyWorld(World world) {
-            super(
-                    world.getSaveHandler(),
-                    "ProxyWorld",
-                    new WorldSettings(world.getWorldInfo()),
-                    world.provider,
-                    (Profiler) null);
+            super(world.getSaveHandler(), "ProxyWorld", new WorldSettings(world.getWorldInfo()), world.provider, null);
             original = world;
             // reset back the world for the provider
             provider.worldObj = world;
