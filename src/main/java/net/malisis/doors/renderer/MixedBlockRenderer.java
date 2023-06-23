@@ -203,7 +203,7 @@ public class MixedBlockRenderer extends MalisisRenderer {
     protected boolean shouldRenderFace(Face face) {
         if (renderType != RenderType.ISBRH_WORLD || world == null || block == null) return true;
         if (rp != null && rp.renderAllFaces.get()) return true;
-        if (renderBlocks != null && renderBlocks.renderAllFaces == true) return true;
+        if (renderBlocks != null && renderBlocks.renderAllFaces) return true;
         RenderParameters p = face.getParameters();
         if (p.direction.get() == null) return true;
 

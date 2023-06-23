@@ -51,7 +51,7 @@ public class BigDoorRecipe implements IRecipe {
             ItemStack itemStack = inv.getStackInSlot(i);
             if (itemStack == null) continue;
             if (itemStack.getItem() == type.door) {
-                if (doorMatch == true) // two doors
+                if (doorMatch) // two doors
                     return null;
                 doorMatch = true;
                 continue;
