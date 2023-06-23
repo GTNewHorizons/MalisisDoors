@@ -233,8 +233,11 @@ public class VanishingBlock extends BlockContainer {
         if (te == null || te.powered || te.inTransition) return AxisAlignedBB.getBoundingBox(0, 0, 0, 0, 0, 0);
         else {
             setBlockBoundsBasedOnState(world, x, y, z);
-            if (te.copiedBlock == null) return AxisAlignedBB.getBoundingBox(0, 0, 0, 1, 1, 1);
-            else return te.copiedBlock.getSelectedBoundingBoxFromPool((World) ProxyAccess.get(world), x, y, z);
+            if (te.copiedBlock == null) {
+                return AxisAlignedBB.getBoundingBox(0, 0, 0, 1, 1, 1);
+            } else {
+                return te.copiedBlock.getSelectedBoundingBoxFromPool((World) ProxyAccess.get(world), x, y, z);
+            }
         }
     }
 
@@ -245,12 +248,15 @@ public class VanishingBlock extends BlockContainer {
             setBlockBounds(0, 0, 0, 0, 0, 0);
             return super.collisionRayTrace(world, x, y, z, src, dest);
         } else {
-            if (te.copiedBlock == null) return super.collisionRayTrace(world, x, y, z, src, dest);
-            else {
+            if (te.copiedBlock == null) {
+                return super.collisionRayTrace(world, x, y, z, src, dest);
+            } else {
                 World proxy = (World) ProxyAccess.get(world);
-                if (proxy == world && te.copiedBlock instanceof IBoundingBox)
+                if (proxy == world && te.copiedBlock instanceof IBoundingBox) {
                     return super.collisionRayTrace(world, x, y, z, src, dest);
-                else return te.copiedBlock.collisionRayTrace(proxy, x, y, z, src, dest);
+                } else {
+                    return te.copiedBlock.collisionRayTrace(proxy, x, y, z, src, dest);
+                }
             }
         }
     }
