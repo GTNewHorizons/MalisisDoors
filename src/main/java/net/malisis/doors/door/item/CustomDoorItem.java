@@ -68,9 +68,7 @@ public class CustomDoorItem extends DoorItem {
     @Override
     public boolean onItemUse(ItemStack itemStack, EntityPlayer player, World world, int x, int y, int z, int side,
             float par8, float par9, float par10) {
-        boolean b = super.onItemUse(itemStack, player, world, x, y, z, side, par8, par9, par10);
-
-        return b;
+        return super.onItemUse(itemStack, player, world, x, y, z, side, par8, par9, par10);
     }
 
     public static ItemStack fromDoorFactory(DoorFactoryTileEntity te) {

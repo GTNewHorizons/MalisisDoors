@@ -157,8 +157,8 @@ public class PlayerSensor extends Block {
 
         int y2 = Math.max(y, y + (factor * yOffset));
         y = Math.min(y, y + (factor * yOffset));
-        AxisAlignedBB aabb = AxisAlignedBB.getBoundingBox(x1, y, z1, x2, y2, z2);
-        return aabb;
+
+        return AxisAlignedBB.getBoundingBox(x1, y, z1, x2, y2, z2);
     }
 
     /**

@@ -205,12 +205,11 @@ public class MixedBlockRenderer extends MalisisRenderer {
         RenderParameters p = face.getParameters();
         if (p.direction.get() == null) return true;
 
-        boolean b = MalisisDoors.Blocks.mixedBlock.shouldSideBeRendered(
+        return MalisisDoors.Blocks.mixedBlock.shouldSideBeRendered(
                 world,
                 x + p.direction.get().offsetX,
                 y + p.direction.get().offsetY,
                 z + p.direction.get().offsetZ,
                 p.direction.get().ordinal());
-        return b;
     }
 }
