@@ -136,7 +136,7 @@ public class DoorFactoryGui extends MalisisGui {
     private UIContainer<UIContainer> getPropertiesContainer() {
         UIContainer propContainer = new UIContainer<>(this, UIComponent.INHERITED, 80).setPosition(0, 15);
 
-        selDoorMovement = new UISelect<String>(
+        selDoorMovement = new UISelect<>(
                 this,
                 100,
                 getSortedList(DoorRegistry.listMovements().keySet(), "door_movement."));
@@ -148,7 +148,7 @@ public class DoorFactoryGui extends MalisisGui {
         cbRedstone = new UICheckBox(this).setPosition(-15, 38, Anchor.RIGHT).register(this);
         cbDoubleDoor = new UICheckBox(this).setPosition(-15, 50, Anchor.RIGHT).register(this);
 
-        selDoorSound = new UISelect<String>(
+        selDoorSound = new UISelect<>(
                 this,
                 100,
                 getSortedList(DoorRegistry.listSounds().keySet(), "gui.door_factory.door_sound."));
