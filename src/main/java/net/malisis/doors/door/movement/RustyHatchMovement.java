@@ -47,11 +47,10 @@ public class RustyHatchMovement implements IDoorMovement {
         if (!tileEntity.isOpened()) {
             if (topBlock) {
                 aabb.minY = aabb.minY + 1 - f;
-                aabb.maxY = aabb.minY + f;
             } else {
                 aabb.minY = aabb.minY + 2;
-                aabb.maxY = aabb.minY + f;
             }
+            aabb.maxY = aabb.minY + f;
         } else {
             aabb.minX += f;
             aabb.maxX -= f;
