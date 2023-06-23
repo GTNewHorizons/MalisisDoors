@@ -14,5 +14,5 @@ the frame. Different types of frames implies different vanishing propagation beh
   - wood frames propagate to all frames around them
   - iron frames propagate to all frames around painted with the same block
   - gold frames propagate to all frames around painted with the same block and the same metadata (ie red wool would not make a blue wool vanish)
-  - diamond frames has their own GUI to configure their behavior. You can choose for each direction if they should propagate and the delay 
+  - diamond frames has their own GUI to configure their behavior. You can choose for each direction if they should propagate and the delay
   - Frames not painted automatically propagate their state.
