@@ -52,7 +52,6 @@ import net.malisis.doors.door.sound.VanillaDoorSound;
 import net.malisis.doors.trapdoor.movement.SlidingTrapDoorMovement;
 import net.malisis.doors.trapdoor.movement.TrapDoorMovement;
 
-import com.google.common.base.Predicate;
 import com.google.common.collect.Maps;
 
 /**
@@ -155,13 +154,7 @@ public class DoorRegistry {
     }
 
     public static Map<String, IDoorMovement> listMovements() {
-        return Maps.filterValues(movements, new Predicate<IDoorMovement>() {
-
-            @Override
-            public boolean apply(IDoorMovement input) {
-                return !input.isSpecial();
-            }
-        });
+        return Maps.filterValues(movements, input -> !input.isSpecial());
     }
 
     // #end Movements
@@ -219,13 +212,7 @@ public class DoorRegistry {
     }
 
     public static Map<String, IDoorSound> listSounds() {
-        return Maps.filterValues(sounds, new Predicate<IDoorSound>() {
-
-            @Override
-            public boolean apply(IDoorSound input) {
-                return !(input instanceof RustyHatchSound);
-            }
-        });
+        return Maps.filterValues(sounds, input -> !(input instanceof RustyHatchSound));
     }
     // #end Sounds
 }
