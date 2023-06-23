@@ -100,7 +100,7 @@ public class BlockMixerTileEntity extends TileEntity implements IInventoryProvid
         return new BlockMixerGui(this, container);
     }
 
-    public class MixerSlot extends MalisisSlot {
+    public static class MixerSlot extends MalisisSlot {
 
         public MixerSlot(int index) {
             super(index);

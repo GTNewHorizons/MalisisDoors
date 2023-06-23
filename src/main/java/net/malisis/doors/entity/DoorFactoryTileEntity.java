@@ -256,7 +256,7 @@ public class DoorFactoryTileEntity extends TileEntity implements IInventoryProvi
         TileEntityUtils.updateGui(this);
     }
 
-    private class DoorFactorySlot extends MalisisSlot {
+    private static class DoorFactorySlot extends MalisisSlot {
 
         public DoorFactorySlot(int index) {
             super(index);
@@ -268,7 +268,7 @@ public class DoorFactoryTileEntity extends TileEntity implements IInventoryProvi
         }
     }
 
-    private class DoorEditSlot extends MalisisSlot {
+    private static class DoorEditSlot extends MalisisSlot {
 
         public DoorEditSlot(int index) {
             super(index);
