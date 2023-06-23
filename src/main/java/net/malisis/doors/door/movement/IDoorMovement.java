@@ -26,9 +26,9 @@ import net.minecraft.util.AxisAlignedBB;
  */
 public interface IDoorMovement {
 
-    public AxisAlignedBB getBoundingBox(DoorTileEntity tileEntity, boolean topBlock, BoundingBoxType type);
+    AxisAlignedBB getBoundingBox(DoorTileEntity tileEntity, boolean topBlock, BoundingBoxType type);
 
-    public Animation[] getAnimations(DoorTileEntity tileEntity, MalisisModel model, RenderParameters rp);
+    Animation[] getAnimations(DoorTileEntity tileEntity, MalisisModel model, RenderParameters rp);
 
-    public boolean isSpecial();
+    boolean isSpecial();
 }

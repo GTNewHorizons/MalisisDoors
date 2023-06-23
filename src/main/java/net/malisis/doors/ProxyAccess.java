@@ -37,23 +37,23 @@ public class ProxyAccess {
 
     private interface IProxyAccess {
 
-        public Block getBlock(int x, int y, int z);
+        Block getBlock(int x, int y, int z);
 
-        public TileEntity getTileEntity(int var1, int var2, int var3);
+        TileEntity getTileEntity(int var1, int var2, int var3);
 
-        public int getBlockMetadata(int x, int y, int z);
+        int getBlockMetadata(int x, int y, int z);
 
-        public boolean setBlockMetadataWithNotify(int x, int y, int z, int metadata, int flag);
+        boolean setBlockMetadataWithNotify(int x, int y, int z, int metadata, int flag);
 
-        public boolean setBlock(int x, int y, int z, Block block, int metadata, int flag);
+        boolean setBlock(int x, int y, int z, Block block, int metadata, int flag);
 
-        public WorldInfo getWorldInfo();
+        WorldInfo getWorldInfo();
 
-        public WorldInfo getSeed();
+        WorldInfo getSeed();
 
-        public void calculateInitialSkylight();
+        void calculateInitialSkylight();
 
-        public void calculateInitialWeatherBody();
+        void calculateInitialWeatherBody();
     }
 
     public static IBlockAccess get(IBlockAccess world) {

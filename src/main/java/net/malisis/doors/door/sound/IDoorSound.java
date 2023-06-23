@@ -21,5 +21,5 @@ import net.malisis.doors.door.DoorState;
  */
 public interface IDoorSound {
 
-    public String getSoundPath(DoorState state);
+    String getSoundPath(DoorState state);
 }

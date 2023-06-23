@@ -33,7 +33,7 @@ import io.netty.buffer.ByteBuf;
 @MalisisMessage
 public class VanishingDiamondFrameMessage implements IMessageHandler<VanishingDiamondFrameMessage.Packet, IMessage> {
 
-    public static enum DataType {
+    public enum DataType {
         PROPAGATION,
         DELAY,
         INVERSED,

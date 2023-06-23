@@ -29,7 +29,7 @@ import net.minecraft.item.ItemStack;
  */
 public class WoodTrapDoor extends TrapDoorDescriptor {
 
-    public static enum Type {
+    public enum Type {
 
         // {"spruce", "birch", "jungle", "acacia", "big_oak"};
         ACACIA("trapdoor_acacia", 4),
@@ -41,7 +41,7 @@ public class WoodTrapDoor extends TrapDoorDescriptor {
         private final int type;
         private final String name;
 
-        private Type(String name, int type) {
+        Type(String name, int type) {
             this.name = name;
             this.type = type;
         }

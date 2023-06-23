@@ -55,7 +55,7 @@ public class BigDoor extends MalisisBlock implements ITileEntityProvider, IChunk
         public final String name;
         public final Item door;
 
-        private Type(String name, Item door) {
+        Type(String name, Item door) {
             this.name = name;
             this.door = door;
         }

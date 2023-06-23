@@ -45,7 +45,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 
 public class FenceGate extends BlockFenceGate implements ITileEntityProvider {
 
-    public static enum Type {
+    public enum Type {
 
         OAK("fenceGate", 0),
         ACACIA("acaciaFenceGate", 4),
@@ -58,7 +58,7 @@ public class FenceGate extends BlockFenceGate implements ITileEntityProvider {
         private final int type;
         private final String name;
 
-        private Type(String name, int type) {
+        Type(String name, int type) {
             this.name = name;
             this.type = type;
         }

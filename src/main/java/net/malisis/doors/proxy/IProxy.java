@@ -19,7 +19,7 @@ package net.malisis.doors.proxy;
  */
 public interface IProxy {
 
-    public void initRenderers();
+    void initRenderers();
 
-    public void initFonts();
+    void initFonts();
 }
