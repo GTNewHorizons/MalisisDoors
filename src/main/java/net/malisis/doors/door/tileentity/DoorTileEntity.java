@@ -227,7 +227,7 @@ public class DoorTileEntity extends TileEntity {
     }
 
     /**
-     * Is the DoorTileEntity passed a matching matching double door to this DoorTileEntity
+     * Is the DoorTileEntity passed a matching double door to this DoorTileEntity
      *
      * @param te
      * @return
