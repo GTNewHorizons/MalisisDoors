@@ -115,14 +115,9 @@ public class GarageDoorRenderer extends MalisisRenderer {
             else blockMetadata &= ~Door.FLAG_TOPBLOCK;
 
             Transformation verticalAnim = new Translation(0, -delta, 0, 0, 0, 0).forTicks(t * delta, 0);
-            // @formatter:off
             Transformation topRotate = new ParallelTransformation(
                     new Translation(0, 1, 0).forTicks(t, 0),
-                    new Rotation(0, -90)
-                            .aroundAxis(0, 0, 1)
-                            .offset(-0.5F, -0.5F, 0)
-                            .forTicks(t, 0));
-            // @formatter:on
+                    new Rotation(0, -90).aroundAxis(0, 0, 1).offset(-0.5F, -0.5F, 0).forTicks(t, 0));
             Transformation horizontalAnim = new Translation(0, 0, 0, 0, delta2, 0).forTicks(t * delta2, 0);
 
             Transformation chained = new ChainedTransformation(verticalAnim, topRotate, horizontalAnim);

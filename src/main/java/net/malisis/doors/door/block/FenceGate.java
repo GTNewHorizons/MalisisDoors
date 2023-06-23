@@ -48,7 +48,6 @@ public class FenceGate extends BlockFenceGate implements ITileEntityProvider {
     public static enum Type {
 
         // {"oak", "spruce", "birch", "jungle", "acacia", "big_oak"};
-        // @formatter:off
         OAK("fenceGate", 0),
         ACACIA("acaciaFenceGate", 4),
         BIRCH("birchFenceGate", 2),
@@ -57,7 +56,6 @@ public class FenceGate extends BlockFenceGate implements ITileEntityProvider {
         SPRUCE("spruceFenceGate", 1),
         CAMO("camoFenceGate", 0);
 
-        // @formatter:on
         private final int type;
         private final String name;
 
