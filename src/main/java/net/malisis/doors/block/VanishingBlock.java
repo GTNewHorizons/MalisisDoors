@@ -212,7 +212,6 @@ public class VanishingBlock extends BlockContainer {
         VanishingTileEntity te = TileEntityUtils.getTileEntity(VanishingTileEntity.class, world, x, y, z);
         if (te == null || te.copiedBlock == null) {
             super.addCollisionBoxesToList(world, x, y, z, mask, list, entity);
-            return;
         } else te.copiedBlock.addCollisionBoxesToList((World) ProxyAccess.get(world), x, y, z, mask, list, entity);
     }
 

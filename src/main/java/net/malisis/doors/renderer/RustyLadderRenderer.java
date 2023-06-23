@@ -74,6 +74,5 @@ public class RustyLadderRenderer extends MalisisRenderer {
         ladder.translate(-1, 0, 0);
 
         drawShape(ladder, rp);
-        return;
     }
 }
