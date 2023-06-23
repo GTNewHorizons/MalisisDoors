@@ -112,7 +112,7 @@ public class RustyHatchRenderer extends MalisisRenderer {
 
     private void renderBlock() {
         if (!MultiBlock.isOrigin(world, x, y, z)) {
-            if (!tileEntity.shouldLadder(x, y, z) /* || y == tileEntity.getMultiBlock().getY() */) return;
+            if (!tileEntity.shouldLadder(x, y, z)) return;
             if (ladder == null) return;
 
             ladder.resetState();

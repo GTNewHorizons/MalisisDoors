@@ -37,7 +37,7 @@ public class ForcefieldMovement implements IDoorMovement {
         MultiBlock mb = ((ForcefieldTileEntity) tileEntity).getMultiBlock();
         if (mb == null) return null;
 
-        float f = 0.5F /*- Door.DOOR_WIDTH / 2*/;
+        float f = 0.5F;
         AxisAlignedBB aabb = mb.getWorldBounds();
         if (aabb.minY == aabb.maxY - 1) {
             aabb.minY += f;

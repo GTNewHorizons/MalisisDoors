@@ -31,9 +31,8 @@ public class WoodTrapDoor extends TrapDoorDescriptor {
 
     public static enum Type {
 
-        // {"oak", "spruce", "birch", "jungle", "acacia", "big_oak"};
+        // {"spruce", "birch", "jungle", "acacia", "big_oak"};
         // @formatter:off
-        //		OAK("fenceGate", 0),
         ACACIA("trapdoor_acacia", 4),
         BIRCH("trapdoor_birch", 2),
         DARK_OAK("trapdoor_dark_oak", 5),

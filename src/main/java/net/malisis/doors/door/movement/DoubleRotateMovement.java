@@ -61,11 +61,6 @@ public class DoubleRotateMovement implements IDoorMovement {
         float hingeX = 0.5F - DOOR_WIDTH / 2;
         float hingeZ = -0.5F + DOOR_WIDTH / 2;
 
-        // if (rightDirection)
-        // {
-        // angle = -angle;
-        // }
-
         if (tileEntity.isReversed()) {
             hingeX = -hingeX;
             angle = -angle;

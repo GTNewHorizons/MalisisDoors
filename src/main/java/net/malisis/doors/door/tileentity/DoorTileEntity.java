@@ -121,7 +121,7 @@ public class DoorTileEntity extends TileEntity {
     }
 
     public boolean shouldCenter() {
-        if (getMovement() == null /* || !getMovement().canCenter() */) return false;
+        if (getMovement() == null) return false;
 
         int ox = 0, oz = 0;
         if (getDirection() == Door.DIR_NORTH || getDirection() == Door.DIR_SOUTH) ox = 1;

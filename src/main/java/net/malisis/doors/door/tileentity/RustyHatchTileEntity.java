@@ -73,8 +73,6 @@ public class RustyHatchTileEntity extends DoorTileEntity implements MultiBlock.I
     }
 
     public boolean shouldLadder(int x, int y, int z) {
-        // if (!isOpened()/* && y == multiBlock.getY()*/)
-        // return false;
 
         ForgeDirection dir = ForgeDirection.getOrientation(getDirection());
 

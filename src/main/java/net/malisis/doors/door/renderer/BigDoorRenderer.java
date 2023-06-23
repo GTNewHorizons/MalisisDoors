@@ -112,13 +112,6 @@ public class BigDoorRenderer extends MalisisRenderer {
 
     @Override
     protected boolean isCurrentBlockDestroyProgress(DestroyBlockProgress dbp) {
-        // MultiBlock mb = MultiBlock.getMultiBlock(world, dbp.getPartialBlockX(), dbp.getPartialBlockY(),
-        // dbp.getPartialBlockZ());
-        // return mb != null && mb.getX() == tileEntity.getMultiBlock().getX() && mb.getY() ==
-        // tileEntity.getMultiBlock().getY()
-        // && mb.getZ() == tileEntity.getMultiBlock().getZ();
-        // TODO:
-        // return super.isCurrentBlockDestroyProgress(dbp);
         return true;
     }
 
