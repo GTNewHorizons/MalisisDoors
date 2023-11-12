@@ -15,8 +15,6 @@ package net.malisis.doors;
 
 import java.util.WeakHashMap;
 
-import lombok.experimental.Delegate;
-
 import net.malisis.core.MalisisCore;
 import net.malisis.doors.entity.VanishingTileEntity;
 import net.minecraft.block.Block;
@@ -28,6 +26,8 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldSettings;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.storage.WorldInfo;
+
+import lombok.experimental.Delegate;
 
 public class ProxyAccess {
 
