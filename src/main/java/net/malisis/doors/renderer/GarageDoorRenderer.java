@@ -150,6 +150,12 @@ public class GarageDoorRenderer extends MalisisRenderer {
     }
 
     @Override
+    public void reset() {
+        super.reset();
+        tileEntity = null;
+    }
+
+    @Override
     protected boolean isCurrentBlockDestroyProgress(DestroyBlockProgress dbp) {
         if (dbp.getPartialBlockX() == x && dbp.getPartialBlockY() == y && dbp.getPartialBlockZ() == z) return true;
 
