@@ -1,5 +1,6 @@
 dependencies {
-	api 'com.github.GTNewHorizons:MalisisCore:0.15.0:dev'
 	compileOnly 'org.projectlombok:lombok:1.18.24'
 	annotationProcessor 'org.projectlombok:lombok:1.18.24'
+
+    implementation 'com.github.GTNewHorizons:GTNHLib:0.2.4:dev'
 }
