@@ -28,6 +28,7 @@ import net.malisis.core.util.finiteliquid.FiniteLiquid;
 import net.malisis.core.util.finiteliquid.FiniteLiquidRenderer;
 import net.malisis.core.util.replacement.ReplacementTool;
 import net.malisis.core.util.syncer.Syncer;
+import net.malisis.doors.MalisisDoors;
 import net.minecraft.client.Minecraft;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraft.server.MinecraftServer;
@@ -66,7 +67,7 @@ public class MalisisCore implements IMalisisMod {
     /** Mod name. */
     public static final String modname = "Malisis Core";
     /** Current version. */
-    public static final String version = "GRADLETOKEN_VERSION";
+    public static final String version = MalisisDoors.version;
     /** Url for the mod. */
     public static final String url = "";
     /** Path for the mod. */
