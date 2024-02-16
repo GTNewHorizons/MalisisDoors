@@ -13,9 +13,6 @@
 
 package net.malisis.core.util.replacement;
 
-import java.lang.reflect.Field;
-
-import net.malisis.core.asm.AsmUtils;
 import net.minecraft.item.Item;
 import net.minecraft.stats.StatCrafting;
 
@@ -25,11 +22,8 @@ import net.minecraft.stats.StatCrafting;
  */
 public class StatCraftingHandler extends ReplacementHandler<StatCrafting> {
 
-    private Field itemField;
-
     public StatCraftingHandler() {
         super(StatCrafting.class);
-        itemField = AsmUtils.changeFieldAccess(StatCrafting.class, "field_150960_a");
     }
 
     @Override
