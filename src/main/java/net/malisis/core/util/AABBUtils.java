@@ -15,7 +15,6 @@ package net.malisis.core.util;
 
 import net.malisis.core.block.BoundingBoxType;
 import net.malisis.core.block.MalisisBlock;
-import net.malisis.core.util.chunkcollision.IChunkCollidable;
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
@@ -303,9 +302,7 @@ public class AABBUtils {
      */
     public static AxisAlignedBB[] getCollisionBoundingBoxes(World world, BlockState state, boolean offset) {
         AxisAlignedBB[] aabbs = new AxisAlignedBB[0];
-        if (state.getBlock() instanceof IChunkCollidable) aabbs = ((IChunkCollidable) state.getBlock())
-                .getBoundingBox(world, state.getX(), state.getY(), state.getZ(), BoundingBoxType.CHUNKCOLLISION);
-        else if (state.getBlock() instanceof MalisisBlock) aabbs = ((MalisisBlock) state.getBlock())
+        if (state.getBlock() instanceof MalisisBlock) aabbs = ((MalisisBlock) state.getBlock())
                 .getBoundingBox(world, state.getX(), state.getY(), state.getZ(), BoundingBoxType.CHUNKCOLLISION);
         else {
             AxisAlignedBB aabb = state.getBlock()

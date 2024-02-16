@@ -18,13 +18,9 @@ import java.util.ArrayList;
 import net.malisis.core.block.BoundingBoxType;
 import net.malisis.core.block.MalisisBlock;
 import net.malisis.core.util.AABBUtils;
-import net.malisis.core.util.BlockPos;
 import net.malisis.core.util.BlockState;
 import net.malisis.core.util.EntityUtils;
 import net.malisis.core.util.TileEntityUtils;
-import net.malisis.core.util.chunkcollision.ChunkCollision;
-import net.malisis.core.util.chunkcollision.IChunkCollidable;
-import net.malisis.core.util.chunklistener.IBlockListener;
 import net.malisis.doors.MalisisDoors;
 import net.malisis.doors.MalisisDoors.Items;
 import net.malisis.doors.door.tileentity.BigDoorTileEntity;
@@ -45,7 +41,7 @@ import net.minecraftforge.common.util.ForgeDirection;
  * @author Ordinastie
  *
  */
-public class BigDoor extends MalisisBlock implements ITileEntityProvider, IChunkCollidable, IBlockListener {
+public class BigDoor extends MalisisBlock implements ITileEntityProvider {
 
     public enum Type {
 
@@ -100,8 +96,6 @@ public class BigDoor extends MalisisBlock implements ITileEntityProvider, IChunk
         int metadata = Door.dirToInt(dir);
         world.setBlockMetadataWithNotify(x, y, z, metadata, 2);
 
-        ChunkCollision.get().replaceBlocks(world, new BlockState(world, x, y, z));
-
         BigDoorTileEntity te = TileEntityUtils.getTileEntity(BigDoorTileEntity.class, world, x, y, z);
         if (te != null) te.setFrameState(BlockState.fromNBT(itemStack.getTagCompound()));
     }
@@ -116,13 +110,6 @@ public class BigDoor extends MalisisBlock implements ITileEntityProvider, IChunk
 
         te.openOrCloseDoor();
         return true;
-    }
-
-    @Override
-    public AxisAlignedBB[] getPlacedBoundingBox(IBlockAccess world, int x, int y, int z, int side, EntityPlayer player,
-            ItemStack itemStack) {
-        ForgeDirection dir = EntityUtils.getEntityFacing(player);
-        return AABBUtils.rotate(new AxisAlignedBB[] { defaultBoundingBox.copy() }, dir);
     }
 
     @Override
@@ -143,11 +130,6 @@ public class BigDoor extends MalisisBlock implements ITileEntityProvider, IChunk
                 }
 
         return AABBUtils.rotate(aabbs, Door.intToDir(te.getDirection()));
-    }
-
-    @Override
-    public int blockRange() {
-        return 5;
     }
 
     @Override
@@ -193,22 +175,6 @@ public class BigDoor extends MalisisBlock implements ITileEntityProvider, IChunk
     @Override
     public boolean canRenderInPass(int pass) {
         renderPass = pass;
-        return true;
-    }
-
-    @Override
-    public boolean onBlockSet(World world, BlockPos pos, BlockState state) {
-        if (!state.getBlock().isReplaceable(world, state.getX(), state.getY(), state.getZ())) return true;
-
-        for (AxisAlignedBB aabb : AABBUtils.getCollisionBoundingBoxes(world, new BlockState(pos, this), true)) {
-            if (state.getPos().isInside(aabb)) return false;
-        }
-
-        return true;
-    }
-
-    @Override
-    public boolean onBlockRemoved(World world, BlockPos pos, BlockPos blockPos) {
         return true;
     }
 }
