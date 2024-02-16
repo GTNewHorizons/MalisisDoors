@@ -15,6 +15,7 @@ package net.malisis.core.util;
 
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Vec3;
+import org.joml.Vector3d;
 
 /**
  *
@@ -43,6 +44,12 @@ public class Point {
         this.x = x;
         this.y = y;
         this.z = z;
+    }
+
+    public Point(Vector3d vector) {
+        this.x = vector.x;
+        this.y = vector.y;
+        this.z = vector.z;
     }
 
     /**
