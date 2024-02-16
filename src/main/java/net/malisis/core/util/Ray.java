@@ -71,7 +71,7 @@ public class Ray {
      * Gets the point at the specified distance into a {@link Vector3d}.
      *
      * @param vector {@link Vector3d} to store the result in
-     * @param t the distance
+     * @param t      the distance
      */
     public void getPointAt(Vector3d vector, double t) {
         if (Double.isNaN(t)) return;
@@ -174,6 +174,10 @@ public class Ray {
     }
 
     private boolean isPointInsideAABB(Vector3d point, AxisAlignedBB aabb) {
-        return point.x >= aabb.minX && point.x <= aabb.maxX && point.y >= aabb.minY && point.y <= aabb.maxY && point.z >= aabb.minZ && point.z <= aabb.maxZ;
+        return point.x >= aabb.minX && point.x <= aabb.maxX
+                && point.y >= aabb.minY
+                && point.y <= aabb.maxY
+                && point.z >= aabb.minZ
+                && point.z <= aabb.maxZ;
     }
 }
