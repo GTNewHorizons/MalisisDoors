@@ -112,7 +112,7 @@ public class MalisisRenderer extends TileEntitySpecialRenderer
     /** Current parameters for the shape being rendered. */
     protected RenderParameters rp = new RenderParameters();
     /** Current parameters for the face being rendered. */
-    protected RenderParameters params;
+    protected static RenderParameters params = new RenderParameters();
     /** Base brightness of the block. */
     protected int baseBrightness;
     /** An override texture set by the renderer. */
@@ -676,7 +676,11 @@ public class MalisisRenderer extends TileEntitySpecialRenderer
         if (s == null) return;
 
         shape = s;
-        rp = params != null ? params : new RenderParameters();
+        if (params != null) {
+            rp = params;
+        } else {
+            rp.reset();
+        }
 
         // apply transformations
         s.applyMatrix();
@@ -716,7 +720,7 @@ public class MalisisRenderer extends TileEntitySpecialRenderer
         }
 
         face = f;
-        params = new RenderParameters();
+        params.reset();
         params.merge(rp);
         params.merge(faceParams);
 
