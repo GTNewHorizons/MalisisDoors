@@ -23,7 +23,7 @@ public class Parameter<T> {
     /** Default value. */
     private T defaultValue;
 
-    /** Current alue. */
+    /** Current value. */
     private T value;
 
     /**
@@ -57,7 +57,7 @@ public class Parameter<T> {
      * Resets the value to its default.
      */
     public void reset() {
-        value = null;
+        value = defaultValue;
     }
 
     /**
