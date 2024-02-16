@@ -13,10 +13,11 @@
 
 package net.malisis.core.util.replacement;
 
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
-import net.malisis.core.asm.AsmUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
@@ -26,13 +27,22 @@ import net.minecraftforge.oredict.ShapelessOreRecipe;
  */
 public class ShapelessOreRecipeHandler extends ReplacementHandler<ShapelessOreRecipe> {
 
-    private Field inputField;
-    private Field outputField;
+    // This field needs to use reflection because ATs don't really work on forge code.
+    // The roughly equivalent field for the vanilla MC classes is just using ATs.
+    private static final MethodHandle outputField;
+
+    static {
+        try {
+            Field field = ShapelessOreRecipe.class.getDeclaredField("output");
+            field.setAccessible(true);
+            outputField = MethodHandles.lookup().unreflectSetter(field);
+        } catch (ReflectiveOperationException e) {
+            throw new RuntimeException("Failed to access ShapelessOreRecipe.output", e);
+        }
+    }
 
     public ShapelessOreRecipeHandler() {
         super(ShapelessOreRecipe.class);
-        inputField = AsmUtils.changeFieldAccess(ShapelessOreRecipe.class, "input");
-        outputField = AsmUtils.changeFieldAccess(ShapelessOreRecipe.class, "output");
     }
 
     @Override
@@ -40,19 +50,19 @@ public class ShapelessOreRecipeHandler extends ReplacementHandler<ShapelessOreRe
         boolean replaced = false;
         try {
             if (isMatched(recipe.getRecipeOutput(), vanilla)) {
-                outputField.set(recipe, getItemStack(replacement));
+                outputField.invokeExact(recipe, getItemStack(replacement));
                 replaced = true;
             }
 
-            ArrayList<Object> input = (ArrayList<Object>) inputField.get(recipe);
+            ArrayList<Object> input = recipe.getInput();
             for (int i = 0; i < input.size(); i++) {
                 if (input.get(i) instanceof ItemStack && isMatched((ItemStack) input.get(i), vanilla)) {
                     input.set(i, getItemStack(replacement));
                     replaced = true;
                 }
             }
-        } catch (IllegalArgumentException | IllegalAccessException e) {
-            e.printStackTrace();
+        } catch (Throwable e) {
+            throw new RuntimeException("Failed to replace ShapelessOreRecipe", e);
         }
 
         return replaced;

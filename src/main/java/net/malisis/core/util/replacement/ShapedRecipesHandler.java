@@ -13,9 +13,6 @@
 
 package net.malisis.core.util.replacement;
 
-import java.lang.reflect.Field;
-
-import net.malisis.core.asm.AsmUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.ShapedRecipes;
 
@@ -25,31 +22,25 @@ import net.minecraft.item.crafting.ShapedRecipes;
  */
 public class ShapedRecipesHandler extends ReplacementHandler<ShapedRecipes> {
 
-    private Field outputField;
-
     public ShapedRecipesHandler() {
         super(ShapedRecipes.class);
-        outputField = AsmUtils.changeFieldAccess(ShapedRecipes.class, "recipeOutput", "field_77575_e");
     }
 
     @Override
     public boolean replace(ShapedRecipes recipe, Object vanilla, Object replacement) {
         boolean replaced = false;
-        try {
-            if (isMatched(recipe.getRecipeOutput(), vanilla)) {
-                outputField.set(recipe, getItemStack(replacement));
+
+        if (isMatched(recipe.getRecipeOutput(), vanilla)) {
+            recipe.recipeOutput = getItemStack(replacement);
+            replaced = true;
+        }
+
+        ItemStack[] input = recipe.recipeItems;
+        for (int i = 0; i < input.length; i++) {
+            if (input[i] instanceof ItemStack && isMatched(input[i], vanilla)) {
+                input[i] = getItemStack(replacement);
                 replaced = true;
             }
-
-            ItemStack[] input = recipe.recipeItems;
-            for (int i = 0; i < input.length; i++) {
-                if (input[i] instanceof ItemStack && isMatched(input[i], vanilla)) {
-                    input[i] = getItemStack(replacement);
-                    replaced = true;
-                }
-            }
-        } catch (IllegalArgumentException | IllegalAccessException e) {
-            e.printStackTrace();
         }
 
         return replaced;

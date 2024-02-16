@@ -13,16 +13,18 @@
 
 package net.malisis.core.asm;
 
-import static org.objectweb.asm.tree.AbstractInsnNode.*;
+import static org.objectweb.asm.tree.AbstractInsnNode.FIELD_INSN;
+import static org.objectweb.asm.tree.AbstractInsnNode.IINC_INSN;
+import static org.objectweb.asm.tree.AbstractInsnNode.INT_INSN;
+import static org.objectweb.asm.tree.AbstractInsnNode.LDC_INSN;
+import static org.objectweb.asm.tree.AbstractInsnNode.METHOD_INSN;
+import static org.objectweb.asm.tree.AbstractInsnNode.TYPE_INSN;
+import static org.objectweb.asm.tree.AbstractInsnNode.VAR_INSN;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.ListIterator;
-
-import net.malisis.core.MalisisCore;
 
 import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.ClassNode;
@@ -179,76 +181,4 @@ public class AsmUtils {
         return clone;
     }
 
-    /**
-     * Changes the access level for the specified field for a class.
-     *
-     * @param clazz     the clazz
-     * @param fieldName the field name
-     * @return the field
-     */
-    public static Field changeFieldAccess(Class clazz, String fieldName) {
-        return changeFieldAccess(clazz, fieldName, fieldName);
-    }
-
-    /**
-     * Changes the access level for the specified field for a class.
-     *
-     * @param clazz     the clazz
-     * @param fieldName the field name
-     * @param srgName   the srg name
-     * @return the field
-     */
-    public static Field changeFieldAccess(Class clazz, String fieldName, String srgName) {
-        try {
-            // modify reference in Blocks class
-            Field f = clazz.getDeclaredField(MalisisCore.isObfEnv ? srgName : fieldName);
-            f.setAccessible(true);
-
-            return f;
-        } catch (ReflectiveOperationException e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
-
-    public static Method changeMethodAccess(Class clazz, String methodName, String params) {
-        return changeMethodAccess(clazz, methodName, methodName, params);
-    }
-
-    public static Method changeMethodAccess(Class clazz, String methodName, String srgName, String params) {
-        return changeMethodAccess(clazz, methodName, srgName, new MethodDescriptor(params).getParams());
-    }
-
-    /**
-     * Changes the access level for the specified method for a class.
-     *
-     * @param clazz      the clazz
-     * @param methodName the field name
-     * @return the field
-     */
-    public static Method changeMethodAccess(Class clazz, String methodName, Class<?>... params) {
-        return changeMethodAccess(clazz, methodName, methodName, params);
-    }
-
-    /**
-     * Changes the access level for the specified method for a class.
-     *
-     * @param clazz      the clazz
-     * @param methodName the field name
-     * @param srgName    the srg name
-     * @return the field
-     */
-    public static Method changeMethodAccess(Class clazz, String methodName, String srgName, Class<?>... params) {
-        try {
-            // modify reference in Blocks class
-            Method m = clazz.getDeclaredMethod(MalisisCore.isObfEnv ? srgName : methodName, params);
-            m.setAccessible(true);
-            return m;
-        } catch (ReflectiveOperationException e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
 }
