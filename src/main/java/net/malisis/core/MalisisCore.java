@@ -58,7 +58,7 @@ import cpw.mods.fml.relauncher.SideOnly;
         modid = MalisisCore.modid,
         name = MalisisCore.modname,
         version = MalisisCore.version,
-        dependencies = "required-after:gtnhlib@[0.0.10,)")
+        dependencies = "required-after:gtnhlib@[0.2.4,)")
 public class MalisisCore implements IMalisisMod {
 
     /** Mod ID. */

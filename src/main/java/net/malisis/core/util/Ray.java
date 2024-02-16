@@ -21,6 +21,7 @@ import net.minecraft.util.Vec3;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.tuple.Pair;
+import org.joml.Vector3d;
 
 /**
  *
@@ -67,14 +68,14 @@ public class Ray {
     }
 
     /**
-     * Gets the {@link Point} at the specified distance.
+     * Gets the point at the specified distance into a {@link Vector3d}.
      *
-     * @param t the distance
-     * @return the point at the distance t
+     * @param vector {@link Vector3d} to store the result in
+     * @param t      the distance
      */
-    public Point getPointAt(double t) {
-        if (Double.isNaN(t)) return null;
-        return new Point(origin.x + t * direction.x, origin.y + t * direction.y, origin.z + t * direction.z);
+    public void getPointAt(Vector3d vector, double t) {
+        if (Double.isNaN(t)) return;
+        vector.set(origin.x + t * direction.x, origin.y + t * direction.y, origin.z + t * direction.z);
     }
 
     /**
@@ -123,23 +124,60 @@ public class Ray {
         double iY = intersectY(aabb.maxY);
         double iz = intersectZ(aabb.minZ);
         double iZ = intersectZ(aabb.maxZ);
-        Point interx = ix >= 0 ? getPointAt(ix) : null;
-        Point interX = iX >= 0 ? getPointAt(iX) : null;
-        Point intery = iy >= 0 ? getPointAt(iy) : null;
-        Point interY = iY >= 0 ? getPointAt(iY) : null;
-        Point interz = iz >= 0 ? getPointAt(iz) : null;
-        Point interZ = iZ >= 0 ? getPointAt(iZ) : null;
 
         List<Pair<ForgeDirection, Point>> list = new ArrayList<>();
-        if (interx != null && interx.isInside(aabb)) list.add(Pair.of(ForgeDirection.WEST, interx));
-        if (interX != null && interX.isInside(aabb)) list.add(Pair.of(ForgeDirection.EAST, interX));
 
-        if (intery != null && intery.isInside(aabb)) list.add(Pair.of(ForgeDirection.DOWN, intery));
-        if (interY != null && interY.isInside(aabb)) list.add(Pair.of(ForgeDirection.UP, interY));
+        Vector3d intersector = new Vector3d();
+        if (ix >= 0) {
+            getPointAt(intersector, ix);
+            if (isPointInsideAABB(intersector, aabb)) {
+                list.add(Pair.of(ForgeDirection.WEST, new Point(intersector)));
+            }
+        }
 
-        if (interz != null && interz.isInside(aabb)) list.add(Pair.of(ForgeDirection.NORTH, interz));
-        if (interZ != null && interZ.isInside(aabb)) list.add(Pair.of(ForgeDirection.SOUTH, interZ));
+        if (iX >= 0) {
+            getPointAt(intersector, iX);
+            if (isPointInsideAABB(intersector, aabb)) {
+                list.add(Pair.of(ForgeDirection.EAST, new Point(intersector)));
+            }
+        }
+
+        if (iy >= 0) {
+            getPointAt(intersector, iy);
+            if (isPointInsideAABB(intersector, aabb)) {
+                list.add(Pair.of(ForgeDirection.DOWN, new Point(intersector)));
+            }
+        }
+
+        if (iY >= 0) {
+            getPointAt(intersector, iY);
+            if (isPointInsideAABB(intersector, aabb)) {
+                list.add(Pair.of(ForgeDirection.UP, new Point(intersector)));
+            }
+        }
+
+        if (iz >= 0) {
+            getPointAt(intersector, iz);
+            if (isPointInsideAABB(intersector, aabb)) {
+                list.add(Pair.of(ForgeDirection.NORTH, new Point(intersector)));
+            }
+        }
+
+        if (iZ >= 0) {
+            getPointAt(intersector, iZ);
+            if (isPointInsideAABB(intersector, aabb)) {
+                list.add(Pair.of(ForgeDirection.SOUTH, new Point(intersector)));
+            }
+        }
 
         return list;
+    }
+
+    private boolean isPointInsideAABB(Vector3d point, AxisAlignedBB aabb) {
+        return point.x >= aabb.minX && point.x <= aabb.maxX
+                && point.y >= aabb.minY
+                && point.y <= aabb.maxY
+                && point.z >= aabb.minZ
+                && point.z <= aabb.maxZ;
     }
 }
