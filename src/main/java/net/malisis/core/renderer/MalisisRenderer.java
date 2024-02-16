@@ -18,7 +18,6 @@ import java.util.Iterator;
 import java.util.Map;
 
 import net.malisis.core.MalisisCore;
-import net.malisis.core.asm.AsmUtils;
 import net.malisis.core.renderer.element.Face;
 import net.malisis.core.renderer.element.Shape;
 import net.malisis.core.renderer.element.Vertex;
@@ -497,15 +496,7 @@ public class MalisisRenderer extends TileEntitySpecialRenderer
      * @return true, if is drawing
      */
     public boolean isDrawing() {
-        if (isDrawingField == null)
-            isDrawingField = AsmUtils.changeFieldAccess(Tessellator.class, "isDrawing", "field_78415_z");
-
-        try {
-            return isDrawingField.getBoolean(t);
-        } catch (IllegalArgumentException | IllegalAccessException e) {
-            MalisisCore.log.error("[MalisisRenderer] Failed to get Tessellator.isDrawing value", e);
-            return false;
-        }
+        return Tessellator.instance.isDrawing;
     }
 
     /**

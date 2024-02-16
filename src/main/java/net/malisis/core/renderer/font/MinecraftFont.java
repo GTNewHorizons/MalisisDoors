@@ -14,10 +14,11 @@
 package net.malisis.core.renderer.font;
 
 import java.awt.Font;
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Field;
 
 import net.malisis.core.MalisisCore;
-import net.malisis.core.asm.AsmUtils;
 import net.malisis.core.renderer.MalisisRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -34,6 +35,8 @@ import cpw.mods.fml.client.FMLClientHandler;
  */
 public class MinecraftFont extends MalisisFont {
 
+    private static final MethodHandle charWidthMethodHandle;
+
     private int[] mcCharWidth;
     private float[] optifineCharWidth;
     private byte[] glyphWidth;
@@ -43,6 +46,22 @@ public class MinecraftFont extends MalisisFont {
     private MCCharData mcCharData = new MCCharData();
     private UnicodeCharData unicodeCharData = new UnicodeCharData();
     private MalisisRenderer renderer;
+
+    // Optifine changes this to be a float[] instead of an int[]
+    // so this class handles that special case, but it also seems
+    // to change the obfuscated field name to just d, so need this
+    // reflection instead of an AT.
+    static {
+        try {
+            String srg = "field_78286_d";
+            if (FMLClientHandler.instance().hasOptifine()) srg = "d";
+            Field charWidthField = FontRenderer.class.getDeclaredField(MalisisCore.isObfEnv ? srg : "charWidth");
+            charWidthField.setAccessible(true);
+            charWidthMethodHandle = MethodHandles.lookup().unreflectGetter(charWidthField);
+        } catch (ReflectiveOperationException e) {
+            throw new RuntimeException("Failed to access a value from FontRenderer", e);
+        }
+    }
 
     public MinecraftFont() {
         super((Font) null);
@@ -57,25 +76,16 @@ public class MinecraftFont extends MalisisFont {
     }
 
     private void setFields() {
-        String srg = "field_78286_d";
-        if (FMLClientHandler.instance().hasOptifine()) srg = "d";
-
-        Field charWidthField = AsmUtils.changeFieldAccess(FontRenderer.class, "charWidth", srg);
-        Field glyphWidthField = AsmUtils.changeFieldAccess(FontRenderer.class, "glyphWidth", "field_78287_e");
-        Field unicodePagesField = AsmUtils
-                .changeFieldAccess(FontRenderer.class, "unicodePageLocations", "field_111274_c");
-
         try {
-            if (charWidthField == null) throw new IllegalStateException("charWidthField (" + srg + ") is null");
             if (fontRenderer == null) throw new IllegalStateException("fontRenderer not initialized");
 
             if (FMLClientHandler.instance().hasOptifine())
-                optifineCharWidth = (float[]) charWidthField.get(fontRenderer);
-            else mcCharWidth = (int[]) charWidthField.get(fontRenderer);
-            glyphWidth = (byte[]) glyphWidthField.get(fontRenderer);
-            unicodePages = (ResourceLocation[]) unicodePagesField.get(fontRenderer);
+                optifineCharWidth = (float[]) charWidthMethodHandle.invokeExact(fontRenderer);
+            else mcCharWidth = (int[]) charWidthMethodHandle.invokeExact(fontRenderer);
 
-        } catch (IllegalStateException | IllegalArgumentException | IllegalAccessException e) {
+            glyphWidth = fontRenderer.glyphWidth;
+            unicodePages = fontRenderer.unicodePageLocations;
+        } catch (Throwable e) {
             MalisisCore.log.error("[MinecraftFont] Failed to gets the FontRenderer fields :", e);
         }
     }

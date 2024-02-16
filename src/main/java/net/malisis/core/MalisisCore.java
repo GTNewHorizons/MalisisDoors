@@ -23,7 +23,6 @@ import net.malisis.core.configuration.ConfigurationGui;
 import net.malisis.core.configuration.Settings;
 import net.malisis.core.network.MalisisNetwork;
 import net.malisis.core.tileentity.MultiBlockTileEntity;
-import net.malisis.core.util.chunkblock.ChunkBlockHandler;
 import net.malisis.core.util.finiteliquid.FiniteLiquid;
 import net.malisis.core.util.finiteliquid.FiniteLiquidRenderer;
 import net.malisis.core.util.replacement.ReplacementTool;
@@ -154,8 +153,6 @@ public class MalisisCore implements IMalisisMod {
     public void preInit(FMLPreInitializationEvent event) {
         MinecraftForge.EVENT_BUS.register(instance);
         MinecraftForge.EVENT_BUS.register(ReplacementTool.instance());
-        MinecraftForge.EVENT_BUS.register(ChunkBlockHandler.get());
-        // MinecraftForge.EVENT_BUS.register(ChunkCollision.client);
 
         log = event.getModLog();
 

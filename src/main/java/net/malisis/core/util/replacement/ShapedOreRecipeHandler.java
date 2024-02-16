@@ -13,9 +13,10 @@
 
 package net.malisis.core.util.replacement;
 
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Field;
 
-import net.malisis.core.asm.AsmUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
@@ -25,13 +26,23 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
  */
 public class ShapedOreRecipeHandler extends ReplacementHandler<ShapedOreRecipe> {
 
-    private Field inputField;
-    private Field outputField;
+    // This field needs to use reflection because ATs don't really work on forge code.
+    // The roughly equivalent field for the vanilla MC classes is just using ATs.
+    private static final MethodHandle outputField;
+
+    static {
+        try {
+            Field field = ShapedOreRecipe.class.getDeclaredField("output");
+            field.setAccessible(true);
+            outputField = MethodHandles.lookup().unreflectSetter(field);
+        } catch (ReflectiveOperationException e) {
+            throw new RuntimeException("Failed to access ShapedOreRecipe.output", e);
+        }
+    }
 
     public ShapedOreRecipeHandler() {
         super(ShapedOreRecipe.class);
-        inputField = AsmUtils.changeFieldAccess(ShapedOreRecipe.class, "input");
-        outputField = AsmUtils.changeFieldAccess(ShapedOreRecipe.class, "output");
+
     }
 
     @Override
@@ -39,11 +50,11 @@ public class ShapedOreRecipeHandler extends ReplacementHandler<ShapedOreRecipe> 
         boolean replaced = false;
         try {
             if (isMatched(recipe.getRecipeOutput(), vanilla)) {
-                outputField.set(recipe, getItemStack(replacement));
+                outputField.invokeExact(recipe, getItemStack(replacement));
                 replaced = true;
             }
 
-            Object[] input = (Object[]) inputField.get(recipe);
+            Object[] input = recipe.getInput();
 
             for (int i = 0; i < input.length; i++) {
                 if (input[i] instanceof ItemStack && isMatched((ItemStack) input[i], vanilla)) {
@@ -51,8 +62,8 @@ public class ShapedOreRecipeHandler extends ReplacementHandler<ShapedOreRecipe> 
                     replaced = true;
                 }
             }
-        } catch (IllegalArgumentException | IllegalAccessException e) {
-            e.printStackTrace();
+        } catch (Throwable e) {
+            throw new RuntimeException("Failed to replace ShapedOreRecipe", e);
         }
 
         return replaced;

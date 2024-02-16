@@ -17,8 +17,6 @@ import net.malisis.core.MalisisCore;
 import net.malisis.core.block.BoundingBoxType;
 import net.malisis.core.util.BlockState;
 import net.malisis.core.util.MultiBlock;
-import net.malisis.core.util.chunkblock.ChunkBlockHandler;
-import net.malisis.core.util.chunkcollision.ChunkCollision;
 import net.malisis.doors.door.DoorDescriptor;
 import net.malisis.doors.door.DoorRegistry;
 import net.malisis.doors.door.DoorState;
@@ -86,11 +84,9 @@ public class BigDoorTileEntity extends DoorTileEntity {
         BlockState state = null;
         if (getWorldObj() != null) {
             state = new BlockState(xCoord, yCoord, zCoord, getBlockType());
-            ChunkCollision.get().updateBlocks(getWorldObj(), state);
         }
 
         super.setDoorState(newState);
-        if (getWorldObj() != null && moving && !this.moving) ChunkCollision.get().replaceBlocks(getWorldObj(), state);
     }
 
     @Override
@@ -101,13 +97,6 @@ public class BigDoorTileEntity extends DoorTileEntity {
                 getWorldObj().setBlockToAir(xCoord, yCoord, zCoord);
             } else {
                 MalisisCore.log.info("Adding to chunk : " + xCoord + "," + yCoord + "," + zCoord);
-                ChunkBlockHandler.get().updateCoordinates(
-                        getWorldObj().getChunkFromBlockCoords(xCoord, zCoord),
-                        xCoord,
-                        yCoord,
-                        zCoord,
-                        Blocks.air,
-                        getBlockType());
                 getWorldObj().setBlockMetadataWithNotify(xCoord, yCoord, zCoord, Door.dirToInt(direction), 2);
                 processed = true;
             }
