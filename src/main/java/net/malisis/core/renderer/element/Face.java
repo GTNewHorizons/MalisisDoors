@@ -172,19 +172,11 @@ public class Face implements ITransformable.Translate, ITransformable.Rotate {
         float U = 1;
         float V = 1;
 
-        double factorU, factorV;
-
-        float[][] uvs = new float[vertexes.length][2];
-        for (int i = 0; i < vertexes.length; i++) {
-            Vertex vertex = vertexes[i];
-
-            factorU = getFactorU(vertex);
-            factorV = getFactorV(vertex);
-
-            uvs[i] = new float[] { interpolate(u, U, factorU, false), interpolate(v, V, factorV, false) };
+        for (Vertex vertex : vertexes) {
+            vertex.setUV(
+                interpolate(u, U, getFactorU(vertex), false),
+                interpolate(v, V, getFactorV(vertex), false));
         }
-
-        for (int i = 0; i < vertexes.length; i++) vertexes[i].setUV(uvs[i][0], uvs[i][1]);
 
         return this;
     }

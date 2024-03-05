@@ -47,8 +47,12 @@ public class CustomDoorRenderer extends DoorRenderer {
 
     private float width;
     private final Cube scratchR = new Cube();
+    private final Cube scratchR2 = new Cube();
     private final Cube scratchL = new Cube();
+    private final Cube scratchL2 = new Cube();
     private final Shape scratchH = new Shape(new NorthFace(), new SouthFace(), new TopFace(), new BottomFace());
+    private final Shape scratchH2 = new Shape(new NorthFace(), new SouthFace(), new TopFace(), new BottomFace());
+    private final Shape scratchB = new Shape(new SouthFace(), new TopFace(), new NorthFace());
 
     @Override
     protected void initialize() {
@@ -75,7 +79,8 @@ public class CustomDoorRenderer extends DoorRenderer {
         frame.applyMatrix();
 
         // bottom material
-        Shape mat = new Shape(new SouthFace(), new NorthFace(), new TopFace());
+        this.scratchB.reset();
+        Shape mat = this.scratchB;
         mat.setSize(1 - 2 * width, 1 - width, Door.DOOR_WIDTH * 0.6F).translate(width, width, Door.DOOR_WIDTH * 0.2F);
         mat.applyMatrix();
 
@@ -88,7 +93,7 @@ public class CustomDoorRenderer extends DoorRenderer {
         /**
          * TOP
          */
-        frameR = new Cube(frameR);
+        frameR = this.scratchR2.copy(frameR);
         frameL = new Shape(frameL);
         frameH = new Shape(frameH);
         frameH.translate(0, 1 - width, 0);
