@@ -357,10 +357,10 @@ public class Shape implements ITransformable.Translate, ITransformable.Rotate, I
         float x = 0, y = 0, z = 0;
         for (Face f : faces) {
             for (Vertex v : f.getVertexes()) {
-                String name = v.baseName();
-                if (name.contains("West")) x = (float) v.getX();
-                if (name.contains("Bottom")) y = (float) v.getY();
-                if (name.contains("North")) z = (float) v.getZ();
+                final int flags = v.getDirectionFlags();
+                if ((flags & Vertex.WEST) != 0) x = (float) v.getX();
+                if ((flags & Vertex.DOWN) != 0) y = (float) v.getY();
+                if ((flags & Vertex.NORTH) != 0) z = (float) v.getZ();
             }
         }
 
@@ -392,13 +392,13 @@ public class Shape implements ITransformable.Translate, ITransformable.Rotate, I
     public Shape setBounds(double minX, double minY, double minZ, double maxX, double maxY, double maxZ) {
         for (Face f : faces) {
             for (Vertex v : f.getVertexes()) {
-                String name = v.name();
-                if (name.contains("West")) v.setX(minX);
-                if (name.contains("East")) v.setX(maxX);
-                if (name.contains("Bottom")) v.setY(minY);
-                if (name.contains("Top")) v.setY(maxY);
-                if (name.contains("North")) v.setZ(minZ);
-                if (name.contains("South")) v.setZ(maxZ);
+                final int flags = v.getDirectionFlags();
+                if ((flags & Vertex.WEST) != 0) v.setX(minX);
+                if ((flags & Vertex.EAST) != 0) v.setX(maxX);
+                if ((flags & Vertex.DOWN) != 0) v.setY(minY);
+                if ((flags & Vertex.UP) != 0) v.setY(maxY);
+                if ((flags & Vertex.NORTH) != 0) v.setZ(minZ);
+                if ((flags & Vertex.SOUTH) != 0) v.setZ(maxZ);
             }
         }
         return this;
@@ -576,10 +576,8 @@ public class Shape implements ITransformable.Translate, ITransformable.Rotate, I
         if (face == null) return this;
         enableMergedVertexes();
 
-        HashMap<String, Vertex> vertexNames = new HashMap<String, Vertex>();
         double x = 0, y = 0, z = 0;
         for (Vertex v : face.getVertexes()) {
-            vertexNames.put(v.name(), v);
             x += v.getX() / 4;
             y += v.getY() / 4;
             z += v.getZ() / 4;

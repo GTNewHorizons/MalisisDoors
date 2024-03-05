@@ -13,6 +13,7 @@
 
 package net.malisis.core.renderer.element;
 
+import lombok.Getter;
 import net.malisis.core.util.Point;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -83,6 +84,15 @@ public class Vertex {
     private int alpha = 255;
     private double u = 0.0F;
     private double v = 0.0F;
+    @Getter
+    private int directionFlags = 0;
+
+    public static final int DOWN = 0x1 << ForgeDirection.DOWN.ordinal();
+    public static final int UP = 0x1 << ForgeDirection.UP.ordinal();
+    public static final int NORTH = 0x1 << ForgeDirection.NORTH.ordinal();
+    public static final int SOUTH = 0x1 << ForgeDirection.SOUTH.ordinal();
+    public static final int WEST = 0x1 << ForgeDirection.WEST.ordinal();
+    public static final int EAST = 0x1 << ForgeDirection.EAST.ordinal();
 
     private Vertex initialState;
 
@@ -119,6 +129,7 @@ public class Vertex {
                 vertex.v,
                 false);
         baseName = vertex.baseName;
+        directionFlags = vertex.directionFlags;
     }
 
     public Vertex(Vertex vertex, int rgba, int brightness) {
@@ -337,19 +348,19 @@ public class Vertex {
     public String baseName() {
         if (baseName == null) {
             baseName = "";
-            if (isCorner())
+            if (isCorner()) {
+                directionFlags |= (y == 1) ? UP : DOWN;
+                directionFlags |= (z == 1) ? SOUTH : NORTH;
+                directionFlags |= (x == 1) ? EAST : WEST;
                 baseName = (y == 1 ? "Top" : "Bottom") + (z == 1 ? "South" : "North") + (x == 1 ? "East" : "West");
+            }
         }
         return baseName;
     }
 
-    public String name() {
-        return baseName() + " [" + x + ", " + y + ", " + z + "|" + u + ", " + v + "]";
-    }
-
     @Override
     public String toString() {
-        return name() + " 0x" + Integer.toHexString(color) + " (a:" + alpha + ", b:" + brightness + ")";
+        return "0x" + Integer.toHexString(color) + " (a:" + alpha + ", b:" + brightness + ")";
     }
 
     public Point toPoint() {

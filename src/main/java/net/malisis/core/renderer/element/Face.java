@@ -28,6 +28,8 @@ public class Face implements ITransformable.Translate, ITransformable.Rotate {
     protected String name;
     protected Vertex[] vertexes;
     protected RenderParameters params;
+    private static final int[] dirs = { Vertex.NORTH, Vertex.SOUTH, Vertex.EAST, Vertex.WEST, Vertex.UP, Vertex.DOWN };
+    private static final String[] strdirs = { "North", "South", "East", "West", "Top", "Bottom" };
 
     public Face(Vertex[] vertexes, RenderParameters params) {
         this.vertexes = vertexes;
@@ -64,14 +66,14 @@ public class Face implements ITransformable.Translate, ITransformable.Rotate {
     public void setName(String name) {
         if (name == null) {
             name = "";
-            HashMap<String, Integer> map = new HashMap<String, Integer>();
-            String[] dirs = new String[] { "North", "South", "East", "West", "Top", "Bottom" };
-            for (String dir : dirs) {
+            HashMap<Integer, Integer> map = new HashMap<>();
+
+            for (int dir : Face.dirs) {
                 map.put(dir, 0);
                 for (Vertex v : vertexes) {
-                    if (v.name().contains(dir)) map.put(dir, map.get(dir) + 1);
+                    if ((v.getDirectionFlags() & dir) != 0) map.put(dir, map.get(dir) + 1);
                 }
-                if (map.get(dir) == 4) name = dir;
+                if (map.get(dir) == 4) name = strdirs[Integer.numberOfTrailingZeros(dir)];
             }
         }
 
@@ -406,7 +408,7 @@ public class Face implements ITransformable.Translate, ITransformable.Rotate {
     @Override
     public String toString() {
         String s = name() + " {";
-        for (Vertex v : vertexes) s += v.name() + ", ";
+        for (Vertex v : vertexes) s += v + ", ";
         return s + "}";
     }
 
