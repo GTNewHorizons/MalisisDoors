@@ -49,6 +49,13 @@ public class Shape implements ITransformable.Translate, ITransformable.Rotate, I
         resetMatrix();
     }
 
+    public void reset() {
+        for (Face f : this.faces)
+            f.reset();
+        this.resetMatrix();
+        if (this.mergedVertexes != null) this.mergedVertexes.clear();
+    }
+
     /**
      * Instantiates a new {@link Shape}.
      */

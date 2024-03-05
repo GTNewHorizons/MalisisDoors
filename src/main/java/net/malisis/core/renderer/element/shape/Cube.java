@@ -48,11 +48,9 @@ public class Cube extends Shape {
         return this;
     }
 
+    @Override
     public void reset() {
-        for (Face f : this.faces) f.reset();
-        this.resetMatrix();
-        if (this.mergedVertexes != null)
-            this.mergedVertexes.clear();
+        super.reset();
         this.storeState();
     }
 }
