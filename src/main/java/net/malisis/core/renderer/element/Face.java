@@ -13,6 +13,7 @@
 
 package net.malisis.core.renderer.element;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -27,7 +28,7 @@ public class Face implements ITransformable.Translate, ITransformable.Rotate {
 
     protected String name;
     protected Vertex[] vertexes;
-    protected RenderParameters params;
+    protected RenderParameters params = new RenderParameters();
     private static final int[] dirs = { Vertex.NORTH, Vertex.SOUTH, Vertex.EAST, Vertex.WEST, Vertex.UP, Vertex.DOWN };
     private static final String[] strdirs = { "North", "South", "East", "West", "Top", "Bottom" };
 
@@ -37,7 +38,7 @@ public class Face implements ITransformable.Translate, ITransformable.Rotate {
 
     public Face(Vertex[] vertexes, RenderParameters params) {
         this.vertexes = vertexes;
-        this.params = params != null ? params : new RenderParameters();
+        this.params = params != null ? params : this.params;
         this.setName(null);
     }
 
@@ -57,8 +58,24 @@ public class Face implements ITransformable.Translate, ITransformable.Rotate {
         Vertex[] faceVertexes = face.getVertexes();
         this.vertexes = new Vertex[faceVertexes.length];
         for (int i = 0; i < faceVertexes.length; i++) vertexes[i] = new Vertex(faceVertexes[i]);
-        this.params = params != null ? params : new RenderParameters();
+        this.params = params != null ? params : this.params;
         name = face.name;
+    }
+
+    public void copy(Face f) {
+        this.params.merge(f.params);
+
+        boolean init = false;
+        if (this.vertexes.length != f.vertexes.length) {
+            this.vertexes = new Vertex[f.vertexes.length];
+            init = true;
+        }
+
+        for (int i = 0; i < f.vertexes.length; ++i) {
+            if (init) this.vertexes[i] = new Vertex(f.vertexes[i]);
+            else this.vertexes[i].setState(f.vertexes[i]);
+        }
+        this.name = f.name;
     }
 
     /**

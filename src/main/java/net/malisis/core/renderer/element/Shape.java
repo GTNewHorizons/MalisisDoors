@@ -261,7 +261,7 @@ public class Shape implements ITransformable.Translate, ITransformable.Rotate, I
 
     // #end VERTEXES
 
-    private void resetMatrix() {
+    protected void resetMatrix() {
         transformMatrix.identity();
         transformMatrix.translate(0.5F, 0.5F, 0.5F);
     }
@@ -273,7 +273,7 @@ public class Shape implements ITransformable.Translate, ITransformable.Rotate, I
      * @return the shape
      */
     public Shape copyMatrix(Shape shape) {
-        this.transformMatrix = new Matrix4f(shape.transformMatrix);
+        this.transformMatrix.set(shape.transformMatrix);
         return this;
     }
 

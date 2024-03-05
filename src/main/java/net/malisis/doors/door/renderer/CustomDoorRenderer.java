@@ -46,6 +46,8 @@ public class CustomDoorRenderer extends DoorRenderer {
     protected CustomDoorTileEntity tileEntity;
 
     private float width;
+    private final Cube scratchR = new Cube();
+    private final Cube scratchL = new Cube();
 
     @Override
     protected void initialize() {
@@ -54,9 +56,11 @@ public class CustomDoorRenderer extends DoorRenderer {
          * BOTTOM
          */
         // frame right
-        Shape frameR = new Cube().setSize(width, 1, Door.DOOR_WIDTH);
+        this.scratchR.reset();
+        Cube frameR = (Cube) this.scratchR.setSize(width, 1, Door.DOOR_WIDTH);
         // frame left
-        Shape frameL = new Shape(frameR);
+        this.scratchL.reset();
+        Shape frameL = this.scratchL.copy(frameR);
         frameL.translate(1 - width, 0, 0);
         // frame horizontal
         Shape frameH = new Shape(new NorthFace(), new SouthFace(), new TopFace(), new BottomFace());
@@ -82,7 +86,7 @@ public class CustomDoorRenderer extends DoorRenderer {
         /**
          * TOP
          */
-        frameR = new Shape(frameR);
+        frameR = new Cube(frameR);
         frameL = new Shape(frameL);
         frameH = new Shape(frameH);
         frameH.translate(0, 1 - width, 0);

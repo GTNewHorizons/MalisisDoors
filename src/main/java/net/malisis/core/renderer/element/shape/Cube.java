@@ -21,6 +21,7 @@ import net.malisis.core.renderer.element.face.NorthFace;
 import net.malisis.core.renderer.element.face.SouthFace;
 import net.malisis.core.renderer.element.face.TopFace;
 import net.malisis.core.renderer.element.face.WestFace;
+import org.lwjgl.Sys;
 
 /**
  * Basic Cube {@link Shape} using predefined {@link Face faces}.
@@ -35,8 +36,23 @@ public class Cube extends Shape {
         storeState();
     }
 
+    public Cube(Cube c) {
+        super(c);
+    }
+
+    public Cube copy(Cube c) {
+        for (int i = 0; i < 6; ++i) {
+            this.faces[i].copy(c.faces[i]);
+        }
+        this.copyMatrix(c);
+        return this;
+    }
+
     public void reset() {
         for (Face f : this.faces) f.reset();
-        this.transformMatrix.identity();
+        this.resetMatrix();
+        if (this.mergedVertexes != null)
+            this.mergedVertexes.clear();
+        this.storeState();
     }
 }
