@@ -24,12 +24,25 @@ import net.malisis.core.renderer.element.Vertex;
  */
 public class NorthFace extends Face {
 
+    private static final Vertex[] DEFAULT = {
+        new Vertex.TopNorthEast(),
+        new Vertex.BottomNorthEast(),
+        new Vertex.BottomNorthWest(),
+        new Vertex.TopNorthWest()
+    };
+
+    public void reset() {
+        for (int i = 0; i < 4; ++i) {
+            this.vertexes[i].setState(DEFAULT[i]);
+        }
+    }
+
     public NorthFace() {
         super(
-                new Vertex.TopNorthEast(),
-                new Vertex.BottomNorthEast(),
-                new Vertex.BottomNorthWest(),
-                new Vertex.TopNorthWest());
+            new Vertex.TopNorthEast(),
+            new Vertex.BottomNorthEast(),
+            new Vertex.BottomNorthWest(),
+            new Vertex.TopNorthWest());
 
         params.direction.set(NORTH);
         params.textureSide.set(NORTH);

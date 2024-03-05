@@ -24,12 +24,25 @@ import net.malisis.core.renderer.element.Vertex;
  */
 public class TopFace extends Face {
 
+    private static final Vertex[] DEFAULT = {
+        new Vertex.TopNorthWest(),
+        new Vertex.TopSouthWest(),
+        new Vertex.TopSouthEast(),
+        new Vertex.TopNorthEast()
+    };
+
+    public void reset() {
+        for (int i = 0; i < 4; ++i) {
+            this.vertexes[i].setState(DEFAULT[i]);
+        }
+    }
+
     public TopFace() {
         super(
-                new Vertex.TopNorthWest(),
-                new Vertex.TopSouthWest(),
-                new Vertex.TopSouthEast(),
-                new Vertex.TopNorthEast());
+            new Vertex.TopNorthWest(),
+            new Vertex.TopSouthWest(),
+            new Vertex.TopSouthEast(),
+            new Vertex.TopNorthEast());
 
         params.direction.set(UP);
         params.textureSide.set(UP);

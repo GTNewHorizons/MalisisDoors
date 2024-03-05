@@ -385,7 +385,7 @@ public class Vertex {
         z = vec.z;
     }
 
-    private void setState(Vertex vertex) {
+    public void setState(Vertex vertex) {
         x = vertex.x;
         y = vertex.y;
         z = vertex.z;
@@ -394,6 +394,8 @@ public class Vertex {
         alpha = vertex.alpha;
         u = vertex.u;
         v = vertex.v;
+        baseName = vertex.baseName;
+        directionFlags = vertex.directionFlags;
     }
 
     public void setInitialState() {
