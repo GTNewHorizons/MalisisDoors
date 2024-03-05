@@ -82,6 +82,6 @@ public class BBRenderElement {
     @Override
     public String toString() {
         return styles.toString() + Integer
-                .toHexString(color) + "/" + Integer.toHexString(bgColor) + " : " + text + (newLine ? "~" : "");
+            .toHexString(color) + "/" + Integer.toHexString(bgColor) + " : " + text + (newLine ? "~" : "");
     }
 }

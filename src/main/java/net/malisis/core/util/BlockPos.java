@@ -201,9 +201,9 @@ public class BlockPos {
      */
     public BlockPos offset(ForgeDirection facing, int n) {
         return new BlockPos(
-                this.getX() + facing.offsetX * n,
-                this.getY() + facing.offsetY * n,
-                this.getZ() + facing.offsetZ * n);
+            this.getX() + facing.offsetX * n,
+            this.getY() + facing.offsetY * n,
+            this.getZ() + facing.offsetZ * n);
     }
 
     public BlockPos rotate(int rotation) {
@@ -275,23 +275,23 @@ public class BlockPos {
 
     public static BlockPos minOf(BlockPos p1, BlockPos p2) {
         return new BlockPos(
-                Math.min(p1.getX(), p2.getX()),
-                Math.min(p1.getY(), p2.getY()),
-                Math.min(p1.getZ(), p2.getZ()));
+            Math.min(p1.getX(), p2.getX()),
+            Math.min(p1.getY(), p2.getY()),
+            Math.min(p1.getZ(), p2.getZ()));
     }
 
     public static BlockPos maxOf(BlockPos p1, BlockPos p2) {
         return new BlockPos(
-                Math.max(p1.getX(), p2.getX()),
-                Math.max(p1.getY(), p2.getY()),
-                Math.max(p1.getZ(), p2.getZ()));
+            Math.max(p1.getX(), p2.getX()),
+            Math.max(p1.getY(), p2.getY()),
+            Math.max(p1.getZ(), p2.getZ()));
     }
 
     public static Iterable<BlockPos> getAllInBox(AxisAlignedBB aabb) {
         AABBUtils.fix(aabb);
         return getAllInBox(
-                new BlockPos(aabb.minX, aabb.minY, aabb.minZ),
-                new BlockPos(Math.ceil(aabb.maxX) - 1, Math.ceil(aabb.maxY) - 1, Math.ceil(aabb.maxZ) - 1));
+            new BlockPos(aabb.minX, aabb.minY, aabb.minZ),
+            new BlockPos(Math.ceil(aabb.maxX) - 1, Math.ceil(aabb.maxY) - 1, Math.ceil(aabb.maxZ) - 1));
     }
 
     /**

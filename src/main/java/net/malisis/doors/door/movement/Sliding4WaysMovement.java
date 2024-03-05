@@ -61,7 +61,9 @@ public class Sliding4WaysMovement implements IDoorMovement {
 
         Translation translation = new Translation(toX, toY, 0);
         translation.reversed(tileEntity.getState() == DoorState.CLOSING || tileEntity.getState() == DoorState.CLOSED);
-        translation.forTicks(tileEntity.getDescriptor().getOpeningTime());
+        translation.forTicks(
+            tileEntity.getDescriptor()
+                .getOpeningTime());
 
         return translation;
     }
@@ -69,7 +71,7 @@ public class Sliding4WaysMovement implements IDoorMovement {
     @Override
     public Animation[] getAnimations(DoorTileEntity tileEntity, MalisisModel model, RenderParameters rp) {
         return new Animation[] { new Animation(model.getShape("top"), getTransformation(tileEntity, true)),
-                new Animation(model.getShape("bottom"), getTransformation(tileEntity, false)) };
+            new Animation(model.getShape("bottom"), getTransformation(tileEntity, false)) };
     }
 
     @Override

@@ -58,9 +58,12 @@ public class RotatingSplitMovement implements IDoorMovement {
             hingeY = 1 - hingeY;
         }
 
-        Rotation rotation = new Rotation(angle).aroundAxis(1, 0, 0).offset(0, hingeY, hingeZ);
+        Rotation rotation = new Rotation(angle).aroundAxis(1, 0, 0)
+            .offset(0, hingeY, hingeZ);
         rotation.reversed(tileEntity.getState() == DoorState.CLOSING || tileEntity.getState() == DoorState.CLOSED);
-        rotation.forTicks(tileEntity.getDescriptor().getOpeningTime());
+        rotation.forTicks(
+            tileEntity.getDescriptor()
+                .getOpeningTime());
 
         return rotation;
     }
@@ -68,7 +71,7 @@ public class RotatingSplitMovement implements IDoorMovement {
     @Override
     public Animation[] getAnimations(DoorTileEntity tileEntity, MalisisModel model, RenderParameters rp) {
         return new Animation[] { new Animation(model.getShape("top"), getTransformation(tileEntity, true)),
-                new Animation(model.getShape("bottom"), getTransformation(tileEntity, false)) };
+            new Animation(model.getShape("bottom"), getTransformation(tileEntity, false)) };
     }
 
     @Override

@@ -75,7 +75,9 @@ public class GuiTexture {
         DynamicTexture dynTex = new DynamicTexture(image);
         width = image.getWidth();
         height = image.getHeight();
-        resourceLocation = Minecraft.getMinecraft().getTextureManager().getDynamicTextureLocation(name, dynTex);
+        resourceLocation = Minecraft.getMinecraft()
+            .getTextureManager()
+            .getDynamicTextureLocation(name, dynTex);
     }
 
     /**
@@ -204,7 +206,9 @@ public class GuiTexture {
     }
 
     public void delete() {
-        Minecraft.getMinecraft().getTextureManager().deleteTexture(resourceLocation);
+        Minecraft.getMinecraft()
+            .getTextureManager()
+            .deleteTexture(resourceLocation);
     }
 
     @Override

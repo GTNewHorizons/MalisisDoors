@@ -42,7 +42,7 @@ public class DoorFactoryMessage implements IMessageHandler<DoorFactoryMessage.Pa
     public IMessage onMessage(Packet message, MessageContext ctx) {
         World world = ctx.getServerHandler().playerEntity.worldObj;
         DoorFactoryTileEntity te = TileEntityUtils
-                .getTileEntity(DoorFactoryTileEntity.class, world, message.x, message.y, message.z);
+            .getTileEntity(DoorFactoryTileEntity.class, world, message.x, message.y, message.z);
         if (te == null) return null;
 
         if (message.type == Packet.TYPE_DOORINFOS) {

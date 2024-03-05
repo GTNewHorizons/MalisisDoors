@@ -57,10 +57,10 @@ public class ReplacementTool {
 
     private Class[] types = { Integer.TYPE, String.class, Object.class };
     private Method method = ReflectionHelper.findMethod(
-            FMLControlledNamespacedRegistry.class,
-            (FMLControlledNamespacedRegistry) null,
-            new String[] { "addObjectRaw" },
-            types);
+        FMLControlledNamespacedRegistry.class,
+        (FMLControlledNamespacedRegistry) null,
+        new String[] { "addObjectRaw" },
+        types);
 
     private ReplacementTool() {
         new ShapedOreRecipeHandler();
@@ -121,7 +121,7 @@ public class ReplacementTool {
         try {
             method.invoke(registry, id, "minecraft:" + name, replacement);
             final Fields.ClassFields.Field field = Fields.ofClass(clazz)
-                    .getUntypedField(Fields.LookupType.DECLARED, MalisisCore.isObfEnv ? srgFieldName : name);
+                .getUntypedField(Fields.LookupType.DECLARED, MalisisCore.isObfEnv ? srgFieldName : name);
             field.setValue(null, replacement);
 
             if (ib != null) {
@@ -129,7 +129,11 @@ public class ReplacementTool {
             }
 
             map.put(replacement, vanilla);
-            replaceIn(CraftingManager.getInstance().getRecipeList(), vanilla, replacement);
+            replaceIn(
+                CraftingManager.getInstance()
+                    .getRecipeList(),
+                vanilla,
+                replacement);
             replaceIn(StatList.allStats, vanilla, replacement);
         } catch (ReflectiveOperationException e) {
             e.printStackTrace();
@@ -141,10 +145,13 @@ public class ReplacementTool {
             ReplacementHandler rh = ReplacementHandler.getHandler(object);
             if (rh != null) {
                 if (rh.replace(object, vanilla, replacement)) MalisisCore.log.info(
-                        "Replaced {} by {} in {}",
-                        vanilla.getClass().getSimpleName(),
-                        replacement.getClass().getSimpleName(),
-                        object.getClass().getSimpleName());
+                    "Replaced {} by {} in {}",
+                    vanilla.getClass()
+                        .getSimpleName(),
+                    replacement.getClass()
+                        .getSimpleName(),
+                    object.getClass()
+                        .getSimpleName());
             }
         }
     }

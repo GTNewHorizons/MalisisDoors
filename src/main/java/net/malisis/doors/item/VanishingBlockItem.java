@@ -44,7 +44,7 @@ public class VanishingBlockItem extends ItemBlock {
 
     @Override
     public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side,
-            float hitX, float hitY, float hitZ, int metadata) {
+        float hitX, float hitY, float hitZ, int metadata) {
         Block block = field_150939_a;
         if ((metadata & 3) == VanishingBlock.typeDiamondFrame) block = MalisisDoors.Blocks.vanishingDiamondBlock;
 

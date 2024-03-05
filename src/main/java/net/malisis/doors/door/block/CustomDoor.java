@@ -141,7 +141,8 @@ public class CustomDoor extends Door {
         if (blocks[i] == null) blocks[i] = Blocks.planks;
 
         EntityDiggingFX fx = new EntityDiggingFX(world, fxX, fxY, fxZ, 0.0D, 0.0D, 0.0D, blocks[i], metadata[i]);
-        fx.multiplyVelocity(0.2F).multipleParticleScaleBy(0.6F);
+        fx.multiplyVelocity(0.2F)
+            .multipleParticleScaleBy(0.6F);
         effectRenderer.addEffect(fx);
 
         return true;
@@ -168,15 +169,15 @@ public class CustomDoor extends Door {
                     int l = (i + j + k) % 2;
                     if (blocks[l] == null) blocks[l] = Blocks.planks;
                     fx = new EntityDiggingFX(
-                            world,
-                            fxX,
-                            fxY,
-                            fxZ,
-                            fxX - x - 0.5D,
-                            fxY - y - 0.5D,
-                            fxZ - z - 0.5D,
-                            blocks[l],
-                            metadata[l]);
+                        world,
+                        fxX,
+                        fxY,
+                        fxZ,
+                        fxX - x - 0.5D,
+                        fxY - y - 0.5D,
+                        fxZ - z - 0.5D,
+                        blocks[l],
+                        metadata[l]);
                     effectRenderer.addEffect(fx);
                 }
             }
@@ -191,7 +192,12 @@ public class CustomDoor extends Door {
         if (te == null || te.getFrame() == null) return 0;
 
         return Math.max(
-                Math.max(te.getFrame().getLightValue(), te.getTopMaterial().getLightValue()),
-                te.getBottomMaterial().getLightValue());
+            Math.max(
+                te.getFrame()
+                    .getLightValue(),
+                te.getTopMaterial()
+                    .getLightValue()),
+            te.getBottomMaterial()
+                .getLightValue());
     }
 }

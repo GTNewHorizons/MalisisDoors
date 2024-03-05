@@ -44,12 +44,17 @@ public class DigicodeMessage implements IMessageHandler<DigicodeMessage.Packet, 
 
         te.openOrCloseDoor();
 
-        if (te.getDescriptor().getAutoCloseTime() > 0 && !te.isOpened()) world.scheduleBlockUpdate(
+        if (te.getDescriptor()
+            .getAutoCloseTime() > 0 && !te.isOpened())
+            world.scheduleBlockUpdate(
                 message.x,
                 message.y,
                 message.z,
                 world.getBlock(message.x, message.y, message.z),
-                te.getDescriptor().getAutoCloseTime() + te.getDescriptor().getOpeningTime());
+                te.getDescriptor()
+                    .getAutoCloseTime()
+                    + te.getDescriptor()
+                        .getOpeningTime());
 
         return null;
     }

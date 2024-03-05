@@ -58,8 +58,8 @@ import com.google.common.eventbus.Subscribe;
 public class DoorFactoryGui extends MalisisGui {
 
     public static ResourceLocation tabIconsRl = new ResourceLocation(
-            MalisisDoors.modid,
-            "textures/gui/doorFactoryTabIcons.png");
+        MalisisDoors.modid,
+        "textures/gui/doorFactoryTabIcons.png");
     public static GuiTexture tabTexture = new GuiTexture(tabIconsRl, 128, 128);
     public static IIcon propIcon = tabTexture.getIcon(0, 0, 64, 64);
     public static IIcon matIcon = tabTexture.getIcon(64, 0, 64, 64);
@@ -99,11 +99,14 @@ public class DoorFactoryGui extends MalisisGui {
 
         int a = 16;
         UITab tabProp = new UITab(this, new UIImage(this, tabTexture, propIcon).setSize(a, a)).setName("tab_prop");
-        tabProp.setTooltip(new UITooltip(this, "gui.door_factory.tab_properties")).register(this);
+        tabProp.setTooltip(new UITooltip(this, "gui.door_factory.tab_properties"))
+            .register(this);
         UITab tabMat = new UITab(this, new UIImage(this, tabTexture, matIcon).setSize(a, a)).setName("tab_mat");
-        tabMat.setTooltip(new UITooltip(this, "gui.door_factory.tab_materials")).register(this);
+        tabMat.setTooltip(new UITooltip(this, "gui.door_factory.tab_materials"))
+            .register(this);
         UITab tabDc = new UITab(this, new UIImage(this, tabTexture, dcIcon).setSize(a, a)).setName("tab_dc");
-        tabDc.setTooltip(new UITooltip(this, "gui.door_factory.tab_digicode")).register(this);
+        tabDc.setTooltip(new UITooltip(this, "gui.door_factory.tab_digicode"))
+            .register(this);
 
         tabGroup.addTab(tabProp, propContainer);
         tabGroup.addTab(tabMat, matContainer);
@@ -112,8 +115,9 @@ public class DoorFactoryGui extends MalisisGui {
         tabGroup.setActiveTab(activeTab != null ? activeTab : "tab_prop");
         tabGroup.attachTo(window, false);
 
-        btnCreate = new UIButton(this, "gui.door_factory.create_door").setSize(80).setPosition(0, 98, Anchor.CENTER)
-                .register(this);
+        btnCreate = new UIButton(this, "gui.door_factory.create_door").setSize(80)
+            .setPosition(0, 98, Anchor.CENTER)
+            .register(this);
         UISlot outputSlot = new UISlot(this, tileEntity.outputSlot).setPosition(0, 120, Anchor.CENTER);
 
         UIPlayerInventory playerInv = new UIPlayerInventory(this, inventoryContainer.getPlayerInventory());
@@ -137,23 +141,37 @@ public class DoorFactoryGui extends MalisisGui {
         UIContainer propContainer = new UIContainer<>(this, UIComponent.INHERITED, 80).setPosition(0, 15);
 
         selDoorMovement = new UISelect<String>(
-                this,
-                100,
-                getSortedList(DoorRegistry.listMovements().keySet(), "door_movement."));
+            this,
+            100,
+            getSortedList(
+                DoorRegistry.listMovements()
+                    .keySet(),
+                "door_movement."));
         selDoorMovement.setPosition(0, 2, Anchor.RIGHT);
-        selDoorMovement.setLabelPattern("door_movement.%s").register(this);
+        selDoorMovement.setLabelPattern("door_movement.%s")
+            .register(this);
 
-        tfOpenTime = new UITextField(this, null).setSize(30, 0).setPosition(-5, 14, Anchor.RIGHT).register(this);
-        tfAutoCloseTime = new UITextField(this, null).setSize(30, 0).setPosition(-5, 26, Anchor.RIGHT).register(this);
-        cbRedstone = new UICheckBox(this).setPosition(-15, 38, Anchor.RIGHT).register(this);
-        cbDoubleDoor = new UICheckBox(this).setPosition(-15, 50, Anchor.RIGHT).register(this);
+        tfOpenTime = new UITextField(this, null).setSize(30, 0)
+            .setPosition(-5, 14, Anchor.RIGHT)
+            .register(this);
+        tfAutoCloseTime = new UITextField(this, null).setSize(30, 0)
+            .setPosition(-5, 26, Anchor.RIGHT)
+            .register(this);
+        cbRedstone = new UICheckBox(this).setPosition(-15, 38, Anchor.RIGHT)
+            .register(this);
+        cbDoubleDoor = new UICheckBox(this).setPosition(-15, 50, Anchor.RIGHT)
+            .register(this);
 
         selDoorSound = new UISelect<String>(
-                this,
-                100,
-                getSortedList(DoorRegistry.listSounds().keySet(), "gui.door_factory.door_sound."));
+            this,
+            100,
+            getSortedList(
+                DoorRegistry.listSounds()
+                    .keySet(),
+                "gui.door_factory.door_sound."));
         selDoorSound.setPosition(0, 62, Anchor.RIGHT);
-        selDoorSound.setLabelPattern("gui.door_factory.door_sound.%s").register(this);
+        selDoorSound.setLabelPattern("gui.door_factory.door_sound.%s")
+            .register(this);
 
         propContainer.add(new UILabel(this, "gui.door_factory.door_movement").setPosition(0, 4));
         propContainer.add(new UILabel(this, "gui.door_factory.door_open_time").setPosition(0, 16));
@@ -173,21 +191,24 @@ public class DoorFactoryGui extends MalisisGui {
     }
 
     private ImmutableList<String> getSortedList(Set<String> set, final String prefix) {
-        return FluentIterable.from(set).toSortedList(new Comparator<String>() {
+        return FluentIterable.from(set)
+            .toSortedList(new Comparator<String>() {
 
-            @Override
-            public int compare(String s1, String s2) {
-                return StatCollector.translateToLocal(prefix + s1)
+                @Override
+                public int compare(String s1, String s2) {
+                    return StatCollector.translateToLocal(prefix + s1)
                         .compareTo(StatCollector.translateToLocal(prefix + s2));
-            }
-        });
+                }
+            });
     }
 
     private UIContainer getMaterialsContainer() {
         UIContainer matContainer = new UIContainer<>(this, UIComponent.INHERITED, 80).setPosition(0, 15);
 
-        rbCreate = new UIRadioButton(this, "rbDoor", "gui.door_factory.rb_create").setPosition(30, 0).register(this);
-        rbEdit = new UIRadioButton(this, "rbDoor", "gui.door_factory.rb_edit").setPosition(100, 0).register(this);
+        rbCreate = new UIRadioButton(this, "rbDoor", "gui.door_factory.rb_create").setPosition(30, 0)
+            .register(this);
+        rbEdit = new UIRadioButton(this, "rbDoor", "gui.door_factory.rb_edit").setPosition(100, 0)
+            .register(this);
 
         matContainer.add(rbCreate);
         matContainer.add(rbEdit);
@@ -198,7 +219,7 @@ public class DoorFactoryGui extends MalisisGui {
         UISlot frameSlot = new UISlot(this, tileEntity.frameSlot).setPosition(-10, y, Anchor.RIGHT);
         UISlot topMaterialSlot = new UISlot(this, tileEntity.topMaterialSlot).setPosition(-10, y + 18, Anchor.RIGHT);
         UISlot bottomMaterialSlot = new UISlot(this, tileEntity.bottomMaterialSlot)
-                .setPosition(-10, y + 36, Anchor.RIGHT);
+            .setPosition(-10, y + 36, Anchor.RIGHT);
 
         contCreate.add(new UILabel(this, "gui.door_factory.frame_type").setPosition(0, y + 5));
         contCreate.add(new UILabel(this, "gui.door_factory.top_material").setPosition(0, y + 23));
@@ -223,7 +244,8 @@ public class DoorFactoryGui extends MalisisGui {
     private UIContainer getDigicodeContainer() {
         UIContainer dcContainer = new UIContainer<>(this, UIComponent.INHERITED, 80).setPosition(0, 15);
 
-        digicode = new Digicode(this).setAnchor(Anchor.CENTER).register(this);
+        digicode = new Digicode(this).setAnchor(Anchor.CENTER)
+            .register(this);
         dcContainer.add(digicode);
 
         return dcContainer;
@@ -308,7 +330,8 @@ public class DoorFactoryGui extends MalisisGui {
     @Subscribe
     public void onTabActivation(ActiveStateChange<UITab> event) {
         if (event.getState()) {
-            activeTab = event.getComponent().getName();
+            activeTab = event.getComponent()
+                .getName();
 
             if ("tab_dc".equals(activeTab)) registerKeyListener(digicode);
             else unregisterKeyListener(digicode);

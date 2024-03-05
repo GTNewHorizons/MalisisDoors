@@ -61,7 +61,7 @@ public abstract class Token<T> {
 
     // SPECIAL TOKENS
     public static ExpressionToken Identifier = (ExpressionToken) new ExpressionToken("^[^\\d\\W]\\w*")
-            .name("Identifier");
+        .name("Identifier");
     public static ExpressionToken Number = (ExpressionToken) new ExpressionToken("^\\d+").name("Number");
     public static ExpressionToken HexNumber = (ExpressionToken) new ExpressionToken("^#[0-9a-fA-F]+").name("HexNumber");
     public static StringToken StringToken = (StringToken) new StringToken().name("StringToken");

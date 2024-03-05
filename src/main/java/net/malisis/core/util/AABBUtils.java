@@ -163,12 +163,12 @@ public class AABBUtils {
 
     public static AxisAlignedBB readFromNBT(NBTTagCompound tag, AxisAlignedBB aabb) {
         return aabb.setBounds(
-                tag.getDouble("minX"),
-                tag.getDouble("minY"),
-                tag.getDouble("minZ"),
-                tag.getDouble("maxX"),
-                tag.getDouble("maxY"),
-                tag.getDouble("maxZ"));
+            tag.getDouble("minX"),
+            tag.getDouble("minY"),
+            tag.getDouble("minZ"),
+            tag.getDouble("maxX"),
+            tag.getDouble("maxY"),
+            tag.getDouble("maxZ"));
     }
 
     public static void writeToNBT(NBTTagCompound tag, AxisAlignedBB aabb) {
@@ -189,12 +189,12 @@ public class AABBUtils {
      */
     public static AxisAlignedBB combine(AxisAlignedBB[] aabbs) {
         AxisAlignedBB ret = AxisAlignedBB.getBoundingBox(
-                Double.MAX_VALUE,
-                Double.MAX_VALUE,
-                Double.MAX_VALUE,
-                Double.MIN_VALUE,
-                Double.MAX_VALUE,
-                Double.MAX_VALUE);
+            Double.MAX_VALUE,
+            Double.MAX_VALUE,
+            Double.MAX_VALUE,
+            Double.MIN_VALUE,
+            Double.MAX_VALUE,
+            Double.MAX_VALUE);
 
         for (AxisAlignedBB aabb : aabbs) {
             ret.minX = Math.min(aabb.minX, ret.minX);
@@ -278,7 +278,7 @@ public class AABBUtils {
      * @return the collision bounding boxes
      */
     public static AxisAlignedBB[] getCollisionBoundingBoxes(World world, Block block, int x, int y, int z,
-            boolean offset) {
+        boolean offset) {
         return getCollisionBoundingBoxes(world, new BlockState(x, y, z, block), offset);
     }
 
@@ -303,10 +303,10 @@ public class AABBUtils {
     public static AxisAlignedBB[] getCollisionBoundingBoxes(World world, BlockState state, boolean offset) {
         AxisAlignedBB[] aabbs = new AxisAlignedBB[0];
         if (state.getBlock() instanceof MalisisBlock) aabbs = ((MalisisBlock) state.getBlock())
-                .getBoundingBox(world, state.getX(), state.getY(), state.getZ(), BoundingBoxType.CHUNKCOLLISION);
+            .getBoundingBox(world, state.getX(), state.getY(), state.getZ(), BoundingBoxType.CHUNKCOLLISION);
         else {
             AxisAlignedBB aabb = state.getBlock()
-                    .getCollisionBoundingBoxFromPool(world, state.getX(), state.getY(), state.getZ());
+                .getCollisionBoundingBoxFromPool(world, state.getX(), state.getY(), state.getZ());
             if (aabb != null) aabbs = new AxisAlignedBB[] { aabb.offset(-state.getX(), -state.getY(), -state.getZ()) };
         }
 

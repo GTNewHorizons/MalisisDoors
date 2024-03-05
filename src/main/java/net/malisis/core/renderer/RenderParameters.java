@@ -148,10 +148,10 @@ public class RenderParameters implements ITransformable.Color, ITransformable.Al
 
     public RenderParameters() {
         listParams = new Parameter<?>[] { renderAllFaces, useBlockBounds, renderBounds,
-                vertexPositionRelativeToRenderBounds, useCustomTexture, applyTexture, icon, useWorldSensitiveIcon,
-                useTexture, interpolateUV, calculateAOColor, calculateBrightness, usePerVertexColor, usePerVertexAlpha,
-                usePerVertexBrightness, useEnvironmentBrightness, useNormals, colorMultiplier, colorFactor, brightness,
-                alpha, direction, textureSide, aoMatrix, flipU, flipV, };
+            vertexPositionRelativeToRenderBounds, useCustomTexture, applyTexture, icon, useWorldSensitiveIcon,
+            useTexture, interpolateUV, calculateAOColor, calculateBrightness, usePerVertexColor, usePerVertexAlpha,
+            usePerVertexBrightness, useEnvironmentBrightness, useNormals, colorMultiplier, colorFactor, brightness,
+            alpha, direction, textureSide, aoMatrix, flipU, flipV, };
     }
 
     public RenderParameters(RenderParameters params) {

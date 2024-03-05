@@ -57,11 +57,16 @@ public class UICheckBox extends UIComponent<UICheckBox> implements IGuiText<UICh
 
         shape = new SimpleGuiShape();
 
-        bgIcon = gui.getGuiTexture().getIcon(242, 32, 10, 10);
-        bgIconDisabled = gui.getGuiTexture().getIcon(252, 32, 10, 10);
-        cbDisabled = gui.getGuiTexture().getIcon(242, 42, 12, 10);
-        cbChecked = gui.getGuiTexture().getIcon(242, 52, 12, 10);
-        cbHovered = gui.getGuiTexture().getIcon(254, 42, 12, 10);
+        bgIcon = gui.getGuiTexture()
+            .getIcon(242, 32, 10, 10);
+        bgIconDisabled = gui.getGuiTexture()
+            .getIcon(252, 32, 10, 10);
+        cbDisabled = gui.getGuiTexture()
+            .getIcon(242, 42, 12, 10);
+        cbChecked = gui.getGuiTexture()
+            .getIcon(242, 52, 12, 10);
+        cbHovered = gui.getGuiTexture()
+            .getIcon(254, 42, 12, 10);
     }
 
     public UICheckBox(MalisisGui gui) {

@@ -91,7 +91,7 @@ public class SizeTransform<T> extends Transformation<SizeTransform, ITransformab
         int toHeight = reversed ? this.fromHeight : this.toHeight;
 
         transformable.setSize(
-                (int) (fromWidth + (toWidth - fromWidth) * comp),
-                (int) (fromHeight + (toHeight - fromHeight) * comp));
+            (int) (fromWidth + (toWidth - fromWidth) * comp),
+            (int) (fromHeight + (toHeight - fromHeight) * comp));
     }
 }

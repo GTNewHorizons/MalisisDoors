@@ -50,7 +50,7 @@ public class BlockMixerTileEntity extends TileEntity implements IInventoryProvid
 
         if (outputItemStack != null) {
             if (!ItemStack.areItemStackTagsEqual(outputItemStack, expected)
-                    || outputItemStack.stackSize >= outputItemStack.getMaxStackSize()) {
+                || outputItemStack.stackSize >= outputItemStack.getMaxStackSize()) {
                 mixTimer = 0;
                 return;
             }

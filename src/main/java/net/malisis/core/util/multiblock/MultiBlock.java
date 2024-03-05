@@ -59,16 +59,20 @@ public abstract class MultiBlock implements Iterable<BlockState>, IBlockAccess {
 
     public boolean canPlaceBlockAt(World world, BlockPos pos) {
         for (BlockState state : this) {
-            BlockPos p = state.getPos().add(pos);
-            if (!state.getBlock().canPlaceBlockAt(world, p.getX(), p.getY(), p.getZ())) return false;
+            BlockPos p = state.getPos()
+                .add(pos);
+            if (!state.getBlock()
+                .canPlaceBlockAt(world, p.getX(), p.getY(), p.getZ())) return false;
         }
         return true;
     }
 
     public void placeBlocks(World world, BlockPos pos) {
         for (BlockState state : this) {
-            state = state.rotate(rotation).offset(pos);
-            if (!state.getPos().equals(pos)) {
+            state = state.rotate(rotation)
+                .offset(pos);
+            if (!state.getPos()
+                .equals(pos)) {
                 state.placeBlock(world, 2);
                 state.rotateInWorld(world, rotation);
             }
@@ -77,8 +81,10 @@ public abstract class MultiBlock implements Iterable<BlockState>, IBlockAccess {
 
     public void breakBlocks(World world, BlockPos pos) {
         for (BlockState state : this) {
-            state = state.rotate(rotation).offset(pos);
-            if (!state.getPos().equals(pos)) state.breakBlock(world, 2);
+            state = state.rotate(rotation)
+                .offset(pos);
+            if (!state.getPos()
+                .equals(pos)) state.breakBlock(world, 2);
         }
     }
 
@@ -97,7 +103,8 @@ public abstract class MultiBlock implements Iterable<BlockState>, IBlockAccess {
 
     @Override
     public Iterator<BlockState> iterator() {
-        return states.values().iterator();
+        return states.values()
+            .iterator();
     }
 
     protected abstract void buildStates();

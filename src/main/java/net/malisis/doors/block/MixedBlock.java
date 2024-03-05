@@ -55,7 +55,7 @@ public class MixedBlock extends Block implements ITileEntityProvider {
 
     @Override
     public int onBlockPlaced(World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ,
-            int metadata) {
+        int metadata) {
         return side;
     }
 
@@ -147,7 +147,8 @@ public class MixedBlock extends Block implements ITileEntityProvider {
         int i = world.rand.nextBoolean() ? 0 : 1;
 
         EntityDiggingFX fx = new EntityDiggingFX(world, fxX, fxY, fxZ, 0.0D, 0.0D, 0.0D, blocks[i], metadata[i]);
-        fx.multiplyVelocity(0.2F).multipleParticleScaleBy(0.6F);
+        fx.multiplyVelocity(0.2F)
+            .multipleParticleScaleBy(0.6F);
         effectRenderer.addEffect(fx);
 
         return true;
@@ -173,15 +174,15 @@ public class MixedBlock extends Block implements ITileEntityProvider {
                     double fxZ = z + (k + 0.5D) / nb;
                     int l = (i + j + k) % 2;
                     fx = new EntityDiggingFX(
-                            world,
-                            fxX,
-                            fxY,
-                            fxZ,
-                            fxX - x - 0.5D,
-                            fxY - y - 0.5D,
-                            fxZ - z - 0.5D,
-                            blocks[l],
-                            metadata[l]);
+                        world,
+                        fxX,
+                        fxY,
+                        fxZ,
+                        fxX - x - 0.5D,
+                        fxY - y - 0.5D,
+                        fxZ - z - 0.5D,
+                        blocks[l],
+                        metadata[l]);
                     effectRenderer.addEffect(fx);
                 }
             }
@@ -233,9 +234,10 @@ public class MixedBlock extends Block implements ITileEntityProvider {
         Block block = world.getBlock(x, y, z);
         if (block != this && !(block instanceof BlockBreakable)) return !block.isOpaqueCube();
 
-        ForgeDirection op = ForgeDirection.getOrientation(side).getOpposite();
+        ForgeDirection op = ForgeDirection.getOrientation(side)
+            .getOpposite();
         MixedBlockTileEntity current = TileEntityUtils
-                .getTileEntity(MixedBlockTileEntity.class, world, x + op.offsetX, y + op.offsetY, z + op.offsetZ);
+            .getTileEntity(MixedBlockTileEntity.class, world, x + op.offsetX, y + op.offsetY, z + op.offsetZ);
 
         return !isOpaque(world, x, y, z) && current.isOpaque();
     }

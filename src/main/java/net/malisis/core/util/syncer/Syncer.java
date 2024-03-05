@@ -148,12 +148,15 @@ public class Syncer {
      * @return the field values
      */
     private Map<String, Object> getFieldValues(Object caller, ISyncHandler<?, ? extends ISyncableData> handler,
-            String... syncNames) {
+        String... syncNames) {
         Map<String, Object> values = new LinkedHashMap<>();
         try {
             for (String str : syncNames) {
                 FieldData fd = handler.getFieldData(str);
-                if (fd != null) values.put(str, fd.getField().get(caller));
+                if (fd != null) values.put(
+                    str,
+                    fd.getField()
+                        .get(caller));
             }
         } catch (IllegalArgumentException | IllegalAccessException e) {
             e.printStackTrace();
@@ -196,19 +199,21 @@ public class Syncer {
      * @param values   the values
      */
     public void updateValues(Object receiver, ISyncHandler<?, ? extends ISyncableData> handler,
-            Map<String, Object> values) {
+        Map<String, Object> values) {
         if (receiver == null || handler == null) return;
 
         for (Entry<String, Object> entry : values.entrySet()) {
             try {
                 FieldData fd = handler.getFieldData(entry.getKey());
-                if (fd != null) fd.getField().set(receiver, entry.getValue());
+                if (fd != null) fd.getField()
+                    .set(receiver, entry.getValue());
             } catch (IllegalArgumentException | IllegalAccessException e) {
                 MalisisCore.log.error(
-                        "Failed to update {} field for {}.",
-                        entry.getKey(),
-                        receiver.getClass().getSimpleName(),
-                        e);
+                    "Failed to update {} field for {}.",
+                    entry.getKey(),
+                    receiver.getClass()
+                        .getSimpleName(),
+                    e);
             }
         }
     }

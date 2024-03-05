@@ -83,7 +83,8 @@ public class CustomDoorRenderer extends DoorRenderer {
 
         // bottom material
         this.bMat.reset();
-        this.bMat.setSize(1 - 2 * width, 1 - width, Door.DOOR_WIDTH * 0.6F).translate(width, width, Door.DOOR_WIDTH * 0.2F);
+        this.bMat.setSize(1 - 2 * width, 1 - width, Door.DOOR_WIDTH * 0.6F)
+            .translate(width, width, Door.DOOR_WIDTH * 0.2F);
         this.bMat.applyMatrix();
 
         this.bottom.takeFaces(gnames, this.frame, this.bMat);

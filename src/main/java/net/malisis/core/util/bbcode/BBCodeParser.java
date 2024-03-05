@@ -67,7 +67,8 @@ public class BBCodeParser extends Parser<BBNode> {
             if (match(OpenCar)) {
                 close = match(Div);
                 if (match(Identifier, c)) {
-                    switch (c.toString().toLowerCase()) {
+                    switch (c.toString()
+                        .toLowerCase()) {
                         case "b":
                         case "i":
                         case "u":
@@ -118,7 +119,8 @@ public class BBCodeParser extends Parser<BBNode> {
 
     private void addText() {
         if (StringUtils.isEmpty(textNode.getText())) return;
-        charIndex += textNode.getText().length();
+        charIndex += textNode.getText()
+            .length();
         currentNode.insert(textNode);
         textNode = new BBTextNode("");
         textNode.setIndex(charIndex);

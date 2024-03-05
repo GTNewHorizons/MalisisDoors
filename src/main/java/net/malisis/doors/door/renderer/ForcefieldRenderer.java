@@ -46,7 +46,7 @@ public class ForcefieldRenderer extends MalisisRenderer {
     protected void initialize() {
         rl = new ResourceLocation[50];
         for (int i = 0; i < 50; i++) rl[i] = new ResourceLocation(
-                String.format(MalisisDoors.modid + ":textures/blocks/forcefield/forcefield%02d.png", i));
+            String.format(MalisisDoors.modid + ":textures/blocks/forcefield/forcefield%02d.png", i));
 
         Shape shape = new Shape(new NorthFace());
         shape.scale(1, 1, 0);
@@ -83,7 +83,8 @@ public class ForcefieldRenderer extends MalisisRenderer {
         // ar.setStartTime(tileEntity.getStartNanoTime());
         if (tileEntity.getMovement() == null) return;
 
-        AxisAlignedBB aabb = tileEntity.getMovement().getBoundingBox(tileEntity, false, BoundingBoxType.COLLISION);
+        AxisAlignedBB aabb = tileEntity.getMovement()
+            .getBoundingBox(tileEntity, false, BoundingBoxType.COLLISION);
         if (aabb == null) return;
 
         aabb.offset(-x, -y, -z);
@@ -119,7 +120,8 @@ public class ForcefieldRenderer extends MalisisRenderer {
         GL11.glMatrixMode(GL11.GL_TEXTURE);
         GL11.glLoadIdentity();
 
-        AxisAlignedBB aabb = tileEntity.getMultiBlock().getBounds();
+        AxisAlignedBB aabb = tileEntity.getMultiBlock()
+            .getBounds();
         double scaleX = 1, scaleY = 1;
         if (direction == ForgeDirection.UP) {
             scaleX = aabb.maxX - aabb.minX;

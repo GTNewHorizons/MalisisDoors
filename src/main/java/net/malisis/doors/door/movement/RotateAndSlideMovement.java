@@ -48,7 +48,8 @@ public class RotateAndSlideMovement implements IDoorMovement {
     }
 
     private Transformation getTransformation(DoorTileEntity tileEntity) {
-        int ot = tileEntity.getDescriptor().getOpeningTime() / 2;
+        int ot = tileEntity.getDescriptor()
+            .getOpeningTime() / 2;
         float angle = -90;
         float hinge = 0.5F - DOOR_WIDTH / 2;
         float hingeZ = -0.5F + DOOR_WIDTH / 2;
@@ -60,12 +61,14 @@ public class RotateAndSlideMovement implements IDoorMovement {
             tr = -tr;
         }
 
-        Transformation rotation = new Rotation(angle).aroundAxis(0, 1, 0).offset(hinge, 0, hingeZ).forTicks(ot);
+        Transformation rotation = new Rotation(angle).aroundAxis(0, 1, 0)
+            .offset(hinge, 0, hingeZ)
+            .forTicks(ot);
         Transformation translation = new Translation(tr, 0, 0).forTicks(ot);
 
         Transformation transformation = new ChainedTransformation(rotation, translation);
         transformation
-                .reversed(tileEntity.getState() == DoorState.CLOSING || tileEntity.getState() == DoorState.CLOSED);
+            .reversed(tileEntity.getState() == DoorState.CLOSING || tileEntity.getState() == DoorState.CLOSED);
 
         return transformation;
     }

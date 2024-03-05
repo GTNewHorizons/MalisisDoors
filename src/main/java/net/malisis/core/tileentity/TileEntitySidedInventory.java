@@ -55,7 +55,8 @@ public abstract class TileEntitySidedInventory extends TileEntity implements IIn
 
     @Override
     public MalisisInventory[] getInventories(Object... data) {
-        return inventories.values().toArray(new MalisisInventory[0]);
+        return inventories.values()
+            .toArray(new MalisisInventory[0]);
     }
 
     @Override

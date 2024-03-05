@@ -47,7 +47,8 @@ public class TrapDoorRenderer extends DoorRenderer {
         trapDoorModel.addShape("shape", s);
         trapDoorModel.storeState();
 
-        s.getFace(Face.nameFromDirection(ForgeDirection.UP)).getParameters().calculateAOColor.set(true);
+        s.getFace(Face.nameFromDirection(ForgeDirection.UP))
+            .getParameters().calculateAOColor.set(true);
 
         s = new Cube();
         s.setSize(1, Door.DOOR_WIDTH / 2, 1);
@@ -93,12 +94,15 @@ public class TrapDoorRenderer extends DoorRenderer {
 
     @Override
     protected void renderTileEntity() {
-        ar.setStartTime(tileEntity.getTimer().getStart());
+        ar.setStartTime(
+            tileEntity.getTimer()
+                .getStart());
 
         setup();
 
         if (tileEntity.getMovement() != null) {
-            Animation[] anims = tileEntity.getMovement().getAnimations(tileEntity, model, rp);
+            Animation[] anims = tileEntity.getMovement()
+                .getAnimations(tileEntity, model, rp);
             ar.animate(anims);
         }
 

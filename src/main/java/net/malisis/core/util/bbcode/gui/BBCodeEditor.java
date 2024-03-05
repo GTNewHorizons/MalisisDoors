@@ -109,7 +109,8 @@ public class BBCodeEditor extends UIContainer<BBCodeEditor> {
     }
 
     public String getRawText() {
-        return bbTexfield.getBBText().getRawText();
+        return bbTexfield.getBBText()
+            .getRawText();
     }
 
     public BBString getBBText() {
@@ -117,7 +118,8 @@ public class BBCodeEditor extends UIContainer<BBCodeEditor> {
     }
 
     public String getBBFormattedTex() {
-        return bbTexfield.getBBText().getBBString();
+        return bbTexfield.getBBText()
+            .getBBString();
     }
 
     public boolean isWysiwyg() {
@@ -160,18 +162,39 @@ public class BBCodeEditor extends UIContainer<BBCodeEditor> {
 
     protected void createButtons(MalisisGui gui) {
         int s = 10;
-        btnBold = new UIButton(gui, "B").setAutoSize(false).setSize(s, s).setTooltip("Bold").register(this);
-        btnItalic = new UIButton(gui, "I").setAutoSize(false).setSize(s, s).setTooltip("Italic").register(this);
-        btnUnderline = new UIButton(gui, "U").setAutoSize(false).setSize(s, s).setTooltip("Underline").register(this);
-        btnStrikethrough = new UIButton(gui, "S").setAutoSize(false).setSize(s, s).setTooltip("Strikethrough")
-                .register(this);
+        btnBold = new UIButton(gui, "B").setAutoSize(false)
+            .setSize(s, s)
+            .setTooltip("Bold")
+            .register(this);
+        btnItalic = new UIButton(gui, "I").setAutoSize(false)
+            .setSize(s, s)
+            .setTooltip("Italic")
+            .register(this);
+        btnUnderline = new UIButton(gui, "U").setAutoSize(false)
+            .setSize(s, s)
+            .setTooltip("Underline")
+            .register(this);
+        btnStrikethrough = new UIButton(gui, "S").setAutoSize(false)
+            .setSize(s, s)
+            .setTooltip("Strikethrough")
+            .register(this);
 
-        btnColor = new UIButton(gui, "C").setAutoSize(false).setSize(s, s).setTooltip("Color").register(this);
-        btnBgColor = new UIButton(gui, "BC").setAutoSize(false).setSize(16, s).setTooltip("Background Color")
-                .register(this);
-        btnItem = new UIButton(gui, "Item").setAutoSize(false).setSize(22, s).setTooltip("Item").register(this);
+        btnColor = new UIButton(gui, "C").setAutoSize(false)
+            .setSize(s, s)
+            .setTooltip("Color")
+            .register(this);
+        btnBgColor = new UIButton(gui, "BC").setAutoSize(false)
+            .setSize(16, s)
+            .setTooltip("Background Color")
+            .register(this);
+        btnItem = new UIButton(gui, "Item").setAutoSize(false)
+            .setSize(22, s)
+            .setTooltip("Item")
+            .register(this);
 
-        btnWysiwyg = new UIButton(gui, "WYSIWYG").setAutoSize(false).setSize(45, s).register(this);
+        btnWysiwyg = new UIButton(gui, "WYSIWYG").setAutoSize(false)
+            .setSize(45, s)
+            .register(this);
 
         menu.add(btnBold);
         menu.add(btnItalic);
@@ -205,7 +228,8 @@ public class BBCodeEditor extends UIContainer<BBCodeEditor> {
                 break;
         }
 
-        bbTexfield.setPosition(x, y).setSize(w, h);
+        bbTexfield.setPosition(x, y)
+            .setSize(w, h);
     }
 
     protected void calculateMenuPosition() {
@@ -228,7 +252,8 @@ public class BBCodeEditor extends UIContainer<BBCodeEditor> {
                 break;
         }
 
-        menu.setPosition(x, y, a).setSize(w, h);
+        menu.setPosition(x, y, a)
+            .setSize(w, h);
 
         calculateButtonPositions();
     }

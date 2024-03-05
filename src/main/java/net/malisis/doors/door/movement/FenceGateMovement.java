@@ -49,9 +49,12 @@ public class FenceGateMovement implements IDoorMovement {
             hinge = -hinge;
         }
 
-        Rotation rotation = new Rotation(angle).aroundAxis(0, 1, 0).offset(hinge, 0, 0);
+        Rotation rotation = new Rotation(angle).aroundAxis(0, 1, 0)
+            .offset(hinge, 0, 0);
         rotation.reversed(tileEntity.getState() == DoorState.CLOSING || tileEntity.getState() == DoorState.CLOSED);
-        rotation.forTicks(tileEntity.getDescriptor().getOpeningTime());
+        rotation.forTicks(
+            tileEntity.getDescriptor()
+                .getOpeningTime());
 
         return rotation;
     }
@@ -68,7 +71,7 @@ public class FenceGateMovement implements IDoorMovement {
         }
 
         return new Animation[] { new Animation(model.getShape("left"), getTransformation(tileEntity, true)),
-                new Animation(model.getShape("right"), getTransformation(tileEntity, false)) };
+            new Animation(model.getShape("right"), getTransformation(tileEntity, false)) };
     }
 
     @Override

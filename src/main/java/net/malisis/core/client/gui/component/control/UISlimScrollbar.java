@@ -139,6 +139,8 @@ public class UISlimScrollbar extends UIScrollBar {
 
         Animation anim = new Animation(this, new AlphaTransform(from, to).forTicks(5));
 
-        event.getComponent().getGui().animate(anim);
+        event.getComponent()
+            .getGui()
+            .animate(anim);
     }
 }

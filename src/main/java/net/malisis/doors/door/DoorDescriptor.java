@@ -280,7 +280,10 @@ public class DoorDescriptor {
     public DoorDescriptor register() {
         if (block == null || item == null) create();
 
-        GameRegistry.registerBlock(block, block.getUnlocalizedName().substring(5));
+        GameRegistry.registerBlock(
+            block,
+            block.getUnlocalizedName()
+                .substring(5));
         GameRegistry.registerItem(item, item.getUnlocalizedName());
         if (recipe != null) {
             if (oredict) GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(item, numCrafted), recipe));

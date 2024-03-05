@@ -179,27 +179,33 @@ public class Door extends BlockDoor implements ITileEntityProvider, IBoundingBox
      */
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer p, int par6, float par7, float par8,
-            float par9) {
+        float par9) {
         DoorTileEntity te = getDoor(world, x, y, z);
         if (te == null) return true;
 
         if (te.getDescriptor() == null) return true;
 
-        if (te.getDescriptor().hasCode() && !te.isOpened()) {
+        if (te.getDescriptor()
+            .hasCode() && !te.isOpened()) {
             if (world.isRemote) new DigicodeGui(te).display();
             return true;
         }
 
         if (world.isRemote) return true;
 
-        if (te.getDescriptor().requireRedstone()) return true;
+        if (te.getDescriptor()
+            .requireRedstone()) return true;
 
-        if (te.getDescriptor().getAutoCloseTime() > 0 && !te.isOpened()) world.scheduleBlockUpdate(
+        if (te.getDescriptor()
+            .getAutoCloseTime() > 0 && !te.isOpened()) world.scheduleBlockUpdate(
                 x,
                 y,
                 z,
                 this,
-                te.getDescriptor().getAutoCloseTime() + te.getDescriptor().getOpeningTime());
+                te.getDescriptor()
+                    .getAutoCloseTime()
+                    + te.getDescriptor()
+                        .getOpeningTime());
 
         te.openOrCloseDoor();
 
@@ -214,9 +220,11 @@ public class Door extends BlockDoor implements ITileEntityProvider, IBoundingBox
         DoorTileEntity te = getDoor(world, x, y, z);
         if (te == null) return;
 
-        if (te.getDescriptor().hasCode()) return;
+        if (te.getDescriptor()
+            .hasCode()) return;
 
-        if (te.getDescriptor().requireRedstone()) return;
+        if (te.getDescriptor()
+            .requireRedstone()) return;
 
         if (opening && te.isOpened()) return;
 
@@ -248,7 +256,8 @@ public class Door extends BlockDoor implements ITileEntityProvider, IBoundingBox
                 DoorTileEntity te = getDoor(world, x, y, z);
                 if (te == null) return;
 
-                if (te.getDescriptor() != null && te.getDescriptor().hasCode()) return;
+                if (te.getDescriptor() != null && te.getDescriptor()
+                    .hasCode()) return;
 
                 boolean powered = te.isPowered();
                 if ((powered || block.canProvidePower()) && block != this) te.setPowered(powered);
@@ -295,7 +304,8 @@ public class Door extends BlockDoor implements ITileEntityProvider, IBoundingBox
         DoorTileEntity te = getDoor(world, x, y, z);
         if (te == null || te.isMoving() || te.getMovement() == null) return new AxisAlignedBB[0];
 
-        AxisAlignedBB aabb = te.getMovement().getBoundingBox(te, te.isTopBlock(x, y, z), type);
+        AxisAlignedBB aabb = te.getMovement()
+            .getBoundingBox(te, te.isTopBlock(x, y, z), type);
         if (aabb != null && te.isCentered()) aabb.offset(0, 0, 0.5F - Door.DOOR_WIDTH / 2);
         AABBUtils.rotate(aabb, intToDir(te.getDirection()));
 
@@ -305,7 +315,7 @@ public class Door extends BlockDoor implements ITileEntityProvider, IBoundingBox
     @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
     public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB mask, List list,
-            Entity entity) {
+        Entity entity) {
         for (AxisAlignedBB aabb : getBoundingBox(world, x, y, z, BoundingBoxType.COLLISION)) {
             if (aabb != null && mask.intersectsWith(aabb.offset(x, y, z))) list.add(aabb);
         }
@@ -330,7 +340,8 @@ public class Door extends BlockDoor implements ITileEntityProvider, IBoundingBox
         DoorTileEntity te = getDoor(world, x, y, z);
         if (te == null) return;
 
-        if (te.getDescriptor().getAutoCloseTime() <= 0) return;
+        if (te.getDescriptor()
+            .getAutoCloseTime() <= 0) return;
 
         if (te.getState() == DoorState.CLOSED || te.getState() == DoorState.CLOSING) return;
 
@@ -350,7 +361,8 @@ public class Door extends BlockDoor implements ITileEntityProvider, IBoundingBox
 
         DoorTileEntity te;
         try {
-            te = descriptor.getTileEntityClass().newInstance();
+            te = descriptor.getTileEntityClass()
+                .newInstance();
         } catch (InstantiationException | IllegalAccessException e) {
             te = new DoorTileEntity();
         }

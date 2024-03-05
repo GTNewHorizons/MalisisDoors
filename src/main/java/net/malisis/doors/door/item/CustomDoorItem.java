@@ -67,7 +67,7 @@ public class CustomDoorItem extends DoorItem {
 
     @Override
     public boolean onItemUse(ItemStack itemStack, EntityPlayer player, World world, int x, int y, int z, int side,
-            float par8, float par9, float par10) {
+        float par8, float par9, float par10) {
         boolean b = super.onItemUse(itemStack, player, world, x, y, z, side, par8, par9, par10);
         // if (b)
         // {
@@ -86,8 +86,7 @@ public class CustomDoorItem extends DoorItem {
         ItemStack topMaterialItemStack = te.topMaterialSlot.getItemStack();
         ItemStack bottomMaterialItemStack = te.bottomMaterialSlot.getItemStack();
         if (!canBeUsedForDoor(frameItemStack, true) || !canBeUsedForDoor(topMaterialItemStack, false)
-                || !canBeUsedForDoor(bottomMaterialItemStack, false))
-            return null;
+            || !canBeUsedForDoor(bottomMaterialItemStack, false)) return null;
 
         // frame
         Block frameBlock = Block.getBlockFromItem(frameItemStack.getItem());
@@ -100,7 +99,7 @@ public class CustomDoorItem extends DoorItem {
         int topMaterialMetadata = topMaterialItemStack.getItemDamage();
         if (topMaterialItemStack.getItem() instanceof ItemBlock)
             topMaterialMetadata = ((ItemBlock) topMaterialItemStack.getItem())
-                    .getMetadata(topMaterialItemStack.getItemDamage());
+                .getMetadata(topMaterialItemStack.getItemDamage());
 
         // bottom material
         Block bottomMaterialBlock = itemsAllowed.get(bottomMaterialItemStack.getItem());
@@ -110,12 +109,13 @@ public class CustomDoorItem extends DoorItem {
         int bottomMaterialMetadata = bottomMaterialItemStack.getItemDamage();
         if (bottomMaterialItemStack.getItem() instanceof ItemBlock)
             bottomMaterialMetadata = ((ItemBlock) bottomMaterialItemStack.getItem())
-                    .getMetadata(bottomMaterialItemStack.getItemDamage());
+                .getMetadata(bottomMaterialItemStack.getItemDamage());
 
         // NBT
         NBTTagCompound nbt = new NBTTagCompound();
 
-        te.buildDescriptor().writeNBT(nbt);
+        te.buildDescriptor()
+            .writeNBT(nbt);
 
         nbt.setInteger("frame", Block.getIdFromBlock(frameBlock));
         nbt.setInteger("topMaterial", Block.getIdFromBlock(topMaterialBlock));
@@ -133,7 +133,8 @@ public class CustomDoorItem extends DoorItem {
     public static ItemStack fromTileEntity(CustomDoorTileEntity te) {
         NBTTagCompound nbt = new NBTTagCompound();
 
-        if (te.getDescriptor() != null) te.getDescriptor().writeNBT(nbt);
+        if (te.getDescriptor() != null) te.getDescriptor()
+            .writeNBT(nbt);
 
         nbt.setInteger("frame", Block.getIdFromBlock(te.getFrame()));
         nbt.setInteger("topMaterial", Block.getIdFromBlock(te.getTopMaterial()));
@@ -183,8 +184,8 @@ public class CustomDoorItem extends DoorItem {
         ItemStack isBottomMaterial = new ItemStack(bottomMaterial, 0, bottomMaterialMetadata);
 
         list.add(
-                EnumChatFormatting.WHITE + StatCollector
-                        .translateToLocal("door_movement." + itemStack.stackTagCompound.getString("movement")));
+            EnumChatFormatting.WHITE
+                + StatCollector.translateToLocal("door_movement." + itemStack.stackTagCompound.getString("movement")));
         list.addAll(isFrame.getTooltip(player, advancedTooltip));
         list.addAll(istopMaterial.getTooltip(player, advancedTooltip));
         list.addAll(isBottomMaterial.getTooltip(player, advancedTooltip));

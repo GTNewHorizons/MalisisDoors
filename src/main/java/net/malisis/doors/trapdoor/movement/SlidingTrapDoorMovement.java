@@ -66,7 +66,9 @@ public class SlidingTrapDoorMovement implements IDoorMovement {
     private Transformation getTransformation(DoorTileEntity tileEntity) {
         Translation translation = new Translation(0, 0, 0, 0, 0, 1 - Door.DOOR_WIDTH);
         translation.reversed(tileEntity.getState() == DoorState.CLOSING || tileEntity.getState() == DoorState.CLOSED);
-        translation.forTicks(tileEntity.getDescriptor().getOpeningTime());
+        translation.forTicks(
+            tileEntity.getDescriptor()
+                .getOpeningTime());
         return translation;
     }
 

@@ -84,15 +84,15 @@ public class FenceGate extends BlockFenceGate implements ITileEntityProvider {
     public FenceGate register() {
         GameRegistry.registerBlock(this, type.name);
         if (type == Type.CAMO) GameRegistry
-                .addRecipe(new ItemStack(this), "ABC", 'A', acaciaFenceGate, 'B', jungleFenceGate, 'C', birchFenceGate);
+            .addRecipe(new ItemStack(this), "ABC", 'A', acaciaFenceGate, 'B', jungleFenceGate, 'C', birchFenceGate);
         else GameRegistry.addRecipe(
-                new ItemStack(this),
-                "ABA",
-                "ABA",
-                'A',
-                Items.stick,
-                'B',
-                new ItemStack(Blocks.planks, 1, type.type));
+            new ItemStack(this),
+            "ABA",
+            "ABA",
+            'A',
+            Items.stick,
+            'B',
+            new ItemStack(Blocks.planks, 1, type.type));
         return this;
     }
 
@@ -133,7 +133,7 @@ public class FenceGate extends BlockFenceGate implements ITileEntityProvider {
      */
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX,
-            float hitY, float hitZ) {
+        float hitY, float hitZ) {
         if (world.isRemote) return true;
 
         DoorTileEntity te = Door.getDoor(world, x, y, z);

@@ -87,9 +87,11 @@ public class RustyHatchMovement implements IDoorMovement {
             offY = -0.5F;
         }
 
-        int t = tileEntity.getDescriptor().getOpeningTime() / 2;
-        Rotation rotation = new Rotation(toAngle).aroundAxis(0, 0, 1).offset(offX, offY, 0)
-                .movement(Transformation.SINUSOIDAL);
+        int t = tileEntity.getDescriptor()
+            .getOpeningTime() / 2;
+        Rotation rotation = new Rotation(toAngle).aroundAxis(0, 0, 1)
+            .offset(offX, offY, 0)
+            .movement(Transformation.SINUSOIDAL);
 
         if (tileEntity.getState() == DoorState.CLOSING || tileEntity.getState() == DoorState.CLOSED)
             rotation.reversed(true);
@@ -100,11 +102,13 @@ public class RustyHatchMovement implements IDoorMovement {
     }
 
     private Transformation getHandleTransformation(DoorTileEntity tileEntity) {
-        int t = tileEntity.getDescriptor().getOpeningTime() / 2;
-        Rotation rotation = new Rotation(400).aroundAxis(0, 1, 0).offset(0.5F, 0, 0.5F)
-                .movement(Transformation.SINUSOIDAL);
-        if (tileEntity.getState() == DoorState.CLOSING || tileEntity.getState() == DoorState.CLOSED)
-            rotation.delay(t).reversed(true);
+        int t = tileEntity.getDescriptor()
+            .getOpeningTime() / 2;
+        Rotation rotation = new Rotation(400).aroundAxis(0, 1, 0)
+            .offset(0.5F, 0, 0.5F)
+            .movement(Transformation.SINUSOIDAL);
+        if (tileEntity.getState() == DoorState.CLOSING || tileEntity.getState() == DoorState.CLOSED) rotation.delay(t)
+            .reversed(true);
         rotation.forTicks(t);
 
         return rotation;
@@ -113,10 +117,10 @@ public class RustyHatchMovement implements IDoorMovement {
     @Override
     public Animation[] getAnimations(DoorTileEntity tileEntity, MalisisModel model, RenderParameters rp) {
         Transformation transform = new ParallelTransformation(
-                getDoorTransformation(tileEntity),
-                getHandleTransformation(tileEntity));
+            getDoorTransformation(tileEntity),
+            getHandleTransformation(tileEntity));
         return new Animation[] { new Animation(model.getShape("door"), getDoorTransformation(tileEntity)),
-                new Animation(model.getShape("handle"), transform) };
+            new Animation(model.getShape("handle"), transform) };
     }
 
     @Override

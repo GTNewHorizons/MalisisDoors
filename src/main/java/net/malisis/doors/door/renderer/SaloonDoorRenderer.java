@@ -37,14 +37,17 @@ public class SaloonDoorRenderer extends DoorRenderer {
     @Override
     protected void renderTileEntity() {
         enableBlending();
-        ar.setStartTime(tileEntity.getTimer().getStart());
+        ar.setStartTime(
+            tileEntity.getTimer()
+                .getStart());
 
         setup();
 
         if (tileEntity.isReversed()) model.rotate(180, 0, 1, 0, 0, 0, 0);
 
         if (tileEntity.getMovement() != null) {
-            Animation[] anims = tileEntity.getMovement().getAnimations(tileEntity, model, rp);
+            Animation[] anims = tileEntity.getMovement()
+                .getAnimations(tileEntity, model, rp);
             ar.animate(anims);
         }
 

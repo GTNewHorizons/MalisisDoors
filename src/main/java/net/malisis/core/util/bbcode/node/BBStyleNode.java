@@ -61,8 +61,10 @@ public class BBStyleNode extends BBNode {
     public void clean() {
         BBStyleNode node = getChildStyleNode(tag);
         if (node != null && node.getParent() != null) {
-            for (BBNode n : node) node.getParent().insertBefore(n, node);
-            node.getParent().remove(node);
+            for (BBNode n : node) node.getParent()
+                .insertBefore(n, node);
+            node.getParent()
+                .remove(node);
         }
 
         super.clean();

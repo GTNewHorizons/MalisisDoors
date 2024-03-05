@@ -66,7 +66,10 @@ public class ConfigurationGui extends MalisisGui {
         UIWindow window = new UIWindow(this, "config.title", windowWidth, windowHeight);
 
         for (String category : categories) {
-            windowHeight = Math.max(windowHeight, (settings.getSettings(category).size() * 14 + 40));
+            windowHeight = Math.max(
+                windowHeight,
+                (settings.getSettings(category)
+                    .size() * 14 + 40));
             window.add(createSettingContainer(category));
         }
 
@@ -79,8 +82,10 @@ public class ConfigurationGui extends MalisisGui {
         panelComment.setBackgroundColor(0xCCCCCC);
         panelComment.add(comment);
 
-        btnCancel = new UIButton(this, "gui.cancel").setPosition(-32, 0, Anchor.BOTTOM | Anchor.CENTER).register(this);
-        btnSave = new UIButton(this, "gui.done").setPosition(32, 0, Anchor.BOTTOM | Anchor.CENTER).register(this);
+        btnCancel = new UIButton(this, "gui.cancel").setPosition(-32, 0, Anchor.BOTTOM | Anchor.CENTER)
+            .register(this);
+        btnSave = new UIButton(this, "gui.done").setPosition(32, 0, Anchor.BOTTOM | Anchor.CENTER)
+            .register(this);
 
         window.add(panelComment);
         window.add(btnCancel);
@@ -92,7 +97,7 @@ public class ConfigurationGui extends MalisisGui {
     private UIContainer createSettingContainer(String category) {
         List<Setting> categorySettings = settings.getSettings(category);
         UIContainer container = new UIContainer<UIContainer>(this, windowWidth - 105, windowHeight - 35)
-                .setPosition(5, 12);
+            .setPosition(5, 12);
 
         int y = 0;
         for (Setting setting : categorySettings) {

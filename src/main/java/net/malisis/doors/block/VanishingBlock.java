@@ -128,8 +128,7 @@ public class VanishingBlock extends BlockContainer {
         if ((source.getBlockMetadata() & 3) == typeIronFrame && source.copiedBlock == dest.copiedBlock) return true;
 
         if ((source.getBlockMetadata() & 3) == typeGoldFrame && source.copiedBlock == dest.copiedBlock
-                && source.copiedMetadata == dest.copiedMetadata)
-            return true;
+            && source.copiedMetadata == dest.copiedMetadata) return true;
 
         return false;
     }
@@ -148,7 +147,7 @@ public class VanishingBlock extends BlockContainer {
     // #region Events
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer p, int side, float hitX, float hitY,
-            float hitZ) {
+        float hitZ) {
         ItemStack is = p.getHeldItem();
         if (is == null) return false;
 
@@ -209,7 +208,7 @@ public class VanishingBlock extends BlockContainer {
     @SuppressWarnings("rawtypes")
     @Override
     public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB mask, List list,
-            Entity entity) {
+        Entity entity) {
         if ((world.getBlockMetadata(x, y, z) & (flagPowered | flagInTransition)) != 0) return;
 
         VanishingTileEntity te = TileEntityUtils.getTileEntity(VanishingTileEntity.class, world, x, y, z);

@@ -77,9 +77,10 @@ public class FenceGateTileEntity extends DoorTileEntity {
         if (te != null && isMatchingDoubleDoor(te)) p = p.offset(dir);
 
         BlockState state1 = new BlockState(worldObj, p);
-        int color1 = state1.getBlock().colorMultiplier(worldObj, p.getX(), p.getY(), p.getZ());
-        if (state1.getBlock().isAir(worldObj, p.getX(), p.getY(), p.getZ()))
-            return Pair.of(new BlockState(worldObj, pos), -1);
+        int color1 = state1.getBlock()
+            .colorMultiplier(worldObj, p.getX(), p.getY(), p.getZ());
+        if (state1.getBlock()
+            .isAir(worldObj, p.getX(), p.getY(), p.getZ())) return Pair.of(new BlockState(worldObj, pos), -1);
 
         dir = dir.getOpposite();
         p = pos.offset(dir);
@@ -88,9 +89,10 @@ public class FenceGateTileEntity extends DoorTileEntity {
         if (te != null && isMatchingDoubleDoor(te)) p = p.offset(dir);
 
         BlockState state2 = new BlockState(worldObj, p);
-        int color2 = state2.getBlock().colorMultiplier(worldObj, p.getX(), p.getY(), p.getZ());
-        if (state1.getBlock().isAir(worldObj, p.getX(), p.getY(), p.getZ()))
-            return Pair.of(new BlockState(worldObj, pos), -1);
+        int color2 = state2.getBlock()
+            .colorMultiplier(worldObj, p.getX(), p.getY(), p.getZ());
+        if (state1.getBlock()
+            .isAir(worldObj, p.getX(), p.getY(), p.getZ())) return Pair.of(new BlockState(worldObj, pos), -1);
 
         if (state1.getBlock() != state2.getBlock() || state1.getMetadata() != state2.getMetadata() || color1 != color2)
             return Pair.of(new BlockState(worldObj, pos), -1);
@@ -100,7 +102,7 @@ public class FenceGateTileEntity extends DoorTileEntity {
 
     private boolean updateWall() {
         ForgeDirection dir = getDirection() == Door.DIR_NORTH || getDirection() == Door.DIR_SOUTH ? ForgeDirection.EAST
-                : ForgeDirection.NORTH;
+            : ForgeDirection.NORTH;
         BlockPos pos = new BlockPos(xCoord, yCoord, zCoord);
 
         BlockState state = new BlockState(worldObj, pos.offset(dir));
@@ -113,7 +115,8 @@ public class FenceGateTileEntity extends DoorTileEntity {
     public IIcon getCamoIcon() {
         if (camoState == null) return getBlockType().getIcon(0, 0);
 
-        return camoState.getBlock().getIcon(0, 0);
+        return camoState.getBlock()
+            .getIcon(0, 0);
     }
 
     /**
@@ -157,7 +160,7 @@ public class FenceGateTileEntity extends DoorTileEntity {
             return false;
 
         if ((getDirection() == Door.DIR_NORTH || getDirection() == Door.DIR_SOUTH)
-                != (te.getDirection() == Door.DIR_NORTH || te.getDirection() == Door.DIR_SOUTH)) // different direction
+            != (te.getDirection() == Door.DIR_NORTH || te.getDirection() == Door.DIR_SOUTH)) // different direction
             return false;
 
         if (getMovement() != te.getMovement()) // different movement type

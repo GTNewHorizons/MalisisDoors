@@ -13,7 +13,6 @@
 
 package net.malisis.core.renderer.element;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -174,9 +173,7 @@ public class Face implements ITransformable.Translate, ITransformable.Rotate {
         float V = 1;
 
         for (Vertex vertex : vertexes) {
-            vertex.setUV(
-                interpolate(u, U, getFactorU(vertex), false),
-                interpolate(v, V, getFactorV(vertex), false));
+            vertex.setUV(interpolate(u, U, getFactorU(vertex), false), interpolate(v, V, getFactorV(vertex), false));
         }
 
         return this;
@@ -366,9 +363,9 @@ public class Face implements ITransformable.Translate, ITransformable.Rotate {
 
         int factor = 1000;
         Vector normal = new Vector(
-                (float) Math.round(x * factor) / factor,
-                (float) Math.round(y * factor) / factor,
-                (float) Math.round(z * factor) / factor);
+            (float) Math.round(x * factor) / factor,
+            (float) Math.round(y * factor) / factor,
+            (float) Math.round(z * factor) / factor);
         normal.normalize();
         return normal;
     }

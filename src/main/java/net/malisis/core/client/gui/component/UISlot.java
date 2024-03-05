@@ -69,9 +69,12 @@ public class UISlot extends UIComponent<UISlot> {
 
         shape = new SimpleGuiShape();
 
-        icon = gui.getGuiTexture().getIcon(209, 30, 18, 18);
-        iconLeft = gui.getGuiTexture().getIcon(209, 30, 1, 18);
-        iconTop = gui.getGuiTexture().getIcon(209, 30, 18, 1);
+        icon = gui.getGuiTexture()
+            .getIcon(209, 30, 18, 18);
+        iconLeft = gui.getGuiTexture()
+            .getIcon(209, 30, 1, 18);
+        iconTop = gui.getGuiTexture()
+            .getIcon(209, 30, 18, 1);
     }
 
     /**
@@ -100,11 +103,13 @@ public class UISlot extends UIComponent<UISlot> {
             return;
         }
 
-        List<String> lines = slot.getItemStack().getTooltip(
-                Minecraft.getMinecraft().thePlayer,
-                Minecraft.getMinecraft().gameSettings.advancedItemTooltips);
+        List<String> lines = slot.getItemStack()
+            .getTooltip(Minecraft.getMinecraft().thePlayer, Minecraft.getMinecraft().gameSettings.advancedItemTooltips);
 
-        lines.set(0, slot.getItemStack().getRarity().rarityColor + lines.get(0));
+        lines.set(
+            0,
+            slot.getItemStack()
+                .getRarity().rarityColor + lines.get(0));
         for (int i = 1; i < lines.size(); i++) lines.set(i, EnumChatFormatting.GRAY + lines.get(i));
 
         tooltip = new UITooltip(getGui()).setText(lines);
@@ -121,10 +126,12 @@ public class UISlot extends UIComponent<UISlot> {
 
     @Override
     public void drawForeground(GuiRenderer renderer, int mouseX, int mouseY, float partialTick) {
-        MalisisInventoryContainer container = MalisisGui.currentGui().getInventoryContainer();
+        MalisisInventoryContainer container = MalisisGui.currentGui()
+            .getInventoryContainer();
         if (container == null) return;
 
-        ItemStack itemStack = slot.getItemStack() != null ? slot.getItemStack().copy() : null;
+        ItemStack itemStack = slot.getItemStack() != null ? slot.getItemStack()
+            .copy() : null;
         ItemStack draggedItemStack = slot.getDraggedItemStack();
 
         // if dragged slots contains an itemStack for this slot, add the stack size
@@ -188,7 +195,8 @@ public class UISlot extends UIComponent<UISlot> {
     @Override
     public boolean onButtonPress(int x, int y, MouseButton button) {
         ActionType action = null;
-        MalisisInventoryContainer container = MalisisGui.currentGui().getInventoryContainer();
+        MalisisInventoryContainer container = MalisisGui.currentGui()
+            .getInventoryContainer();
 
         if (container.getPickedItemStack() != null) return super.onButtonPress(x, y, button);
 
@@ -209,7 +217,8 @@ public class UISlot extends UIComponent<UISlot> {
     @Override
     public boolean onButtonRelease(int x, int y, MouseButton button) {
         ActionType action = null;
-        MalisisInventoryContainer container = MalisisGui.currentGui().getInventoryContainer();
+        MalisisInventoryContainer container = MalisisGui.currentGui()
+            .getInventoryContainer();
 
         if (container.getPickedItemStack() == null || !buttonRelased) {
             buttonRelased = true;
@@ -228,7 +237,8 @@ public class UISlot extends UIComponent<UISlot> {
 
     @Override
     public boolean onDrag(int lastX, int lastY, int x, int y, MouseButton button) {
-        MalisisInventoryContainer container = MalisisGui.currentGui().getInventoryContainer();
+        MalisisInventoryContainer container = MalisisGui.currentGui()
+            .getInventoryContainer();
         ActionType action = null;
 
         if (container.getPickedItemStack() != null && !container.isDraggingItemStack() && buttonRelased) {
@@ -247,7 +257,7 @@ public class UISlot extends UIComponent<UISlot> {
         if (button != MouseButton.LEFT) return super.onDoubleClick(x, y, button);
 
         ActionType action = GuiScreen.isShiftKeyDown() ? ActionType.DOUBLE_SHIFT_LEFT_CLICK
-                : ActionType.DOUBLE_LEFT_CLICK;
+            : ActionType.DOUBLE_LEFT_CLICK;
         MalisisGui.sendAction(action, slot, button.getCode());
         buttonRelased = false;
         return true;
@@ -284,7 +294,9 @@ public class UISlot extends UIComponent<UISlot> {
     public void onHovered(HoveredStateChange<UISlot> event) {
         updateTooltip();
 
-        if (event.getState() && MalisisGui.currentGui().getInventoryContainer().isDraggingItemStack()) {
+        if (event.getState() && MalisisGui.currentGui()
+            .getInventoryContainer()
+            .isDraggingItemStack()) {
             // if (MalisisGui.currentGui().getInventoryContainer().getDraggedItemstack(slot) == null)
             MalisisGui.sendAction(ActionType.DRAG_ADD_SLOT, slot, 0);
         }

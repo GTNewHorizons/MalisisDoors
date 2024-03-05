@@ -61,11 +61,11 @@ public class Scale extends Transformation<Scale, ITransformable.Scale> {
         float toZ = reversed ? this.fromZ : this.toZ;
 
         transformable.scale(
-                fromX + (toX - fromX) * comp,
-                fromY + (toY - fromY) * comp,
-                fromZ + (toZ - fromZ) * comp,
-                offsetX,
-                offsetY,
-                offsetZ);
+            fromX + (toX - fromX) * comp,
+            fromY + (toY - fromY) * comp,
+            fromZ + (toZ - fromZ) * comp,
+            offsetX,
+            offsetY,
+            offsetZ);
     }
 }

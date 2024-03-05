@@ -35,7 +35,8 @@ public class SpinningAroundDoorMovement implements IDoorMovement {
     private Rotation rotBot = new Rotation(720).aroundAxis(0, 0, 1);
     private Rotation rotTop = new Rotation(720).aroundAxis(0, 0, 1);
     private Rotation rotBot2 = new Rotation(-720).aroundAxis(0, 0, 1);
-    private Rotation rotTop2 = new Rotation(-720).aroundAxis(0, 0, 1).offset(0, 1, 0);
+    private Rotation rotTop2 = new Rotation(-720).aroundAxis(0, 0, 1)
+        .offset(0, 1, 0);
     private Scale scaleBot = new Scale(0, 0, 0);
     private Scale scaleTop = new Scale(0, 0, 0).offset(0, 1, 0);
 
@@ -56,7 +57,8 @@ public class SpinningAroundDoorMovement implements IDoorMovement {
     public Animation[] getAnimations(DoorTileEntity tileEntity, MalisisModel model, RenderParameters rp) {
         boolean doubleDoor = tileEntity.getDoubleDoor() != null;
         boolean closed = tileEntity.getState() == DoorState.CLOSING || tileEntity.getState() == DoorState.CLOSED;
-        int ot = tileEntity.getDescriptor().getOpeningTime();
+        int ot = tileEntity.getDescriptor()
+            .getOpeningTime();
         float offsetX = doubleDoor ? (tileEntity.isReversed() ? 0.5F : -0.5F) : 0;
 
         rotBot.offset(offsetX, 0.5F, 0);
@@ -83,7 +85,7 @@ public class SpinningAroundDoorMovement implements IDoorMovement {
         ParallelTransformation top = new ParallelTransformation(rotTop, rotTop2, scaleTop);
 
         return new Animation[] { new Animation(model.getShape("bottom"), bot),
-                new Animation(model.getShape("top"), top) };
+            new Animation(model.getShape("top"), top) };
     }
 
     @Override

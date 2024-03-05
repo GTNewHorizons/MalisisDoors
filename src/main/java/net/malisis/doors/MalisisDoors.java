@@ -1,5 +1,7 @@
 package net.malisis.doors;
 
+import static net.malisis.doors.Tags.VERSION;
+
 import net.malisis.core.IMalisisMod;
 import net.malisis.core.MalisisCore;
 import net.malisis.core.configuration.Settings;
@@ -30,10 +32,10 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
 @Mod(
-        modid = MalisisDoors.modid,
-        name = MalisisDoors.modname,
-        version = MalisisDoors.version,
-        dependencies = "required-after:malisiscore")
+    modid = MalisisDoors.modid,
+    name = MalisisDoors.modname,
+    version = VERSION,
+    dependencies = "required-after:malisiscore")
 public class MalisisDoors implements IMalisisMod {
 
     @SidedProxy(clientSide = "net.malisis.doors.proxy.ClientProxy", serverSide = "net.malisis.doors.proxy.ServerProxy")
@@ -41,7 +43,6 @@ public class MalisisDoors implements IMalisisMod {
 
     public static final String modid = "malisisdoors";
     public static final String modname = "Malisis' Doors";
-    public static final String version = "GRADLETOKEN_VERSION";
 
     public static MalisisDoors instance;
     public static MalisisNetwork network;
@@ -68,7 +69,7 @@ public class MalisisDoors implements IMalisisMod {
 
     @Override
     public String getVersion() {
-        return version;
+        return VERSION;
     }
 
     @Override

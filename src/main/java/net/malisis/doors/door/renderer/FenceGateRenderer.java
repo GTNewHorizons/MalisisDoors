@@ -90,12 +90,15 @@ public class FenceGateRenderer extends DoorRenderer {
     @Override
     protected void renderTileEntity() {
         enableBlending();
-        ar.setStartTime(tileEntity.getTimer().getStart());
+        ar.setStartTime(
+            tileEntity.getTimer()
+                .getStart());
 
         setup();
 
         if (tileEntity.getMovement() != null) {
-            Animation[] anims = tileEntity.getMovement().getAnimations(tileEntity, model, rp);
+            Animation[] anims = tileEntity.getMovement()
+                .getAnimations(tileEntity, model, rp);
             ar.animate(anims);
         }
 

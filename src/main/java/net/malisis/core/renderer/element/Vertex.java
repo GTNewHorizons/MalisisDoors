@@ -13,14 +13,14 @@
 
 package net.malisis.core.renderer.element;
 
-import lombok.Getter;
 import net.malisis.core.util.Point;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
-import org.joml.Vector4f;
+
+import lombok.Getter;
 
 public class Vertex {
 
@@ -121,14 +121,14 @@ public class Vertex {
 
     public Vertex(Vertex vertex) {
         this(
-                vertex.x,
-                vertex.y,
-                vertex.z,
-                vertex.color << 8 | vertex.alpha,
-                vertex.brightness,
-                vertex.u,
-                vertex.v,
-                false);
+            vertex.x,
+            vertex.y,
+            vertex.z,
+            vertex.color << 8 | vertex.alpha,
+            vertex.brightness,
+            vertex.u,
+            vertex.v,
+            false);
         baseName = vertex.baseName;
         directionFlags = vertex.directionFlags;
     }

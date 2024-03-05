@@ -79,7 +79,8 @@ public class BigDoorRenderer extends MalisisRenderer {
 
     private void renderBlock() {
         BlockState state = tileEntity.getFrameState();
-        if (!state.getBlock().canRenderInPass(BigDoor.renderPass)) return;
+        if (!state.getBlock()
+            .canRenderInPass(BigDoor.renderPass)) return;
 
         set(state.getBlock(), state.getMetadata());
         // rp.icon.set(state.getBlock().getIcon(1, state.getMetadata()));
@@ -89,10 +90,13 @@ public class BigDoorRenderer extends MalisisRenderer {
     }
 
     private void renderTileEntity() {
-        ar.setStartTime(tileEntity.getTimer().getStart());
+        ar.setStartTime(
+            tileEntity.getTimer()
+                .getStart());
 
         if (tileEntity.getMovement() != null) {
-            Animation[] anims = tileEntity.getMovement().getAnimations(tileEntity, model, rp);
+            Animation[] anims = tileEntity.getMovement()
+                .getAnimations(tileEntity, model, rp);
             ar.animate(anims);
         }
 

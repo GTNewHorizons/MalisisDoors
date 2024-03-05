@@ -38,10 +38,11 @@ public class BlockMixerGui extends MalisisGui {
         UISlot outputSlot = new UISlot(this, tileEntity.output).setPosition(0, 20, Anchor.CENTER);
 
         progressBar = new UIProgressBar(this).setPosition(-30, 21, Anchor.CENTER);
-        progressBarReversed = new UIProgressBar(this).setPosition(30, 21, Anchor.CENTER).setReversed();
+        progressBarReversed = new UIProgressBar(this).setPosition(30, 21, Anchor.CENTER)
+            .setReversed();
 
         cbRender = new UICheckBox(this, "gui.block_mixer.simple_rendering").setPosition(0, 50, Anchor.CENTER)
-                .register(this);
+            .register(this);
         cbRender.setTooltip(new UITooltip(this, "gui.block_mixer.simple_rendering_tooltip"));
 
         UIPlayerInventory playerInv = new UIPlayerInventory(this, inventoryContainer.getPlayerInventory());

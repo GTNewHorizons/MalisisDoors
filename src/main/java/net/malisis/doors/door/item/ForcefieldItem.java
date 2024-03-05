@@ -66,9 +66,9 @@ public class ForcefieldItem extends Item {
 
         ForgeDirection dir = ForgeDirection.getOrientation(mop.sideHit);
         ChunkPosition pos = new ChunkPosition(
-                mop.blockX + dir.offsetX,
-                mop.blockY + dir.offsetY,
-                mop.blockZ + dir.offsetZ);
+            mop.blockX + dir.offsetX,
+            mop.blockY + dir.offsetY,
+            mop.blockZ + dir.offsetZ);
         ChunkPosition start = getStartPosition(itemStack);
         if (start.chunkPosY > pos.chunkPosY) {
             ChunkPosition tmp = start;
@@ -116,7 +116,7 @@ public class ForcefieldItem extends Item {
 
     @Override
     public boolean onItemUse(ItemStack itemStack, EntityPlayer player, World world, int x, int y, int z, int side,
-            float hitX, float hitY, float hitZ) {
+        float hitX, float hitY, float hitZ) {
         if (getEnergy(itemStack) < getMaxEnergy()) return true;
 
         ForgeDirection dir = ForgeDirection.getOrientation(side);
@@ -173,9 +173,9 @@ public class ForcefieldItem extends Item {
 
     protected ChunkPosition getStartPosition(ItemStack itemStack) {
         return new ChunkPosition(
-                getNBT(itemStack).getInteger("x"),
-                getNBT(itemStack).getInteger("y"),
-                getNBT(itemStack).getInteger("z"));
+            getNBT(itemStack).getInteger("x"),
+            getNBT(itemStack).getInteger("y"),
+            getNBT(itemStack).getInteger("z"));
     }
 
     protected void clearStartPosition(ItemStack itemStack) {

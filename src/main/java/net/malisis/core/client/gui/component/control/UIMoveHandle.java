@@ -51,7 +51,8 @@ public class UIMoveHandle extends UIComponent<UIMoveHandle> implements IControlC
 
         parent.addControlComponent(this);
 
-        icon = gui.getGuiTexture().getIcon(268, 15, 15, 15);
+        icon = gui.getGuiTexture()
+            .getIcon(268, 15, 15, 15);
     }
 
     public UIMoveHandle(MalisisGui gui, UIComponent parent) {

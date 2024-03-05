@@ -173,7 +173,14 @@ public class RaytraceBlock {
         Pair<ForgeDirection, Point> closest = getClosest(points);
         if (closest == null) return null;
 
-        return new MovingObjectPosition(x, y, z, closest.getLeft().ordinal(), closest.getRight().toVec3());
+        return new MovingObjectPosition(
+            x,
+            y,
+            z,
+            closest.getLeft()
+                .ordinal(),
+            closest.getRight()
+                .toVec3());
     }
 
     /**

@@ -41,7 +41,8 @@ public class UICloseHandle extends UIComponent<UICloseHandle> implements IContro
 
         parent.addControlComponent(this);
 
-        icon = gui.getGuiTexture().getIcon(268, 30, 15, 15);
+        icon = gui.getGuiTexture()
+            .getIcon(268, 30, 15, 15);
     }
 
     @Override

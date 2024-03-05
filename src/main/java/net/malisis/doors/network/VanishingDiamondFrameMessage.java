@@ -48,7 +48,7 @@ public class VanishingDiamondFrameMessage implements IMessageHandler<VanishingDi
     public IMessage onMessage(Packet message, MessageContext ctx) {
         World world = ctx.getServerHandler().playerEntity.worldObj;
         VanishingDiamondTileEntity te = TileEntityUtils
-                .getTileEntity(VanishingDiamondTileEntity.class, world, message.x, message.y, message.z);
+            .getTileEntity(VanishingDiamondTileEntity.class, world, message.x, message.y, message.z);
         if (te == null) return null;
 
         switch (message.type) {
@@ -71,7 +71,7 @@ public class VanishingDiamondFrameMessage implements IMessageHandler<VanishingDi
     }
 
     public static void sendConfiguration(VanishingDiamondTileEntity te, ForgeDirection facing, DataType type, int time,
-            boolean checked) {
+        boolean checked) {
         Packet packet = new Packet(te.xCoord, te.yCoord, te.zCoord, type, facing, time, checked);
         MalisisDoors.network.sendToServer(packet);
     }

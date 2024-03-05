@@ -54,7 +54,7 @@ import com.google.common.eventbus.EventBus;
  * @param <T> the type of <code>UIComponent</code>
  */
 public abstract class UIComponent<T extends UIComponent>
-        implements ITransformable.Position<T>, ITransformable.Size<T>, ITransformable.Alpha, IKeyListener {
+    implements ITransformable.Position<T>, ITransformable.Size<T>, ITransformable.Alpha, IKeyListener {
 
     /** The Exception handler for all Component events. */
     private static final ComponentExceptionHandler exceptionHandler = new ComponentExceptionHandler();
@@ -923,23 +923,24 @@ public abstract class UIComponent<T extends UIComponent>
      * @return the property string
      */
     public String getPropertyString() {
-        return "P=" + (parent != null ? parent.getClass().getSimpleName() : "null")
-                + " | "
-                + width
-                + "x"
-                + height
-                + "@"
-                + x
-                + ","
-                + y
-                + " | C="
-                + parentX()
-                + ","
-                + parentY()
-                + " | S="
-                + screenX()
-                + ","
-                + screenY();
+        return "P=" + (parent != null ? parent.getClass()
+            .getSimpleName() : "null")
+            + " | "
+            + width
+            + "x"
+            + height
+            + "@"
+            + x
+            + ","
+            + y
+            + " | C="
+            + parentX()
+            + ","
+            + parentY()
+            + " | S="
+            + screenX()
+            + ","
+            + screenY();
     }
 
     /**

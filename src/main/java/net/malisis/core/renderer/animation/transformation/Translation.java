@@ -51,6 +51,6 @@ public class Translation extends Transformation<Translation, ITransformable.Tran
         float toZ = reversed ? this.fromZ : this.toZ;
 
         transformable
-                .translate(fromX + (toX - fromX) * comp, fromY + (toY - fromY) * comp, fromZ + (toZ - fromZ) * comp);
+            .translate(fromX + (toX - fromX) * comp, fromY + (toY - fromY) * comp, fromZ + (toZ - fromZ) * comp);
     }
 }

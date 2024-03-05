@@ -21,7 +21,6 @@ import net.malisis.core.renderer.element.face.NorthFace;
 import net.malisis.core.renderer.element.face.SouthFace;
 import net.malisis.core.renderer.element.face.TopFace;
 import net.malisis.core.renderer.element.face.WestFace;
-import org.lwjgl.Sys;
 
 /**
  * Basic Cube {@link Shape} using predefined {@link Face faces}.

@@ -24,12 +24,8 @@ import net.malisis.core.renderer.element.Vertex;
  */
 public class BottomFace extends Face {
 
-    private static final Vertex[] DEFAULT = {
-        new Vertex.BottomNorthEast(),
-        new Vertex.BottomSouthEast(),
-        new Vertex.BottomSouthWest(),
-        new Vertex.BottomNorthWest()
-    };
+    private static final Vertex[] DEFAULT = { new Vertex.BottomNorthEast(), new Vertex.BottomSouthEast(),
+        new Vertex.BottomSouthWest(), new Vertex.BottomNorthWest() };
 
     @Override
     public void reset() {

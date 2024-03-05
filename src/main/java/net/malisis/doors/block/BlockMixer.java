@@ -48,9 +48,15 @@ public class BlockMixer extends Block implements ITileEntityProvider {
     @SideOnly(Side.CLIENT)
     @Override
     public void registerBlockIcons(IIconRegister iconRegister) {
-        this.blockIcon = iconRegister
-                .registerIcon(MalisisDoors.modid + ":" + (this.getUnlocalizedName().substring(5)) + "_side");
-        this.frontIcon = iconRegister.registerIcon(MalisisDoors.modid + ":" + (this.getUnlocalizedName().substring(5)));
+        this.blockIcon = iconRegister.registerIcon(
+            MalisisDoors.modid + ":"
+                + (this.getUnlocalizedName()
+                    .substring(5))
+                + "_side");
+        this.frontIcon = iconRegister.registerIcon(
+            MalisisDoors.modid + ":"
+                + (this.getUnlocalizedName()
+                    .substring(5)));
     }
 
     @Override
@@ -72,7 +78,7 @@ public class BlockMixer extends Block implements ITileEntityProvider {
 
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int metadata, float hitX,
-            float hitY, float hitZ) {
+        float hitY, float hitZ) {
         if (world.isRemote) return true;
 
         if (player.isSneaking()) return false;

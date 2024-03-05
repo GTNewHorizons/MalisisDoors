@@ -125,7 +125,8 @@ public class BBString {
         int shift = 0;
         for (BBTextNode tn : textNodes) {
             tn.shiftIndex(shift);
-            int amount = -tn.delete(start, end).length();
+            int amount = -tn.delete(start, end)
+                .length();
             shift += amount;
         }
 

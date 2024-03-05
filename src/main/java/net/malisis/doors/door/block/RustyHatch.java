@@ -71,13 +71,15 @@ public class RustyHatch extends MalisisBlock implements ITileEntityProvider {
     public boolean canPlaceBlockOnSide(World world, int x, int y, int z, int side) {
         if (side == 0 || side == 1) return false;
 
-        ForgeDirection dir = ForgeDirection.getOrientation(side).getOpposite();
-        return world.getBlock(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ).isSideSolid(world, x, y, z, dir);
+        ForgeDirection dir = ForgeDirection.getOrientation(side)
+            .getOpposite();
+        return world.getBlock(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ)
+            .isSideSolid(world, x, y, z, dir);
     }
 
     @Override
     public int onBlockPlaced(World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ,
-            int metadata) {
+        int metadata) {
         return (side - 2) | (hitY > 0.5F ? Door.FLAG_TOPBLOCK : 0);
     }
 
@@ -95,7 +97,7 @@ public class RustyHatch extends MalisisBlock implements ITileEntityProvider {
 
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX,
-            float hitY, float hitZ) {
+        float hitY, float hitZ) {
         if (world.isRemote) return true;
 
         RustyHatchTileEntity te = TileEntityUtils.getTileEntity(RustyHatchTileEntity.class, world, x, y, z);
@@ -118,7 +120,8 @@ public class RustyHatch extends MalisisBlock implements ITileEntityProvider {
         if (te == null || te.isMoving() || te.getMovement() == null || te.getMultiBlock() == null)
             return AABBUtils.identities();
 
-        AxisAlignedBB aabb = te.getMovement().getBoundingBox(te, te.isTopBlock(x, y, z), type);
+        AxisAlignedBB aabb = te.getMovement()
+            .getBoundingBox(te, te.isTopBlock(x, y, z), type);
         if (aabb != null) aabb.offset(-x, -y, -z);
         return new AxisAlignedBB[] { aabb };
     }

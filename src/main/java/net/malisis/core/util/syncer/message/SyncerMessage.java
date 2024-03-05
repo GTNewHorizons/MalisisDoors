@@ -57,7 +57,8 @@ public class SyncerMessage implements IMessageHandler<SyncerMessage.Packet, IMes
     public IMessage onMessage(Packet message, MessageContext ctx) {
         if (ctx.side == Side.CLIENT) {
             Object caller = message.handler.getReceiver(ctx, message.data);
-            Syncer.get().updateValues(caller, message.handler, message.values);
+            Syncer.get()
+                .updateValues(caller, message.handler, message.values);
         }
 
         return null;
@@ -73,7 +74,7 @@ public class SyncerMessage implements IMessageHandler<SyncerMessage.Packet, IMes
         public Packet() {}
 
         public Packet(ISyncHandler<? super T, ? extends ISyncableData> handler, ISyncableData data, int fieldIndexes,
-                Map<String, Object> fieldValues) {
+            Map<String, Object> fieldValues) {
             this.handler = handler;
             this.data = data;
             this.indexes = fieldIndexes;
@@ -83,7 +84,8 @@ public class SyncerMessage implements IMessageHandler<SyncerMessage.Packet, IMes
         @Override
         public void fromBytes(ByteBuf buf) {
             // handler
-            handler = (ISyncHandler<? super T, ? extends ISyncableData>) Syncer.get().getHandlerFromId(buf.readInt());
+            handler = (ISyncHandler<? super T, ? extends ISyncableData>) Syncer.get()
+                .getHandlerFromId(buf.readInt());
             if (handler == null) return;
 
             // data
@@ -103,7 +105,8 @@ public class SyncerMessage implements IMessageHandler<SyncerMessage.Packet, IMes
                 if ((indexes & 1) != 0) {
                     data = null;
                     FieldData fd = handler.getFieldData(index);
-                    clazz = fd.getField().getType();
+                    clazz = fd.getField()
+                        .getType();
 
                     if (ISyncableData.class.isAssignableFrom(clazz)) {
                         if (buf.readBoolean()) {
@@ -136,7 +139,9 @@ public class SyncerMessage implements IMessageHandler<SyncerMessage.Packet, IMes
         @Override
         public void toBytes(ByteBuf buf) {
             // handler
-            buf.writeInt(Syncer.get().getHandlerId(handler));
+            buf.writeInt(
+                Syncer.get()
+                    .getHandlerId(handler));
             // data
             data.toBytes(buf);
             // indexes

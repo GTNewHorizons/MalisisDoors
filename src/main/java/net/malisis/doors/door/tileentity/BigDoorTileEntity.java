@@ -136,7 +136,7 @@ public class BigDoorTileEntity extends DoorTileEntity {
     @Override
     public AxisAlignedBB getRenderBoundingBox() {
         return ((BigDoor) getBlockType())
-                .getBoundingBox(getWorldObj(), xCoord, yCoord, zCoord, BoundingBoxType.RENDER)[0]
-                        .offset(xCoord, yCoord, zCoord);
+            .getBoundingBox(getWorldObj(), xCoord, yCoord, zCoord, BoundingBoxType.RENDER)[0]
+                .offset(xCoord, yCoord, zCoord);
     }
 }

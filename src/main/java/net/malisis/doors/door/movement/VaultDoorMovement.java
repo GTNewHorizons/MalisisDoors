@@ -61,9 +61,12 @@ public class VaultDoorMovement implements IDoorMovement {
 
         if (!tileEntity.isReversed()) offsetX = -offsetX;
 
-        Rotation rotation = new Rotation(angle).aroundAxis(0, 0, 1).offset(offsetX, offsetY, 0);
+        Rotation rotation = new Rotation(angle).aroundAxis(0, 0, 1)
+            .offset(offsetX, offsetY, 0);
         rotation.reversed(tileEntity.getState() == DoorState.CLOSING || tileEntity.getState() == DoorState.CLOSED);
-        rotation.forTicks(tileEntity.getDescriptor().getOpeningTime());
+        rotation.forTicks(
+            tileEntity.getDescriptor()
+                .getOpeningTime());
 
         return rotation;
     }
@@ -71,7 +74,7 @@ public class VaultDoorMovement implements IDoorMovement {
     @Override
     public Animation[] getAnimations(DoorTileEntity tileEntity, MalisisModel model, RenderParameters rp) {
         return new Animation[] { new Animation(model.getShape("top"), getTransformation(tileEntity, true)),
-                new Animation(model.getShape("bottom"), getTransformation(tileEntity, false)) };
+            new Animation(model.getShape("bottom"), getTransformation(tileEntity, false)) };
     }
 
     @Override

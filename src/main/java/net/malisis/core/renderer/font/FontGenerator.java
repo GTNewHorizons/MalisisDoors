@@ -75,10 +75,10 @@ public class FontGenerator {
                 // baseLine
                 g.setColor(Color.RED);
                 g.drawLine(
-                        x,
-                        (int) (y + cd.getAscent()),
-                        (int) (x + cd.getFullWidth(options)),
-                        (int) (y + cd.getAscent()));
+                    x,
+                    (int) (y + cd.getAscent()),
+                    (int) (x + cd.getFullWidth(options)),
+                    (int) (y + cd.getAscent()));
 
                 g.setColor(Color.MAGENTA);
                 g.drawRect(x, y, (int) (cd.getCharWidth()), (int) (cd.getCharHeight()));

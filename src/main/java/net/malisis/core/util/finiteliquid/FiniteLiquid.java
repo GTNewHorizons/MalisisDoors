@@ -142,7 +142,7 @@ public abstract class FiniteLiquid extends BlockDynamicLiquid {
 
     @Override
     public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB mask, List list,
-            Entity entity) {
+        Entity entity) {
         for (AxisAlignedBB aabb : getBoundingBox(world, x, y, z, BoundingBoxType.COLLISION)) {
             if (aabb != null && mask.intersectsWith(aabb.offset(x, y, z))) list.add(aabb);
         }
@@ -163,9 +163,10 @@ public abstract class FiniteLiquid extends BlockDynamicLiquid {
     @Override
     @SideOnly(Side.CLIENT)
     public boolean shouldSideBeRendered(IBlockAccess worldIn, int x, int y, int z, int side) {
-        Material material = worldIn.getBlock(x, y, z).getMaterial();
+        Material material = worldIn.getBlock(x, y, z)
+            .getMaterial();
         return material == this.blockMaterial ? false
-                : (side == 1 ? true : super.shouldSideBeRendered(worldIn, x, y, z, side));
+            : (side == 1 ? true : super.shouldSideBeRendered(worldIn, x, y, z, side));
     }
 
     @Override
@@ -225,7 +226,10 @@ public abstract class FiniteLiquid extends BlockDynamicLiquid {
         }
 
         public boolean process(BlockState state) {
-            BlockState down = new BlockState(world, state.getPos().down());
+            BlockState down = new BlockState(
+                world,
+                state.getPos()
+                    .down());
             int da = fl.getAmount(down);
             if (da != -1 && da != 16) {
                 int transfered = Math.min(amount, 4);
@@ -235,7 +239,8 @@ public abstract class FiniteLiquid extends BlockDynamicLiquid {
                 return amount > 0;
             }
 
-            if (state.getPos().equals(origin)) return true;
+            if (state.getPos()
+                .equals(origin)) return true;
 
             int a = fl.getAmount(state);
             if (a < amount - 1) {

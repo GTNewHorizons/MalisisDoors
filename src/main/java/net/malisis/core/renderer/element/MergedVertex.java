@@ -19,10 +19,11 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import lombok.Getter;
 import net.malisis.core.renderer.animation.transformation.ITransformable;
 
 import org.joml.Matrix4f;
+
+import lombok.Getter;
 
 /**
  * MergedVertex are holders of vertex that share the same position inside a shape. The position is determined by the
@@ -34,7 +35,7 @@ import org.joml.Matrix4f;
  *
  */
 public class MergedVertex implements ITransformable.Translate, ITransformable.Rotate, ITransformable.Scale,
-        ITransformable.Alpha, ITransformable.Color, ITransformable.Brightness, Iterable<Vertex> {
+    ITransformable.Alpha, ITransformable.Color, ITransformable.Brightness, Iterable<Vertex> {
 
     @Getter
     protected String name;
@@ -122,7 +123,8 @@ public class MergedVertex implements ITransformable.Translate, ITransformable.Ro
     public boolean is(String... names) {
         boolean b = true;
         for (String n : names) {
-            b &= name.toLowerCase().contains(n.toLowerCase());
+            b &= name.toLowerCase()
+                .contains(n.toLowerCase());
         }
         return b;
     }

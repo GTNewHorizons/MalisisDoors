@@ -77,7 +77,7 @@ public class MalisisBlock extends Block implements IBoundingBox {
 
     @Override
     public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB mask, List list,
-            Entity entity) {
+        Entity entity) {
         for (AxisAlignedBB aabb : getBoundingBox(world, x, y, z, BoundingBoxType.COLLISION)) {
             if (aabb != null && mask.intersectsWith(aabb.offset(x, y, z))) list.add(aabb);
         }

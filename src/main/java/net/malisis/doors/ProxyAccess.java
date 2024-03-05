@@ -140,11 +140,11 @@ public class ProxyAccess {
 
         public ProxyWorld(World world) {
             super(
-                    world.getSaveHandler(),
-                    "ProxyWorld",
-                    new WorldSettings(world.getWorldInfo()),
-                    world.provider,
-                    (Profiler) null);
+                world.getSaveHandler(),
+                "ProxyWorld",
+                new WorldSettings(world.getWorldInfo()),
+                world.provider,
+                (Profiler) null);
             original = world;
             // reset back the world for the provider
             provider.worldObj = world;

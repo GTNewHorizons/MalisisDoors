@@ -137,8 +137,10 @@ public class UITextField extends UIComponent<UITextField> implements IScrollable
         cursorShape = new SimpleGuiShape();
         selectShape = new SimpleGuiShape();
 
-        iconTextfield = gui.getGuiTexture().getXYResizableIcon(200, 30, 9, 12, 1);
-        iconTextfieldDisabled = gui.getGuiTexture().getXYResizableIcon(200, 42, 9, 12, 1);
+        iconTextfield = gui.getGuiTexture()
+            .getXYResizableIcon(200, 30, 9, 12, 1);
+        iconTextfieldDisabled = gui.getGuiTexture()
+            .getXYResizableIcon(200, 42, 9, 12, 1);
 
         if (multiLine) scrollBar = new UISlimScrollbar(gui, this, Type.VERTICAL);
     }
@@ -622,7 +624,8 @@ public class UITextField extends UIComponent<UITextField> implements IScrollable
         int position = cursorPosition.textPosition;
 
         String oldValue = this.text.toString();
-        String newValue = new StringBuilder(oldValue).insert(position, str).toString();
+        String newValue = new StringBuilder(oldValue).insert(position, str)
+            .toString();
 
         if (!validateText(newValue)) return;
 
@@ -643,7 +646,8 @@ public class UITextField extends UIComponent<UITextField> implements IScrollable
         int end = Math.max(selectionPosition.textPosition, cursorPosition.textPosition);
 
         String oldValue = this.text.toString();
-        String newValue = new StringBuilder(oldValue).delete(start, end).toString();
+        String newValue = new StringBuilder(oldValue).delete(start, end)
+            .toString();
 
         if (!fireEvent(new ComponentEvent.ValueChange(this, oldValue, newValue))) return;
 
@@ -718,8 +722,7 @@ public class UITextField extends UIComponent<UITextField> implements IScrollable
             else if (text.length() != 0) {
                 // charOffset = 0;
                 while (font.getStringWidth(text.substring(charOffset, cursorPosition.textPosition), fro)
-                        >= getWidth() - 4)
-                    charOffset++;
+                    >= getWidth() - 4) charOffset++;
             }
         } else {
             if (cursorPosition.line < lineOffset) setLineOffset(cursorPosition.line);
@@ -1028,14 +1031,14 @@ public class UITextField extends UIComponent<UITextField> implements IScrollable
         if (cursorPosition.line < lineOffset || cursorPosition.line >= lineOffset + getVisibleLines()) return;
 
         renderer.drawRectangle(
-                cursorPosition.getXOffset() + 1,
-                cursorPosition.getYOffset() + 1,
-                getZIndex(),
-                1,
-                getLineHeight(),
-                cursorColor,
-                255,
-                true);
+            cursorPosition.getXOffset() + 1,
+            cursorPosition.getYOffset() + 1,
+            getZIndex(),
+            1,
+            getLineHeight(),
+            cursorColor,
+            255,
+            true);
     }
 
     /**
@@ -1049,7 +1052,7 @@ public class UITextField extends UIComponent<UITextField> implements IScrollable
         GL11.glLogicOp(GL11.GL_OR_REVERSE);
 
         CursorPosition first = cursorPosition.textPosition < selectionPosition.textPosition ? cursorPosition
-                : selectionPosition;
+            : selectionPosition;
         CursorPosition last = cursorPosition == first ? selectionPosition : cursorPosition;
 
         for (int i = first.line; i <= last.line; i++) {
@@ -1297,7 +1300,8 @@ public class UITextField extends UIComponent<UITextField> implements IScrollable
             textPosition = character;
             if (!multiLine) return;
 
-            for (int i = 0; i < line && i < lines.size(); i++) textPosition += lines.get(i).length();
+            for (int i = 0; i < line && i < lines.size(); i++) textPosition += lines.get(i)
+                .length();
 
             onCursorUpdated();
         }
@@ -1352,14 +1356,14 @@ public class UITextField extends UIComponent<UITextField> implements IScrollable
         @Override
         public String toString() {
             return "Pos : " + textPosition
-                    + " (l"
-                    + line
-                    + " / c"
-                    + character
-                    + ") at "
-                    + getXOffset()
-                    + ","
-                    + getYOffset();
+                + " (l"
+                + line
+                + " / c"
+                + character
+                + ") at "
+                + getXOffset()
+                + ","
+                + getYOffset();
         }
     }
 

@@ -54,9 +54,15 @@ public class GarageDoor extends Block implements ITileEntityProvider {
 
     @Override
     public void registerBlockIcons(IIconRegister iconRegister) {
-        this.blockIcon = iconRegister.registerIcon(MalisisDoors.modid + ":" + (this.getUnlocalizedName().substring(5)));
-        this.topBlockIcon = iconRegister
-                .registerIcon(MalisisDoors.modid + ":" + (this.getUnlocalizedName().substring(5)) + "_top");
+        this.blockIcon = iconRegister.registerIcon(
+            MalisisDoors.modid + ":"
+                + (this.getUnlocalizedName()
+                    .substring(5)));
+        this.topBlockIcon = iconRegister.registerIcon(
+            MalisisDoors.modid + ":"
+                + (this.getUnlocalizedName()
+                    .substring(5))
+                + "_top");
     }
 
     @Override

@@ -60,12 +60,12 @@ public class Settings {
     protected void initSettings() {}
 
     private void getSettingFields() {
-        Field[] fields = this.getClass().getDeclaredFields();
+        Field[] fields = this.getClass()
+            .getDeclaredFields();
         for (Field field : fields) {
             ConfigurationSetting annotation;
             if ((annotation = field.getAnnotation(ConfigurationSetting.class)) == null
-                    || field.getType() != Setting.class)
-                continue;
+                || field.getType() != Setting.class) continue;
 
             Setting setting = null;
             try {

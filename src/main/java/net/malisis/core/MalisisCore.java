@@ -13,6 +13,8 @@
 
 package net.malisis.core;
 
+import static net.malisis.doors.Tags.VERSION;
+
 import java.io.File;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -27,7 +29,6 @@ import net.malisis.core.util.finiteliquid.FiniteLiquid;
 import net.malisis.core.util.finiteliquid.FiniteLiquidRenderer;
 import net.malisis.core.util.replacement.ReplacementTool;
 import net.malisis.core.util.syncer.Syncer;
-import net.malisis.doors.MalisisDoors;
 import net.minecraft.client.Minecraft;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraft.server.MinecraftServer;
@@ -55,10 +56,10 @@ import cpw.mods.fml.relauncher.SideOnly;
  * The Class MalisisCore.
  */
 @Mod(
-        modid = MalisisCore.modid,
-        name = MalisisCore.modname,
-        version = MalisisCore.version,
-        dependencies = "required-after:gtnhlib@[0.2.4,)")
+    modid = MalisisCore.modid,
+    name = MalisisCore.modname,
+    version = MalisisCore.version,
+    dependencies = "required-after:gtnhlib@[0.2.4,)")
 public class MalisisCore implements IMalisisMod {
 
     /** Mod ID. */
@@ -66,7 +67,7 @@ public class MalisisCore implements IMalisisMod {
     /** Mod name. */
     public static final String modname = "Malisis Core";
     /** Current version. */
-    public static final String version = MalisisDoors.version;
+    public static final String version = VERSION;
     /** Url for the mod. */
     public static final String url = "";
     /** Path for the mod. */
@@ -159,7 +160,8 @@ public class MalisisCore implements IMalisisMod {
         GameRegistry.registerTileEntity(MultiBlockTileEntity.class, "MalisisCoreMultiBlockTileEntity");
 
         MalisisNetwork.createMessages(event.getAsmData());
-        Syncer.get().discover(event.getAsmData());
+        Syncer.get()
+            .discover(event.getAsmData());
     }
 
     /**
@@ -171,8 +173,8 @@ public class MalisisCore implements IMalisisMod {
     public void init(FMLInitializationEvent event) {
         ClientCommandHandler.instance.registerCommand(new MalisisCommand());
 
-        if (FMLCommonHandler.instance().getSide() == Side.CLIENT)
-            new FiniteLiquidRenderer().registerFor(FiniteLiquid.class);
+        if (FMLCommonHandler.instance()
+            .getSide() == Side.CLIENT) new FiniteLiquidRenderer().registerFor(FiniteLiquid.class);
     }
 
     /**
@@ -229,10 +231,12 @@ public class MalisisCore implements IMalisisMod {
         String txt = text.toString();
         if (text instanceof Object[]) txt = Arrays.deepToString((Object[]) text);
         ChatComponentText msg = new ChatComponentText(StatCollector.translateToLocalFormatted(txt, data));
-        if (FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER) {
+        if (FMLCommonHandler.instance()
+            .getEffectiveSide() == Side.SERVER) {
             MinecraftServer server = MinecraftServer.getServer();
 
-            if (server != null) server.getConfigurationManager().sendChatMsg(msg);
+            if (server != null) server.getConfigurationManager()
+                .sendChatMsg(msg);
         } else {
             if (Minecraft.getMinecraft() == null || Minecraft.getMinecraft().thePlayer == null) return;
 

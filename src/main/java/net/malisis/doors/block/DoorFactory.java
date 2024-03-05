@@ -76,7 +76,7 @@ public class DoorFactory extends MalisisBlock implements ITileEntityProvider {
 
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int metadata, float hitX,
-            float hitY, float hitZ) {
+        float hitY, float hitZ) {
         if (world.isRemote) return true;
 
         if (player.isSneaking()) return false;

@@ -31,13 +31,13 @@ public class MalisisDoorsSettings extends Settings {
 
     @ConfigurationSetting
     public static Setting<Boolean> enhancedMixedBlockPlacement = new BooleanSetting(
-            "config.enhancedMixedBlockPlacement",
-            true);
+        "config.enhancedMixedBlockPlacement",
+        true);
 
     @ConfigurationSetting
     public static Setting<Boolean> simpleMixedBlockRendering = new BooleanSetting(
-            "config.simpleMixedBlockRendering",
-            false);
+        "config.simpleMixedBlockRendering",
+        false);
 
     @ConfigurationSetting
     public static Setting<Boolean> enableVanishingBlocks = new BooleanSetting("config.enableVanishingBlocks", true);
@@ -59,12 +59,11 @@ public class MalisisDoorsSettings extends Settings {
     protected void initSettings() {
         modifyVanillaDoors.setComment("config.modifyVanillaDoors.comment1", "config.modifyVanillaDoors.comment2");
         simpleMixedBlockRendering
-                .setComment("config.simpleMixedBlockRendering.comment1", "config.simpleMixedBlockRendering.comment2");
+            .setComment("config.simpleMixedBlockRendering.comment1", "config.simpleMixedBlockRendering.comment2");
         enableVanishingGlitch.setComment("config.enableVanishingGlitch.comment");
         vanishingGlitchChance.setComment("config.vanishingGlitchChance.comment");
-        enhancedMixedBlockPlacement.setComment(
-                "config.enhancedMixedBlockPlacement.comment1",
-                "config.enhancedMixedBlockPlacement.comment2");
+        enhancedMixedBlockPlacement
+            .setComment("config.enhancedMixedBlockPlacement.comment1", "config.enhancedMixedBlockPlacement.comment2");
         enableCamoFenceGate.setComment("config.enableCamoFenceGate.comment");
     }
 }

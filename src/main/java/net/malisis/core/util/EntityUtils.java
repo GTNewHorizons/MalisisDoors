@@ -41,7 +41,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 public class EntityUtils {
 
     private static ForgeDirection[] facings = new ForgeDirection[] { ForgeDirection.NORTH, ForgeDirection.EAST,
-            ForgeDirection.SOUTH, ForgeDirection.WEST, ForgeDirection.UP, ForgeDirection.DOWN, ForgeDirection.UNKNOWN };
+        ForgeDirection.SOUTH, ForgeDirection.WEST, ForgeDirection.UP, ForgeDirection.DOWN, ForgeDirection.UNKNOWN };
 
     /**
      * Eject a new item corresponding to the {@link ItemStack}.
@@ -73,9 +73,11 @@ public class EntityUtils {
      * @return the player
      */
     public static EntityPlayerMP findPlayerFromUUID(UUID uuid) {
-        List<EntityPlayerMP> listPlayers = MinecraftServer.getServer().getConfigurationManager().playerEntityList;
+        List<EntityPlayerMP> listPlayers = MinecraftServer.getServer()
+            .getConfigurationManager().playerEntityList;
 
-        for (EntityPlayerMP player : listPlayers) if (player.getUniqueID().equals(uuid)) return player;
+        for (EntityPlayerMP player : listPlayers) if (player.getUniqueID()
+            .equals(uuid)) return player;
 
         return null;
     }
@@ -115,7 +117,8 @@ public class EntityUtils {
 
     public static boolean isEquipped(EntityPlayer player, Item item) {
         return player != null && player.getCurrentEquippedItem() != null
-                && player.getCurrentEquippedItem().getItem() == item;
+            && player.getCurrentEquippedItem()
+                .getItem() == item;
     }
 
     public static boolean isEquipped(EntityPlayer player, ItemStack itemStack) {
@@ -128,7 +131,8 @@ public class EntityUtils {
 
     public static List<EntityPlayerMP> getPlayersWatchingChunk(WorldServer world, int x, int z) {
         try {
-            PlayerManager.PlayerInstance playerInstance = world.getPlayerManager().getOrCreateChunkWatcher(x, z, false);
+            PlayerManager.PlayerInstance playerInstance = world.getPlayerManager()
+                .getOrCreateChunkWatcher(x, z, false);
             if (playerInstance == null) return new ArrayList<>();
             return playerInstance.playersWatchingChunk;
         } catch (Throwable e) {

@@ -46,13 +46,17 @@ public class EcfSelect extends UISelect<EnumChatFormatting> {
 
     @Override
     public void setSelectedOption(Option<EnumChatFormatting> option) {
-        editor.getTextfield().addText(option.getKey().toString());
+        editor.getTextfield()
+            .addText(
+                option.getKey()
+                    .toString());
     }
 
     @Override
     public boolean onClick(int x, int y) {
         super.onClick(x, y);
-        if (!expanded) editor.getTextfield().setFocused(true);
+        if (!expanded) editor.getTextfield()
+            .setFocused(true);
         return true;
     }
 }

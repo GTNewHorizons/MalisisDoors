@@ -113,11 +113,13 @@ public class ObjFileImporter implements IModelLoader {
      */
     public void load(ResourceLocation resourceLocation) {
         try {
-            IResource res = Minecraft.getMinecraft().getResourceManager().getResource(resourceLocation);
+            IResource res = Minecraft.getMinecraft()
+                .getResourceManager()
+                .getResource(resourceLocation);
             load(res.getInputStream());
         } catch (IOException e) {
             MalisisCore.log
-                    .error("[ObjFileImporter] An error happened while reading the file : {}", resourceLocation, e);
+                .error("[ObjFileImporter] An error happened while reading the file : {}", resourceLocation, e);
         }
     }
 
@@ -131,7 +133,8 @@ public class ObjFileImporter implements IModelLoader {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
             while ((currentLine = reader.readLine()) != null) {
                 lineNumber++;
-                currentLine = currentLine.replaceAll("\\s+", " ").trim();
+                currentLine = currentLine.replaceAll("\\s+", " ")
+                    .trim();
                 matcher = linePattern.matcher(currentLine);
 
                 if (matcher.matches()) {
@@ -158,15 +161,15 @@ public class ObjFileImporter implements IModelLoader {
 
                         default:
                             MalisisCore.log.debug(
-                                    "[ObjFileImporter] Skipped type {} at line {} : {}",
-                                    type,
-                                    lineNumber,
-                                    currentLine);
+                                "[ObjFileImporter] Skipped type {} at line {} : {}",
+                                type,
+                                lineNumber,
+                                currentLine);
                             break;
                     }
                 } else {
                     MalisisCore.log
-                            .debug("[ObjFileImporter] Skipped non-matching line {} : {}", lineNumber, currentLine);
+                        .debug("[ObjFileImporter] Skipped non-matching line {} : {}", lineNumber, currentLine);
                 }
             }
 
@@ -188,10 +191,10 @@ public class ObjFileImporter implements IModelLoader {
         float z = 0;
         if (coords.length != 3) {
             MalisisCore.log.error(
-                    "[ObjFileImporter] Wrong coordinates number {} at line {} : {}",
-                    coords.length,
-                    lineNumber,
-                    currentLine);
+                "[ObjFileImporter] Wrong coordinates number {} at line {} : {}",
+                coords.length,
+                lineNumber,
+                currentLine);
         } else {
             x = Float.parseFloat(coords[0]);
             y = Float.parseFloat(coords[1]);
@@ -212,10 +215,10 @@ public class ObjFileImporter implements IModelLoader {
         float v = 0;
         if (coords.length != 2) {
             MalisisCore.log.error(
-                    "[ObjFileImporter] Wrong UV coordinates number {} at line {} : {}",
-                    coords.length,
-                    lineNumber,
-                    currentLine);
+                "[ObjFileImporter] Wrong UV coordinates number {} at line {} : {}",
+                coords.length,
+                lineNumber,
+                currentLine);
         } else {
             u = Float.parseFloat(coords[0]);
             v = 1 - Float.parseFloat(coords[1]);
@@ -236,10 +239,10 @@ public class ObjFileImporter implements IModelLoader {
         float z = 0;
         if (coords.length != 3) {
             MalisisCore.log.error(
-                    "[ObjFileImporter] Wrong Normal coordinates number {} at line {} : {}",
-                    coords.length,
-                    lineNumber,
-                    currentLine);
+                "[ObjFileImporter] Wrong Normal coordinates number {} at line {} : {}",
+                coords.length,
+                lineNumber,
+                currentLine);
         } else {
             x = Float.parseFloat(coords[0]);
             y = Float.parseFloat(coords[1]);
@@ -293,10 +296,10 @@ public class ObjFileImporter implements IModelLoader {
                 }
             } else {
                 MalisisCore.log.error(
-                        "[ObjFileImporter] Wrong vertex reference {} for face at line {} :\n{}",
-                        v,
-                        lineNumber,
-                        currentLine);
+                    "[ObjFileImporter] Wrong vertex reference {} for face at line {} :\n{}",
+                    v,
+                    lineNumber,
+                    currentLine);
             }
         }
 

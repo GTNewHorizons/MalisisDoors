@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import lombok.Getter;
 import net.malisis.core.renderer.MalisisRenderer;
 import net.malisis.core.renderer.RenderParameters;
 import net.malisis.core.renderer.animation.transformation.ITransformable;
@@ -26,7 +25,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.joml.Matrix4f;
-import org.lwjgl.Sys;
+
+import lombok.Getter;
 
 /**
  * Base class for anything drawn with a {@link MalisisRenderer}. Supports basic transformations like scaling,
@@ -51,8 +51,7 @@ public class Shape implements ITransformable.Translate, ITransformable.Rotate, I
     }
 
     public void reset() {
-        for (Face f : this.faces)
-            f.reset();
+        for (Face f : this.faces) f.reset();
         this.resetMatrix();
         if (this.mergedVertexes != null) this.mergedVertexes.clear();
     }
@@ -102,8 +101,7 @@ public class Shape implements ITransformable.Translate, ITransformable.Rotate, I
     }
 
     public Shape copy(Shape s) {
-        if (this.faces.length != s.faces.length)
-            this.faces = new Face[s.faces.length];
+        if (this.faces.length != s.faces.length) this.faces = new Face[s.faces.length];
 
         for (int i = 0; i < s.faces.length; ++i) this.faces[i].copy(s.faces[i]);
         this.copyMatrix(s);
@@ -146,7 +144,8 @@ public class Shape implements ITransformable.Translate, ITransformable.Rotate, I
      */
     public List<Face> getFaces(String name) {
         List<Face> list = new ArrayList<>();
-        for (Face f : faces) if (f.name().equalsIgnoreCase(name)) list.add(f);
+        for (Face f : faces) if (f.name()
+            .equalsIgnoreCase(name)) list.add(f);
         return list;
     }
 
@@ -205,7 +204,9 @@ public class Shape implements ITransformable.Translate, ITransformable.Rotate, I
         List<Vertex> vertexes = new ArrayList<>();
         for (Face f : faces) {
             for (Vertex v : f.getVertexes()) {
-                if (v.baseName().toLowerCase().contains(name.toLowerCase())) vertexes.add(v);
+                if (v.baseName()
+                    .toLowerCase()
+                    .contains(name.toLowerCase())) vertexes.add(v);
             }
         }
         return vertexes;
@@ -334,7 +335,8 @@ public class Shape implements ITransformable.Translate, ITransformable.Rotate, I
      * @return this {@link Shape}
      */
     public Shape setParameters(RenderParameters params, boolean merge) {
-        for (Face f : faces) if (merge) f.getParameters().merge(params);
+        for (Face f : faces) if (merge) f.getParameters()
+            .merge(params);
         else f.setParameters(params);
 
         return this;
@@ -353,7 +355,8 @@ public class Shape implements ITransformable.Translate, ITransformable.Rotate, I
         for (Face f : this.faces) {
             if (!f.name.equalsIgnoreCase(name)) continue;
 
-            if (merge) f.getParameters().merge(params);
+            if (merge) f.getParameters()
+                .merge(params);
             else f.setParameters(params);
         }
         return this;
@@ -637,11 +640,9 @@ public class Shape implements ITransformable.Translate, ITransformable.Rotate, I
     public Shape takeShapes(Shape... shapes) {
 
         int size = 0;
-        for (int i = 0; i < shapes.length; ++i)
-            size += shapes[i].faces.length;
+        for (int i = 0; i < shapes.length; ++i) size += shapes[i].faces.length;
 
-        if (this.faces.length != size)
-            this.faces = new Face[size];
+        if (this.faces.length != size) this.faces = new Face[size];
 
         size = 0;
         for (int i = 0; i < shapes.length; ++i) {
@@ -664,12 +665,10 @@ public class Shape implements ITransformable.Translate, ITransformable.Rotate, I
         int size = 0;
         for (int i = 0; i < shapes.length; ++i) {
             size += shapes[i].faces.length;
-            for (Face f : shapes[i].faces)
-                f.setName(groupNames[i]);
+            for (Face f : shapes[i].faces) f.setName(groupNames[i]);
         }
 
-        if (this.faces.length != size)
-            this.faces = new Face[size];
+        if (this.faces.length != size) this.faces = new Face[size];
 
         size = 0;
         for (int i = 0; i < shapes.length; ++i) {

@@ -360,10 +360,22 @@ public class UIBackgroundContainer extends UIContainer<UIBackgroundContainer> im
         renderer.enableBlending();
         rp.usePerVertexColor.set(true);
         rp.usePerVertexAlpha.set(true);
-        shape.getVertexes("TopLeft").get(0).setColor(topLeftColor).setAlpha(topLeftAlpha);
-        shape.getVertexes("TopRight").get(0).setColor(topRightColor).setAlpha(topRightAlpha);
-        shape.getVertexes("BottomLeft").get(0).setColor(bottomLeftColor).setAlpha(bottomLeftAlpha);
-        shape.getVertexes("BottomRight").get(0).setColor(bottomRightColor).setAlpha(bottomRightAlpha);
+        shape.getVertexes("TopLeft")
+            .get(0)
+            .setColor(topLeftColor)
+            .setAlpha(topLeftAlpha);
+        shape.getVertexes("TopRight")
+            .get(0)
+            .setColor(topRightColor)
+            .setAlpha(topRightAlpha);
+        shape.getVertexes("BottomLeft")
+            .get(0)
+            .setColor(bottomLeftColor)
+            .setAlpha(bottomLeftAlpha);
+        shape.getVertexes("BottomRight")
+            .get(0)
+            .setColor(bottomRightColor)
+            .setAlpha(bottomRightAlpha);
 
         renderer.disableTextures();
 

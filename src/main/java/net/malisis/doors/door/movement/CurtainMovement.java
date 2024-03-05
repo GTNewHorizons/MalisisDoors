@@ -65,7 +65,9 @@ public class CurtainMovement implements IDoorMovement {
 
         Translation translation = new Translation(x, 0, 0);
         translation.reversed(tileEntity.getState() == DoorState.CLOSING || tileEntity.getState() == DoorState.CLOSED);
-        translation.forTicks(tileEntity.getDescriptor().getOpeningTime());
+        translation.forTicks(
+            tileEntity.getDescriptor()
+                .getOpeningTime());
 
         Shape top = model.getShape("top");
         Shape bottom = model.getShape("bottom");
