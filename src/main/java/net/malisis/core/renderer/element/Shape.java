@@ -26,6 +26,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.joml.Matrix4f;
+import org.lwjgl.Sys;
 
 /**
  * Base class for anything drawn with a {@link MalisisRenderer}. Supports basic transformations like scaling,
@@ -61,6 +62,13 @@ public class Shape implements ITransformable.Translate, ITransformable.Rotate, I
      */
     public Shape() {
         this.faces = new Face[0];
+    }
+
+    /**
+     * Instantiates a new {@link Shape}.
+     */
+    public Shape(int capacity) {
+        this.faces = new Face[capacity];
     }
 
     /**
@@ -342,8 +350,9 @@ public class Shape implements ITransformable.Translate, ITransformable.Rotate, I
      * @return this {@link Shape}
      */
     public Shape setParameters(String name, RenderParameters params, boolean merge) {
-        List<Face> faces = getFaces(name);
-        for (Face f : faces) {
+        for (Face f : this.faces) {
+            if (!f.name.equalsIgnoreCase(name)) continue;
+
             if (merge) f.getParameters().merge(params);
             else f.setParameters(params);
         }
@@ -617,5 +626,57 @@ public class Shape implements ITransformable.Translate, ITransformable.Rotate, I
         }
 
         return new Shape(faces);
+    }
+
+    /**
+     * Builds a {@link Shape} from multiple ones. This is a shallow copy!
+     *
+     * @param shapes the shapes
+     * @return self
+     */
+    public Shape takeShapes(Shape... shapes) {
+
+        int size = 0;
+        for (int i = 0; i < shapes.length; ++i)
+            size += shapes[i].faces.length;
+
+        if (this.faces.length != size)
+            this.faces = new Face[size];
+
+        size = 0;
+        for (int i = 0; i < shapes.length; ++i) {
+            shapes[i].applyMatrix();
+            System.arraycopy(shapes[i].faces, 0, this.faces, size, shapes[i].faces.length);
+            size += shapes[i].faces.length;
+        }
+
+        return this;
+    }
+
+    /**
+     * See {@link #addFaces(Face[], String)}. This takes the faces from shapes. This is a shallow copy!
+     *
+     * @param shapes the shapes
+     * @return self
+     */
+    public Shape takeFaces(String[] groupNames, Shape... shapes) {
+
+        int size = 0;
+        for (int i = 0; i < shapes.length; ++i) {
+            size += shapes[i].faces.length;
+            for (Face f : shapes[i].faces)
+                f.setName(groupNames[i]);
+        }
+
+        if (this.faces.length != size)
+            this.faces = new Face[size];
+
+        size = 0;
+        for (int i = 0; i < shapes.length; ++i) {
+            System.arraycopy(shapes[i].faces, 0, this.faces, size, shapes[i].faces.length);
+            size += shapes[i].faces.length;
+        }
+
+        return this;
     }
 }

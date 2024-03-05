@@ -164,6 +164,15 @@ public class RenderParameters implements ITransformable.Color, ITransformable.Al
         return listParams[index];
     }
 
+    public void init() {
+        this.renderAllFaces.set(true);
+        this.calculateAOColor.set(false);
+        this.useBlockBounds.set(false);
+        this.useEnvironmentBrightness.set(false);
+        this.calculateBrightness.set(false);
+        this.interpolateUV.set(false);
+    }
+
     public void reset() {
         for (Parameter param : listParams) {
             param.reset();

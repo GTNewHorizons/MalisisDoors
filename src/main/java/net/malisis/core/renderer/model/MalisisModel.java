@@ -38,6 +38,10 @@ public class MalisisModel
     /** Shapes building this {@link MalisisModel}. */
     protected Map<String, Shape> shapes = new HashMap<>();
 
+    public void reset() {
+        this.shapes.clear();
+    }
+
     /**
      * Instantiates a new empty {@link MalisisModel}.<br>
      * Allows {@link Shape shapes} to be added manually to the model.
