@@ -93,6 +93,15 @@ public class Shape implements ITransformable.Translate, ITransformable.Rotate, I
         copyMatrix(s);
     }
 
+    public Shape copy(Shape s) {
+        if (this.faces.length != s.faces.length)
+            this.faces = new Face[s.faces.length];
+
+        for (int i = 0; i < s.faces.length; ++i) this.faces[i].copy(s.faces[i]);
+        this.copyMatrix(s);
+        return this;
+    }
+
     // #region FACES
     /**
      * Adds {@link Face faces} to this {@link Shape}.

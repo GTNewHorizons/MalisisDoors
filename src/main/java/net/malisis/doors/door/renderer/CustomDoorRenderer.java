@@ -53,6 +53,7 @@ public class CustomDoorRenderer extends DoorRenderer {
     private final Shape scratchH = new Shape(new NorthFace(), new SouthFace(), new TopFace(), new BottomFace());
     private final Shape scratchH2 = new Shape(new NorthFace(), new SouthFace(), new TopFace(), new BottomFace());
     private final Shape scratchB = new Shape(new SouthFace(), new TopFace(), new NorthFace());
+    private final Shape scratchMat = new Shape(this.scratchB);
 
     @Override
     protected void initialize() {
@@ -94,8 +95,8 @@ public class CustomDoorRenderer extends DoorRenderer {
          * TOP
          */
         frameR = this.scratchR2.copy(frameR);
-        frameL = new Shape(frameL);
-        frameH = new Shape(frameH);
+        frameL = this.scratchL2.copy(frameL);
+        frameH = this.scratchH2.copy(frameH);
         frameH.translate(0, 1 - width, 0);
 
         // full top frame
@@ -104,7 +105,7 @@ public class CustomDoorRenderer extends DoorRenderer {
         frame.applyMatrix();
 
         // top material
-        mat = new Shape(mat);
+        mat = this.scratchMat.copy(mat);
         mat.translate(0, -width, 0);
         mat.applyMatrix();
 

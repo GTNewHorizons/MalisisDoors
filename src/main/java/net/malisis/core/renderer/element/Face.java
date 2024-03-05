@@ -29,6 +29,7 @@ public class Face implements ITransformable.Translate, ITransformable.Rotate {
     protected String name;
     protected Vertex[] vertexes;
     protected RenderParameters params = new RenderParameters();
+    private final float[][] scratch = new float[4][2];
     private static final int[] dirs = { Vertex.NORTH, Vertex.SOUTH, Vertex.EAST, Vertex.WEST, Vertex.UP, Vertex.DOWN };
     private static final String[] strdirs = { "North", "South", "East", "West", "Top", "Bottom" };
 
@@ -191,7 +192,6 @@ public class Face implements ITransformable.Translate, ITransformable.Rotate {
 
         double factorU, factorV;
 
-        float uvs[][] = new float[vertexes.length][2];
         for (int i = 0; i < vertexes.length; i++) {
             Vertex vertex = vertexes[i];
 
@@ -202,10 +202,12 @@ public class Face implements ITransformable.Translate, ITransformable.Rotate {
             if (icon instanceof MalisisIcon) {
                 k = (i + ((MalisisIcon) icon).getRotation()) % vertexes.length;
             }
-            uvs[k] = new float[] { interpolate(u, U, factorU, flippedU), interpolate(v, V, factorV, flippedV) };
+
+            this.scratch[k][0] = interpolate(u, U, factorU, flippedU);
+            this.scratch[k][1] = interpolate(v, V, factorV, flippedV);
         }
 
-        for (int i = 0; i < vertexes.length; i++) vertexes[i].setUV(uvs[i][0], uvs[i][1]);
+        for (int i = 0; i < vertexes.length; i++) vertexes[i].setUV(this.scratch[i][0], this.scratch[i][1]);
 
         return this;
     }
@@ -215,11 +217,9 @@ public class Face implements ITransformable.Translate, ITransformable.Rotate {
 
         switch (params.direction.get()) {
             case EAST:
-                return vertex.getZ();
             case WEST:
                 return vertex.getZ();
             case NORTH:
-                return vertex.getX();
             case SOUTH:
             case UP:
             case DOWN:
