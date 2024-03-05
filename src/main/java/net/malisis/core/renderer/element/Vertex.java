@@ -18,8 +18,9 @@ import net.malisis.core.util.Point;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector4f;
+import org.joml.Matrix4f;
+import org.joml.Vector3f;
+import org.joml.Vector4f;
 
 public class Vertex {
 
@@ -378,8 +379,8 @@ public class Vertex {
     }
 
     public void applyMatrix(Matrix4f transformMatrix) {
-        Vector4f vec = new Vector4f((float) x, (float) y, (float) z, 1F);
-        Matrix4f.transform(transformMatrix, vec, vec);
+        Vector3f vec = new Vector3f((float) x, (float) y, (float) z);
+        vec.mulPosition(transformMatrix);
         x = vec.x;
         y = vec.y;
         z = vec.z;

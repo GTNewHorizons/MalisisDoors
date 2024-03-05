@@ -31,6 +31,7 @@ public class WestFace extends Face {
         new Vertex.TopSouthWest()
     };
 
+    @Override
     public void reset() {
         for (int i = 0; i < 4; ++i) {
             this.vertexes[i].setState(DEFAULT[i]);

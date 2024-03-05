@@ -14,10 +14,10 @@
 package net.malisis.core.renderer.element;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import lombok.Getter;
 import net.malisis.core.renderer.MalisisRenderer;
 import net.malisis.core.renderer.RenderParameters;
 import net.malisis.core.renderer.animation.transformation.ITransformable;
@@ -25,8 +25,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.ArrayUtils;
-import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector3f;
+import org.joml.Matrix4f;
 
 /**
  * Base class for anything drawn with a {@link MalisisRenderer}. Supports basic transformations like scaling,
@@ -37,7 +36,7 @@ import org.lwjgl.util.vector.Vector3f;
  */
 public class Shape implements ITransformable.Translate, ITransformable.Rotate, ITransformable.Scale {
 
-    /** {@link Face Faces} making up this {@link Shape} */
+    @Getter
     protected Face[] faces;
 
     /** The matrix containing all the transformations applied to this {@link Shape}. */
@@ -116,15 +115,6 @@ public class Shape implements ITransformable.Translate, ITransformable.Rotate, I
     }
 
     /**
-     * Gets the {@link Face faces} that make up this {@link Shape}.
-     *
-     * @return the faces
-     */
-    public Face[] getFaces() {
-        return faces;
-    }
-
-    /**
      * Gets the {@link Face faces} that make up this {@link Shape} which match the specified <b>name</b>.
      *
      * @param name the name
@@ -132,7 +122,7 @@ public class Shape implements ITransformable.Translate, ITransformable.Rotate, I
      */
     public List<Face> getFaces(String name) {
         List<Face> list = new ArrayList<>();
-        for (Face f : faces) if (f.name().toLowerCase().equals(name.toLowerCase())) list.add(f);
+        for (Face f : faces) if (f.name().equalsIgnoreCase(name)) list.add(f);
         return list;
     }
 
@@ -144,7 +134,7 @@ public class Shape implements ITransformable.Translate, ITransformable.Rotate, I
      */
     public Face getFace(String name) {
         List<Face> list = getFaces(name);
-        return list.size() > 0 ? list.get(0) : null;
+        return !list.isEmpty() ? list.get(0) : null;
     }
 
     /**
@@ -272,8 +262,8 @@ public class Shape implements ITransformable.Translate, ITransformable.Rotate, I
     // #end VERTEXES
 
     private void resetMatrix() {
-        transformMatrix.setIdentity();
-        transformMatrix.translate(new Vector3f(0.5F, 0.5F, 0.5F));
+        transformMatrix.identity();
+        transformMatrix.translate(0.5F, 0.5F, 0.5F);
     }
 
     /**
@@ -301,7 +291,7 @@ public class Shape implements ITransformable.Translate, ITransformable.Rotate, I
         }
 
         // transform back to original place
-        transformMatrix.translate(new Vector3f(-0.5F, -0.5F, -0.5F));
+        transformMatrix.translate(-0.5F, -0.5F, -0.5F);
 
         for (Face f : faces) {
             for (Vertex v : f.getVertexes()) if (v != null) v.applyMatrix(transformMatrix);
@@ -447,7 +437,7 @@ public class Shape implements ITransformable.Translate, ITransformable.Rotate, I
     public void translate(float x, float y, float z) {
         if (mergedVertexes != null) {
             for (MergedVertex mv : mergedVertexes.values()) mv.translate(x, y, z);
-        } else transformMatrix.translate(new Vector3f(x, y, z));
+        } else transformMatrix.translate(x, y, z);
     }
 
     /**
@@ -486,7 +476,7 @@ public class Shape implements ITransformable.Translate, ITransformable.Rotate, I
             for (MergedVertex mv : mergedVertexes.values()) mv.scale(x, y, z, offsetX, offsetY, offsetZ);
         } else {
             translate(offsetX, offsetY, offsetZ);
-            transformMatrix.scale(new Vector3f(x, y, z));
+            transformMatrix.scale(x, y, z);
             translate(-offsetX, -offsetY, -offsetZ);
         }
     }
@@ -520,7 +510,7 @@ public class Shape implements ITransformable.Translate, ITransformable.Rotate, I
             for (MergedVertex mv : mergedVertexes.values()) mv.rotate(angle, x, y, z, offsetX, offsetY, offsetZ);
         } else {
             translate(offsetX, offsetY, offsetZ);
-            transformMatrix.rotate((float) Math.toRadians(angle), new Vector3f(x, y, z));
+            transformMatrix.rotate((float) Math.toRadians(angle), x, y, z);
             translate(-offsetX, -offsetY, -offsetZ);
         }
     }

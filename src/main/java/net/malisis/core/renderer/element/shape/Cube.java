@@ -34,4 +34,9 @@ public class Cube extends Shape {
         super(new NorthFace(), new SouthFace(), new EastFace(), new WestFace(), new TopFace(), new BottomFace());
         storeState();
     }
+
+    public void reset() {
+        for (Face f : this.faces) f.reset();
+        this.transformMatrix.identity();
+    }
 }

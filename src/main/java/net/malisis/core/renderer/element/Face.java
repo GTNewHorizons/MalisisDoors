@@ -31,6 +31,10 @@ public class Face implements ITransformable.Translate, ITransformable.Rotate {
     private static final int[] dirs = { Vertex.NORTH, Vertex.SOUTH, Vertex.EAST, Vertex.WEST, Vertex.UP, Vertex.DOWN };
     private static final String[] strdirs = { "North", "South", "East", "West", "Top", "Bottom" };
 
+    public void reset() {
+
+    }
+
     public Face(Vertex[] vertexes, RenderParameters params) {
         this.vertexes = vertexes;
         this.params = params != null ? params : new RenderParameters();
