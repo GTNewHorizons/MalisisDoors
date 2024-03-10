@@ -46,6 +46,18 @@ public class CustomDoorRenderer extends DoorRenderer {
     protected CustomDoorTileEntity tileEntity;
 
     private float width;
+    private final Cube bottomR = new Cube();
+    private final Cube bottomL = new Cube();
+    private final Shape bottomH = new Shape(new NorthFace(), new SouthFace(), new TopFace(), new BottomFace());
+    private final Shape bMat = new Shape(new SouthFace(), new TopFace(), new NorthFace());
+    private final Cube topR = new Cube();
+    private final Cube topL = new Cube();
+    private final Shape topH = new Shape(new NorthFace(), new SouthFace(), new TopFace(), new BottomFace());
+    private final Shape tMat = new Shape(this.bMat);
+    private final Shape frame = new Shape();
+    private final Shape bottom = new Shape();
+    private final Shape top = new Shape();
+    private static final String[] gnames = { "frame", "material" };
 
     @Override
     protected void initialize() {
@@ -54,63 +66,63 @@ public class CustomDoorRenderer extends DoorRenderer {
          * BOTTOM
          */
         // frame right
-        Shape frameR = new Cube().setSize(width, 1, Door.DOOR_WIDTH);
+        this.bottomR.reset();
+        this.bottomR.setSize(width, 1, Door.DOOR_WIDTH);
         // frame left
-        Shape frameL = new Shape(frameR);
-        frameL.translate(1 - width, 0, 0);
+        this.bottomL.copy(this.bottomR);
+        this.bottomL.translate(1 - width, 0, 0);
         // frame horizontal
-        Shape frameH = new Shape(new NorthFace(), new SouthFace(), new TopFace(), new BottomFace());
-        frameH.setSize(1 - 2 * width, width, Door.DOOR_WIDTH);
-        frameH.translate(width, 0, 0);
+        this.bottomH.reset();
+        this.bottomH.setSize(1 - 2 * width, width, Door.DOOR_WIDTH);
+        this.bottomH.translate(width, 0, 0);
 
         // full bottom frame
-        Shape frame = Shape.fromShapes(frameR, frameL, frameH);
-        frame.scale(1, 1, 0.995F); // scale frame to prevent z-fighting when slid in walls
-        frame.applyMatrix();
+        this.frame.takeShapes(this.bottomR, this.bottomL, this.bottomH);
+        this.frame.scale(1, 1, 0.995F); // scale frame to prevent z-fighting when slid in walls
+        this.frame.applyMatrix();
 
         // bottom material
-        Shape mat = new Shape(new SouthFace(), new NorthFace(), new TopFace());
-        mat.setSize(1 - 2 * width, 1 - width, Door.DOOR_WIDTH * 0.6F).translate(width, width, Door.DOOR_WIDTH * 0.2F);
-        mat.applyMatrix();
+        this.bMat.reset();
+        this.bMat.setSize(1 - 2 * width, 1 - width, Door.DOOR_WIDTH * 0.6F)
+            .translate(width, width, Door.DOOR_WIDTH * 0.2F);
+        this.bMat.applyMatrix();
 
-        Shape bottom = new Shape();
-        bottom.addFaces(frame.getFaces(), "frame");
-        bottom.addFaces(mat.getFaces(), "material");
-        bottom.interpolateUV();
-        bottom.storeState();
+        this.bottom.takeFaces(gnames, this.frame, this.bMat);
+        this.bottom.interpolateUV();
+        this.bottom.storeState();
 
         /**
          * TOP
          */
-        frameR = new Shape(frameR);
-        frameL = new Shape(frameL);
-        frameH = new Shape(frameH);
-        frameH.translate(0, 1 - width, 0);
+        this.topR.copy(this.bottomR);
+        this.topL.copy(this.bottomL);
+        this.topH.copy(this.bottomH);
+        this.topH.translate(0, 1 - width, 0);
 
         // full top frame
-        frame = Shape.fromShapes(frameR, frameL, frameH);
-        frame.scale(1, 1, 0.995F); // scale frame to prevent z-fighting when slid in walls
-        frame.applyMatrix();
+        this.frame.takeShapes(this.topR, this.topL, this.topH);
+        this.frame.scale(1, 1, 0.995F); // scale frame to prevent z-fighting when slid in walls
+        this.frame.applyMatrix();
 
         // top material
-        mat = new Shape(mat);
-        mat.translate(0, -width, 0);
-        mat.applyMatrix();
+        this.tMat.copy(this.bMat);
+        this.tMat.translate(0, -width, 0);
+        this.tMat.applyMatrix();
 
-        Shape top = new Shape();
-        top.addFaces(frame.getFaces(), "frame");
-        top.addFaces(mat.getFaces(), "material");
+        this.top.takeFaces(gnames, this.frame, this.tMat);
         top.translate(0, 1, 0);
         top.interpolateUV();
         top.storeState();
 
         // store top and bottom inside a model
-        model = new MalisisModel();
-        model.addShape("bottom", bottom);
+        if (this.model != null) this.model.reset();
+        else this.model = new MalisisModel();
+        model.addShape("bottom", this.bottom);
         model.addShape("top", top);
         model.storeState();
 
-        initParams();
+        if (this.rp != null) this.rp.init();
+        else initParams();
     }
 
     @Override

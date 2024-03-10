@@ -51,9 +51,11 @@ public class RotateAroundMovement implements IDoorMovement {
 
         Transformation transformation = new Rotation(angle).aroundAxis(0, 1, 0);
         transformation
-                .reversed(tileEntity.getState() == DoorState.CLOSING || tileEntity.getState() == DoorState.CLOSED);
+            .reversed(tileEntity.getState() == DoorState.CLOSING || tileEntity.getState() == DoorState.CLOSED);
 
-        return transformation.forTicks(tileEntity.getDescriptor().getOpeningTime());
+        return transformation.forTicks(
+            tileEntity.getDescriptor()
+                .getOpeningTime());
     }
 
     @Override

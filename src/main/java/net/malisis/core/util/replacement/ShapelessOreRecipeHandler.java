@@ -35,7 +35,8 @@ public class ShapelessOreRecipeHandler extends ReplacementHandler<ShapelessOreRe
         try {
             Field field = ShapelessOreRecipe.class.getDeclaredField("output");
             field.setAccessible(true);
-            outputField = MethodHandles.lookup().unreflectSetter(field);
+            outputField = MethodHandles.lookup()
+                .unreflectSetter(field);
         } catch (ReflectiveOperationException e) {
             throw new RuntimeException("Failed to access ShapelessOreRecipe.output", e);
         }

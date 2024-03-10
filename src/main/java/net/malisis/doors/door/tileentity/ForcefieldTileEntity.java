@@ -53,7 +53,8 @@ public class ForcefieldTileEntity extends DoorTileEntity implements MultiBlock.I
 
     @Override
     public int getDirection() {
-        return multiBlock.getDirection().ordinal();
+        return multiBlock.getDirection()
+            .ordinal();
     }
 
     @Override

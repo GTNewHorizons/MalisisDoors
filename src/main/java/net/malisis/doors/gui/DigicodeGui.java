@@ -33,12 +33,14 @@ public class DigicodeGui extends MalisisGui {
 
     public DigicodeGui(DoorTileEntity te) {
         this.te = te;
-        expected = te.getDescriptor().getCode();
+        expected = te.getDescriptor()
+            .getCode();
     }
 
     @Override
     public void construct() {
-        digicode = new Digicode(this, expected).setAnchor(Anchor.MIDDLE | Anchor.CENTER).register(this);
+        digicode = new Digicode(this, expected).setAnchor(Anchor.MIDDLE | Anchor.CENTER)
+            .register(this);
 
         UIWindow window = new UIWindow(this, digicode.getWidth() + 20, digicode.getHeight() + 20);
         window.add(digicode);

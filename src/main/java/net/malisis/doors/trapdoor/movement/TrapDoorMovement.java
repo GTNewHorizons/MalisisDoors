@@ -67,8 +67,11 @@ public class TrapDoorMovement implements IDoorMovement {
             fromAngle = tmp;
         }
 
-        return new Rotation(fromAngle, toAngle).aroundAxis(1, 0, 0).offset(0, -f, f)
-                .forTicks(tileEntity.getDescriptor().getOpeningTime());
+        return new Rotation(fromAngle, toAngle).aroundAxis(1, 0, 0)
+            .offset(0, -f, f)
+            .forTicks(
+                tileEntity.getDescriptor()
+                    .getOpeningTime());
     }
 
     @Override

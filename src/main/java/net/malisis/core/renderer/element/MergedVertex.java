@@ -21,8 +21,9 @@ import java.util.Set;
 
 import net.malisis.core.renderer.animation.transformation.ITransformable;
 
-import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector3f;
+import org.joml.Matrix4f;
+
+import lombok.Getter;
 
 /**
  * MergedVertex are holders of vertex that share the same position inside a shape. The position is determined by the
@@ -34,19 +35,19 @@ import org.lwjgl.util.vector.Vector3f;
  *
  */
 public class MergedVertex implements ITransformable.Translate, ITransformable.Rotate, ITransformable.Scale,
-        ITransformable.Alpha, ITransformable.Color, ITransformable.Brightness, Iterable<Vertex> {
+    ITransformable.Alpha, ITransformable.Color, ITransformable.Brightness, Iterable<Vertex> {
 
-    /** Name of this {@link MergedVertex}. */
+    @Getter
     protected String name;
 
-    /** Base {@link Vertex}. */
+    @Getter
     protected Vertex base;
 
     /** Matrix holding the tranformations applied to this {@link MergedVertex}. */
     protected Matrix4f transformMatrix = new Matrix4f();
 
     /** List of {@link Vertex vertexes} that share the same position. */
-    private Set<Vertex> vertexes = new HashSet<>();
+    private final Set<Vertex> vertexes = new HashSet<>();
 
     /**
      * Instantiates a new {@link MergedVertex}.
@@ -57,24 +58,6 @@ public class MergedVertex implements ITransformable.Translate, ITransformable.Ro
         this.name = vertex.baseName();
         this.base = vertex;
         addVertex(vertex);
-    }
-
-    /**
-     * Gets the name of this {@link MergedVertex}.
-     *
-     * @return the name of this {@link MergedVertex}.
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * Gets the base {@link Vertex} for this {@link MergedVertex}.
-     *
-     * @return the base
-     */
-    public Vertex getBase() {
-        return base;
     }
 
     /**
@@ -140,7 +123,8 @@ public class MergedVertex implements ITransformable.Translate, ITransformable.Ro
     public boolean is(String... names) {
         boolean b = true;
         for (String n : names) {
-            b &= name.toLowerCase().contains(n.toLowerCase());
+            b &= name.toLowerCase()
+                .contains(n.toLowerCase());
         }
         return b;
     }
@@ -167,8 +151,8 @@ public class MergedVertex implements ITransformable.Translate, ITransformable.Ro
     }
 
     private void resetMatrix() {
-        transformMatrix.setIdentity();
-        transformMatrix.translate(new Vector3f(0.5F, 0.5F, 0.5F));
+        transformMatrix.identity();
+        transformMatrix.translate(0.5F, 0.5F, 0.5F);
     }
 
     /**
@@ -184,7 +168,7 @@ public class MergedVertex implements ITransformable.Translate, ITransformable.Ro
      * Applies the transformations matrices to this {@link MergedVertex}. This modifies the position of the vertexes.
      */
     public void applyMatrix() {
-        transformMatrix.translate(new Vector3f(-0.5F, -0.5F, -0.5F));
+        transformMatrix.translate(-0.5F, -0.5F, -0.5F);
 
         for (Vertex v : vertexes) v.applyMatrix(transformMatrix);
 
@@ -202,7 +186,7 @@ public class MergedVertex implements ITransformable.Translate, ITransformable.Ro
      */
     @Override
     public void translate(float x, float y, float z) {
-        transformMatrix.translate(new Vector3f(x, y, z));
+        transformMatrix.translate(x, y, z);
     }
 
     /**
@@ -219,7 +203,7 @@ public class MergedVertex implements ITransformable.Translate, ITransformable.Ro
     @Override
     public void rotate(float angle, float x, float y, float z, float offsetX, float offsetY, float offsetZ) {
         translate(offsetX, offsetY, offsetZ);
-        transformMatrix.rotate((float) Math.toRadians(angle), new Vector3f(x, y, z));
+        transformMatrix.rotate((float) Math.toRadians(angle), x, y, z);
         translate(-offsetX, -offsetY, -offsetZ);
     }
 
@@ -236,7 +220,7 @@ public class MergedVertex implements ITransformable.Translate, ITransformable.Ro
     @Override
     public void scale(float x, float y, float z, float offsetX, float offsetY, float offsetZ) {
         translate(offsetX, offsetY, offsetZ);
-        transformMatrix.scale(new Vector3f(x, y, z));
+        transformMatrix.scale(x, y, z);
         translate(-offsetX, -offsetY, -offsetZ);
     }
 

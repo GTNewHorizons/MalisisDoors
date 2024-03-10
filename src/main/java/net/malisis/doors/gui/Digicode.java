@@ -78,16 +78,25 @@ public class Digicode extends UIContainer<Digicode> {
             int x = ((i - 1) % 3) * 17;
             int y = (i - 1) / 3 * (h + 2);
 
-            UIButton b = new UIButton(gui, "" + i).setSize(16, h).setPosition(x, oy + y);
+            UIButton b = new UIButton(gui, "" + i).setSize(16, h)
+                .setPosition(x, oy + y);
             b.setName("" + i);
 
             add(b);
         }
 
-        add(new UIButton(gui, "C").setSize(16, h).setPosition(0, oy + 3 * (h + 2)).setName("C"));
-        add(new UIButton(gui, "0").setSize(16, h).setPosition(17, oy + 3 * (h + 2)).setName("0"));
-        if (!StringUtils.isEmpty(expectedCode))
-            add(new UIButton(gui, "V").setSize(16, h).setPosition(34, oy + 3 * (h + 2)).setName("V"));
+        add(
+            new UIButton(gui, "C").setSize(16, h)
+                .setPosition(0, oy + 3 * (h + 2))
+                .setName("C"));
+        add(
+            new UIButton(gui, "0").setSize(16, h)
+                .setPosition(17, oy + 3 * (h + 2))
+                .setName("0"));
+        if (!StringUtils.isEmpty(expectedCode)) add(
+            new UIButton(gui, "V").setSize(16, h)
+                .setPosition(34, oy + 3 * (h + 2))
+                .setName("V"));
     }
 
     @Override
@@ -124,7 +133,7 @@ public class Digicode extends UIContainer<Digicode> {
         renderer.drawText(font, "888888", fro);
 
         String code = enteredCode.length() < 6 ? StringUtils.repeat(' ', 6 - enteredCode.length()) + enteredCode
-                : enteredCode;
+            : enteredCode;
 
         fro.color = 0x00CC00;
         fro.saveDefault();
@@ -133,7 +142,8 @@ public class Digicode extends UIContainer<Digicode> {
 
     @Subscribe
     public void onButtonClick(UIButton.ClickEvent event) {
-        switch (event.getComponent().getName()) {
+        switch (event.getComponent()
+            .getName()) {
             case "C":
                 setEnteredCode("");
                 break;
@@ -144,7 +154,9 @@ public class Digicode extends UIContainer<Digicode> {
                 }
                 break;
             default:
-                setEnteredCode(enteredCode + event.getComponent().getName());
+                setEnteredCode(
+                    enteredCode + event.getComponent()
+                        .getName());
         }
     }
 

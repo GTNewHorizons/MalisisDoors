@@ -74,30 +74,47 @@ public class ConnectedTextureIcon extends MalisisIcon {
     protected void initIcon(MalisisIcon icon, int width, int height, int x, int y, boolean rotated) {
         float f = 1F / 3F;
 
-        if (icon.getIconName().equals(getIconName())) {
-            icons[LEFT | TOP] = icon.copy().clip(0, 0, f, f);
-            icons[TOP] = icon.copy().clip(f, 0, f, f);
-            icons[RIGHT | TOP] = icon.copy().clip(2 * f, 0, f, f);
+        if (icon.getIconName()
+            .equals(getIconName())) {
+            icons[LEFT | TOP] = icon.copy()
+                .clip(0, 0, f, f);
+            icons[TOP] = icon.copy()
+                .clip(f, 0, f, f);
+            icons[RIGHT | TOP] = icon.copy()
+                .clip(2 * f, 0, f, f);
 
-            icons[LEFT] = icon.copy().clip(0, f, f, f);
-            icons[NONE] = icon.copy().clip(f, f, f, f);
-            icons[RIGHT] = icon.copy().clip(2 * f, f, f, f);
+            icons[LEFT] = icon.copy()
+                .clip(0, f, f, f);
+            icons[NONE] = icon.copy()
+                .clip(f, f, f, f);
+            icons[RIGHT] = icon.copy()
+                .clip(2 * f, f, f, f);
 
-            icons[LEFT | BOTTOM] = icon.copy().clip(0, 2 * f, f, f);
-            icons[BOTTOM] = icon.copy().clip(f, 2 * f, f, f);
-            icons[RIGHT | BOTTOM] = icon.copy().clip(2 * f, 2 * f, f, f);
+            icons[LEFT | BOTTOM] = icon.copy()
+                .clip(0, 2 * f, f, f);
+            icons[BOTTOM] = icon.copy()
+                .clip(f, 2 * f, f, f);
+            icons[RIGHT | BOTTOM] = icon.copy()
+                .clip(2 * f, 2 * f, f, f);
         } else {
-            icons[LEFT | TOP | BOTTOM] = icon.copy().clip(0, 0, f, f);
-            icons[TOP | BOTTOM] = icon.copy().clip(f, 0, f, f);
-            icons[LEFT | RIGHT | TOP] = icon.copy().clip(2 * f, 0, f, f);
+            icons[LEFT | TOP | BOTTOM] = icon.copy()
+                .clip(0, 0, f, f);
+            icons[TOP | BOTTOM] = icon.copy()
+                .clip(f, 0, f, f);
+            icons[LEFT | RIGHT | TOP] = icon.copy()
+                .clip(2 * f, 0, f, f);
 
-            icons[LEFT | RIGHT] = icon.copy().clip(0, f, f, f);
-            icons[FULL] = icon.copy().clip(f, f, f, f);
+            icons[LEFT | RIGHT] = icon.copy()
+                .clip(0, f, f, f);
+            icons[FULL] = icon.copy()
+                .clip(f, f, f, f);
             // icons[LEFT | RIGHT] = icon.copy().clip(2 * f, f, f, f);
 
-            icons[LEFT | RIGHT | BOTTOM] = icon.copy().clip(0, 2 * f, f, f);
+            icons[LEFT | RIGHT | BOTTOM] = icon.copy()
+                .clip(0, 2 * f, f, f);
             // icons[TOP | BOTTOM] = icon.copy().clip(f, 2 * f, f, f);
-            icons[RIGHT | TOP | BOTTOM] = icon.copy().clip(2 * f, 2 * f, f, f);
+            icons[RIGHT | TOP | BOTTOM] = icon.copy()
+                .clip(2 * f, 2 * f, f, f);
         }
     }
 
@@ -142,10 +159,9 @@ public class ConnectedTextureIcon extends MalisisIcon {
         int connection = 0;
         for (int i = 0; i < 4; i++) {
             if (world.getBlock(
-                    x + sides[dir.ordinal()][i].offsetX,
-                    y + sides[dir.ordinal()][i].offsetY,
-                    z + sides[dir.ordinal()][i].offsetZ) == block)
-                connection |= (1 << i);
+                x + sides[dir.ordinal()][i].offsetX,
+                y + sides[dir.ordinal()][i].offsetY,
+                z + sides[dir.ordinal()][i].offsetZ) == block) connection |= (1 << i);
         }
         return ~connection & 15;
     }

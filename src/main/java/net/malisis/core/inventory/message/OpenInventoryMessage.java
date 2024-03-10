@@ -79,7 +79,7 @@ public class OpenInventoryMessage implements IMessageHandler<OpenInventoryMessag
         IInventoryProvider inventoryProvider = null;
         Object data = null;
         if (type == ContainerType.TYPE_TILEENTITY) inventoryProvider = TileEntityUtils
-                .getTileEntity(IInventoryProvider.class, Minecraft.getMinecraft().theWorld, x, y, z);
+            .getTileEntity(IInventoryProvider.class, Minecraft.getMinecraft().theWorld, x, y, z);
         else if (type == ContainerType.TYPE_ITEM) {
             ItemStack itemStack = player.getCurrentEquippedItem();
             if (itemStack != null && itemStack.getItem() instanceof IInventoryProvider) {

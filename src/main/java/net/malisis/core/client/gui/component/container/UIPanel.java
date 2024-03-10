@@ -29,7 +29,8 @@ public class UIPanel extends UIContainer<UIPanel> implements ITransformable.Colo
         setPadding(3, 3);
 
         shape = new XYResizableGuiShape(5);
-        icon = gui.getGuiTexture().getXYResizableIcon(200, 15, 15, 15, 5);
+        icon = gui.getGuiTexture()
+            .getXYResizableIcon(200, 15, 15, 15, 5);
     }
 
     public UIPanel(MalisisGui gui, int width, int height) {

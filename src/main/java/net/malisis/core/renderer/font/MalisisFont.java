@@ -147,7 +147,9 @@ public class MalisisFont {
         boolean isGui = renderer instanceof GuiRenderer;
         renderer.next(GL11.GL_QUADS);
 
-        Minecraft.getMinecraft().getTextureManager().bindTexture(textureRl);
+        Minecraft.getMinecraft()
+            .getTextureManager()
+            .bindTexture(textureRl);
         GL11.glPushMatrix();
         GL11.glTranslatef(x, y + (isGui ? 0 : fro.fontScale), z);
 
@@ -157,8 +159,11 @@ public class MalisisFont {
     protected void clean(MalisisRenderer renderer, boolean isDrawing) {
         if (isDrawing) renderer.next();
         else renderer.draw();
-        if (renderer instanceof GuiRenderer) Minecraft.getMinecraft().getTextureManager()
-                .bindTexture(((GuiRenderer) renderer).getDefaultTexture().getResourceLocation());
+        if (renderer instanceof GuiRenderer) Minecraft.getMinecraft()
+            .getTextureManager()
+            .bindTexture(
+                ((GuiRenderer) renderer).getDefaultTexture()
+                    .getResourceLocation());
         GL11.glPopMatrix();
     }
 
@@ -318,8 +323,8 @@ public class MalisisFont {
 
     private boolean hasLines(String text, FontRenderOptions fro) {
         return fro.underline || fro.strikethrough
-                || text.contains(EnumChatFormatting.UNDERLINE.toString())
-                || text.contains(EnumChatFormatting.STRIKETHROUGH.toString());
+            || text.contains(EnumChatFormatting.UNDERLINE.toString())
+            || text.contains(EnumChatFormatting.STRIKETHROUGH.toString());
     }
 
     /**
@@ -389,9 +394,8 @@ public class MalisisFont {
         if (StringUtils.isEmpty(str)) return 0;
 
         str = processString(str, fro);
-        return (float) font.getStringBounds(str, frc).getWidth() / options.fontSize
-                * (fro != null ? fro.fontScale : 1)
-                * 9;
+        return (float) font.getStringBounds(str, frc)
+            .getWidth() / options.fontSize * (fro != null ? fro.fontScale : 1) * 9;
     }
 
     public float getStringWidth(String str, FontRenderOptions fro) {
@@ -608,10 +612,14 @@ public class MalisisFont {
 
         if (img == null) return;
 
-        if (textureRl != null) Minecraft.getMinecraft().getTextureManager().deleteTexture(textureRl);
+        if (textureRl != null) Minecraft.getMinecraft()
+            .getTextureManager()
+            .deleteTexture(textureRl);
 
         DynamicTexture dynTex = new DynamicTexture(img);
-        textureRl = Minecraft.getMinecraft().getTextureManager().getDynamicTextureLocation(font.getName(), dynTex);
+        textureRl = Minecraft.getMinecraft()
+            .getTextureManager()
+            .getDynamicTextureLocation(font.getName(), dynTex);
     }
 
     protected BufferedImage readTextureFile(File textureFile) {
@@ -637,10 +645,10 @@ public class MalisisFont {
                 String[] split = str.split(";");
                 CharData cd = charData[i++];
                 cd.setUVs(
-                        Float.parseFloat(split[1]),
-                        Float.parseFloat(split[2]),
-                        Float.parseFloat(split[3]),
-                        Float.parseFloat(split[4]));
+                    Float.parseFloat(split[1]),
+                    Float.parseFloat(split[2]),
+                    Float.parseFloat(split[3]),
+                    Float.parseFloat(split[4]));
             }
         } catch (IOException | NumberFormatException e) {
             MalisisCore.log.error("Failed to read font data. (Line " + i + " (" + (char) i + ")", e);
@@ -652,7 +660,12 @@ public class MalisisFont {
     // #region Font load
     public static Font load(ResourceLocation rl, FontGeneratorOptions options) {
         try {
-            return load(Minecraft.getMinecraft().getResourceManager().getResource(rl).getInputStream(), options);
+            return load(
+                Minecraft.getMinecraft()
+                    .getResourceManager()
+                    .getResource(rl)
+                    .getInputStream(),
+                options);
         } catch (IOException e) {
             MalisisCore.log.error("[MalisiFont] Couldn't load font from ResourceLocation.", e);
             return null;

@@ -72,8 +72,8 @@ public class DoorFactoryTileEntity extends TileEntity implements IInventoryProvi
         outputSlot.setOutputSlot();
 
         inventory = new MalisisInventory(
-                this,
-                new MalisisSlot[] { frameSlot, topMaterialSlot, bottomMaterialSlot, doorEditSlot, outputSlot });
+            this,
+            new MalisisSlot[] { frameSlot, topMaterialSlot, bottomMaterialSlot, doorEditSlot, outputSlot });
     }
 
     public boolean isCreate() {
@@ -150,8 +150,8 @@ public class DoorFactoryTileEntity extends TileEntity implements IInventoryProvi
             ItemStack output = outputSlot.getItemStack();
             if (expected == null) return;
 
-            if (output != null && (!ItemStack.areItemStackTagsEqual(output, expected)
-                    || output.stackSize >= output.getMaxStackSize()))
+            if (output != null
+                && (!ItemStack.areItemStackTagsEqual(output, expected) || output.stackSize >= output.getMaxStackSize()))
                 return;
 
             frameSlot.extract(1);

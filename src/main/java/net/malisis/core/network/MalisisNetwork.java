@@ -90,16 +90,16 @@ public class MalisisNetwork extends SimpleNetworkWrapper {
      * @param side               the side
      */
     public <REQ extends IMessage, REPLY extends IMessage> void registerMessage(
-            Class<? extends IMessageHandler<REQ, REPLY>> messageHandler, Class<REQ> requestMessageType, Side side) {
+        Class<? extends IMessageHandler<REQ, REPLY>> messageHandler, Class<REQ> requestMessageType, Side side) {
         super.registerMessage(messageHandler, requestMessageType, discriminator++, side);
         MalisisCore.log.info(
-                "Registering " + messageHandler.getSimpleName()
-                        + " for "
-                        + requestMessageType.getSimpleName()
-                        + " with discriminator "
-                        + discriminator
-                        + " in channel "
-                        + name);
+            "Registering " + messageHandler.getSimpleName()
+                + " for "
+                + requestMessageType.getSimpleName()
+                + " with discriminator "
+                + discriminator
+                + " in channel "
+                + name);
     }
 
     /**
@@ -112,16 +112,17 @@ public class MalisisNetwork extends SimpleNetworkWrapper {
      * @param side               the side
      */
     public <REQ extends IMessage, REPLY extends IMessage> void registerMessage(
-            IMessageHandler<? super REQ, ? extends REPLY> messageHandler, Class<REQ> requestMessageType, Side side) {
+        IMessageHandler<? super REQ, ? extends REPLY> messageHandler, Class<REQ> requestMessageType, Side side) {
         super.registerMessage(messageHandler, requestMessageType, discriminator++, side);
         MalisisCore.log.info(
-                "Registering " + messageHandler.getClass().getSimpleName()
-                        + " for "
-                        + requestMessageType.getSimpleName()
-                        + " with discriminator "
-                        + discriminator
-                        + " in channel "
-                        + name);
+            "Registering " + messageHandler.getClass()
+                .getSimpleName()
+                + " for "
+                + requestMessageType.getSimpleName()
+                + " with discriminator "
+                + discriminator
+                + " in channel "
+                + name);
     }
 
     /**
@@ -139,21 +140,22 @@ public class MalisisNetwork extends SimpleNetworkWrapper {
      * @param asmDataTable the asm data table
      */
     public static void createMessages(ASMDataTable asmDataTable) {
-        List<ASMData> classes = Ordering.natural().onResultOf(new Function<ASMData, String>() {
+        List<ASMData> classes = Ordering.natural()
+            .onResultOf(new Function<ASMData, String>() {
 
-            @Override
-            public String apply(ASMData data) {
-                return data.getClassName();
-            }
-        }).sortedCopy(asmDataTable.getAll(MalisisMessage.class.getName()));
+                @Override
+                public String apply(ASMData data) {
+                    return data.getClassName();
+                }
+            })
+            .sortedCopy(asmDataTable.getAll(MalisisMessage.class.getName()));
 
         for (ASMData data : classes) {
             try {
                 Class clazz = Class.forName(data.getClassName());
                 if (IMessageHandler.class.isAssignableFrom(clazz)) clazz.newInstance();
-                else MalisisCore.log.error(
-                        "@MalisisMessage found on {} that does not implement IMessageHandler",
-                        data.getClassName());
+                else MalisisCore.log
+                    .error("@MalisisMessage found on {} that does not implement IMessageHandler", data.getClassName());
             } catch (Exception e) {
                 MalisisCore.log.error("Could not create {} message.", data.getClassName(), e);
             }

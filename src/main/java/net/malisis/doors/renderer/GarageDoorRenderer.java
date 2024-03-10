@@ -97,7 +97,9 @@ public class GarageDoorRenderer extends MalisisRenderer {
     protected void renderTileEntity() {
         int t = GarageDoorTileEntity.maxOpenTime;
         // set the start timer
-        ar.setStartTime(tileEntity.getTimer().getStart());
+        ar.setStartTime(
+            tileEntity.getTimer()
+                .getStart());
 
         // create door list from childs + top
         childDoors.clear();
@@ -161,8 +163,7 @@ public class GarageDoorRenderer extends MalisisRenderer {
 
         for (GarageDoorTileEntity te : childDoors) {
             if (dbp.getPartialBlockX() == te.xCoord && dbp.getPartialBlockY() == te.yCoord
-                    && dbp.getPartialBlockZ() == te.zCoord)
-                return true;
+                && dbp.getPartialBlockZ() == te.zCoord) return true;
         }
         return false;
     }

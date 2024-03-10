@@ -57,7 +57,7 @@ public class DoorItem extends ItemDoor {
 
     @Override
     public boolean onItemUse(ItemStack itemStack, EntityPlayer player, World world, int x, int y, int z, int side,
-            float par8, float par9, float par10) {
+        float par8, float par9, float par10) {
         if (side != 1) return false;
 
         y++;

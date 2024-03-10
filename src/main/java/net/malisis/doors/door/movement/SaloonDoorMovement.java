@@ -56,27 +56,32 @@ public class SaloonDoorMovement implements IDoorMovement {
 
         if (((SaloonDoorTileEntity) tileEntity).isBackward()) angle = -angle;
 
-        int t = tileEntity.getDescriptor().getOpeningTime() / 4;
+        int t = tileEntity.getDescriptor()
+            .getOpeningTime() / 4;
         Rotation r1 = new Rotation(angle);
-        r1.aroundAxis(0, 1, 0).offset(hingeX, 0, 0);
+        r1.aroundAxis(0, 1, 0)
+            .offset(hingeX, 0, 0);
         r1.movement(Transformation.SINUSOIDAL);
         // r1.reversed(tileEntity.getState() == DoorState.CLOSING || tileEntity.getState() == DoorState.CLOSED);
         r1.forTicks(t);
 
         Rotation r2 = new Rotation(-angle * 1.5F);
-        r2.aroundAxis(0, 1, 0).offset(hingeX, 0, 0);
+        r2.aroundAxis(0, 1, 0)
+            .offset(hingeX, 0, 0);
         r2.movement(Transformation.SINUSOIDAL);
         // r1.reversed(tileEntity.getState() == DoorState.CLOSING || tileEntity.getState() == DoorState.CLOSED);
         r2.forTicks(t);
 
         Rotation r3 = new Rotation(angle * .75F);
-        r3.aroundAxis(0, 1, 0).offset(hingeX, 0, 0);
+        r3.aroundAxis(0, 1, 0)
+            .offset(hingeX, 0, 0);
         r3.movement(Transformation.SINUSOIDAL);
         // r1.reversed(tileEntity.getState() == DoorState.CLOSING || tileEntity.getState() == DoorState.CLOSED);
         r3.forTicks(t);
 
         Rotation r4 = new Rotation(-angle * .25F);
-        r4.aroundAxis(0, 1, 0).offset(hingeX, 0, 0);
+        r4.aroundAxis(0, 1, 0)
+            .offset(hingeX, 0, 0);
         r4.movement(Transformation.SINUSOIDAL);
         // r1.reversed(tileEntity.getState() == DoorState.CLOSING || tileEntity.getState() == DoorState.CLOSED);
         r4.forTicks(t);

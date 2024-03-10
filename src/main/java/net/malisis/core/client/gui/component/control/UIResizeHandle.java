@@ -51,7 +51,8 @@ public class UIResizeHandle extends UIComponent<UIResizeHandle> implements ICont
 
         parent.addControlComponent(this);
 
-        icon = gui.getGuiTexture().getIcon(268, 0, 15, 15);
+        icon = gui.getGuiTexture()
+            .getIcon(268, 0, 15, 15);
     }
 
     public UIResizeHandle(MalisisGui gui, UIComponent parent) {

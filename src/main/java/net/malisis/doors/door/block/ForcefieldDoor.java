@@ -58,8 +58,10 @@ public class ForcefieldDoor extends Block implements ITileEntityProvider {
     public boolean canPlaceBlockOnSide(World world, int x, int y, int z, int side) {
         if (side != 1) return false;
 
-        ForgeDirection dir = ForgeDirection.getOrientation(side).getOpposite();
-        return world.getBlock(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ).isSideSolid(world, x, y, z, dir);
+        ForgeDirection dir = ForgeDirection.getOrientation(side)
+            .getOpposite();
+        return world.getBlock(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ)
+            .isSideSolid(world, x, y, z, dir);
     }
 
     @Override
@@ -74,7 +76,7 @@ public class ForcefieldDoor extends Block implements ITileEntityProvider {
 
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX,
-            float hitY, float hitZ) {
+        float hitY, float hitZ) {
         if (world.isRemote) return true;
 
         if (!EntityUtils.isEquipped(player, MalisisDoors.Items.forcefieldItem)) return true;
@@ -94,12 +96,12 @@ public class ForcefieldDoor extends Block implements ITileEntityProvider {
         if (aabb == null) return null;
 
         setBlockBounds(
-                (float) aabb.minX,
-                (float) aabb.minY,
-                (float) aabb.minZ,
-                (float) aabb.maxX,
-                (float) aabb.maxY,
-                (float) aabb.maxZ);
+            (float) aabb.minX,
+            (float) aabb.minY,
+            (float) aabb.minZ,
+            (float) aabb.maxX,
+            (float) aabb.maxY,
+            (float) aabb.maxZ);
         return aabb;
     }
 
@@ -112,7 +114,8 @@ public class ForcefieldDoor extends Block implements ITileEntityProvider {
         }
         if (te.isMoving()) return;
 
-        AxisAlignedBB aabb = te.getMovement().getBoundingBox(te, false, BoundingBoxType.RAYTRACE);
+        AxisAlignedBB aabb = te.getMovement()
+            .getBoundingBox(te, false, BoundingBoxType.RAYTRACE);
         if (aabb == null) aabb = AxisAlignedBB.getBoundingBox(0, 0, 0, 0, 0, 0);
         // aabb = AxisAlignedBB.getBoundingBox(0, 0, 0, 1, 1, 1);
         aabb.offset(-x, -y, -z);
@@ -126,7 +129,8 @@ public class ForcefieldDoor extends Block implements ITileEntityProvider {
         if (te == null || te.getMovement() == null) return AxisAlignedBB.getBoundingBox(0, 0, 0, 1, 1, 1);
         if (te.isMoving()) return AxisAlignedBB.getBoundingBox(0, 0, 0, 0, 0, 0);
 
-        AxisAlignedBB aabb = te.getMovement().getBoundingBox(te, false, BoundingBoxType.SELECTION);
+        AxisAlignedBB aabb = te.getMovement()
+            .getBoundingBox(te, false, BoundingBoxType.SELECTION);
         if (aabb == null) return AxisAlignedBB.getBoundingBox(0, 0, 0, 0, 0, 0);
 
         return aabb;
@@ -138,7 +142,8 @@ public class ForcefieldDoor extends Block implements ITileEntityProvider {
         if (te == null || te.getMovement() == null) return AxisAlignedBB.getBoundingBox(0, 0, 0, 1, 1, 1);
         if (te.isMoving()) return null;
 
-        AxisAlignedBB aabb = te.getMovement().getBoundingBox(te, false, BoundingBoxType.COLLISION);
+        AxisAlignedBB aabb = te.getMovement()
+            .getBoundingBox(te, false, BoundingBoxType.COLLISION);
         if (aabb == null) return null;
 
         return setBlockBounds(aabb);

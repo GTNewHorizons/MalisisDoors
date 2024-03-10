@@ -64,7 +64,7 @@ import cpw.mods.fml.client.registry.RenderingRegistry;
  *
  */
 public class MalisisRenderer extends TileEntitySpecialRenderer
-        implements ISimpleBlockRenderingHandler, IItemRenderer, IRenderWorldLast {
+    implements ISimpleBlockRenderingHandler, IItemRenderer, IRenderWorldLast {
 
     // Reference to Minecraft.renderGlobal.damagedBlocks (lazy loaded)
     /** The damaged blocks. */
@@ -285,7 +285,7 @@ public class MalisisRenderer extends TileEntitySpecialRenderer
      */
     @Override
     public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId,
-            RenderBlocks renderer) {
+        RenderBlocks renderer) {
         set(world, block, x, y, z, world.getBlockMetadata(x, y, z));
         tileEntity = world.getTileEntity(x, y, z);
         renderBlocks = renderer;
@@ -596,7 +596,9 @@ public class MalisisRenderer extends TileEntitySpecialRenderer
 
     @Override
     protected void bindTexture(ResourceLocation resourceLocaltion) {
-        Minecraft.getMinecraft().getTextureManager().bindTexture(resourceLocaltion);
+        Minecraft.getMinecraft()
+            .getTextureManager()
+            .bindTexture(resourceLocaltion);
     }
 
     // #end prepare()
@@ -714,8 +716,8 @@ public class MalisisRenderer extends TileEntitySpecialRenderer
         int vertexCount = f.getVertexes().length;
         if (vertexCount != 4 && renderType == RenderType.ISBRH_WORLD) {
             MalisisCore.log.error(
-                    "[MalisisRenderer] Attempting to render a face containing {} vertexes in ISBRH. Ignored",
-                    vertexCount);
+                "[MalisisRenderer] Attempting to render a face containing {} vertexes in ISBRH. Ignored",
+                vertexCount);
             return;
         }
 
@@ -728,7 +730,7 @@ public class MalisisRenderer extends TileEntitySpecialRenderer
 
         // use normals if available
         if ((renderType == RenderType.ITEM_INVENTORY || renderType == RenderType.ISBRH_INVENTORY
-                || params.useNormals.get()) && params.direction.get() != null)
+            || params.useNormals.get()) && params.direction.get() != null)
             t.setNormal(params.direction.get().offsetX, params.direction.get().offsetY, params.direction.get().offsetZ);
 
         baseBrightness = getBaseBrightness();
@@ -737,9 +739,8 @@ public class MalisisRenderer extends TileEntitySpecialRenderer
 
         // we need to separate each face
         if (drawMode == GL11.GL_POLYGON || drawMode == GL11.GL_LINE
-                || drawMode == GL11.GL_LINE_STRIP
-                || drawMode == GL11.GL_LINE_LOOP)
-            next();
+            || drawMode == GL11.GL_LINE_STRIP
+            || drawMode == GL11.GL_LINE_LOOP) next();
     }
 
     /**
@@ -811,7 +812,8 @@ public class MalisisRenderer extends TileEntitySpecialRenderer
         else if (overrideTexture != null) icon = overrideTexture;
         else if (block != null && icon == null) {
             int side = 0;
-            if (params.textureSide.get() != null) side = params.textureSide.get().ordinal();
+            if (params.textureSide.get() != null) side = params.textureSide.get()
+                .ordinal();
             if (world != null && params.useWorldSensitiveIcon.get()) icon = block.getIcon(world, x, y, z, side);
             else icon = block.getIcon(side, blockMetadata);
         }
@@ -839,7 +841,8 @@ public class MalisisRenderer extends TileEntitySpecialRenderer
         else if (block != null && icon == null) {
             int side = 0;
             if (faceParams.textureSide.merged(globalOverrides.textureSide) != null)
-                side = faceParams.textureSide.merged(globalOverrides.textureSide).ordinal();
+                side = faceParams.textureSide.merged(globalOverrides.textureSide)
+                    .ordinal();
             if (world != null && faceParams.useWorldSensitiveIcon.merged(globalOverrides.useWorldSensitiveIcon))
                 icon = block.getIcon(world, x, y, z, side);
             else icon = block.getIcon(side, blockMetadata);
@@ -863,11 +866,12 @@ public class MalisisRenderer extends TileEntitySpecialRenderer
         if (p.direction.get() == null || p.renderAllFaces.get()) return true;
 
         boolean b = block.shouldSideBeRendered(
-                world,
-                x + p.direction.get().offsetX,
-                y + p.direction.get().offsetY,
-                z + p.direction.get().offsetZ,
-                p.direction.get().ordinal());
+            world,
+            x + p.direction.get().offsetX,
+            y + p.direction.get().offsetY,
+            z + p.direction.get().offsetZ,
+            p.direction.get()
+                .ordinal());
         return b;
     }
 
@@ -936,13 +940,13 @@ public class MalisisRenderer extends TileEntitySpecialRenderer
         float factor = 1;
         // calculate AO
         if (params.calculateAOColor.get() && aoMatrix != null
-                && Minecraft.isAmbientOcclusionEnabled()
-                && block.getLightValue(world, x, y, z) == 0) {
+            && Minecraft.isAmbientOcclusionEnabled()
+            && block.getLightValue(world, x, y, z) == 0) {
             factor = getBlockAmbientOcclusion(
-                    world,
-                    x + params.direction.get().offsetX,
-                    y + params.direction.get().offsetY,
-                    z + params.direction.get().offsetZ);
+                world,
+                x + params.direction.get().offsetX,
+                y + params.direction.get().offsetY,
+                z + params.direction.get().offsetZ);
 
             for (int i = 0; i < aoMatrix.length; i++)
                 factor += getBlockAmbientOcclusion(world, x + aoMatrix[i][0], y + aoMatrix[i][1], z + aoMatrix[i][2]);
@@ -1081,7 +1085,8 @@ public class MalisisRenderer extends TileEntitySpecialRenderer
      */
     protected int getMixedBrightnessForBlock(IBlockAccess world, int x, int y, int z) {
         // return world.getLightBrightnessForSkyBlocks(x, y, z, 0);
-        return world.getBlock(x, y, z).getMixedBrightnessForBlock(world, x, y, z);
+        return world.getBlock(x, y, z)
+            .getMixedBrightnessForBlock(world, x, y, z);
     }
 
     /**
@@ -1096,12 +1101,12 @@ public class MalisisRenderer extends TileEntitySpecialRenderer
         if (world != null) block.setBlockBoundsBasedOnState(world, x, y, z);
 
         return AxisAlignedBB.getBoundingBox(
-                block.getBlockBoundsMinX(),
-                block.getBlockBoundsMinY(),
-                block.getBlockBoundsMinZ(),
-                block.getBlockBoundsMaxX(),
-                block.getBlockBoundsMaxY(),
-                block.getBlockBoundsMaxZ());
+            block.getBlockBoundsMinX(),
+            block.getBlockBoundsMinY(),
+            block.getBlockBoundsMinZ(),
+            block.getBlockBoundsMaxX(),
+            block.getBlockBoundsMaxY(),
+            block.getBlockBoundsMaxZ());
     }
 
     /**
@@ -1149,7 +1154,8 @@ public class MalisisRenderer extends TileEntitySpecialRenderer
         Map damagedBlocks = getDamagedBlocks();
         if (damagedBlocks == null || damagedBlocks.isEmpty()) return null;
 
-        Iterator iterator = damagedBlocks.values().iterator();
+        Iterator iterator = damagedBlocks.values()
+            .iterator();
         while (iterator.hasNext()) {
             DestroyBlockProgress dbp = (DestroyBlockProgress) iterator.next();
             if (isCurrentBlockDestroyProgress(dbp)) return dbp;
@@ -1188,12 +1194,13 @@ public class MalisisRenderer extends TileEntitySpecialRenderer
         for (Class clazz : listClass) {
             if (Block.class.isAssignableFrom(clazz)) {
                 try {
-                    clazz.getField("renderId").set(null, renderId);
+                    clazz.getField("renderId")
+                        .set(null, renderId);
                     RenderingRegistry.registerBlockHandler(this);
                 } catch (ReflectiveOperationException e) {
                     MalisisCore.log.error(
-                            "[MalisisRenderer] Tried to register ISBRH for block class {} that does not have renderId field",
-                            clazz.getSimpleName());
+                        "[MalisisRenderer] Tried to register ISBRH for block class {} that does not have renderId field",
+                        clazz.getSimpleName());
                     e.printStackTrace();
                 }
             } else if (TileEntity.class.isAssignableFrom(clazz)) {

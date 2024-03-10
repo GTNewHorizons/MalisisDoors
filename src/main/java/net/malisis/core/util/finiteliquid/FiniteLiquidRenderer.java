@@ -32,7 +32,8 @@ public class FiniteLiquidRenderer extends MalisisRenderer {
         }
 
         for (MergedVertex v : shape.getMergedVertexes(shape.getFace("top"))) {
-            int[][] aom = v.getBase().getAoMatrix(ForgeDirection.UP);
+            int[][] aom = v.getBase()
+                .getAoMatrix(ForgeDirection.UP);
             boolean air = false;
             float height = (float) blockMetadata / 16;
             int count = 1;

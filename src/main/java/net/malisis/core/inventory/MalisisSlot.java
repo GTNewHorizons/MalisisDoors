@@ -344,7 +344,7 @@ public class MalisisSlot {
         ItemStack cached = cachedItemStacks.get(player);
         ItemStack cachedDragged = cachedDraggedItemStacks.get(player);
         return !ItemStack.areItemStacksEqual(itemStack, cached)
-                || !ItemStack.areItemStacksEqual(draggedItemStack, cachedDragged);
+            || !ItemStack.areItemStacksEqual(draggedItemStack, cachedDragged);
     }
 
     /**

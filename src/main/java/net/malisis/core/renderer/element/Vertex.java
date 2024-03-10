@@ -17,8 +17,10 @@ import net.malisis.core.util.Point;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector4f;
+import org.joml.Matrix4f;
+import org.joml.Vector3f;
+
+import lombok.Getter;
 
 public class Vertex {
 
@@ -83,6 +85,15 @@ public class Vertex {
     private int alpha = 255;
     private double u = 0.0F;
     private double v = 0.0F;
+    @Getter
+    private int directionFlags = 0;
+
+    public static final int DOWN = 0x1 << ForgeDirection.DOWN.ordinal();
+    public static final int UP = 0x1 << ForgeDirection.UP.ordinal();
+    public static final int NORTH = 0x1 << ForgeDirection.NORTH.ordinal();
+    public static final int SOUTH = 0x1 << ForgeDirection.SOUTH.ordinal();
+    public static final int WEST = 0x1 << ForgeDirection.WEST.ordinal();
+    public static final int EAST = 0x1 << ForgeDirection.EAST.ordinal();
 
     private Vertex initialState;
 
@@ -110,15 +121,16 @@ public class Vertex {
 
     public Vertex(Vertex vertex) {
         this(
-                vertex.x,
-                vertex.y,
-                vertex.z,
-                vertex.color << 8 | vertex.alpha,
-                vertex.brightness,
-                vertex.u,
-                vertex.v,
-                false);
+            vertex.x,
+            vertex.y,
+            vertex.z,
+            vertex.color << 8 | vertex.alpha,
+            vertex.brightness,
+            vertex.u,
+            vertex.v,
+            false);
         baseName = vertex.baseName;
+        directionFlags = vertex.directionFlags;
     }
 
     public Vertex(Vertex vertex, int rgba, int brightness) {
@@ -337,19 +349,19 @@ public class Vertex {
     public String baseName() {
         if (baseName == null) {
             baseName = "";
-            if (isCorner())
+            if (isCorner()) {
+                directionFlags |= (y == 1) ? UP : DOWN;
+                directionFlags |= (z == 1) ? SOUTH : NORTH;
+                directionFlags |= (x == 1) ? EAST : WEST;
                 baseName = (y == 1 ? "Top" : "Bottom") + (z == 1 ? "South" : "North") + (x == 1 ? "East" : "West");
+            }
         }
         return baseName;
     }
 
-    public String name() {
-        return baseName() + " [" + x + ", " + y + ", " + z + "|" + u + ", " + v + "]";
-    }
-
     @Override
     public String toString() {
-        return name() + " 0x" + Integer.toHexString(color) + " (a:" + alpha + ", b:" + brightness + ")";
+        return "0x" + Integer.toHexString(color) + " (a:" + alpha + ", b:" + brightness + ")";
     }
 
     public Point toPoint() {
@@ -367,14 +379,14 @@ public class Vertex {
     }
 
     public void applyMatrix(Matrix4f transformMatrix) {
-        Vector4f vec = new Vector4f((float) x, (float) y, (float) z, 1F);
-        Matrix4f.transform(transformMatrix, vec, vec);
+        Vector3f vec = new Vector3f((float) x, (float) y, (float) z);
+        vec.mulPosition(transformMatrix);
         x = vec.x;
         y = vec.y;
         z = vec.z;
     }
 
-    private void setState(Vertex vertex) {
+    public void setState(Vertex vertex) {
         x = vertex.x;
         y = vertex.y;
         z = vertex.z;
@@ -383,6 +395,8 @@ public class Vertex {
         alpha = vertex.alpha;
         u = vertex.u;
         v = vertex.v;
+        baseName = vertex.baseName;
+        directionFlags = vertex.directionFlags;
     }
 
     public void setInitialState() {

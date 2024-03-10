@@ -62,11 +62,16 @@ public class UIRadioButton extends UIComponent<UIRadioButton> implements IGuiTex
 
         shape = new SimpleGuiShape();
 
-        bgIcon = gui.getGuiTexture().getIcon(200, 54, 8, 8);
-        bgIconDisabled = gui.getGuiTexture().getIcon(200, 62, 8, 8);
-        rbDisabled = gui.getGuiTexture().getIcon(208, 54, 6, 6);
-        rbChecked = gui.getGuiTexture().getIcon(214, 54, 6, 6);
-        rbHovered = gui.getGuiTexture().getIcon(220, 54, 6, 6);
+        bgIcon = gui.getGuiTexture()
+            .getIcon(200, 54, 8, 8);
+        bgIconDisabled = gui.getGuiTexture()
+            .getIcon(200, 62, 8, 8);
+        rbDisabled = gui.getGuiTexture()
+            .getIcon(208, 54, 6, 6);
+        rbChecked = gui.getGuiTexture()
+            .getIcon(214, 54, 6, 6);
+        rbHovered = gui.getGuiTexture()
+            .getIcon(220, 54, 6, 6);
 
         addRadioButton(this);
     }

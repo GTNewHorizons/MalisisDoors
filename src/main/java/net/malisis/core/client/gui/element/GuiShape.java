@@ -69,10 +69,10 @@ public abstract class GuiShape extends Shape {
 
         public GuiFace() {
             super(
-                    new Vertex.BottomSouthWest().setBaseName("TopLeft"),
-                    new Vertex.TopSouthWest().setBaseName("BottomLeft"),
-                    new Vertex.TopSouthEast().setBaseName("BottomRight"),
-                    new Vertex.BottomSouthEast().setBaseName("TopRight"));
+                new Vertex.BottomSouthWest().setBaseName("TopLeft"),
+                new Vertex.TopSouthWest().setBaseName("BottomLeft"),
+                new Vertex.TopSouthEast().setBaseName("BottomRight"),
+                new Vertex.BottomSouthEast().setBaseName("TopRight"));
             setStandardUV();
         }
 

@@ -56,7 +56,8 @@ public class DoubleRotateMovement implements IDoorMovement {
 
     private Transformation getTransformation(DoorTileEntity tileEntity) {
         boolean reversed = tileEntity.getState() == DoorState.CLOSING || tileEntity.getState() == DoorState.CLOSED;
-        int ot = tileEntity.getDescriptor().getOpeningTime();
+        int ot = tileEntity.getDescriptor()
+            .getOpeningTime();
         float angle = 90;
         float hingeX = 0.5F - DOOR_WIDTH / 2;
         float hingeZ = -0.5F + DOOR_WIDTH / 2;
@@ -72,14 +73,16 @@ public class DoubleRotateMovement implements IDoorMovement {
         }
 
         Rotation rotation = new Rotation(angle);
-        rotation.aroundAxis(0, 1, 0).offset(hingeX, 0, hingeZ);
+        rotation.aroundAxis(0, 1, 0)
+            .offset(hingeX, 0, hingeZ);
         rotation.reversed(reversed);
         rotation.forTicks(ot);
 
         if (tileEntity.isReversed() != rightDirection) {
             float x = 2 - DOOR_WIDTH;
             if (rightDirection) x *= -1;
-            Translation translation = new Translation(0, 0, 0, x, 0, 0).reversed(reversed).forTicks(ot);
+            Translation translation = new Translation(0, 0, 0, x, 0, 0).reversed(reversed)
+                .forTicks(ot);
             return new ParallelTransformation(translation, rotation).forTicks(ot);
         }
 

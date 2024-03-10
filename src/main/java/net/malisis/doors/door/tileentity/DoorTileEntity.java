@@ -113,7 +113,7 @@ public class DoorTileEntity extends TileEntity {
 
     public boolean isPowered() {
         return getWorldObj().isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord)
-                || getWorldObj().isBlockIndirectlyGettingPowered(xCoord, yCoord + 1, zCoord);
+            || getWorldObj().isBlockIndirectlyGettingPowered(xCoord, yCoord + 1, zCoord);
     }
 
     public boolean isCentered() {
@@ -143,7 +143,7 @@ public class DoorTileEntity extends TileEntity {
 
     public void onBlockPlaced(Door door, ItemStack itemStack) {
         DoorDescriptor desc = itemStack.getTagCompound() != null ? new DoorDescriptor(itemStack.getTagCompound())
-                : door.getDescriptor();
+            : door.getDescriptor();
         setDescriptor(desc);
     }
 
@@ -197,7 +197,8 @@ public class DoorTileEntity extends TileEntity {
         if (worldObj.isRemote) return;
 
         String soundPath = null;
-        if (descriptor.getSound() != null) soundPath = descriptor.getSound().getSoundPath(state);
+        if (descriptor.getSound() != null) soundPath = descriptor.getSound()
+            .getSoundPath(state);
         if (soundPath != null) getWorldObj().playSoundEffect(xCoord, yCoord, zCoord, soundPath, 1F, 1F);
     }
 
@@ -318,7 +319,7 @@ public class DoorTileEntity extends TileEntity {
 
     @Override
     public boolean shouldRefresh(Block oldBlock, Block newBlock, int oldMeta, int newMeta, World world, int x, int y,
-            int z) {
+        int z) {
         return oldBlock != newBlock;
     }
 }

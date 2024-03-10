@@ -56,9 +56,11 @@ public class MixedBlockRenderer extends MalisisRenderer {
             Shape s1 = new Cube();
             s0.enableMergedVertexes();
             s1.enableMergedVertexes();
-            shapes[0][dir.ordinal()] = s0.removeFace(s0.getFace(Face.nameFromDirection(dir))).storeState();
-            shapes[1][dir.ordinal()] = s1.shrink(dir, 0.999F).removeFace(s1.getFace(Face.nameFromDirection(dir)))
-                    .storeState();
+            shapes[0][dir.ordinal()] = s0.removeFace(s0.getFace(Face.nameFromDirection(dir)))
+                .storeState();
+            shapes[1][dir.ordinal()] = s1.shrink(dir, 0.999F)
+                .removeFace(s1.getFace(Face.nameFromDirection(dir)))
+                .storeState();
         }
 
         rp = new RenderParameters();
@@ -70,11 +72,17 @@ public class MixedBlockRenderer extends MalisisRenderer {
     private boolean setup() {
         if (renderType == RenderType.ITEM_INVENTORY) {
             if (!itemStack.hasTagCompound()) return false;
-            block1 = Block.getBlockById(itemStack.getTagCompound().getInteger("block1"));
-            block2 = Block.getBlockById(itemStack.getTagCompound().getInteger("block2"));
+            block1 = Block.getBlockById(
+                itemStack.getTagCompound()
+                    .getInteger("block1"));
+            block2 = Block.getBlockById(
+                itemStack.getTagCompound()
+                    .getInteger("block2"));
 
-            metadata1 = itemStack.getTagCompound().getInteger("metadata1");
-            metadata2 = itemStack.getTagCompound().getInteger("metadata2");
+            metadata1 = itemStack.getTagCompound()
+                .getInteger("metadata1");
+            metadata2 = itemStack.getTagCompound()
+                .getInteger("metadata2");
 
             mixedBlockMetadata = 3;
         } else if (renderType == RenderType.ISBRH_WORLD) {
@@ -107,7 +115,7 @@ public class MixedBlockRenderer extends MalisisRenderer {
         }
 
         if (MalisisDoorsSettings.simpleMixedBlockRendering.get()
-                || !Minecraft.getMinecraft().gameSettings.fancyGraphics) {
+            || !Minecraft.getMinecraft().gameSettings.fancyGraphics) {
             renderSimple();
             return;
         }
@@ -120,7 +128,7 @@ public class MixedBlockRenderer extends MalisisRenderer {
 
     private void setColor() {
         int color = renderType == RenderType.ISBRH_WORLD ? block.colorMultiplier(world, x, y, z)
-                : block.getBlockColor();
+            : block.getBlockColor();
         rp.colorMultiplier.set(color);
         shape.setParameters("Top", rp, true);
         if (block instanceof BlockGrass) {
@@ -163,14 +171,17 @@ public class MixedBlockRenderer extends MalisisRenderer {
         set(b, m);
         setColor();
 
-        simpleShape.resetState().setSize(width, height, depth);
+        simpleShape.resetState()
+            .setSize(width, height, depth);
         drawShape(simpleShape, rp);
 
         b = reversed ? block1 : block2;
         m = reversed ? metadata1 : metadata2;
         set(b, m);
         setColor();
-        simpleShape.resetState().setSize(width, height, depth).translate(offsetX, offestY, offsetZ);
+        simpleShape.resetState()
+            .setSize(width, height, depth)
+            .translate(offsetX, offestY, offsetZ);
         drawShape(simpleShape, rp);
     }
 
@@ -209,11 +220,12 @@ public class MixedBlockRenderer extends MalisisRenderer {
         if (p.direction.get() == null) return true;
 
         boolean b = MalisisDoors.Blocks.mixedBlock.shouldSideBeRendered(
-                world,
-                x + p.direction.get().offsetX,
-                y + p.direction.get().offsetY,
-                z + p.direction.get().offsetZ,
-                p.direction.get().ordinal());
+            world,
+            x + p.direction.get().offsetX,
+            y + p.direction.get().offsetY,
+            z + p.direction.get().offsetZ,
+            p.direction.get()
+                .ordinal());
         return b;
     }
 }

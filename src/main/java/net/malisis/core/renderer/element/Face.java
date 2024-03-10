@@ -27,11 +27,18 @@ public class Face implements ITransformable.Translate, ITransformable.Rotate {
 
     protected String name;
     protected Vertex[] vertexes;
-    protected RenderParameters params;
+    protected RenderParameters params = new RenderParameters();
+    private final float[][] scratch = new float[4][2];
+    private static final int[] dirs = { Vertex.NORTH, Vertex.SOUTH, Vertex.EAST, Vertex.WEST, Vertex.UP, Vertex.DOWN };
+    private static final String[] strdirs = { "North", "South", "East", "West", "Top", "Bottom" };
+
+    public void reset() {
+
+    }
 
     public Face(Vertex[] vertexes, RenderParameters params) {
         this.vertexes = vertexes;
-        this.params = params != null ? params : new RenderParameters();
+        this.params = params != null ? params : this.params;
         this.setName(null);
     }
 
@@ -51,8 +58,24 @@ public class Face implements ITransformable.Translate, ITransformable.Rotate {
         Vertex[] faceVertexes = face.getVertexes();
         this.vertexes = new Vertex[faceVertexes.length];
         for (int i = 0; i < faceVertexes.length; i++) vertexes[i] = new Vertex(faceVertexes[i]);
-        this.params = params != null ? params : new RenderParameters();
+        this.params = params != null ? params : this.params;
         name = face.name;
+    }
+
+    public void copy(Face f) {
+        this.params.merge(f.params);
+
+        boolean init = false;
+        if (this.vertexes.length != f.vertexes.length) {
+            this.vertexes = new Vertex[f.vertexes.length];
+            init = true;
+        }
+
+        for (int i = 0; i < f.vertexes.length; ++i) {
+            if (init) this.vertexes[i] = new Vertex(f.vertexes[i]);
+            else this.vertexes[i].setState(f.vertexes[i]);
+        }
+        this.name = f.name;
     }
 
     /**
@@ -64,14 +87,14 @@ public class Face implements ITransformable.Translate, ITransformable.Rotate {
     public void setName(String name) {
         if (name == null) {
             name = "";
-            HashMap<String, Integer> map = new HashMap<String, Integer>();
-            String[] dirs = new String[] { "North", "South", "East", "West", "Top", "Bottom" };
-            for (String dir : dirs) {
+            HashMap<Integer, Integer> map = new HashMap<>();
+
+            for (int dir : Face.dirs) {
                 map.put(dir, 0);
                 for (Vertex v : vertexes) {
-                    if (v.name().contains(dir)) map.put(dir, map.get(dir) + 1);
+                    if ((v.getDirectionFlags() & dir) != 0) map.put(dir, map.get(dir) + 1);
                 }
-                if (map.get(dir) == 4) name = dir;
+                if (map.get(dir) == 4) name = strdirs[Integer.numberOfTrailingZeros(dir)];
             }
         }
 
@@ -149,20 +172,9 @@ public class Face implements ITransformable.Translate, ITransformable.Rotate {
         float U = 1;
         float V = 1;
 
-        double factorU, factorV;
-
-        float uvs[][] = new float[vertexes.length][2];
-        for (int i = 0; i < vertexes.length; i++) {
-            Vertex vertex = vertexes[i];
-
-            factorU = getFactorU(vertex);
-            factorV = getFactorV(vertex);
-
-            int k = i;
-            uvs[k] = new float[] { interpolate(u, U, factorU, false), interpolate(v, V, factorV, false) };
+        for (Vertex vertex : vertexes) {
+            vertex.setUV(interpolate(u, U, getFactorU(vertex), false), interpolate(v, V, getFactorV(vertex), false));
         }
-
-        for (int i = 0; i < vertexes.length; i++) vertexes[i].setUV(uvs[i][0], uvs[i][1]);
 
         return this;
     }
@@ -177,7 +189,6 @@ public class Face implements ITransformable.Translate, ITransformable.Rotate {
 
         double factorU, factorV;
 
-        float uvs[][] = new float[vertexes.length][2];
         for (int i = 0; i < vertexes.length; i++) {
             Vertex vertex = vertexes[i];
 
@@ -188,10 +199,12 @@ public class Face implements ITransformable.Translate, ITransformable.Rotate {
             if (icon instanceof MalisisIcon) {
                 k = (i + ((MalisisIcon) icon).getRotation()) % vertexes.length;
             }
-            uvs[k] = new float[] { interpolate(u, U, factorU, flippedU), interpolate(v, V, factorV, flippedV) };
+
+            this.scratch[k][0] = interpolate(u, U, factorU, flippedU);
+            this.scratch[k][1] = interpolate(v, V, factorV, flippedV);
         }
 
-        for (int i = 0; i < vertexes.length; i++) vertexes[i].setUV(uvs[i][0], uvs[i][1]);
+        for (int i = 0; i < vertexes.length; i++) vertexes[i].setUV(this.scratch[i][0], this.scratch[i][1]);
 
         return this;
     }
@@ -201,11 +214,9 @@ public class Face implements ITransformable.Translate, ITransformable.Rotate {
 
         switch (params.direction.get()) {
             case EAST:
-                return vertex.getZ();
             case WEST:
                 return vertex.getZ();
             case NORTH:
-                return vertex.getX();
             case SOUTH:
             case UP:
             case DOWN:
@@ -352,9 +363,9 @@ public class Face implements ITransformable.Translate, ITransformable.Rotate {
 
         int factor = 1000;
         Vector normal = new Vector(
-                (float) Math.round(x * factor) / factor,
-                (float) Math.round(y * factor) / factor,
-                (float) Math.round(z * factor) / factor);
+            (float) Math.round(x * factor) / factor,
+            (float) Math.round(y * factor) / factor,
+            (float) Math.round(z * factor) / factor);
         normal.normalize();
         return normal;
     }
@@ -406,7 +417,7 @@ public class Face implements ITransformable.Translate, ITransformable.Rotate {
     @Override
     public String toString() {
         String s = name() + " {";
-        for (Vertex v : vertexes) s += v.name() + ", ";
+        for (Vertex v : vertexes) s += v + ", ";
         return s + "}";
     }
 

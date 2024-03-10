@@ -34,4 +34,22 @@ public class Cube extends Shape {
         super(new NorthFace(), new SouthFace(), new EastFace(), new WestFace(), new TopFace(), new BottomFace());
         storeState();
     }
+
+    public Cube(Cube c) {
+        super(c);
+    }
+
+    public Cube copy(Cube c) {
+        for (int i = 0; i < 6; ++i) {
+            this.faces[i].copy(c.faces[i]);
+        }
+        this.copyMatrix(c);
+        return this;
+    }
+
+    @Override
+    public void reset() {
+        super.reset();
+        this.storeState();
+    }
 }

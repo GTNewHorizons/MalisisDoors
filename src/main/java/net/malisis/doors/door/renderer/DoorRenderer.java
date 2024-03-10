@@ -102,12 +102,15 @@ public class DoorRenderer extends MalisisRenderer {
 
     protected void renderTileEntity() {
         enableBlending();
-        ar.setStartTime(tileEntity.getTimer().getStart());
+        ar.setStartTime(
+            tileEntity.getTimer()
+                .getStart());
 
         setup();
 
         if (tileEntity.getMovement() != null) {
-            Animation[] anims = tileEntity.getMovement().getAnimations(tileEntity, model, rp);
+            Animation[] anims = tileEntity.getMovement()
+                .getAnimations(tileEntity, model, rp);
             ar.animate(anims);
         }
 
@@ -125,7 +128,7 @@ public class DoorRenderer extends MalisisRenderer {
     @Override
     protected boolean isCurrentBlockDestroyProgress(DestroyBlockProgress dbp) {
         return dbp.getPartialBlockX() == x && (dbp.getPartialBlockY() == y || dbp.getPartialBlockY() == y + 1)
-                && dbp.getPartialBlockZ() == z;
+            && dbp.getPartialBlockZ() == z;
     }
 
     @Override

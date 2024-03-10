@@ -155,7 +155,9 @@ public class BBTextField extends UITextField implements IBBCodeRenderer<BBTextFi
                 str = getSelectedText();
             }
             addText(tag.node.toBBString());
-            getCursorPosition().jumpTo(p + tag.node.getTag().length() + 2);
+            getCursorPosition().jumpTo(
+                p + tag.node.getTag()
+                    .length() + 2);
             addText(str);
             return;
         }

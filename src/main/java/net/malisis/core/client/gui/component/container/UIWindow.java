@@ -34,7 +34,8 @@ public class UIWindow extends UIContainer<UIWindow> implements ICloseable {
         this.anchor = anchor;
 
         shape = new XYResizableGuiShape();
-        icon = gui.getGuiTexture().getXYResizableIcon(200, 0, 15, 15, 5);
+        icon = gui.getGuiTexture()
+            .getXYResizableIcon(200, 0, 15, 15, 5);
     }
 
     public UIWindow(MalisisGui gui, String title, int width, int height) {

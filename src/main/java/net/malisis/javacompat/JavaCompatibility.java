@@ -41,7 +41,8 @@ import cpw.mods.fml.relauncher.FMLLaunchHandler;
  */
 public final class JavaCompatibility implements Runnable, HyperlinkListener {
 
-    private final boolean isWindowsClient = SystemUtils.IS_OS_WINDOWS && FMLLaunchHandler.side().isClient();
+    private final boolean isWindowsClient = SystemUtils.IS_OS_WINDOWS && FMLLaunchHandler.side()
+        .isClient();
     private final Object mutex = new Object();
 
     public JavaCompatibility() {}
@@ -62,10 +63,10 @@ public final class JavaCompatibility implements Runnable, HyperlinkListener {
         logger.error(StringUtils.repeat('=', 80));
         logger.error("MalisisCore requires Java 7 to be installed.");
         logger.error(
-                "Please install the latest Java 7 appropriate for your System from https://java.com/download/"
-                        + (isWindowsClient ? " or use the latest launcher from https://minecraft.net/" : ""));
+            "Please install the latest Java 7 appropriate for your System from https://java.com/download/"
+                + (isWindowsClient ? " or use the latest launcher from https://minecraft.net/" : ""));
         logger.error(
-                "If Java 7 is already installed, please make sure the right Java version is for the current profile in the Minecraft launcher.");
+            "If Java 7 is already installed, please make sure the right Java version is for the current profile in the Minecraft launcher.");
         logger.error("Thank you. The game will exit now.");
         logger.error(StringUtils.repeat('=', 80));
         logger.error("");
@@ -142,27 +143,33 @@ public final class JavaCompatibility implements Runnable, HyperlinkListener {
     private String getHtml(Font font) {
         // create some css from the label's font
         StringBuilder style = new StringBuilder("font-family:" + font.getFamily() + ";").append("font-weight:")
-                .append(font.isBold() ? "bold" : "normal").append(";").append("font-size:").append(font.getSize())
-                .append("pt;");
+            .append(font.isBold() ? "bold" : "normal")
+            .append(";")
+            .append("font-size:")
+            .append(font.getSize())
+            .append("pt;");
 
         return "<html><body style=\"" + style
-                + "\">"
-                + "<strong>MalisisCore requires Java 7 to be used.</strong><br /><br />"
-                + "Please install the latest Java 7 appropriate for your system from <a href=\"https://java.com/download/\">java.com/download</a>"
-                + (isWindowsClient
-                        ? "or use the latest launcher from <a href=\"https://minecraft.net/\">minecraft.net</a>"
-                        : "")
-                + "<br /><br />"
-                + "If Java 7 is already installed, please make sure the right Java version is used for the current profile in the Minecraft launcher.<br /><br />"
-                + "The game will exit now."
-                + "</body></html>";
+            + "\">"
+            + "<strong>MalisisCore requires Java 7 to be used.</strong><br /><br />"
+            + "Please install the latest Java 7 appropriate for your system from <a href=\"https://java.com/download/\">java.com/download</a>"
+            + (isWindowsClient ? "or use the latest launcher from <a href=\"https://minecraft.net/\">minecraft.net</a>"
+                : "")
+            + "<br /><br />"
+            + "If Java 7 is already installed, please make sure the right Java version is used for the current profile in the Minecraft launcher.<br /><br />"
+            + "The game will exit now."
+            + "</body></html>";
     }
 
     @Override
     public void hyperlinkUpdate(HyperlinkEvent e) {
-        if (e.getEventType().equals(HyperlinkEvent.EventType.ACTIVATED)) {
+        if (e.getEventType()
+            .equals(HyperlinkEvent.EventType.ACTIVATED)) {
             try {
-                Desktop.getDesktop().browse(e.getURL().toURI());
+                Desktop.getDesktop()
+                    .browse(
+                        e.getURL()
+                            .toURI());
             } catch (Exception ignored) {}
         }
     }
@@ -174,7 +181,8 @@ public final class JavaCompatibility implements Runnable, HyperlinkListener {
             method.setAccessible(true);
             method.invoke(null, -1);
         } catch (Throwable t) {
-            FMLCommonHandler.instance().exitJava(-1, false);
+            FMLCommonHandler.instance()
+                .exitJava(-1, false);
         }
     }
 

@@ -185,9 +185,9 @@ public class ItemUtils {
      */
     public static boolean areItemStacksStackable(ItemStack stack1, ItemStack stack2) {
         return !(stack1 == null || stack2 == null) && stack1.isStackable()
-                && stack1.getItem() == stack2.getItem()
-                && (!stack2.getHasSubtypes() || stack2.getItemDamage() == stack1.getItemDamage())
-                && ItemStack.areItemStackTagsEqual(stack2, stack1);
+            && stack1.getItem() == stack2.getItem()
+            && (!stack2.getHasSubtypes() || stack2.getItemDamage() == stack1.getItemDamage())
+            && ItemStack.areItemStackTagsEqual(stack2, stack1);
     }
 
     public static BlockState getStateFromItemStack(ItemStack itemStack) {
@@ -196,13 +196,20 @@ public class ItemUtils {
         Block block = Block.getBlockFromItem(itemStack.getItem());
         if (block == null) return null;
 
-        return new BlockState(block, itemStack.getItem().getMetadata(itemStack.getItemDamage()));
+        return new BlockState(
+            block,
+            itemStack.getItem()
+                .getMetadata(itemStack.getItemDamage()));
     }
 
     public static ItemStack getItemStackFromState(BlockState state) {
         if (state == null) return null;
         Item item = Item.getItemFromBlock(state.getBlock());
         if (item == null) return null;
-        return new ItemStack(item, 1, state.getBlock().damageDropped(state.getMetadata()));
+        return new ItemStack(
+            item,
+            1,
+            state.getBlock()
+                .damageDropped(state.getMetadata()));
     }
 }

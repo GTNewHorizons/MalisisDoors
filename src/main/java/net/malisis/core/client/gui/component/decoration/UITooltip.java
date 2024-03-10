@@ -51,7 +51,8 @@ public class UITooltip extends UIComponent implements IGuiText<UITooltip> {
         fro.shadow = true;
 
         shape = new XYResizableGuiShape();
-        icon = gui.getGuiTexture().getXYResizableIcon(227, 31, 15, 15, 5);
+        icon = gui.getGuiTexture()
+            .getXYResizableIcon(227, 31, 15, 15, 5);
 
         animation = new Animation(this, new AlphaTransform(0, 255).forTicks(2));
     }

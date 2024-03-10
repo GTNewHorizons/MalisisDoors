@@ -34,7 +34,10 @@ public class TrapDoorDescriptor extends DoorDescriptor {
     public DoorDescriptor register() {
         if (block == null) create();
 
-        GameRegistry.registerBlock(block, block.getUnlocalizedName().substring(5));
+        GameRegistry.registerBlock(
+            block,
+            block.getUnlocalizedName()
+                .substring(5));
         if (recipe != null) GameRegistry.addRecipe(new ItemStack(block, numCrafted), recipe);
 
         return this;

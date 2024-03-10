@@ -14,7 +14,6 @@
 package net.malisis.core.renderer.element;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,8 +24,9 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.ArrayUtils;
-import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector3f;
+import org.joml.Matrix4f;
+
+import lombok.Getter;
 
 /**
  * Base class for anything drawn with a {@link MalisisRenderer}. Supports basic transformations like scaling,
@@ -37,7 +37,7 @@ import org.lwjgl.util.vector.Vector3f;
  */
 public class Shape implements ITransformable.Translate, ITransformable.Rotate, ITransformable.Scale {
 
-    /** {@link Face Faces} making up this {@link Shape} */
+    @Getter
     protected Face[] faces;
 
     /** The matrix containing all the transformations applied to this {@link Shape}. */
@@ -50,11 +50,24 @@ public class Shape implements ITransformable.Translate, ITransformable.Rotate, I
         resetMatrix();
     }
 
+    public void reset() {
+        for (Face f : this.faces) f.reset();
+        this.resetMatrix();
+        if (this.mergedVertexes != null) this.mergedVertexes.clear();
+    }
+
     /**
      * Instantiates a new {@link Shape}.
      */
     public Shape() {
         this.faces = new Face[0];
+    }
+
+    /**
+     * Instantiates a new {@link Shape}.
+     */
+    public Shape(int capacity) {
+        this.faces = new Face[capacity];
     }
 
     /**
@@ -87,6 +100,14 @@ public class Shape implements ITransformable.Translate, ITransformable.Rotate, I
         copyMatrix(s);
     }
 
+    public Shape copy(Shape s) {
+        if (this.faces.length != s.faces.length) this.faces = new Face[s.faces.length];
+
+        for (int i = 0; i < s.faces.length; ++i) this.faces[i].copy(s.faces[i]);
+        this.copyMatrix(s);
+        return this;
+    }
+
     // #region FACES
     /**
      * Adds {@link Face faces} to this {@link Shape}.
@@ -116,15 +137,6 @@ public class Shape implements ITransformable.Translate, ITransformable.Rotate, I
     }
 
     /**
-     * Gets the {@link Face faces} that make up this {@link Shape}.
-     *
-     * @return the faces
-     */
-    public Face[] getFaces() {
-        return faces;
-    }
-
-    /**
      * Gets the {@link Face faces} that make up this {@link Shape} which match the specified <b>name</b>.
      *
      * @param name the name
@@ -132,7 +144,8 @@ public class Shape implements ITransformable.Translate, ITransformable.Rotate, I
      */
     public List<Face> getFaces(String name) {
         List<Face> list = new ArrayList<>();
-        for (Face f : faces) if (f.name().toLowerCase().equals(name.toLowerCase())) list.add(f);
+        for (Face f : faces) if (f.name()
+            .equalsIgnoreCase(name)) list.add(f);
         return list;
     }
 
@@ -144,7 +157,7 @@ public class Shape implements ITransformable.Translate, ITransformable.Rotate, I
      */
     public Face getFace(String name) {
         List<Face> list = getFaces(name);
-        return list.size() > 0 ? list.get(0) : null;
+        return !list.isEmpty() ? list.get(0) : null;
     }
 
     /**
@@ -191,7 +204,9 @@ public class Shape implements ITransformable.Translate, ITransformable.Rotate, I
         List<Vertex> vertexes = new ArrayList<>();
         for (Face f : faces) {
             for (Vertex v : f.getVertexes()) {
-                if (v.baseName().toLowerCase().contains(name.toLowerCase())) vertexes.add(v);
+                if (v.baseName()
+                    .toLowerCase()
+                    .contains(name.toLowerCase())) vertexes.add(v);
             }
         }
         return vertexes;
@@ -271,9 +286,9 @@ public class Shape implements ITransformable.Translate, ITransformable.Rotate, I
 
     // #end VERTEXES
 
-    private void resetMatrix() {
-        transformMatrix.setIdentity();
-        transformMatrix.translate(new Vector3f(0.5F, 0.5F, 0.5F));
+    protected void resetMatrix() {
+        transformMatrix.identity();
+        transformMatrix.translate(0.5F, 0.5F, 0.5F);
     }
 
     /**
@@ -283,7 +298,7 @@ public class Shape implements ITransformable.Translate, ITransformable.Rotate, I
      * @return the shape
      */
     public Shape copyMatrix(Shape shape) {
-        this.transformMatrix = new Matrix4f(shape.transformMatrix);
+        this.transformMatrix.set(shape.transformMatrix);
         return this;
     }
 
@@ -301,7 +316,7 @@ public class Shape implements ITransformable.Translate, ITransformable.Rotate, I
         }
 
         // transform back to original place
-        transformMatrix.translate(new Vector3f(-0.5F, -0.5F, -0.5F));
+        transformMatrix.translate(-0.5F, -0.5F, -0.5F);
 
         for (Face f : faces) {
             for (Vertex v : f.getVertexes()) if (v != null) v.applyMatrix(transformMatrix);
@@ -320,7 +335,8 @@ public class Shape implements ITransformable.Translate, ITransformable.Rotate, I
      * @return this {@link Shape}
      */
     public Shape setParameters(RenderParameters params, boolean merge) {
-        for (Face f : faces) if (merge) f.getParameters().merge(params);
+        for (Face f : faces) if (merge) f.getParameters()
+            .merge(params);
         else f.setParameters(params);
 
         return this;
@@ -336,9 +352,11 @@ public class Shape implements ITransformable.Translate, ITransformable.Rotate, I
      * @return this {@link Shape}
      */
     public Shape setParameters(String name, RenderParameters params, boolean merge) {
-        List<Face> faces = getFaces(name);
-        for (Face f : faces) {
-            if (merge) f.getParameters().merge(params);
+        for (Face f : this.faces) {
+            if (!f.name.equalsIgnoreCase(name)) continue;
+
+            if (merge) f.getParameters()
+                .merge(params);
             else f.setParameters(params);
         }
         return this;
@@ -357,10 +375,10 @@ public class Shape implements ITransformable.Translate, ITransformable.Rotate, I
         float x = 0, y = 0, z = 0;
         for (Face f : faces) {
             for (Vertex v : f.getVertexes()) {
-                String name = v.baseName();
-                if (name.contains("West")) x = (float) v.getX();
-                if (name.contains("Bottom")) y = (float) v.getY();
-                if (name.contains("North")) z = (float) v.getZ();
+                final int flags = v.getDirectionFlags();
+                if ((flags & Vertex.WEST) != 0) x = (float) v.getX();
+                if ((flags & Vertex.DOWN) != 0) y = (float) v.getY();
+                if ((flags & Vertex.NORTH) != 0) z = (float) v.getZ();
             }
         }
 
@@ -392,13 +410,13 @@ public class Shape implements ITransformable.Translate, ITransformable.Rotate, I
     public Shape setBounds(double minX, double minY, double minZ, double maxX, double maxY, double maxZ) {
         for (Face f : faces) {
             for (Vertex v : f.getVertexes()) {
-                String name = v.name();
-                if (name.contains("West")) v.setX(minX);
-                if (name.contains("East")) v.setX(maxX);
-                if (name.contains("Bottom")) v.setY(minY);
-                if (name.contains("Top")) v.setY(maxY);
-                if (name.contains("North")) v.setZ(minZ);
-                if (name.contains("South")) v.setZ(maxZ);
+                final int flags = v.getDirectionFlags();
+                if ((flags & Vertex.WEST) != 0) v.setX(minX);
+                if ((flags & Vertex.EAST) != 0) v.setX(maxX);
+                if ((flags & Vertex.DOWN) != 0) v.setY(minY);
+                if ((flags & Vertex.UP) != 0) v.setY(maxY);
+                if ((flags & Vertex.NORTH) != 0) v.setZ(minZ);
+                if ((flags & Vertex.SOUTH) != 0) v.setZ(maxZ);
             }
         }
         return this;
@@ -447,7 +465,7 @@ public class Shape implements ITransformable.Translate, ITransformable.Rotate, I
     public void translate(float x, float y, float z) {
         if (mergedVertexes != null) {
             for (MergedVertex mv : mergedVertexes.values()) mv.translate(x, y, z);
-        } else transformMatrix.translate(new Vector3f(x, y, z));
+        } else transformMatrix.translate(x, y, z);
     }
 
     /**
@@ -486,7 +504,7 @@ public class Shape implements ITransformable.Translate, ITransformable.Rotate, I
             for (MergedVertex mv : mergedVertexes.values()) mv.scale(x, y, z, offsetX, offsetY, offsetZ);
         } else {
             translate(offsetX, offsetY, offsetZ);
-            transformMatrix.scale(new Vector3f(x, y, z));
+            transformMatrix.scale(x, y, z);
             translate(-offsetX, -offsetY, -offsetZ);
         }
     }
@@ -520,7 +538,7 @@ public class Shape implements ITransformable.Translate, ITransformable.Rotate, I
             for (MergedVertex mv : mergedVertexes.values()) mv.rotate(angle, x, y, z, offsetX, offsetY, offsetZ);
         } else {
             translate(offsetX, offsetY, offsetZ);
-            transformMatrix.rotate((float) Math.toRadians(angle), new Vector3f(x, y, z));
+            transformMatrix.rotate((float) Math.toRadians(angle), x, y, z);
             translate(-offsetX, -offsetY, -offsetZ);
         }
     }
@@ -576,10 +594,8 @@ public class Shape implements ITransformable.Translate, ITransformable.Rotate, I
         if (face == null) return this;
         enableMergedVertexes();
 
-        HashMap<String, Vertex> vertexNames = new HashMap<String, Vertex>();
         double x = 0, y = 0, z = 0;
         for (Vertex v : face.getVertexes()) {
-            vertexNames.put(v.name(), v);
             x += v.getX() / 4;
             y += v.getY() / 4;
             z += v.getZ() / 4;
@@ -613,5 +629,53 @@ public class Shape implements ITransformable.Translate, ITransformable.Rotate, I
         }
 
         return new Shape(faces);
+    }
+
+    /**
+     * Builds a {@link Shape} from multiple ones. This is a shallow copy!
+     *
+     * @param shapes the shapes
+     * @return self
+     */
+    public Shape takeShapes(Shape... shapes) {
+
+        int size = 0;
+        for (int i = 0; i < shapes.length; ++i) size += shapes[i].faces.length;
+
+        if (this.faces.length != size) this.faces = new Face[size];
+
+        size = 0;
+        for (int i = 0; i < shapes.length; ++i) {
+            shapes[i].applyMatrix();
+            System.arraycopy(shapes[i].faces, 0, this.faces, size, shapes[i].faces.length);
+            size += shapes[i].faces.length;
+        }
+
+        return this;
+    }
+
+    /**
+     * See {@link #addFaces(Face[], String)}. This takes the faces from shapes. This is a shallow copy!
+     *
+     * @param shapes the shapes
+     * @return self
+     */
+    public Shape takeFaces(String[] groupNames, Shape... shapes) {
+
+        int size = 0;
+        for (int i = 0; i < shapes.length; ++i) {
+            size += shapes[i].faces.length;
+            for (Face f : shapes[i].faces) f.setName(groupNames[i]);
+        }
+
+        if (this.faces.length != size) this.faces = new Face[size];
+
+        size = 0;
+        for (int i = 0; i < shapes.length; ++i) {
+            System.arraycopy(shapes[i].faces, 0, this.faces, size, shapes[i].faces.length);
+            size += shapes[i].faces.length;
+        }
+
+        return this;
     }
 }

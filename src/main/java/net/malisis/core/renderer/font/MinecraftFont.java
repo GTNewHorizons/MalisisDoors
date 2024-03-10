@@ -54,10 +54,12 @@ public class MinecraftFont extends MalisisFont {
     static {
         try {
             String srg = "field_78286_d";
-            if (FMLClientHandler.instance().hasOptifine()) srg = "d";
+            if (FMLClientHandler.instance()
+                .hasOptifine()) srg = "d";
             Field charWidthField = FontRenderer.class.getDeclaredField(MalisisCore.isObfEnv ? srg : "charWidth");
             charWidthField.setAccessible(true);
-            charWidthMethodHandle = MethodHandles.lookup().unreflectGetter(charWidthField);
+            charWidthMethodHandle = MethodHandles.lookup()
+                .unreflectGetter(charWidthField);
         } catch (ReflectiveOperationException e) {
             throw new RuntimeException("Failed to access a value from FontRenderer", e);
         }
@@ -79,8 +81,8 @@ public class MinecraftFont extends MalisisFont {
         try {
             if (fontRenderer == null) throw new IllegalStateException("fontRenderer not initialized");
 
-            if (FMLClientHandler.instance().hasOptifine())
-                optifineCharWidth = (float[]) charWidthMethodHandle.invokeExact(fontRenderer);
+            if (FMLClientHandler.instance()
+                .hasOptifine()) optifineCharWidth = (float[]) charWidthMethodHandle.invokeExact(fontRenderer);
             else mcCharWidth = (int[]) charWidthMethodHandle.invokeExact(fontRenderer);
 
             glyphWidth = fontRenderer.glyphWidth;
@@ -100,7 +102,9 @@ public class MinecraftFont extends MalisisFont {
         }
         if (rl != lastFontTexture) {
             renderer.next();
-            Minecraft.getMinecraft().getTextureManager().bindTexture(rl);
+            Minecraft.getMinecraft()
+                .getTextureManager()
+                .bindTexture(rl);
             lastFontTexture = rl;
         }
     }
@@ -213,7 +217,8 @@ public class MinecraftFont extends MalisisFont {
         @Override
         public float getCharWidth() {
             if (c == ' ' || c < 0 || c >= 256 || pos == -1) return 4.0F;
-            else if (FMLClientHandler.instance().hasOptifine()) return optifineCharWidth[c];
+            else if (FMLClientHandler.instance()
+                .hasOptifine()) return optifineCharWidth[c];
             else return mcCharWidth[pos];
         }
 

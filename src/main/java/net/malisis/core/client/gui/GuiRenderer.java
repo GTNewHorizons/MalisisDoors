@@ -184,7 +184,9 @@ public class GuiRenderer extends MalisisRenderer {
     public void bindTexture(GuiTexture texture) {
         if (texture == null || texture == currentTexture) return;
 
-        Minecraft.getMinecraft().getTextureManager().bindTexture(texture.getResourceLocation());
+        Minecraft.getMinecraft()
+            .getTextureManager()
+            .bindTexture(texture.getResourceLocation());
         currentTexture = texture;
     }
 
@@ -258,7 +260,7 @@ public class GuiRenderer extends MalisisRenderer {
     }
 
     public void drawRectangle(float x, float y, float z, float width, float height, int color, int alpha,
-            boolean relative) {
+        boolean relative) {
         if (relative && currentComponent != null) {
             x += currentComponent.screenX();
             y += currentComponent.screenY();
@@ -359,7 +361,7 @@ public class GuiRenderer extends MalisisRenderer {
      * @param relative true if the coordinates are relative to current component
      */
     public void drawText(MalisisFont font, String text, float x, float y, float z, FontRenderOptions fro,
-            boolean relative) {
+        boolean relative) {
         if (relative && currentComponent != null) {
             x += currentComponent.screenX();
             y += currentComponent.screenY();
@@ -427,7 +429,7 @@ public class GuiRenderer extends MalisisRenderer {
      * @param relative  if true, coordinates are relative to current component
      */
     public void drawItemStack(ItemStack itemStack, int x, int y, String label, EnumChatFormatting format,
-            boolean relative) {
+        boolean relative) {
         if (itemStack == null) return;
 
         if (relative && currentComponent != null) {
@@ -435,7 +437,8 @@ public class GuiRenderer extends MalisisRenderer {
             y += currentComponent.screenY();
         }
 
-        FontRenderer fontRenderer = itemStack.getItem().getFontRenderer(itemStack);
+        FontRenderer fontRenderer = itemStack.getItem()
+            .getFontRenderer(itemStack);
         if (fontRenderer == null) fontRenderer = Minecraft.getMinecraft().fontRenderer;
 
         if (label == null && (itemStack.stackSize > 1 || format != null)) label = Integer.toString(itemStack.stackSize);
@@ -447,18 +450,20 @@ public class GuiRenderer extends MalisisRenderer {
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 
         itemRenderer.renderItemAndEffectIntoGUI(
-                fontRenderer,
-                Minecraft.getMinecraft().getTextureManager(),
-                itemStack,
-                x,
-                y);
+            fontRenderer,
+            Minecraft.getMinecraft()
+                .getTextureManager(),
+            itemStack,
+            x,
+            y);
         itemRenderer.renderItemOverlayIntoGUI(
-                fontRenderer,
-                Minecraft.getMinecraft().getTextureManager(),
-                itemStack,
-                x,
-                y,
-                label);
+            fontRenderer,
+            Minecraft.getMinecraft()
+                .getTextureManager(),
+            itemStack,
+            x,
+            y,
+            label);
 
         RenderHelper.disableStandardItemLighting();
         GL11.glColor4f(1, 1, 1, 1);
@@ -480,12 +485,12 @@ public class GuiRenderer extends MalisisRenderer {
         itemRenderer.zLevel = 100;
         t.startDrawingQuads();
         drawItemStack(
-                itemStack,
-                mouseX - 8,
-                mouseY - 8,
-                null,
-                itemStack.stackSize == 0 ? EnumChatFormatting.YELLOW : null,
-                false);
+            itemStack,
+            mouseX - 8,
+            mouseY - 8,
+            null,
+            itemStack.stackSize == 0 ? EnumChatFormatting.YELLOW : null,
+            false);
         t.draw();
         itemRenderer.zLevel = 0;
     }

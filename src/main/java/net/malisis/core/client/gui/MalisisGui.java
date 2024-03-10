@@ -134,7 +134,8 @@ public abstract class MalisisGui extends GuiScreen {
             }
         } catch (Exception e) {
             MalisisCore.message(
-                    "A problem occured while constructing " + e.getClass().getSimpleName() + ": " + e.getMessage());
+                "A problem occured while constructing " + e.getClass()
+                    .getSimpleName() + ": " + e.getMessage());
             e.printStackTrace(new PrintStream(new FileOutputStream(FileDescriptor.out)));
         }
 
@@ -326,7 +327,9 @@ public abstract class MalisisGui extends GuiScreen {
                 component.onScrollWheel(mouseX, mouseY, delta);
             }
         } catch (Exception e) {
-            MalisisCore.message("A problem occured : " + e.getClass().getSimpleName() + ": " + e.getMessage());
+            MalisisCore.message(
+                "A problem occured : " + e.getClass()
+                    .getSimpleName() + ": " + e.getMessage());
             e.printStackTrace(new PrintStream(new FileOutputStream(FileDescriptor.out)));
         }
     }
@@ -359,7 +362,9 @@ public abstract class MalisisGui extends GuiScreen {
             lastClickTime = time;
             lastClickButton = button;
         } catch (Exception e) {
-            MalisisCore.message("A problem occured : " + e.getClass().getSimpleName() + ": " + e.getMessage());
+            MalisisCore.message(
+                "A problem occured : " + e.getClass()
+                    .getSimpleName() + ": " + e.getMessage());
             e.printStackTrace(new PrintStream(new FileOutputStream(FileDescriptor.out)));
         }
     }
@@ -373,7 +378,9 @@ public abstract class MalisisGui extends GuiScreen {
             if (focusedComponent != null)
                 focusedComponent.onDrag(lastMouseX, lastMouseY, x, y, MouseButton.getButton(button));
         } catch (Exception e) {
-            MalisisCore.message("A problem occured : " + e.getClass().getSimpleName() + ": " + e.getMessage());
+            MalisisCore.message(
+                "A problem occured : " + e.getClass()
+                    .getSimpleName() + ": " + e.getMessage());
             e.printStackTrace(new PrintStream(new FileOutputStream(FileDescriptor.out)));
         }
     }
@@ -406,7 +413,9 @@ public abstract class MalisisGui extends GuiScreen {
                 }
             }
         } catch (Exception e) {
-            MalisisCore.message("A problem occured : " + e.getClass().getSimpleName() + ": " + e.getMessage());
+            MalisisCore.message(
+                "A problem occured : " + e.getClass()
+                    .getSimpleName() + ": " + e.getMessage());
             e.printStackTrace(new PrintStream(new FileOutputStream(FileDescriptor.out)));
         }
     }
@@ -423,12 +432,10 @@ public abstract class MalisisGui extends GuiScreen {
             if (ret) return;
 
             if (focusedComponent != null && !keyListeners.contains(focusedComponent)
-                    && focusedComponent.onKeyTyped(keyChar, keyCode))
-                return;
+                && focusedComponent.onKeyTyped(keyChar, keyCode)) return;
 
             if (hoveredComponent != null && !keyListeners.contains(hoveredComponent)
-                    && hoveredComponent.onKeyTyped(keyChar, keyCode))
-                return;
+                && hoveredComponent.onKeyTyped(keyChar, keyCode)) return;
 
             if (isGuiCloseKey(keyCode) && !isOverlay) close();
 
@@ -442,9 +449,8 @@ public abstract class MalisisGui extends GuiScreen {
             }
         } catch (Exception e) {
             MalisisCore.message(
-                    "A problem occured while handling key typed for " + e.getClass().getSimpleName()
-                            + ": "
-                            + e.getMessage());
+                "A problem occured while handling key typed for " + e.getClass()
+                    .getSimpleName() + ": " + e.getMessage());
             e.printStackTrace(new PrintStream(new FileOutputStream(FileDescriptor.out)));
         }
     }
@@ -551,7 +557,8 @@ public abstract class MalisisGui extends GuiScreen {
         if (!doConstruct()) return;
 
         MalisisGui.cancelClose = cancelClose;
-        Minecraft.getMinecraft().displayGuiScreen(this);
+        Minecraft.getMinecraft()
+            .displayGuiScreen(this);
     }
 
     /**
@@ -575,13 +582,17 @@ public abstract class MalisisGui extends GuiScreen {
         if (!doConstruct()) return;
 
         MinecraftForge.EVENT_BUS.register(this);
-        FMLCommonHandler.instance().bus().register(this);
+        FMLCommonHandler.instance()
+            .bus()
+            .register(this);
     }
 
     public void closeOverlay() {
         if (mc.currentScreen == this) close();
         MinecraftForge.EVENT_BUS.unregister(this);
-        FMLCommonHandler.instance().bus().unregister(this);
+        FMLCommonHandler.instance()
+            .bus()
+            .unregister(this);
         onGuiClosed();
     }
 
@@ -720,13 +731,14 @@ public abstract class MalisisGui extends GuiScreen {
     }
 
     public static void playSound(String name, float level) {
-        Minecraft.getMinecraft().getSoundHandler()
-                .playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation(name), level));
+        Minecraft.getMinecraft()
+            .getSoundHandler()
+            .playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation(name), level));
     }
 
     public static boolean isGuiCloseKey(int keyCode) {
         MalisisGui gui = currentGui();
         return keyCode == Keyboard.KEY_ESCAPE || (gui != null && gui.inventoryContainer != null
-                && keyCode == gui.mc.gameSettings.keyBindInventory.getKeyCode());
+            && keyCode == gui.mc.gameSettings.keyBindInventory.getKeyCode());
     }
 }

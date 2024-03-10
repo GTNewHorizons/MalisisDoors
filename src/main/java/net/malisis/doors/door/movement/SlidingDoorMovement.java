@@ -47,14 +47,16 @@ public class SlidingDoorMovement implements IDoorMovement {
 
     private Transformation getTransformation(DoorTileEntity tileEntity) {
         Translation translation = new Translation(
-                0,
-                0,
-                0,
-                tileEntity.isReversed() ? -1 + Door.DOOR_WIDTH : 1 - DOOR_WIDTH,
-                0,
-                0);
+            0,
+            0,
+            0,
+            tileEntity.isReversed() ? -1 + Door.DOOR_WIDTH : 1 - DOOR_WIDTH,
+            0,
+            0);
         translation.reversed(tileEntity.getState() == DoorState.CLOSING || tileEntity.getState() == DoorState.CLOSED);
-        translation.forTicks(tileEntity.getDescriptor().getOpeningTime());
+        translation.forTicks(
+            tileEntity.getDescriptor()
+                .getOpeningTime());
 
         return translation;
     }

@@ -42,12 +42,14 @@ public class MCEditor extends UIContainer<MCEditor> implements IGuiText<MCEditor
     public MCEditor(MalisisGui gui) {
         super(gui);
         tf = new UITextField(gui, true);
-        tf.setSize(0, -14).setAnchor(Anchor.BOTTOM);
+        tf.setSize(0, -14)
+            .setAnchor(Anchor.BOTTOM);
 
         sel = new EcfSelect(gui, this);
 
         cb = new UICheckBox(gui, "Use litteral formatting");
-        cb.setPosition(85, 0).register(this);
+        cb.setPosition(85, 0)
+            .register(this);
 
         add(tf, sel, cb);
     }

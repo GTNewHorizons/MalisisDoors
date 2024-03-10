@@ -66,7 +66,9 @@ public class UIPasswordField extends UITextField {
      */
     protected void updateText() {
         this.text.setLength(0);
-        this.text.append(password.toString().replaceAll("(?s).", String.valueOf(passwordChar)));
+        this.text.append(
+            password.toString()
+                .replaceAll("(?s).", String.valueOf(passwordChar)));
     }
 
     /**
@@ -80,7 +82,8 @@ public class UIPasswordField extends UITextField {
 
         int position = cursorPosition.textPosition;
         String oldValue = password.toString();
-        String newValue = new StringBuilder(oldValue).insert(position, text).toString();
+        String newValue = new StringBuilder(oldValue).insert(position, text)
+            .toString();
 
         if (!validateText(newValue)) return;
 
@@ -132,6 +135,6 @@ public class UIPasswordField extends UITextField {
     @Override
     protected boolean handleCtrlKeyDown(int keyCode) {
         return GuiScreen.isCtrlKeyDown() && !(keyCode == Keyboard.KEY_C || keyCode == Keyboard.KEY_X)
-                && super.handleCtrlKeyDown(keyCode);
+            && super.handleCtrlKeyDown(keyCode);
     }
 }

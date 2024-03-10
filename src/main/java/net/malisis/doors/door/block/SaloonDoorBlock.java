@@ -45,7 +45,7 @@ public class SaloonDoorBlock extends Door {
 
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer p, int par6, float par7, float par8,
-            float par9) {
+        float par9) {
         return true;
     }
 

@@ -63,7 +63,8 @@ public class CloseInventoryMessage implements IMessageHandler<CloseInventoryMess
      */
     @SideOnly(Side.CLIENT)
     private void closeGui() {
-        if (MalisisGui.currentGui() != null) MalisisGui.currentGui().close();
+        if (MalisisGui.currentGui() != null) MalisisGui.currentGui()
+            .close();
     }
 
     /**

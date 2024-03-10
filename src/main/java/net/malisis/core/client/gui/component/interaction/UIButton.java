@@ -71,10 +71,15 @@ public class UIButton extends UIComponent<UIButton> implements IGuiText<UIButton
         hoveredFro.shadow = true;
 
         shape = new XYResizableGuiShape();
-        icon = gui.getGuiTexture().getXYResizableIcon(0, 20, 200, 20, 5);
-        iconHovered = gui.getGuiTexture().getXYResizableIcon(0, 40, 200, 20, 5);
-        iconDisabled = gui.getGuiTexture().getXYResizableIcon(0, 0, 200, 20, 5);
-        iconPressed = (GuiIcon) gui.getGuiTexture().getXYResizableIcon(0, 40, 200, 20, 5).flip(true, true);
+        icon = gui.getGuiTexture()
+            .getXYResizableIcon(0, 20, 200, 20, 5);
+        iconHovered = gui.getGuiTexture()
+            .getXYResizableIcon(0, 40, 200, 20, 5);
+        iconDisabled = gui.getGuiTexture()
+            .getXYResizableIcon(0, 0, 200, 20, 5);
+        iconPressed = (GuiIcon) gui.getGuiTexture()
+            .getXYResizableIcon(0, 40, 200, 20, 5)
+            .flip(true, true);
     }
 
     /**

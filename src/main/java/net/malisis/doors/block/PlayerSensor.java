@@ -31,7 +31,10 @@ public class PlayerSensor extends Block {
     @SideOnly(Side.CLIENT)
     @Override
     public void registerBlockIcons(IIconRegister iconRegister) {
-        this.blockIcon = iconRegister.registerIcon(MalisisDoors.modid + ":" + (this.getUnlocalizedName().substring(5)));
+        this.blockIcon = iconRegister.registerIcon(
+            MalisisDoors.modid + ":"
+                + (this.getUnlocalizedName()
+                    .substring(5)));
     }
 
     @Override
@@ -65,7 +68,7 @@ public class PlayerSensor extends Block {
 
     @Override
     public int onBlockPlaced(World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ,
-            int metadata) {
+        int metadata) {
         return side + (world.getBlockMetadata(x, y, z) & FLAG_POWERED);
     }
 

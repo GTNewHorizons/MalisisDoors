@@ -51,7 +51,7 @@ import com.google.common.collect.Iterables;
  * @author Ordinastie
  */
 public class UISelect<T> extends UIComponent<UISelect<T>>
-        implements Iterable<Option<T>>, IClipable, IGuiText<UISelect<T>>, IScrollable {
+    implements Iterable<Option<T>>, IClipable, IGuiText<UISelect<T>>, IScrollable {
 
     /** The {@link MalisisFont} to use for this {@link UISelect}. */
     protected MalisisFont font = MalisisFont.minecraftFont;
@@ -152,10 +152,14 @@ public class UISelect<T> extends UIComponent<UISelect<T>>
         optionsShape = new XYResizableGuiShape(1);
         optionBackground = new SimpleGuiShape();
 
-        iconsSelect = gui.getGuiTexture().getXResizableIcon(200, 30, 9, 12, 3);
-        iconsSelectDisabled = gui.getGuiTexture().getXResizableIcon(200, 42, 9, 12, 3);
-        iconsExpanded = gui.getGuiTexture().getXYResizableIcon(200, 30, 9, 12, 1);
-        arrowIcon = gui.getGuiTexture().getIcon(209, 48, 7, 4);
+        iconsSelect = gui.getGuiTexture()
+            .getXResizableIcon(200, 30, 9, 12, 3);
+        iconsSelectDisabled = gui.getGuiTexture()
+            .getXResizableIcon(200, 42, 9, 12, 3);
+        iconsExpanded = gui.getGuiTexture()
+            .getXYResizableIcon(200, 30, 9, 12, 1);
+        arrowIcon = gui.getGuiTexture()
+            .getIcon(209, 48, 7, 4);
     }
 
     /**
@@ -341,7 +345,7 @@ public class UISelect<T> extends UIComponent<UISelect<T>>
     private void calcOptionsSize() {
         optionsWidth = getWidth() - 4;
         for (Option<?> option : this) optionsWidth = Math
-                .max(optionsWidth, (int) MalisisFont.minecraftFont.getStringWidth(option.getLabel(labelPattern)));
+            .max(optionsWidth, (int) MalisisFont.minecraftFont.getStringWidth(option.getLabel(labelPattern)));
 
         optionsWidth += 4;
         if (maxExpandedWidth > 0) optionsWidth = Math.min(maxExpandedWidth, optionsWidth);
@@ -368,7 +372,8 @@ public class UISelect<T> extends UIComponent<UISelect<T>>
     public UISelect<T> setOptions(Iterable<T> values) {
         if (values == null) values = Collections.EMPTY_LIST;
 
-        options = FluentIterable.from(values).transform(toOption);
+        options = FluentIterable.from(values)
+            .transform(toOption);
 
         calcOptionsSize();
         return this;
@@ -536,7 +541,8 @@ public class UISelect<T> extends UIComponent<UISelect<T>>
     protected int getSelectedIndex() {
         if (selectedOption == null) return 0;
 
-        for (int i = 0; i < options.size(); i++) if (options.get(i).equals(selectedOption)) return i;
+        for (int i = 0; i < options.size(); i++) if (options.get(i)
+            .equals(selectedOption)) return i;
         return 0;
     }
 
@@ -547,8 +553,8 @@ public class UISelect<T> extends UIComponent<UISelect<T>>
         if (!expanded || !isVisible()) return false;
 
         return x >= screenX() && x <= screenX() + optionsWidth
-                && y >= screenY() + 12
-                && y <= screenY() + 12 + optionsHeight;
+            && y >= screenY() + 12
+            && y <= screenY() + 12 + optionsHeight;
     }
 
     @Override
@@ -560,12 +566,12 @@ public class UISelect<T> extends UIComponent<UISelect<T>>
     @Override
     public ClipArea getClipArea() {
         return new ClipArea(
-                this,
-                screenX(),
-                screenY(),
-                screenX() + optionsWidth,
-                screenY() + optionsHeight + 12,
-                false);
+            this,
+            screenX(),
+            screenY(),
+            screenX() + optionsWidth,
+            screenY() + optionsHeight + 12,
+            false);
     }
 
     @Override
@@ -839,19 +845,19 @@ public class UISelect<T> extends UIComponent<UISelect<T>>
         }
 
         public void draw(UISelect select, GuiRenderer renderer, int x, int y, int z, float partialTick, boolean hovered,
-                boolean isTop) {
+            boolean isTop) {
             String text = getLabel(select.labelPattern);
             if (StringUtils.isEmpty(text)) return;
 
             if (hovered && !disabled) {
                 renderer.drawRectangle(
-                        x + 1,
-                        y - 1,
-                        z + 2,
-                        select.optionsWidth - 2,
-                        getHeight(select),
-                        select.getHoverBgColor(),
-                        255);
+                    x + 1,
+                    y - 1,
+                    z + 2,
+                    select.optionsWidth - 2,
+                    getHeight(select),
+                    select.getHoverBgColor(),
+                    255);
             }
 
             if (isTop) text = MalisisFont.minecraftFont.clipString(text, select.getWidth() - 15);

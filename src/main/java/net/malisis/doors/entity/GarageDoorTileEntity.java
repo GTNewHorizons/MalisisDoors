@@ -61,11 +61,11 @@ public class GarageDoorTileEntity extends DoorTileEntity {
 
     public GarageDoorTileEntity getGarageDoor(ForgeDirection dir) {
         GarageDoorTileEntity te = TileEntityUtils.getTileEntity(
-                GarageDoorTileEntity.class,
-                getWorldObj(),
-                xCoord + dir.offsetX,
-                yCoord + dir.offsetY,
-                zCoord + dir.offsetZ);
+            GarageDoorTileEntity.class,
+            getWorldObj(),
+            xCoord + dir.offsetX,
+            yCoord + dir.offsetY,
+            zCoord + dir.offsetZ);
         if (te == null) return null;
         if (te.getDirection() != getDirection()) return null;
 
@@ -84,7 +84,7 @@ public class GarageDoorTileEntity extends DoorTileEntity {
         }
 
         GarageDoorTileEntity te = getGarageDoor(
-                GarageDoor.isEastOrWest(blockMetadata) ? ForgeDirection.NORTH : ForgeDirection.EAST);
+            GarageDoor.isEastOrWest(blockMetadata) ? ForgeDirection.NORTH : ForgeDirection.EAST);
         if (te != null) te.setPowered(powered);
         te = getGarageDoor(GarageDoor.isEastOrWest(blockMetadata) ? ForgeDirection.SOUTH : ForgeDirection.WEST);
         if (te != null) te.setPowered(powered);
@@ -105,11 +105,11 @@ public class GarageDoorTileEntity extends DoorTileEntity {
     public AxisAlignedBB getRenderBoundingBox() {
         Set<GarageDoorTileEntity> childDoors = getDoors();
         return AxisAlignedBB.getBoundingBox(
-                xCoord - childDoors.size(),
-                yCoord - childDoors.size(),
-                zCoord - childDoors.size(),
-                xCoord + childDoors.size() + 1,
-                yCoord + 1,
-                zCoord + childDoors.size() + 1);
+            xCoord - childDoors.size(),
+            yCoord - childDoors.size(),
+            zCoord - childDoors.size(),
+            xCoord + childDoors.size() + 1,
+            yCoord + 1,
+            zCoord + childDoors.size() + 1);
     }
 }

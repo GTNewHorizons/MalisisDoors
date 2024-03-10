@@ -40,7 +40,10 @@ public class RenderHelper {
     }
 
     public static void bindTexture(ResourceLocation path) {
-        FMLClientHandler.instance().getClient().getTextureManager().bindTexture(path);
+        FMLClientHandler.instance()
+            .getClient()
+            .getTextureManager()
+            .bindTexture(path);
     }
 
     public static int getColorFromRGB(int r, int g, int b) {
@@ -70,18 +73,19 @@ public class RenderHelper {
     }
 
     public static Minecraft getMC() {
-        return FMLClientHandler.instance().getClient();
+        return FMLClientHandler.instance()
+            .getClient();
     }
 
     public static void drawString(String text, int x, int y, int z, int canvasWidth, int canvasHeight, int color,
-            boolean drawShadow) {
+        boolean drawShadow) {
         drawString(
-                text,
-                x + (canvasWidth - getStringWidth(text)) / 2,
-                y + (canvasHeight - getMC().fontRenderer.FONT_HEIGHT) / 2,
-                z,
-                color,
-                drawShadow);
+            text,
+            x + (canvasWidth - getStringWidth(text)) / 2,
+            y + (canvasHeight - getMC().fontRenderer.FONT_HEIGHT) / 2,
+            z,
+            color,
+            drawShadow);
     }
 
     public static void drawString(String text, int x, int y, int z, int color, boolean drawShadow) {
@@ -106,7 +110,7 @@ public class RenderHelper {
     }
 
     public static void drawLine(int color, float alpha, int startX, int startY, int endX, int endY, float width,
-            int zLevel) {
+        int zLevel) {
         Color rgb = RenderHelper.getRGBFromColor(color);
         rgb.setAlpha((int) (alpha * 255));
         drawLine(rgb, startX, startY, endX, endY, width, zLevel);
@@ -122,10 +126,10 @@ public class RenderHelper {
         glEnable(GL11.GL_BLEND);
         glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         glColor4f(
-                multiplier * color.getRed(),
-                multiplier * color.getGreen(),
-                multiplier * color.getBlue(),
-                multiplier * color.getAlpha());
+            multiplier * color.getRed(),
+            multiplier * color.getGreen(),
+            multiplier * color.getBlue(),
+            multiplier * color.getAlpha());
         glLineWidth(width);
         glBegin(GL11.GL_LINES);
         glVertex3f(startX, startY, zLevel);
@@ -155,12 +159,12 @@ public class RenderHelper {
     }
 
     public static void drawRectangle(ResourceLocation texture, int x, int y, int z, int width, int height, int u,
-            int v) {
+        int v) {
         drawRectangle(texture, x, y, z, width, height, u, v, 256, 256);
     }
 
     public static void drawRectangle(ResourceLocation texture, int x, int y, int z, int width, int height, int u, int v,
-            int textureWidth, int textureHeight) {
+        int textureWidth, int textureHeight) {
         bindTexture(texture);
         drawRectangle(x, y, z, width, height, u, v, textureWidth, textureHeight);
     }
@@ -170,17 +174,17 @@ public class RenderHelper {
     }
 
     public static void drawRectangle(int x, int y, int z, int width, int height, int u, int v, int textureWidth,
-            int textureHeight) {
+        int textureHeight) {
         drawQuad(
-                x,
-                y,
-                z,
-                width,
-                height,
-                (float) u / textureWidth,
-                (float) v / textureHeight,
-                (float) (u + width) / textureWidth,
-                (float) (v + height) / textureHeight);
+            x,
+            y,
+            z,
+            width,
+            height,
+            (float) u / textureWidth,
+            (float) v / textureHeight,
+            (float) (u + width) / textureWidth,
+            (float) (v + height) / textureHeight);
     }
 
     public static void drawQuad(int x, int y, int z, int width, int height, float u, float v, float uMax, float vMax) {
@@ -197,33 +201,33 @@ public class RenderHelper {
     }
 
     public static void drawRectangleRepeated(ResourceLocation texture, int x, int y, int z, int width, int height,
-            float u, float v, float uMax, float vMax, int tileWidth, int tileHeight) {
+        float u, float v, float uMax, float vMax, int tileWidth, int tileHeight) {
         RenderHelper.bindTexture(texture);
         drawRectangleRepeated(x, y, z, width, height, u, v, uMax, vMax, tileWidth, tileHeight);
     }
 
     public static void drawRectangleRepeated(int x, int y, int z, int width, int height, float u, float v, float uMax,
-            float vMax, int tileWidth, int tileHeight) {
+        float vMax, int tileWidth, int tileHeight) {
         loadShaders();
         shaders.activate();
         shaders.setUniform1i("tex", 0);
         shaders.setUniform2f("iconOffset", u, v);
         shaders.setUniform2f("iconSize", uMax - u, vMax - v);
         drawQuad(
-                x,
-                y,
-                z,
-                width,
-                height,
-                0,
-                0,
-                (float) getScaledWidth(width) / tileWidth,
-                (float) getScaledHeight(height) / tileHeight);
+            x,
+            y,
+            z,
+            width,
+            height,
+            0,
+            0,
+            (float) getScaledWidth(width) / tileWidth,
+            (float) getScaledHeight(height) / tileHeight);
         shaders.deactivate();
     }
 
     public static void drawRectangleXRepeated(int x, int y, int z, int width, int height, float u, float v, float uMax,
-            float vMax, int tileWidth) {
+        float vMax, int tileWidth) {
         loadShaders();
         shaders.activate();
         shaders.setUniform1i("tex", 0);
@@ -234,7 +238,7 @@ public class RenderHelper {
     }
 
     public static void drawRectangleYRepeated(int x, int y, int z, int width, int height, float u, float v, float uMax,
-            float vMax, int tileHeight) {
+        float vMax, int tileHeight) {
         loadShaders();
         shaders.activate();
         shaders.setUniform1i("tex", 0);
@@ -251,10 +255,10 @@ public class RenderHelper {
     private static ShaderSystem shaders;
 
     private static final String REPEAT_SHADER = "#version 120\n"
-            + "uniform sampler2D tex; uniform vec2 iconOffset; uniform vec2 iconSize;\n"
-            + "void main() {\n"
-            + "gl_FragColor = texture2D(tex, iconOffset + fract(gl_TexCoord[0].st) * iconSize) * gl_Color;\n"
-            + "}";
+        + "uniform sampler2D tex; uniform vec2 iconOffset; uniform vec2 iconSize;\n"
+        + "void main() {\n"
+        + "gl_FragColor = texture2D(tex, iconOffset + fract(gl_TexCoord[0].st) * iconSize) * gl_Color;\n"
+        + "}";
 
     public static void loadShaders() {
         if (shaders == null) {
@@ -265,9 +269,9 @@ public class RenderHelper {
 
     public static ScaledResolution getScaledResolution() {
         return new ScaledResolution(
-                Minecraft.getMinecraft(),
-                Minecraft.getMinecraft().displayWidth,
-                Minecraft.getMinecraft().displayHeight);
+            Minecraft.getMinecraft(),
+            Minecraft.getMinecraft().displayWidth,
+            Minecraft.getMinecraft().displayHeight);
     }
 
     public static int getScaledWidth(int width) {
@@ -289,7 +293,7 @@ public class RenderHelper {
         }
 
         while (scaleFactor < k && mc.displayWidth / (scaleFactor + 1) >= 320
-                && mc.displayHeight / (scaleFactor + 1) >= 240) {
+            && mc.displayHeight / (scaleFactor + 1) >= 240) {
             ++scaleFactor;
         }
         return scaleFactor;

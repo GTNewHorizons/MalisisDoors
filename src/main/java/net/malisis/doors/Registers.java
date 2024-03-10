@@ -123,9 +123,9 @@ public class Registers {
         VanillaDoor woodDoor = new VanillaDoor(Material.wood);
         woodDoor.create();
         ReplacementTool
-                .replaceVanillaItem(324, "wooden_door", "field_151135_aq", woodDoor.getItem(), Items.wooden_door);
+            .replaceVanillaItem(324, "wooden_door", "field_151135_aq", woodDoor.getItem(), Items.wooden_door);
         ReplacementTool
-                .replaceVanillaBlock(64, "wooden_door", "field_150466_ao", woodDoor.getBlock(), Blocks.wooden_door);
+            .replaceVanillaBlock(64, "wooden_door", "field_150466_ao", woodDoor.getBlock(), Blocks.wooden_door);
 
         VanillaDoor ironDoor = new VanillaDoor(Material.iron);
         ironDoor.create();
@@ -137,7 +137,7 @@ public class Registers {
         VanillaTrapDoor vanillaTrapDoor = new VanillaTrapDoor();
         vanillaTrapDoor.create();
         ReplacementTool
-                .replaceVanillaBlock(96, "trapdoor", "field_150415_aT", vanillaTrapDoor.getBlock(), Blocks.trapdoor);
+            .replaceVanillaBlock(96, "trapdoor", "field_150415_aT", vanillaTrapDoor.getBlock(), Blocks.trapdoor);
     }
 
     private static void registerVanillaFenceGate() {
@@ -245,20 +245,23 @@ public class Registers {
     private static void registerPlayerSensor() {
         playerSensor = new PlayerSensor();
 
-        GameRegistry.registerBlock(playerSensor, playerSensor.getUnlocalizedName().substring(5));
+        GameRegistry.registerBlock(
+            playerSensor,
+            playerSensor.getUnlocalizedName()
+                .substring(5));
 
         // Sensor recipe
         GameRegistry.addRecipe(
-                new ShapedOreRecipe(
-                        new ItemStack(playerSensor),
-                        "ABA",
-                        "CCC",
-                        'A',
-                        Items.iron_ingot,
-                        'B',
-                        Items.redstone,
-                        'C',
-                        "blockGlassColorless"));
+            new ShapedOreRecipe(
+                new ItemStack(playerSensor),
+                "ABA",
+                "CCC",
+                'A',
+                Items.iron_ingot,
+                'B',
+                Items.redstone,
+                'C',
+                "blockGlassColorless"));
     }
 
     private static void registerVanishingBlock() {
@@ -266,56 +269,60 @@ public class Registers {
         vanishingDiamondBlock = new VanishingDiamondBlock();
 
         GameRegistry.registerBlock(
-                vanishingBlock,
-                VanishingBlockItem.class,
-                vanishingBlock.getUnlocalizedName().substring(5));
-        GameRegistry.registerBlock(vanishingDiamondBlock, vanishingDiamondBlock.getUnlocalizedName().substring(5));
+            vanishingBlock,
+            VanishingBlockItem.class,
+            vanishingBlock.getUnlocalizedName()
+                .substring(5));
+        GameRegistry.registerBlock(
+            vanishingDiamondBlock,
+            vanishingDiamondBlock.getUnlocalizedName()
+                .substring(5));
 
         // Vanishing Block Recipes
         GameRegistry.addRecipe(
-                new ItemStack(vanishingBlock, 4, 0),
-                "ABA",
-                "BCB",
-                "ABA",
-                'A',
-                Items.redstone,
-                'B',
-                Items.stick,
-                'C',
-                Items.ender_pearl);
+            new ItemStack(vanishingBlock, 4, 0),
+            "ABA",
+            "BCB",
+            "ABA",
+            'A',
+            Items.redstone,
+            'B',
+            Items.stick,
+            'C',
+            Items.ender_pearl);
         GameRegistry.addRecipe(
-                new ItemStack(vanishingBlock, 4, 1),
-                "ABA",
-                "BCB",
-                "ABA",
-                'A',
-                Items.redstone,
-                'B',
-                Items.iron_ingot,
-                'C',
-                Items.ender_pearl);
+            new ItemStack(vanishingBlock, 4, 1),
+            "ABA",
+            "BCB",
+            "ABA",
+            'A',
+            Items.redstone,
+            'B',
+            Items.iron_ingot,
+            'C',
+            Items.ender_pearl);
         GameRegistry.addRecipe(
-                new ItemStack(vanishingBlock, 4, 2),
-                "ABA",
-                "BCB",
-                "ABA",
-                'A',
-                Items.redstone,
-                'B',
-                Items.gold_ingot,
-                'C',
-                Items.ender_pearl);
+            new ItemStack(vanishingBlock, 4, 2),
+            "ABA",
+            "BCB",
+            "ABA",
+            'A',
+            Items.redstone,
+            'B',
+            Items.gold_ingot,
+            'C',
+            Items.ender_pearl);
         GameRegistry.addRecipe(
-                new ItemStack(vanishingBlock, 4, 3),
-                "ABA",
-                "BCB",
-                "ABA",
-                'A',
-                Items.redstone,
-                'B',
-                Items.diamond,
-                'C',
-                Items.ender_pearl);
+            new ItemStack(vanishingBlock, 4, 3),
+            "ABA",
+            "BCB",
+            "ABA",
+            'A',
+            Items.redstone,
+            'B',
+            Items.diamond,
+            'C',
+            Items.ender_pearl);
 
         GameRegistry.registerTileEntity(VanishingTileEntity.class, "vanishingTileEntity");
         GameRegistry.registerTileEntity(VanishingDiamondTileEntity.class, "vanishingDiamondTileEntity");
@@ -325,12 +332,19 @@ public class Registers {
         blockMixer = new BlockMixer();
         mixedBlock = new MixedBlock();
 
-        GameRegistry.registerBlock(blockMixer, blockMixer.getUnlocalizedName().substring(5));
-        GameRegistry.registerBlock(mixedBlock, MixedBlockBlockItem.class, mixedBlock.getUnlocalizedName().substring(5));
+        GameRegistry.registerBlock(
+            blockMixer,
+            blockMixer.getUnlocalizedName()
+                .substring(5));
+        GameRegistry.registerBlock(
+            mixedBlock,
+            MixedBlockBlockItem.class,
+            mixedBlock.getUnlocalizedName()
+                .substring(5));
 
         // Block Mixer recipe
         GameRegistry
-                .addRecipe(new ItemStack(blockMixer), "AAA", "B B", "AAA", 'A', Items.iron_ingot, 'B', Blocks.piston);
+            .addRecipe(new ItemStack(blockMixer), "AAA", "B B", "AAA", 'A', Items.iron_ingot, 'B', Blocks.piston);
 
         GameRegistry.registerTileEntity(BlockMixerTileEntity.class, "blockMixerTileEntity");
         GameRegistry.registerTileEntity(MixedBlockTileEntity.class, "mixedBlockTileEntity");
@@ -339,7 +353,10 @@ public class Registers {
     private static void registerGarageDoor() {
         garageDoor = new GarageDoor();
 
-        GameRegistry.registerBlock(garageDoor, garageDoor.getUnlocalizedName().substring(5));
+        GameRegistry.registerBlock(
+            garageDoor,
+            garageDoor.getUnlocalizedName()
+                .substring(5));
 
         GameRegistry.registerTileEntity(GarageDoorTileEntity.class, "garageDoorTileEntity");
 
@@ -353,23 +370,26 @@ public class Registers {
         GameRegistry.registerTileEntity(DoorFactoryTileEntity.class, "doorFactoryTileEntity");
 
         GameRegistry.addRecipe(
-                new ItemStack(doorFactory),
-                "ABA",
-                "C C",
-                "ADA",
-                'A',
-                Items.iron_ingot,
-                'B',
-                Items.iron_door,
-                'C',
-                Items.redstone,
-                'D',
-                Blocks.piston);
+            new ItemStack(doorFactory),
+            "ABA",
+            "C C",
+            "ADA",
+            'A',
+            Items.iron_ingot,
+            'B',
+            Items.iron_door,
+            'C',
+            Items.redstone,
+            'D',
+            Blocks.piston);
     }
 
     private static void registerCustomDoor() {
         customDoor = new CustomDoor();
-        GameRegistry.registerBlock(customDoor, customDoor.getUnlocalizedName().substring(5));
+        GameRegistry.registerBlock(
+            customDoor,
+            customDoor.getUnlocalizedName()
+                .substring(5));
 
         customDoorItem = new CustomDoorItem();
         GameRegistry.registerItem(customDoorItem, customDoorItem.getUnlocalizedName());
@@ -385,7 +405,8 @@ public class Registers {
 
             @Override
             public void registerIcons(IIconRegister register) {};
-        }.setUnlocalizedName("rustyHandle").setCreativeTab(MalisisDoors.tab);
+        }.setUnlocalizedName("rustyHandle")
+            .setCreativeTab(MalisisDoors.tab);
         GameRegistry.registerItem(rustyHandle, rustyHandle.getUnlocalizedName());
 
         GameRegistry.registerTileEntity(RustyHatchTileEntity.class, "rustyHatchTileEntity");
@@ -394,7 +415,10 @@ public class Registers {
         GameRegistry.addRecipe(new ItemStack(rustyHatch), "A ", "AB", "A ", 'A', Items.iron_ingot, 'B', rustyHandle);
 
         rustyLadder = new RustyLadder();
-        GameRegistry.registerBlock(rustyLadder, rustyLadder.getUnlocalizedName().substring(5));
+        GameRegistry.registerBlock(
+            rustyLadder,
+            rustyLadder.getUnlocalizedName()
+                .substring(5));
         GameRegistry.addRecipe(new ItemStack(rustyLadder), "AAA", 'A', Items.iron_ingot);
     }
 
@@ -405,10 +429,8 @@ public class Registers {
         medievalDoor = new BigDoor(BigDoor.Type.MEDIEVAL);
         medievalDoor.register();
 
-        GameRegistry.registerTileEntityWithAlternatives(
-                BigDoorTileEntity.class,
-                "bigDoorTileEntity",
-                "carriageDoorTileEntity");
+        GameRegistry
+            .registerTileEntityWithAlternatives(BigDoorTileEntity.class, "bigDoorTileEntity", "carriageDoorTileEntity");
 
         GameRegistry.addRecipe(new BigDoorRecipe(BigDoor.Type.CARRIAGE));
         GameRegistry.addRecipe(new BigDoorRecipe(BigDoor.Type.MEDIEVAL));
@@ -416,26 +438,29 @@ public class Registers {
 
     private static void registerForcefieldDoor() {
         forcefieldDoor = new ForcefieldDoor();
-        GameRegistry.registerBlock(forcefieldDoor, forcefieldDoor.getUnlocalizedName().substring(5));
+        GameRegistry.registerBlock(
+            forcefieldDoor,
+            forcefieldDoor.getUnlocalizedName()
+                .substring(5));
 
         forcefieldItem = new ForcefieldItem();
         GameRegistry.registerItem(forcefieldItem, forcefieldItem.getUnlocalizedName());
 
         GameRegistry.registerTileEntity(ForcefieldTileEntity.class, "forcefieldTileEntity");
         GameRegistry.addRecipe(
-                new ItemStack(forcefieldItem),
-                "ABA",
-                "CDC",
-                "AEA",
-                'A',
-                Items.diamond,
-                'B',
-                Blocks.obsidian,
-                'C',
-                Items.repeater,
-                'D',
-                Items.ender_eye,
-                'E',
-                Items.comparator);
+            new ItemStack(forcefieldItem),
+            "ABA",
+            "CDC",
+            "AEA",
+            'A',
+            Items.diamond,
+            'B',
+            Blocks.obsidian,
+            'C',
+            Items.repeater,
+            'D',
+            Items.ender_eye,
+            'E',
+            Items.comparator);
     }
 }

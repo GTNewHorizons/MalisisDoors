@@ -52,7 +52,7 @@ public class VanishingTileEntity extends TileEntity {
     private final Random rand = new Random();
 
     private Block[] excludes = new Block[] { MalisisDoors.Blocks.vanishingBlock, Blocks.air, Blocks.ladder,
-            Blocks.stone_button, Blocks.wooden_button, Blocks.lever, Blocks.vine };
+        Blocks.stone_button, Blocks.wooden_button, Blocks.lever, Blocks.vine };
 
     public VanishingTileEntity() {
         this.frameType = VanishingBlock.typeWoodFrame;
@@ -111,11 +111,11 @@ public class VanishingTileEntity extends TileEntity {
         this.powered = powered;
         this.inTransition = true;
         worldObj.setBlockMetadataWithNotify(
-                xCoord,
-                yCoord,
-                zCoord,
-                getBlockMetadata() | VanishingBlock.flagInTransition,
-                2);
+            xCoord,
+            yCoord,
+            zCoord,
+            getBlockMetadata() | VanishingBlock.flagInTransition,
+            2);
 
         return true;
     }
@@ -129,22 +129,22 @@ public class VanishingTileEntity extends TileEntity {
                 vibrating = true;
                 vibratingTimer = 0;
                 worldObj.setBlockMetadataWithNotify(
-                        xCoord,
-                        yCoord,
-                        zCoord,
-                        getBlockMetadata() | VanishingBlock.flagInTransition,
-                        2);
+                    xCoord,
+                    yCoord,
+                    zCoord,
+                    getBlockMetadata() | VanishingBlock.flagInTransition,
+                    2);
             }
 
             if (vibrating && vibratingTimer++ >= maxVibratingTime) {
                 vibrating = false;
                 vibratingTimer = 0;
                 worldObj.setBlockMetadataWithNotify(
-                        xCoord,
-                        yCoord,
-                        zCoord,
-                        getBlockMetadata() & ~VanishingBlock.flagInTransition,
-                        2);
+                    xCoord,
+                    yCoord,
+                    zCoord,
+                    getBlockMetadata() & ~VanishingBlock.flagInTransition,
+                    2);
             }
 
         } else if (inTransition) {
@@ -158,11 +158,11 @@ public class VanishingTileEntity extends TileEntity {
                     inTransition = false;
                     worldObj.spawnParticle("smoke", xCoord + 0.5F, yCoord + 0.5F, zCoord + 0.5F, 0.0F, 0.0F, 0.0F);
                     worldObj.setBlockMetadataWithNotify(
-                            xCoord,
-                            yCoord,
-                            zCoord,
-                            getBlockMetadata() & ~VanishingBlock.flagInTransition,
-                            2);
+                        xCoord,
+                        yCoord,
+                        zCoord,
+                        getBlockMetadata() & ~VanishingBlock.flagInTransition,
+                        2);
                 }
             } else
             // shutting down => going visible
@@ -171,11 +171,11 @@ public class VanishingTileEntity extends TileEntity {
                 if (transitionTimer <= 0) {
                     inTransition = false;
                     worldObj.setBlockMetadataWithNotify(
-                            xCoord,
-                            yCoord,
-                            zCoord,
-                            getBlockMetadata() & ~VanishingBlock.flagInTransition,
-                            2);
+                        xCoord,
+                        yCoord,
+                        zCoord,
+                        getBlockMetadata() & ~VanishingBlock.flagInTransition,
+                        2);
                 }
             }
         }

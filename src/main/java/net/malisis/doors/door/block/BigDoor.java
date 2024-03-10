@@ -86,8 +86,10 @@ public class BigDoor extends MalisisBlock implements ITileEntityProvider {
     public boolean canPlaceBlockOnSide(World world, int x, int y, int z, int side) {
         if (side != 1) return false;
 
-        ForgeDirection dir = ForgeDirection.getOrientation(side).getOpposite();
-        return world.getBlock(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ).isSideSolid(world, x, y, z, dir);
+        ForgeDirection dir = ForgeDirection.getOrientation(side)
+            .getOpposite();
+        return world.getBlock(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ)
+            .isSideSolid(world, x, y, z, dir);
     }
 
     @Override
@@ -102,7 +104,7 @@ public class BigDoor extends MalisisBlock implements ITileEntityProvider {
 
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX,
-            float hitY, float hitZ) {
+        float hitY, float hitZ) {
         if (world.isRemote) return true;
 
         BigDoorTileEntity te = TileEntityUtils.getTileEntity(BigDoorTileEntity.class, world, x, y, z);
@@ -123,11 +125,11 @@ public class BigDoor extends MalisisBlock implements ITileEntityProvider {
         if (type == BoundingBoxType.RENDER) {
             aabbs[0].minZ = -.5F;
         } else if ((type == BoundingBoxType.COLLISION || type == BoundingBoxType.CHUNKCOLLISION
-                || type == BoundingBoxType.RAYTRACE) && (te.isOpened() || te.isMoving())) {
-                    aabbs = new AxisAlignedBB[] { AxisAlignedBB.getBoundingBox(0, 0, -0.5F, 0.5F, 4, 1),
-                            AxisAlignedBB.getBoundingBox(3.5F, 0, -0.5F, 4, 4, 1),
-                            AxisAlignedBB.getBoundingBox(0, 4, 1 - Door.DOOR_WIDTH, 4, 5, 1) };
-                }
+            || type == BoundingBoxType.RAYTRACE) && (te.isOpened() || te.isMoving())) {
+                aabbs = new AxisAlignedBB[] { AxisAlignedBB.getBoundingBox(0, 0, -0.5F, 0.5F, 4, 1),
+                    AxisAlignedBB.getBoundingBox(3.5F, 0, -0.5F, 4, 4, 1),
+                    AxisAlignedBB.getBoundingBox(0, 4, 1 - Door.DOOR_WIDTH, 4, 5, 1) };
+            }
 
         return AABBUtils.rotate(aabbs, Door.intToDir(te.getDirection()));
     }

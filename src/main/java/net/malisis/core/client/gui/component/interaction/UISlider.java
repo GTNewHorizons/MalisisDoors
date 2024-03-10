@@ -73,8 +73,10 @@ public class UISlider extends UIComponent<UISlider> implements IGuiText<UISlider
         sliderShape.setSize(8, 20);
         sliderShape.storeState();
 
-        iconBackground = gui.getGuiTexture().getXResizableIcon(0, 0, 200, 20, 5);
-        sliderIcon = gui.getGuiTexture().getIcon(227, 46, 8, 20);
+        iconBackground = gui.getGuiTexture()
+            .getXResizableIcon(0, 0, 200, 20, 5);
+        sliderIcon = gui.getGuiTexture()
+            .getIcon(227, 46, 8, 20);
     }
 
     public UISlider(MalisisGui gui, int width, float min, float max) {

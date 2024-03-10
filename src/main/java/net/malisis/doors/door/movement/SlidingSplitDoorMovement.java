@@ -49,7 +49,9 @@ public class SlidingSplitDoorMovement implements IDoorMovement {
     private Transformation getTransformation(DoorTileEntity tileEntity, boolean top) {
         Translation translation = new Translation(0, 0, 0, 0, top ? 1 - DOOR_WIDTH : -1.1F, 0);
         translation.reversed(tileEntity.getState() == DoorState.CLOSING || tileEntity.getState() == DoorState.CLOSED);
-        translation.forTicks(tileEntity.getDescriptor().getOpeningTime());
+        translation.forTicks(
+            tileEntity.getDescriptor()
+                .getOpeningTime());
 
         return translation;
     }
@@ -57,7 +59,7 @@ public class SlidingSplitDoorMovement implements IDoorMovement {
     @Override
     public Animation[] getAnimations(DoorTileEntity tileEntity, MalisisModel model, RenderParameters rp) {
         return new Animation[] { new Animation(model.getShape("top"), getTransformation(tileEntity, true)),
-                new Animation(model.getShape("bottom"), getTransformation(tileEntity, false)) };
+            new Animation(model.getShape("bottom"), getTransformation(tileEntity, false)) };
     }
 
     @Override

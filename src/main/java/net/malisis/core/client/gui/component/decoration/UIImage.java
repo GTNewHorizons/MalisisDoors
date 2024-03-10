@@ -173,6 +173,6 @@ public class UIImage extends UIComponent<UIImage> {
     @Override
     public String getPropertyString() {
         return (itemStack != null ? itemStack : ("texture : " + this.texture + ", " + " icon : " + icon))
-                + super.getPropertyString();
+            + super.getPropertyString();
     }
 }

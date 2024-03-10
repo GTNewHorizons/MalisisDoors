@@ -68,8 +68,10 @@ public class VanishingDiamondTileEntity extends VanishingTileEntity implements I
 
         changedPowerStateTimer = 0;
         for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-            directionStates.get(dir).resetPropagationState();
-            directionStates.get(dir).propagateState(changedPowerStateTimer);
+            directionStates.get(dir)
+                .resetPropagationState();
+            directionStates.get(dir)
+                .propagateState(changedPowerStateTimer);
         }
 
         return true;
@@ -83,15 +85,22 @@ public class VanishingDiamondTileEntity extends VanishingTileEntity implements I
     public void updateEntity() {
         changedPowerStateTimer++;
 
-        for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
-            directionStates.get(dir).propagateState(changedPowerStateTimer);
+        for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) directionStates.get(dir)
+            .propagateState(changedPowerStateTimer);
 
         super.updateEntity();
     }
 
     @Subscribe
     public void onSlotChanged(InventoryEvent.SlotChanged event) {
-        setBlock(event.getSlot().getItemStack(), null, 0, 0.5F, 0.5F, 0.5F);
+        setBlock(
+            event.getSlot()
+                .getItemStack(),
+            null,
+            0,
+            0.5F,
+            0.5F,
+            0.5F);
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
 
@@ -104,7 +113,8 @@ public class VanishingDiamondTileEntity extends VanishingTileEntity implements I
         for (int i = 0; i < dirList.tagCount(); ++i) {
             NBTTagCompound tag = dirList.getCompoundTagAt(i);
             ForgeDirection dir = ForgeDirection.getOrientation(tag.getInteger("direction"));
-            directionStates.get(dir).readFromNBT(tag);
+            directionStates.get(dir)
+                .readFromNBT(tag);
         }
     }
 
@@ -114,8 +124,9 @@ public class VanishingDiamondTileEntity extends VanishingTileEntity implements I
         inventory.writeToNBT(nbt);
 
         NBTTagList dirList = new NBTTagList();
-        for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
-            dirList.appendTag(directionStates.get(dir).writeToNBT(new NBTTagCompound()));
+        for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) dirList.appendTag(
+            directionStates.get(dir)
+                .writeToNBT(new NBTTagCompound()));
 
         nbt.setTag("Directions", dirList);
     }
@@ -173,13 +184,13 @@ public class VanishingDiamondTileEntity extends VanishingTileEntity implements I
             if (!shouldPropagate || propagated || timer < delay) return false;
 
             Block block = worldObj
-                    .getBlock(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ);
+                .getBlock(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ);
             if (block instanceof VanishingBlock) ((VanishingBlock) block).setPowerState(
-                    worldObj,
-                    xCoord + direction.offsetX,
-                    yCoord + direction.offsetY,
-                    zCoord + direction.offsetZ,
-                    inversed ? !powered : powered);
+                worldObj,
+                xCoord + direction.offsetX,
+                yCoord + direction.offsetY,
+                zCoord + direction.offsetZ,
+                inversed ? !powered : powered);
             propagated = true;
 
             return false;

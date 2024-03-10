@@ -127,13 +127,19 @@ public class UIScrollBar extends UIComponent<UIScrollBar> implements IControlCom
         scrollShape.setSize(w, h);
         scrollShape.storeState();
 
-        icon = gui.getGuiTexture().getXYResizableIcon(215, 0, 15, 15, 1);
-        disabledIcon = gui.getGuiTexture().getXYResizableIcon(215, 15, 15, 15, 1);
+        icon = gui.getGuiTexture()
+            .getXYResizableIcon(215, 0, 15, 15, 1);
+        disabledIcon = gui.getGuiTexture()
+            .getXYResizableIcon(215, 15, 15, 15, 1);
 
-        verticalIcon = gui.getGuiTexture().getIcon(230, 0, 8, 15);
-        verticalDisabledIcon = gui.getGuiTexture().getIcon(238, 0, 8, 15);
-        horizontalIcon = gui.getGuiTexture().getIcon(230, 15, 15, 8);
-        horizontalDisabledIcon = gui.getGuiTexture().getIcon(230, 23, 15, 8);
+        verticalIcon = gui.getGuiTexture()
+            .getIcon(230, 0, 8, 15);
+        verticalDisabledIcon = gui.getGuiTexture()
+            .getIcon(238, 0, 8, 15);
+        horizontalIcon = gui.getGuiTexture()
+            .getIcon(230, 15, 15, 8);
+        horizontalDisabledIcon = gui.getGuiTexture()
+            .getIcon(230, 23, 15, 8);
     }
 
     /**
@@ -184,13 +190,13 @@ public class UIScrollBar extends UIComponent<UIScrollBar> implements IControlCom
     @Override
     public int getWidth() {
         return isHorizontal() ? getParent().getWidth() - (hasVisibleOtherScrollbar() ? scrollThickness : 0)
-                : scrollThickness;
+            : scrollThickness;
     }
 
     @Override
     public int getHeight() {
         return isHorizontal() ? scrollThickness
-                : getParent().getHeight() - (hasVisibleOtherScrollbar() ? scrollThickness : 0);
+            : getParent().getHeight() - (hasVisibleOtherScrollbar() ? scrollThickness : 0);
     }
 
     /**
@@ -353,11 +359,11 @@ public class UIScrollBar extends UIComponent<UIScrollBar> implements IControlCom
     @Override
     public String getPropertyString() {
         return type + " | O="
-                + getOffset()
-                + "("
-                + getScrollable().getContentHeight()
-                + ") | "
-                + super.getPropertyString();
+            + getOffset()
+            + "("
+            + getScrollable().getContentHeight()
+            + ") | "
+            + super.getPropertyString();
     }
 
     /**

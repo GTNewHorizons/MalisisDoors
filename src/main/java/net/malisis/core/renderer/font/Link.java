@@ -84,7 +84,8 @@ public class Link implements GuiYesNoCallback {
     }
 
     public void click() {
-        Minecraft.getMinecraft().displayGuiScreen(new GuiConfirmOpenLink(this, url, 0, false));
+        Minecraft.getMinecraft()
+            .displayGuiScreen(new GuiConfirmOpenLink(this, url, 0, false));
     }
 
     @Override
@@ -92,7 +93,8 @@ public class Link implements GuiYesNoCallback {
         if (result) {
             MalisisCore.message("Opening " + url);
             try {
-                Desktop.getDesktop().browse(new URI(url));
+                Desktop.getDesktop()
+                    .browse(new URI(url));
             } catch (Throwable throwable) {
                 MalisisCore.log.error("Couldn't open link", throwable);
             }
@@ -111,7 +113,8 @@ public class Link implements GuiYesNoCallback {
         int i = index;
         while (i > 0) {
             link = FontRenderOptions.getLink(str, i--);
-            if (link != null && index < link.index + link.toString().length()) return link;
+            if (link != null && index < link.index + link.toString()
+                .length()) return link;
         }
 
         return null;

@@ -59,7 +59,9 @@ public class DoubleSlideMovement implements IDoorMovement {
 
         Translation translation = new Translation(0, 0, 0, x, 0, 0);
         translation.reversed(tileEntity.getState() == DoorState.CLOSING || tileEntity.getState() == DoorState.CLOSED);
-        translation.forTicks(tileEntity.getDescriptor().getOpeningTime());
+        translation.forTicks(
+            tileEntity.getDescriptor()
+                .getOpeningTime());
 
         return translation;
     }

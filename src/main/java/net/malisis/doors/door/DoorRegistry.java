@@ -110,10 +110,11 @@ public class DoorRegistry {
      * @return
      */
     public static IDoorMovement getMovement(Class<? extends IDoorMovement> clazz) {
-        for (IDoorMovement mvt : movements.values()) if (mvt.getClass().equals(clazz)) return mvt;
+        for (IDoorMovement mvt : movements.values()) if (mvt.getClass()
+            .equals(clazz)) return mvt;
 
         throw new IllegalArgumentException(
-                String.format("Door movement %s not found in the registry", clazz.getSimpleName()));
+            String.format("Door movement %s not found in the registry", clazz.getSimpleName()));
     }
 
     /**
@@ -151,7 +152,10 @@ public class DoorRegistry {
         }
 
         throw new IllegalArgumentException(
-                String.format("Door movement %s not found in the registry", movement.getClass().getSimpleName()));
+            String.format(
+                "Door movement %s not found in the registry",
+                movement.getClass()
+                    .getSimpleName()));
     }
 
     public static Map<String, IDoorMovement> listMovements() {
@@ -174,10 +178,11 @@ public class DoorRegistry {
      * @return
      */
     public static IDoorSound getSound(Class<? extends IDoorSound> clazz) {
-        for (IDoorSound snd : sounds.values()) if (snd.getClass().equals(clazz)) return snd;
+        for (IDoorSound snd : sounds.values()) if (snd.getClass()
+            .equals(clazz)) return snd;
 
         throw new IllegalArgumentException(
-                String.format("Door sound %s not found in the registry", clazz.getSimpleName()));
+            String.format("Door sound %s not found in the registry", clazz.getSimpleName()));
     }
 
     /**
@@ -215,7 +220,10 @@ public class DoorRegistry {
         }
 
         throw new IllegalArgumentException(
-                String.format("Door sound %s not found in the registry", Sound.getClass().getSimpleName()));
+            String.format(
+                "Door sound %s not found in the registry",
+                Sound.getClass()
+                    .getSimpleName()));
     }
 
     public static Map<String, IDoorSound> listSounds() {

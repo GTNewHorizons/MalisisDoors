@@ -70,9 +70,9 @@ public class BlockState {
 
     public BlockState(IBlockAccess world, BlockPos pos) {
         this(
-                pos,
-                world.getBlock(pos.getX(), pos.getY(), pos.getZ()),
-                world.getBlockMetadata(pos.getX(), pos.getY(), pos.getZ()));
+            pos,
+            world.getBlock(pos.getX(), pos.getY(), pos.getZ()),
+            world.getBlockMetadata(pos.getX(), pos.getY(), pos.getZ()));
     }
 
     public BlockState(IBlockAccess world, int x, int y, int z) {
@@ -125,7 +125,7 @@ public class BlockState {
 
     public void rotateInWorld(World world, int rotation) {
         ForgeDirection[] dirs = new ForgeDirection[] { ForgeDirection.NORTH, ForgeDirection.EAST, ForgeDirection.SOUTH,
-                ForgeDirection.WEST };
+            ForgeDirection.WEST };
         block.rotateBlock(world, getX(), getY(), getZ(), dirs[rotation / 90]);
     }
 
@@ -146,9 +146,9 @@ public class BlockState {
     }
 
     public static Iterable<BlockState> getAllInBox(IBlockAccess world, BlockPos from, BlockPos to, Block block,
-            boolean skipAir) {
+        boolean skipAir) {
         FluentIterable<BlockState> it = FluentIterable.from(new BlockIterator(from, to).asIterable())
-                .transform(toBlockState.set(world));
+            .transform(toBlockState.set(world));
         if (block != null || skipAir) it.filter(blockFilter.set(block, skipAir));
 
         return it;
@@ -165,8 +165,11 @@ public class BlockState {
     @Override
     public String toString() {
         return "[" + pos
-                + "] "
-                + (block != null ? block.getUnlocalizedName().substring(5) + " (" + metadata + ")" : "");
+            + "] "
+            + (block != null ? block.getUnlocalizedName()
+                .substring(5) + " ("
+                + metadata
+                + ")" : "");
     }
 
     public static BlockState fromNBT(NBTTagCompound nbt) {
@@ -192,7 +195,10 @@ public class BlockState {
     public static NBTTagCompound toNBT(NBTTagCompound nbt, BlockState state, String blockName, String metadataName) {
         if (state == null) return nbt;
 
-        nbt.setString(blockName, Block.blockRegistry.getNameForObject(state.getBlock()).toString());
+        nbt.setString(
+            blockName,
+            Block.blockRegistry.getNameForObject(state.getBlock())
+                .toString());
         nbt.setInteger(metadataName, state.getMetadata());
         return nbt;
     }

@@ -130,7 +130,8 @@ public class MalisisCommand extends CommandBase {
      * @param params the params
      */
     public void configCommand(ICommandSender sender, String[] params) {
-        if (FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER) {
+        if (FMLCommonHandler.instance()
+            .getEffectiveSide() == Side.SERVER) {
             MalisisCore.log.warn("Can't open configuration GUI on a dedicated server.");
             return;
         }

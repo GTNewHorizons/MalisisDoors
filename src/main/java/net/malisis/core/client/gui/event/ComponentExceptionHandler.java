@@ -30,8 +30,10 @@ public class ComponentExceptionHandler implements SubscriberExceptionHandler {
     @Override
     public void handleException(Throwable exception, SubscriberExceptionContext context) {
         MalisisCore.log.log(
-                Level.ERROR,
-                "An error occured wile processing event : " + context.getEvent().getClass().getSimpleName(),
-                exception);
+            Level.ERROR,
+            "An error occured wile processing event : " + context.getEvent()
+                .getClass()
+                .getSimpleName(),
+            exception);
     }
 }

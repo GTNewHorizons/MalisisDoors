@@ -49,9 +49,12 @@ public class CarriageDoorMovement implements IDoorMovement {
             angle = -angle;
         }
 
-        Rotation rotation = new Rotation(angle).aroundAxis(0, 1, 0).offset(fx, 0, fz);
+        Rotation rotation = new Rotation(angle).aroundAxis(0, 1, 0)
+            .offset(fx, 0, fz);
         rotation.reversed(tileEntity.getState() == DoorState.CLOSING || tileEntity.getState() == DoorState.CLOSED);
-        rotation.forTicks(tileEntity.getDescriptor().getOpeningTime());
+        rotation.forTicks(
+            tileEntity.getDescriptor()
+                .getOpeningTime());
 
         return rotation;
     }
@@ -59,7 +62,7 @@ public class CarriageDoorMovement implements IDoorMovement {
     @Override
     public Animation[] getAnimations(DoorTileEntity tileEntity, MalisisModel model, RenderParameters rp) {
         return new Animation[] { new Animation(model.getShape("left"), getRotation(tileEntity, false)),
-                new Animation(model.getShape("right"), getRotation(tileEntity, true)) };
+            new Animation(model.getShape("right"), getRotation(tileEntity, true)) };
     }
 
     @Override

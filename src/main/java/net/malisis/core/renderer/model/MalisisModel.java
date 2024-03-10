@@ -33,10 +33,14 @@ import net.minecraft.util.ResourceLocation;
  * @author Ordinastie
  */
 public class MalisisModel
-        implements ITransformable.Translate, ITransformable.Rotate, ITransformable.Scale, Iterable<Shape> {
+    implements ITransformable.Translate, ITransformable.Rotate, ITransformable.Scale, Iterable<Shape> {
 
     /** Shapes building this {@link MalisisModel}. */
     protected Map<String, Shape> shapes = new HashMap<>();
+
+    public void reset() {
+        this.shapes.clear();
+    }
 
     /**
      * Instantiates a new empty {@link MalisisModel}.<br>
@@ -62,7 +66,8 @@ public class MalisisModel
         if (resource == null) return;
 
         IModelLoader loader = null;
-        if (resource.getResourcePath().endsWith(".obj")) loader = new ObjFileImporter(resource);
+        if (resource.getResourcePath()
+            .endsWith(".obj")) loader = new ObjFileImporter(resource);
 
         if (loader != null) load(loader);
         else MalisisCore.log.error("[MalisisModel] No loader determined for {}.", resource.getResourcePath());
@@ -194,6 +199,7 @@ public class MalisisModel
 
     @Override
     public Iterator<Shape> iterator() {
-        return shapes.values().iterator();
+        return shapes.values()
+            .iterator();
     }
 }

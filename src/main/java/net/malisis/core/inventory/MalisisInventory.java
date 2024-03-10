@@ -50,7 +50,7 @@ public class MalisisInventory implements IInventory {
 
     /** List of {@link MalisisInventory} that is currently containing this {@link MalisisInventory}. */
     protected Set<MalisisInventoryContainer> containers = Collections
-            .newSetFromMap(new WeakHashMap<MalisisInventoryContainer, Boolean>());
+        .newSetFromMap(new WeakHashMap<MalisisInventoryContainer, Boolean>());
     /** The inventory id inside the container. */
     protected int inventoryId;
     /** Object containing this {@link MalisisInventory}. */
@@ -320,14 +320,15 @@ public class MalisisInventory implements IInventory {
      */
     public void setItemStackProvider(ItemStack itemStack) {
         if (!(inventoryProvider instanceof Item)) throw new IllegalArgumentException(
-                "setItemStack not allowed with " + inventoryProvider.getClass().getSimpleName() + " provider.");
+            "setItemStack not allowed with " + inventoryProvider.getClass()
+                .getSimpleName() + " provider.");
 
         if (itemStack.getItem() != inventoryProvider) {
             MalisisCore.log.error(
-                    "[MalisisInventory] Tried to set itemStack with an different item (" + itemStack.getItem()
-                            + ") than the provider ("
-                            + inventoryProvider
-                            + ")");
+                "[MalisisInventory] Tried to set itemStack with an different item (" + itemStack.getItem()
+                    + ") than the provider ("
+                    + inventoryProvider
+                    + ")");
             return;
         }
 
@@ -554,8 +555,8 @@ public class MalisisInventory implements IInventory {
     @Override
     public String toString() {
         String provider = "Player";
-        if (!(this instanceof PlayerInventory))
-            provider = inventoryProvider != null ? inventoryProvider.getClass().getSimpleName() : "null	";
+        if (!(this instanceof PlayerInventory)) provider = inventoryProvider != null ? inventoryProvider.getClass()
+            .getSimpleName() : "null	";
 
         return (name != null ? name : getClass().getSimpleName()) + " (" + inventoryId + ") from " + provider;
     }
@@ -569,7 +570,7 @@ public class MalisisInventory implements IInventory {
      * @return the malisis inventory container
      */
     public static MalisisInventoryContainer open(EntityPlayerMP player, IInventoryProvider inventoryProvider,
-            Object... data) {
+        Object... data) {
         if (inventoryProvider == null) return null;
 
         MalisisInventoryContainer c = new MalisisInventoryContainer(player, 0);
@@ -598,7 +599,7 @@ public class MalisisInventory implements IInventory {
      */
     @SideOnly(Side.CLIENT)
     public static MalisisInventoryContainer open(EntityClientPlayerMP player, IInventoryProvider inventoryProvider,
-            int windowId, Object... data) {
+        int windowId, Object... data) {
         if (inventoryProvider == null) return null;
 
         MalisisInventoryContainer c = new MalisisInventoryContainer(player, windowId);
@@ -609,7 +610,9 @@ public class MalisisInventory implements IInventory {
             inv.bus.post(new InventoryEvent.Open(c, inv));
         }
 
-        if (FMLCommonHandler.instance().getSide().isClient()) {
+        if (FMLCommonHandler.instance()
+            .getSide()
+            .isClient()) {
             MalisisGui gui = inventoryProvider.getGui(c);
             if (gui != null) gui.display();
         }

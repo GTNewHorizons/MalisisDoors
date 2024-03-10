@@ -34,7 +34,8 @@ public class UISeparator extends UIComponent<UISeparator> {
         this.vertical = vertical;
 
         shape = new XYResizableGuiShape(1);
-        icon = gui.getGuiTexture().getXYResizableIcon(200, 15, 15, 15, 3);
+        icon = gui.getGuiTexture()
+            .getXYResizableIcon(200, 15, 15, 15, 3);
 
         setSize(0, 0);
     }

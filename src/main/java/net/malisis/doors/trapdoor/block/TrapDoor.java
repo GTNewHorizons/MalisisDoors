@@ -69,7 +69,7 @@ public class TrapDoor extends BlockTrapDoor implements ITileEntityProvider {
      */
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX,
-            float hitY, float hitZ) {
+        float hitY, float hitZ) {
         if (world.isRemote) return true;
 
         DoorTileEntity te = Door.getDoor(world, x, y, z);
@@ -77,7 +77,8 @@ public class TrapDoor extends BlockTrapDoor implements ITileEntityProvider {
 
         if (te.getDescriptor() == null) return true;
 
-        if (te.getDescriptor().requireRedstone()) return true;
+        if (te.getDescriptor()
+            .requireRedstone()) return true;
 
         te.openOrCloseDoor();
         return true;
@@ -93,12 +94,12 @@ public class TrapDoor extends BlockTrapDoor implements ITileEntityProvider {
     protected AxisAlignedBB setBlockBounds(AxisAlignedBB aabb) {
         if (aabb == null) return null;
         setBlockBounds(
-                (float) aabb.minX,
-                (float) aabb.minY,
-                (float) aabb.minZ,
-                (float) aabb.maxX,
-                (float) aabb.maxY,
-                (float) aabb.maxZ);
+            (float) aabb.minX,
+            (float) aabb.minY,
+            (float) aabb.minZ,
+            (float) aabb.maxX,
+            (float) aabb.maxY,
+            (float) aabb.maxZ);
         return aabb;
     }
 
@@ -107,7 +108,9 @@ public class TrapDoor extends BlockTrapDoor implements ITileEntityProvider {
         DoorTileEntity te = Door.getDoor(world, x, y, z);
         if (te == null || te.isMoving() || te.getMovement() == null) return;
 
-        setBlockBounds(te.getMovement().getBoundingBox(te, te.isTopBlock(x, y, z), BoundingBoxType.RAYTRACE));
+        setBlockBounds(
+            te.getMovement()
+                .getBoundingBox(te, te.isTopBlock(x, y, z), BoundingBoxType.RAYTRACE));
     }
 
     @SideOnly(Side.CLIENT)
@@ -117,7 +120,8 @@ public class TrapDoor extends BlockTrapDoor implements ITileEntityProvider {
         if (te == null || te.isMoving() || te.getMovement() == null)
             return AxisAlignedBB.getBoundingBox(0, 0, 0, 0, 0, 0);
 
-        AxisAlignedBB aabb = te.getMovement().getBoundingBox(te, te.isTopBlock(x, y, z), BoundingBoxType.SELECTION);
+        AxisAlignedBB aabb = te.getMovement()
+            .getBoundingBox(te, te.isTopBlock(x, y, z), BoundingBoxType.SELECTION);
         if (aabb == null) return AxisAlignedBB.getBoundingBox(0, 0, 0, 0, 0, 0);
 
         return aabb.offset(x, y, z);
@@ -128,7 +132,8 @@ public class TrapDoor extends BlockTrapDoor implements ITileEntityProvider {
         DoorTileEntity te = Door.getDoor(world, x, y, z);
         if (te == null || te.isMoving() || te.getMovement() == null) return null;
 
-        AxisAlignedBB aabb = te.getMovement().getBoundingBox(te, te.isTopBlock(x, y, z), BoundingBoxType.COLLISION);
+        AxisAlignedBB aabb = te.getMovement()
+            .getBoundingBox(te, te.isTopBlock(x, y, z), BoundingBoxType.COLLISION);
         if (aabb == null) return null;
         return setBlockBounds(aabb.offset(x, y, z));
     }

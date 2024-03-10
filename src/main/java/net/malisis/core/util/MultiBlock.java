@@ -170,12 +170,12 @@ public class MultiBlock {
         if (this.aabb == null) return null;
 
         AxisAlignedBB aabb = AxisAlignedBB.getBoundingBox(
-                this.aabb.minX,
-                this.aabb.minY,
-                this.aabb.minZ,
-                this.aabb.maxX,
-                this.aabb.maxY,
-                this.aabb.maxZ);
+            this.aabb.minX,
+            this.aabb.minY,
+            this.aabb.minZ,
+            this.aabb.maxX,
+            this.aabb.maxY,
+            this.aabb.maxZ);
 
         if (direction != null) {
             if (direction == ForgeDirection.EAST || direction == ForgeDirection.WEST)
@@ -246,11 +246,8 @@ public class MultiBlock {
     public boolean placeBlocks(boolean placeOrigin) {
         if (placeOrigin) {
             if (getBlock() == null) {
-                MalisisCore.log.error(
-                        "[MultiBlock] Tried to set multiblock origin at {}, {}, {}, but no block is set.",
-                        x,
-                        y,
-                        z);
+                MalisisCore.log
+                    .error("[MultiBlock] Tried to set multiblock origin at {}, {}, {}, but no block is set.", x, y, z);
                 return false;
             }
             if (getBlock().canPlaceBlockAt(world, x, y, z)) world.setBlock(x, y, z, getBlock(), 0, 3);
@@ -272,10 +269,10 @@ public class MultiBlock {
         IProvider te = TileEntityUtils.getTileEntity(IProvider.class, world, x, y, z);
         if (te == null) {
             MalisisCore.log.error(
-                    "[MultiBlock] Tried to set multiblock in provider, but no IProvider found at {}, {}, {}",
-                    x,
-                    y,
-                    z);
+                "[MultiBlock] Tried to set multiblock in provider, but no IProvider found at {}, {}, {}",
+                x,
+                y,
+                z);
             return false;
         }
         te.setMultiBlock(this);
@@ -402,7 +399,7 @@ public class MultiBlock {
     }
 
     public static <T extends TileEntity & IProvider> T getOriginProvider(Class<T> providerClass, IBlockAccess world,
-            int x, int y, int z) {
+        int x, int y, int z) {
         return getOriginProvider(TileEntityUtils.getTileEntity(providerClass, world, x, y, z));
     }
 
@@ -413,10 +410,12 @@ public class MultiBlock {
         if (mb == null) return null;
         if (provider.xCoord == mb.x && provider.yCoord == mb.y && provider.zCoord == mb.z) return provider;
 
-        TileEntity te = provider.getWorldObj().getTileEntity(mb.x, mb.y, mb.z);
+        TileEntity te = provider.getWorldObj()
+            .getTileEntity(mb.x, mb.y, mb.z);
         if (te == null || !(te instanceof IProvider)) return null;
 
-        if (provider.getClass().isAssignableFrom(te.getClass())) return (T) te;
+        if (provider.getClass()
+            .isAssignableFrom(te.getClass())) return (T) te;
 
         return null;
     }

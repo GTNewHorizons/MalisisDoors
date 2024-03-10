@@ -36,8 +36,10 @@ public class UIProgressBar extends UIComponent<UIProgressBar> {
         setSize(22, 16);
 
         shape = new SimpleGuiShape();
-        barIcon = gui.getGuiTexture().getIcon(246, 0, 22, 16);
-        barFilledIcon = gui.getGuiTexture().getIcon(246, 16, 22, 16);
+        barIcon = gui.getGuiTexture()
+            .getIcon(246, 0, 22, 16);
+        barFilledIcon = gui.getGuiTexture()
+            .getIcon(246, 16, 22, 16);
     }
 
     public float getProgress() {

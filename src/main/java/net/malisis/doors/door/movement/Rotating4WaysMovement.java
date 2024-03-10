@@ -74,9 +74,12 @@ public class Rotating4WaysMovement implements IDoorMovement {
         }
 
         Rotation rotation = new Rotation(angle);
-        rotation.aroundAxis(axisX, axisY, 0).offset(hingeX, hingeY, hingeZ);;
+        rotation.aroundAxis(axisX, axisY, 0)
+            .offset(hingeX, hingeY, hingeZ);;
         rotation.reversed(tileEntity.getState() == DoorState.CLOSING || tileEntity.getState() == DoorState.CLOSED);
-        rotation.forTicks(tileEntity.getDescriptor().getOpeningTime());
+        rotation.forTicks(
+            tileEntity.getDescriptor()
+                .getOpeningTime());
 
         return rotation;
     }
@@ -84,7 +87,7 @@ public class Rotating4WaysMovement implements IDoorMovement {
     @Override
     public Animation[] getAnimations(DoorTileEntity tileEntity, MalisisModel model, RenderParameters rp) {
         return new Animation[] { new Animation(model.getShape("top"), getTransformation(tileEntity, true)),
-                new Animation(model.getShape("bottom"), getTransformation(tileEntity, false)) };
+            new Animation(model.getShape("bottom"), getTransformation(tileEntity, false)) };
     }
 
     @Override

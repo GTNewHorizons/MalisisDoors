@@ -175,9 +175,9 @@ public class Ray {
 
     private boolean isPointInsideAABB(Vector3d point, AxisAlignedBB aabb) {
         return point.x >= aabb.minX && point.x <= aabb.maxX
-                && point.y >= aabb.minY
-                && point.y <= aabb.maxY
-                && point.z >= aabb.minZ
-                && point.z <= aabb.maxZ;
+            && point.y >= aabb.minY
+            && point.y <= aabb.maxY
+            && point.z >= aabb.minZ
+            && point.z <= aabb.maxZ;
     }
 }

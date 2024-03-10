@@ -33,7 +33,8 @@ import net.minecraft.util.AxisAlignedBB;
 public class SpinningDoorMovement implements IDoorMovement {
 
     private Rotation rotBot = new Rotation(0).aroundAxis(0, 0, 1);
-    private Rotation rotTop = new Rotation(0).aroundAxis(0, 0, 1).offset(0, 1, 0);
+    private Rotation rotTop = new Rotation(0).aroundAxis(0, 0, 1)
+        .offset(0, 1, 0);
     private Scale scaleBot = new Scale(0, 0, 0);
     private Scale scaleTop = new Scale(0, 0, 0).offset(0, 1, 0);
 
@@ -54,7 +55,8 @@ public class SpinningDoorMovement implements IDoorMovement {
     public Animation[] getAnimations(DoorTileEntity tileEntity, MalisisModel model, RenderParameters rp) {
         float angle = tileEntity.isReversed() ? -720 : 720;
         boolean closed = tileEntity.getState() == DoorState.CLOSING || tileEntity.getState() == DoorState.CLOSED;
-        int ot = tileEntity.getDescriptor().getOpeningTime();
+        int ot = tileEntity.getDescriptor()
+            .getOpeningTime();
 
         rotBot.from(angle);
         rotBot.reversed(closed);
@@ -74,7 +76,7 @@ public class SpinningDoorMovement implements IDoorMovement {
         ParallelTransformation top = new ParallelTransformation(rotTop, scaleTop);
 
         return new Animation[] { new Animation(model.getShape("bottom"), bot),
-                new Animation(model.getShape("top"), top) };
+            new Animation(model.getShape("top"), top) };
     }
 
     @Override
