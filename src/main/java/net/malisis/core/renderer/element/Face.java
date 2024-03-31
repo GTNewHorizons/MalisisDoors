@@ -28,7 +28,7 @@ public class Face implements ITransformable.Translate, ITransformable.Rotate {
     protected String name;
     protected Vertex[] vertexes;
     protected RenderParameters params = new RenderParameters();
-    private final float[][] scratch = new float[4][2];
+    private float[][] scratch;
     private static final int[] dirs = { Vertex.NORTH, Vertex.SOUTH, Vertex.EAST, Vertex.WEST, Vertex.UP, Vertex.DOWN };
     private static final String[] strdirs = { "North", "South", "East", "West", "Top", "Bottom" };
 
@@ -38,6 +38,7 @@ public class Face implements ITransformable.Translate, ITransformable.Rotate {
 
     public Face(Vertex[] vertexes, RenderParameters params) {
         this.vertexes = vertexes;
+        this.scratch = new float[vertexes.length][2];
         this.params = params != null ? params : this.params;
         this.setName(null);
     }
@@ -57,6 +58,7 @@ public class Face implements ITransformable.Translate, ITransformable.Rotate {
     public Face(Face face, RenderParameters params) {
         Vertex[] faceVertexes = face.getVertexes();
         this.vertexes = new Vertex[faceVertexes.length];
+        this.scratch = new float[faceVertexes.length][2];
         for (int i = 0; i < faceVertexes.length; i++) vertexes[i] = new Vertex(faceVertexes[i]);
         this.params = params != null ? params : this.params;
         name = face.name;
@@ -68,6 +70,7 @@ public class Face implements ITransformable.Translate, ITransformable.Rotate {
         boolean init = false;
         if (this.vertexes.length != f.vertexes.length) {
             this.vertexes = new Vertex[f.vertexes.length];
+            this.scratch = new float[f.vertexes.length][2];
             init = true;
         }
 
