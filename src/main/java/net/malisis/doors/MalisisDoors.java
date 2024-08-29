@@ -130,6 +130,7 @@ public class MalisisDoors implements IMalisisMod {
         public static Block ironTrapDoor;
         public static Block slidingTrapDoor;
         public static Block saloonDoor;
+        public static Block collisionHelperBlock;
     }
 
     public static class Items {

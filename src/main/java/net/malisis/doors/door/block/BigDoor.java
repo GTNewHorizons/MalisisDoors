@@ -33,6 +33,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -99,7 +100,19 @@ public class BigDoor extends MalisisBlock implements ITileEntityProvider {
         world.setBlockMetadataWithNotify(x, y, z, metadata, 2);
 
         BigDoorTileEntity te = TileEntityUtils.getTileEntity(BigDoorTileEntity.class, world, x, y, z);
-        if (te != null) te.setFrameState(BlockState.fromNBT(itemStack.getTagCompound()));
+        if (te != null)
+        {
+            te.setFrameState(BlockState.fromNBT(itemStack.getTagCompound()));
+            if (checkAreaClearForDoor(world, x, y, z, metadata))
+            {
+                te.onCreate(x, y, z, metadata);
+            }
+        }
+    }
+
+    private boolean checkAreaClearForDoor(World world, int x, int y, int z, int metadata)
+    {
+        return true;
     }
 
     @Override
@@ -125,7 +138,7 @@ public class BigDoor extends MalisisBlock implements ITileEntityProvider {
         if (type == BoundingBoxType.RENDER) {
             aabbs[0].minZ = -.5F;
         } else if ((type == BoundingBoxType.COLLISION || type == BoundingBoxType.CHUNKCOLLISION
-            || type == BoundingBoxType.RAYTRACE) && (te.isOpened() || te.isMoving())) {
+            || type == BoundingBoxType.RAYTRACE || type == BoundingBoxType.SELECTION) && (te.isOpened() || te.isMoving())) {
                 aabbs = new AxisAlignedBB[] { AxisAlignedBB.getBoundingBox(0, 0, -0.5F, 0.5F, 4, 1),
                     AxisAlignedBB.getBoundingBox(3.5F, 0, -0.5F, 4, 4, 1),
                     AxisAlignedBB.getBoundingBox(0, 4, 1 - Door.DOOR_WIDTH, 4, 5, 1) };
@@ -167,6 +180,13 @@ public class BigDoor extends MalisisBlock implements ITileEntityProvider {
     @Override
     public int getRenderType() {
         return renderId;
+    }
+
+    @Override
+    public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z)
+    {
+        //BigDoorTileEntity te = TileEntityUtils.getTileEntity(BigDoorTileEntity.class, world, x, y, z);
+        this.setBlockBounds((float) defaultBoundingBox.minX, (float) defaultBoundingBox.minY, (float) defaultBoundingBox.minZ, (float) defaultBoundingBox.maxX, (float) defaultBoundingBox.maxY, (float) defaultBoundingBox.maxZ);
     }
 
     @Override
