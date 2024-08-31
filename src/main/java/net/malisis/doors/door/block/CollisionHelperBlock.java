@@ -2,7 +2,10 @@ package net.malisis.doors.door.block;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.malisis.core.block.BoundingBoxType;
+import net.malisis.core.util.ComplexAxisAlignedBoundingBox;
 import net.malisis.doors.MalisisDoors;
+import net.malisis.doors.door.tileentity.BigDoorTileEntity;
 import net.malisis.doors.door.tileentity.CollisionHelperTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
@@ -56,12 +59,8 @@ public class CollisionHelperBlock extends BlockContainer implements ITileEntityP
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer EntityPlayer, int par6,
                                     float subx, float suby, float subz)
     {
-        if (!world.isRemote)
-        {
-            final CollisionHelperTileEntity tileEntity = ((CollisionHelperTileEntity) world.getTileEntity(x, y, z));
-            return tileEntity.onBlockActivated(world, x, y, z, EntityPlayer);
-        }
-        return true;
+        final CollisionHelperTileEntity tileEntity = ((CollisionHelperTileEntity) world.getTileEntity(x, y, z));
+        return tileEntity.onBlockActivated(world, x, y, z, EntityPlayer);
     }
 
     @Override
@@ -111,7 +110,38 @@ public class CollisionHelperBlock extends BlockContainer implements ITileEntityP
     @Override
     public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int x, int y, int z) {
         this.setBlockBoundsBasedOnState(world, x, y, z);
+        CollisionHelperTileEntity thisTE = ((CollisionHelperTileEntity) world.getTileEntity(x,y,z));
+        Block mainBlock = world.getBlock(thisTE.mainBlockX, thisTE.mainBlockY, thisTE.mainBlockZ);
+        if (mainBlock instanceof BigDoor)
+        {
+            return mainBlock.getSelectedBoundingBoxFromPool(world, thisTE.mainBlockX, thisTE.mainBlockY, thisTE.mainBlockZ);
+        }
         return super.getSelectedBoundingBoxFromPool(world, x, y, z);
+    }
+
+    public ComplexAxisAlignedBoundingBox getComplexBoundingBox(World world, int x, int y, int z)
+    {
+        this.setBlockBoundsBasedOnState(world, x, y, z);
+        CollisionHelperTileEntity TE = getTileEntity(world, x, y, z);
+        BigDoor mainBlock = getMainBlock(world, x, y, z);
+        return mainBlock.getComplexBoundingBoxWithOffset(world, TE.mainBlockX, TE.mainBlockY, TE.mainBlockZ, BoundingBoxType.SELECTION);
+    }
+
+    public BigDoor getMainBlock(World world, int x, int y, int z)
+    {
+        CollisionHelperTileEntity cTE = this.getTileEntity(world, x, y, z);
+        return (BigDoor) world.getBlock(cTE.mainBlockX, cTE.mainBlockY, cTE.mainBlockZ);
+    }
+
+    public BigDoorTileEntity getMainTileEntity(World world, int x, int y, int z)
+    {
+        CollisionHelperTileEntity cTE = this.getTileEntity(world, x, y, z);
+        return (BigDoorTileEntity) world.getTileEntity(cTE.mainBlockX, cTE.mainBlockY, cTE.mainBlockZ);
+    }
+
+    public CollisionHelperTileEntity getTileEntity(World world, int x, int y, int z)
+    {
+        return (CollisionHelperTileEntity) world.getTileEntity(x,y,z);
     }
 
     @Override

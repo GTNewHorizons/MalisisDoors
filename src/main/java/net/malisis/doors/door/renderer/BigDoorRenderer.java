@@ -94,7 +94,7 @@ public class BigDoorRenderer extends MalisisRenderer {
             tileEntity.getTimer()
                 .getStart());
 
-        if (tileEntity.getMovement() != null) {
+        if (tileEntity.getMovement() != null && (tileEntity.isMoving() || tileEntity.isOpened())) {
             Animation[] anims = tileEntity.getMovement()
                 .getAnimations(tileEntity, model, rp);
             ar.animate(anims);

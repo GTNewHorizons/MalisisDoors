@@ -17,6 +17,7 @@ import net.malisis.core.MalisisCore;
 import net.malisis.core.block.BoundingBoxType;
 import net.malisis.core.util.BlockState;
 import net.malisis.core.util.MultiBlock;
+import net.malisis.core.util.TileEntityUtils;
 import net.malisis.doors.MalisisDoors;
 import net.malisis.doors.door.DoorDescriptor;
 import net.malisis.doors.door.DoorRegistry;
@@ -148,7 +149,11 @@ public class BigDoorTileEntity extends DoorTileEntity implements IMultiDoor {
 
     @Override
     public boolean onActivated(EntityPlayer entityPlayer) {
-        return false;
+
+        if (this.worldObj.isRemote) return true;
+
+        this.openOrCloseDoor();
+        return true;
     }
 
     @Override

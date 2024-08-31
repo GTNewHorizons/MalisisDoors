@@ -19,6 +19,7 @@ import net.malisis.core.block.BoundingBoxType;
 import net.malisis.core.block.MalisisBlock;
 import net.malisis.core.util.AABBUtils;
 import net.malisis.core.util.BlockState;
+import net.malisis.core.util.ComplexAxisAlignedBoundingBox;
 import net.malisis.core.util.EntityUtils;
 import net.malisis.core.util.TileEntityUtils;
 import net.malisis.doors.MalisisDoors;
@@ -37,6 +38,9 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import org.apache.commons.lang3.tuple.Pair;
+
+import static net.minecraft.util.Vec3.createVectorHelper;
 
 /**
  * @author Ordinastie
@@ -57,6 +61,27 @@ public class BigDoor extends MalisisBlock implements ITileEntityProvider {
             this.door = door;
         }
     }
+
+    private final Vec3[][] selectionOpenHoriztonalFaces = new Vec3[][] {
+            { createVectorHelper(0,5,1), createVectorHelper(0,5,1 - Door.DOOR_WIDTH), createVectorHelper(4,5,1 - Door.DOOR_WIDTH), createVectorHelper(4,5,1) }, // bottom face
+            { createVectorHelper(.5,4,1), createVectorHelper(.5,4,1 - Door.DOOR_WIDTH), createVectorHelper(3.5,4,1 - Door.DOOR_WIDTH), createVectorHelper(3.5,4,1) }, // top face
+            { createVectorHelper(0,4,1 - Door.DOOR_WIDTH), createVectorHelper(0, 4, -.5), createVectorHelper(.5,4,-.5), createVectorHelper(.5,4,1 - Door.DOOR_WIDTH) },
+            { createVectorHelper(3.5, 4, 1 - Door.DOOR_WIDTH), createVectorHelper(4, 4, 1 - Door.DOOR_WIDTH), createVectorHelper(4, 4, -.5), createVectorHelper(3.5, 4, -.5) },
+            { createVectorHelper(0,0,1), createVectorHelper(0, 0, -.5), createVectorHelper(.5,0,-.5), createVectorHelper(.5,0,1) },
+            { createVectorHelper(3.5, 0, 1), createVectorHelper(4, 0, 1), createVectorHelper(4, 0, -.5), createVectorHelper(3.5, 0, -.5) }
+        };
+    private final Pair<Vec3, Vec3>[] selectionOpenVerticals = new Pair[] {
+        Pair.of(createVectorHelper(0,0,1), createVectorHelper(0,5,1)),
+        Pair.of(createVectorHelper(4,0,1), createVectorHelper(4,5,1)),
+        Pair.of(createVectorHelper(.5,0,1), createVectorHelper(.5,4,1)),
+        Pair.of(createVectorHelper(3.5,0,1), createVectorHelper(3.5,4,1)),
+        Pair.of(createVectorHelper(0,0,-.5), createVectorHelper(0,4,-.5)),
+        Pair.of(createVectorHelper(.5,0,-.5), createVectorHelper(.5,4,-.5)),
+        Pair.of(createVectorHelper(3.5,0,-.5), createVectorHelper(3.5,4,-.5)),
+        Pair.of(createVectorHelper(4,0,-.5), createVectorHelper(4,4,-.5)),
+        Pair.of(createVectorHelper(0,4,1 - Door.DOOR_WIDTH), createVectorHelper(0,5,1 - Door.DOOR_WIDTH)),
+        Pair.of(createVectorHelper(4,4,1 - Door.DOOR_WIDTH), createVectorHelper(4, 5, 1 - Door.DOOR_WIDTH))
+    };
 
     public static int renderId;
     public static int renderPass = -1;
@@ -147,6 +172,43 @@ public class BigDoor extends MalisisBlock implements ITileEntityProvider {
         return AABBUtils.rotate(aabbs, Door.intToDir(te.getDirection()));
     }
 
+    public ComplexAxisAlignedBoundingBox getComplexBoundingBoxWithOffset(IBlockAccess world, int x, int y, int z, BoundingBoxType type)
+    {
+        BigDoorTileEntity te = TileEntityUtils.getTileEntity(BigDoorTileEntity.class, world, x, y, z);
+        if (te == null) return ComplexAxisAlignedBoundingBox.defaultComplexBoundingBox;
+
+        if (type == BoundingBoxType.SELECTION && (te.isOpened() || te.isMoving()))
+        {
+            Vec3[][] clonedFlatSurfaces = new Vec3[selectionOpenHoriztonalFaces.length][];
+            for (int i = 0; i < selectionOpenHoriztonalFaces.length; i++) {
+                clonedFlatSurfaces[i] = new Vec3[selectionOpenHoriztonalFaces[i].length];
+                for (int j = 0; j < selectionOpenHoriztonalFaces[i].length; j++) {
+                    Vec3 vec = selectionOpenHoriztonalFaces[i][j];
+                    clonedFlatSurfaces[i][j] = createVectorHelper(vec.xCoord, vec.yCoord, vec.zCoord);
+                }
+            }
+
+            Pair<Vec3, Vec3>[] clonedVerticals = new Pair[selectionOpenVerticals.length];
+            for (int i = 0; i < selectionOpenVerticals.length; i++) {
+                Vec3 left = selectionOpenVerticals[i].getLeft();
+                Vec3 right = selectionOpenVerticals[i].getRight();
+                clonedVerticals[i] = Pair.of(createVectorHelper(left.xCoord, left.yCoord, left.zCoord),
+                    createVectorHelper(right.xCoord, right.yCoord, right.zCoord));
+            }
+
+            ComplexAxisAlignedBoundingBox CAABB = new ComplexAxisAlignedBoundingBox(clonedFlatSurfaces, clonedVerticals);
+            CAABB.rotate(Door.intToDir(te.getDirection()) ,ComplexAxisAlignedBoundingBox.Axis.Y);
+            switch (Door.intToDir(te.getDirection())) {
+                case EAST -> CAABB.addOffset(x + 1, y, z);
+                case NORTH -> CAABB.addOffset(x, y, z);
+                case SOUTH -> CAABB.addOffset(x + 1, y, z + 1);
+                case WEST -> CAABB.addOffset(x, y, z + 1);
+        }
+            return CAABB;
+        }
+        return ComplexAxisAlignedBoundingBox.defaultComplexBoundingBox;
+    }
+
     @Override
     public TileEntity createNewTileEntity(World world, int metadata) {
         return new BigDoorTileEntity();
@@ -185,7 +247,6 @@ public class BigDoor extends MalisisBlock implements ITileEntityProvider {
     @Override
     public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z)
     {
-        //BigDoorTileEntity te = TileEntityUtils.getTileEntity(BigDoorTileEntity.class, world, x, y, z);
         this.setBlockBounds((float) defaultBoundingBox.minX, (float) defaultBoundingBox.minY, (float) defaultBoundingBox.minZ, (float) defaultBoundingBox.maxX, (float) defaultBoundingBox.maxY, (float) defaultBoundingBox.maxZ);
     }
 
