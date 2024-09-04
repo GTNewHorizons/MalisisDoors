@@ -29,6 +29,7 @@ import net.malisis.core.renderer.font.MalisisFont;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -294,9 +295,9 @@ public class GuiRenderer extends MalisisRenderer {
      */
     public void drawTooltip(UITooltip tooltip) {
         if (tooltip != null) {
-            t.startDrawingQuads();
+            this.tessellator.startDrawingQuads();
             tooltip.draw(this, mouseX, mouseY, partialTick);
-            t.draw();
+            this.tessellator.draw();
         }
     }
 
@@ -445,7 +446,7 @@ public class GuiRenderer extends MalisisRenderer {
         if (label == null) label = "";
         if (format != null) label = format + label;
 
-        t.draw();
+        this.tessellator.draw();
         RenderHelper.enableGUIStandardItemLighting();
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 
@@ -471,7 +472,7 @@ public class GuiRenderer extends MalisisRenderer {
 
         currentTexture = null;
         bindDefaultTexture();
-        t.startDrawingQuads();
+        this.tessellator.startDrawingQuads();
     }
 
     /**
@@ -481,9 +482,9 @@ public class GuiRenderer extends MalisisRenderer {
      */
     public void renderPickedItemStack(ItemStack itemStack) {
         if (itemStack == null) return;
-
+        this.tessellator = Tessellator.instance;
         itemRenderer.zLevel = 100;
-        t.startDrawingQuads();
+        this.tessellator.startDrawingQuads();
         drawItemStack(
             itemStack,
             mouseX - 8,
@@ -491,7 +492,7 @@ public class GuiRenderer extends MalisisRenderer {
             null,
             itemStack.stackSize == 0 ? EnumChatFormatting.YELLOW : null,
             false);
-        t.draw();
+        this.tessellator.draw();
         itemRenderer.zLevel = 0;
     }
 

@@ -25,6 +25,7 @@ import net.malisis.core.renderer.element.shape.Cube;
 import net.malisis.core.renderer.font.FontRenderOptions;
 import net.malisis.core.renderer.font.MalisisFont;
 import net.malisis.core.renderer.icon.MalisisIcon;
+import net.malisis.doors.door.tileentity.DoorTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
@@ -78,7 +79,7 @@ public class MalisisRenderer extends TileEntitySpecialRenderer
     /** Id of this {@link MalisisRenderer}. */
     protected int renderId = -1;
     /** Tessellator reference. */
-    protected Tessellator t = Tessellator.instance;
+    protected Tessellator tessellator = Tessellator.instance;
     /** Current world reference (ISBRH/TESR/IRWL). */
     protected IBlockAccess world;
     /** RenderBlocks reference (ISBRH). */
@@ -131,7 +132,6 @@ public class MalisisRenderer extends TileEntitySpecialRenderer
      */
     public MalisisRenderer() {
         this.renderId = RenderingRegistry.getNextAvailableRenderId();
-        this.t = Tessellator.instance;
     }
 
     /**
@@ -264,6 +264,7 @@ public class MalisisRenderer extends TileEntitySpecialRenderer
      */
     @Override
     public void renderInventoryBlock(Block block, int metadata, int modelId, RenderBlocks renderer) {
+        this.tessellator = Tessellator.instance;
         set(block, metadata);
         renderBlocks = renderer;
         prepare(RenderType.ISBRH_INVENTORY);
@@ -286,6 +287,7 @@ public class MalisisRenderer extends TileEntitySpecialRenderer
     @Override
     public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId,
         RenderBlocks renderer) {
+        this.tessellator = Tessellator.instance;
         set(world, block, x, y, z, world.getBlockMetadata(x, y, z));
         tileEntity = world.getTileEntity(x, y, z);
         renderBlocks = renderer;
@@ -347,6 +349,7 @@ public class MalisisRenderer extends TileEntitySpecialRenderer
      */
     @Override
     public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
+        this.tessellator = Tessellator.instance;
         set(type, item);
         prepare(RenderType.ITEM_INVENTORY);
         render();
@@ -367,26 +370,30 @@ public class MalisisRenderer extends TileEntitySpecialRenderer
      */
     @Override
     public void renderTileEntityAt(TileEntity te, double x, double y, double z, float partialTick) {
-        set(te, partialTick);
-        prepare(RenderType.TESR_WORLD, x, y, z);
-        render();
-        if (getBlockDamage) {
-            destroyBlockProgress = getBlockDestroyProgress();
-            if (destroyBlockProgress != null) {
-                next();
+        if (te instanceof DoorTileEntity && ((DoorTileEntity) te).shouldRender()) {
+            this.tessellator = Tessellator.instance;
+            set(te, partialTick);
+            prepare(RenderType.TESR_WORLD, x, y, z);
+            render();
+            if (getBlockDamage) {
+                destroyBlockProgress = getBlockDestroyProgress();
+                if (destroyBlockProgress != null) {
 
-                GL11.glEnable(GL11.GL_BLEND);
-                OpenGlHelper.glBlendFunc(GL11.GL_DST_COLOR, GL11.GL_SRC_COLOR, GL11.GL_ONE, GL11.GL_ZERO);
-                GL11.glAlphaFunc(GL11.GL_GREATER, 0);
-                GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.5F);
+                    next();
 
-                t.disableColor();
-                renderDestroyProgress();
-                next();
-                GL11.glDisable(GL11.GL_BLEND);
+                    GL11.glEnable(GL11.GL_BLEND);
+                    OpenGlHelper.glBlendFunc(GL11.GL_DST_COLOR, GL11.GL_SRC_COLOR, GL11.GL_ONE, GL11.GL_ZERO);
+                    GL11.glAlphaFunc(GL11.GL_GREATER, 0);
+                    GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.5F);
+
+                    this.tessellator.disableColor();
+                    renderDestroyProgress();
+                    next();
+                    GL11.glDisable(GL11.GL_BLEND);
+                }
             }
+            clean();
         }
-        clean();
     }
 
     // #end TESR
@@ -404,6 +411,7 @@ public class MalisisRenderer extends TileEntitySpecialRenderer
 
     @Override
     public void renderWorldLastEvent(RenderWorldLastEvent event, IBlockAccess world) {
+        this.tessellator = Tessellator.instance;
         set(world);
         partialTick = event.partialTicks;
         renderGlobal = event.context;
@@ -486,7 +494,7 @@ public class MalisisRenderer extends TileEntitySpecialRenderer
      */
     public void startDrawing(int drawMode) {
         if (isDrawing()) draw();
-        t.startDrawing(drawMode);
+        this.tessellator.startDrawing(drawMode);
         this.drawMode = drawMode;
     }
 
@@ -520,7 +528,7 @@ public class MalisisRenderer extends TileEntitySpecialRenderer
      * Triggers a draw.
      */
     public void draw() {
-        if (isDrawing()) t.draw();
+        if (isDrawing()) this.tessellator.draw();
     }
 
     /**
@@ -554,7 +562,7 @@ public class MalisisRenderer extends TileEntitySpecialRenderer
         if (isShifted) return;
 
         isShifted = true;
-        t.addTranslation(x, y, z);
+        this.tessellator.addTranslation(x, y, z);
     }
 
     /**
@@ -564,7 +572,7 @@ public class MalisisRenderer extends TileEntitySpecialRenderer
         if (!isShifted) return;
 
         isShifted = false;
-        t.addTranslation(-x, -y, -z);
+        this.tessellator.addTranslation(-x, -y, -z);
     }
 
     /**
@@ -656,6 +664,7 @@ public class MalisisRenderer extends TileEntitySpecialRenderer
     public void renderDestroyProgress() {
         if (destroyBlockProgress != null) overrideTexture = damagedIcons[destroyBlockProgress.getPartialBlockDamage()];
         // enableBlending();
+        this.tessellator = Tessellator.instance;
         render();
     }
 
@@ -731,7 +740,7 @@ public class MalisisRenderer extends TileEntitySpecialRenderer
         // use normals if available
         if ((renderType == RenderType.ITEM_INVENTORY || renderType == RenderType.ISBRH_INVENTORY
             || params.useNormals.get()) && params.direction.get() != null)
-            t.setNormal(params.direction.get().offsetX, params.direction.get().offsetY, params.direction.get().offsetZ);
+            this.tessellator.setNormal(params.direction.get().offsetX, params.direction.get().offsetY, params.direction.get().offsetZ);
 
         baseBrightness = getBaseBrightness();
 
@@ -772,12 +781,12 @@ public class MalisisRenderer extends TileEntitySpecialRenderer
         // alpha
         if (!params.usePerVertexAlpha.get()) vertex.setAlpha(params.alpha.get());
 
-        t.setColorRGBA_I(vertex.getColor(), vertex.getAlpha());
-        t.setBrightness(vertex.getBrightness());
+        this.tessellator.setColorRGBA_I(vertex.getColor(), vertex.getAlpha());
+        this.tessellator.setBrightness(vertex.getBrightness());
 
         if (params.useTexture.get())
-            t.addVertexWithUV(vertex.getX(), vertex.getY(), vertex.getZ(), vertex.getU(), vertex.getV());
-        else t.addVertex(vertex.getX(), vertex.getY(), vertex.getZ());
+            this.tessellator.addVertexWithUV(vertex.getX(), vertex.getY(), vertex.getZ(), vertex.getU(), vertex.getV());
+        else this.tessellator.addVertex(vertex.getX(), vertex.getY(), vertex.getZ());
 
         vertexDrawn = true;
     }

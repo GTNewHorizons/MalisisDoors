@@ -92,7 +92,6 @@ public class MalisisDoors implements IMalisisMod {
         proxy.initRenderers();
     }
 
-    @SideOnly(Side.CLIENT)
     @EventHandler
     public void init(FMLInitializationEvent event)
     {

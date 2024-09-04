@@ -1,5 +1,8 @@
 package net.malisis.doors.door.tileentity;
 
+
+import net.malisis.core.util.BlockState;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -8,13 +11,18 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-public class CollisionHelperTileEntity extends MultiCollisionTile
-{
+public class MultiTile extends DoorTileEntity {
+    public int mainBlockX;
+    public int mainBlockY;
+    public int mainBlockZ;
+    public boolean mainBlockSet;
+
     public void setMainBlock(int x, int y, int z)
     {
         this.mainBlockX = x;
         this.mainBlockY = y;
         this.mainBlockZ = z;
+        this.mainBlockSet = true;
         this.markDirty();
         if (!this.worldObj.isRemote)
         {
@@ -27,22 +35,18 @@ public class CollisionHelperTileEntity extends MultiCollisionTile
         TileEntity mainBlock = getMainBlockTile();
         if (mainBlock != null)
         {
-            if (mainBlock instanceof IMultiDoor)
+            if (mainBlock instanceof IMultiBlock)
             {
-                ((IMultiDoor) mainBlock).onDestroy(this);
+                ((IMultiBlock) mainBlock).onDestroy(this);
             }
         }
     }
 
-    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer par5EntityPlayer) {
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player) {
         world.markBlockForUpdate(x, y, z);
         TileEntity mainBlock = getMainBlockTile();
-        if (mainBlock != null) {
-            final TileEntity tileEntity = this.worldObj
-                .getTileEntity(this.mainBlockX, this.mainBlockY, this.mainBlockZ);
-            if (tileEntity instanceof IMultiDoor) {
-                return ((IMultiDoor) tileEntity).onActivated(par5EntityPlayer);
-            }
+        if (mainBlock instanceof IMultiBlock) {
+            return ((IMultiBlock) mainBlock).onActivated(player);
         }
         return true;
     }
@@ -62,6 +66,7 @@ public class CollisionHelperTileEntity extends MultiCollisionTile
     @Override
     public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
     {
+        super.onDataPacket(net, pkt);
         NBTTagCompound packetData = pkt.func_148857_g();
         this.mainBlockX = packetData.getInteger("mainBlockX");
         this.mainBlockY = packetData.getInteger("mainBlockY");
@@ -82,5 +87,40 @@ public class CollisionHelperTileEntity extends MultiCollisionTile
         this.mainBlockX = nbt.getInteger("mainBlockX");
         this.mainBlockY = nbt.getInteger("mainBlockY");
         this.mainBlockZ = nbt.getInteger("mainBlockZ");
+    }
+
+    @Override
+    public boolean shouldRender()
+    {
+        return false;
+    }
+
+    public void setFrameState(Block block)
+    {
+        TileEntity mainTile = this.getMainBlockTile();
+        if (mainTile instanceof BigDoorTileEntity bigDoorMainTile)
+        {
+            bigDoorMainTile.setFrameState(block);
+        }
+    }
+
+    public void setFrameState(BlockState blockState)
+    {
+        TileEntity mainTile = this.getMainBlockTile();
+        if (mainTile instanceof BigDoorTileEntity bigDoorTileEntity)
+        {
+            bigDoorTileEntity.setFrameState(blockState);
+        }
+    }
+
+    public void dropMainBlockAtLocation()
+    {
+        if (mainBlockSet)
+        {
+            Block block = this.worldObj.getBlock(mainBlockX, mainBlockY, mainBlockZ);
+            int meta = this.getBlockMetadata();
+            block.dropBlockAsItem(this.worldObj, xCoord, yCoord, zCoord, meta, 0);
+        }
+
     }
 }

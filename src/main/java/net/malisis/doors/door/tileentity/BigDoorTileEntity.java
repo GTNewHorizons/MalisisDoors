@@ -17,7 +17,6 @@ import net.malisis.core.MalisisCore;
 import net.malisis.core.block.BoundingBoxType;
 import net.malisis.core.util.BlockState;
 import net.malisis.core.util.MultiBlock;
-import net.malisis.core.util.TileEntityUtils;
 import net.malisis.doors.MalisisDoors;
 import net.malisis.doors.door.DoorDescriptor;
 import net.malisis.doors.door.DoorRegistry;
@@ -27,10 +26,14 @@ import net.malisis.doors.door.block.CollisionHelperBlock;
 import net.malisis.doors.door.block.Door;
 import net.malisis.doors.door.movement.CarriageDoorMovement;
 import net.malisis.doors.door.sound.CarriageDoorSound;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -43,13 +46,13 @@ import static net.minecraft.util.MathHelper.abs;
  * @author Ordinastie
  *
  */
-public class BigDoorTileEntity extends DoorTileEntity implements IMultiDoor {
+public class BigDoorTileEntity extends MultiTile implements IMultiBlock {
 
     private boolean delete = false;
     private boolean processed = true;
     private ForgeDirection direction = ForgeDirection.NORTH;
-
-    private BlockState frameState;
+    private final Block defaultBorderBlock = Blocks.stonebrick;
+    private BlockState frameState = new BlockState(defaultBorderBlock);
 
     public BigDoorTileEntity() {
         DoorDescriptor descriptor = new DoorDescriptor();
@@ -58,8 +61,6 @@ public class BigDoorTileEntity extends DoorTileEntity implements IMultiDoor {
         descriptor.setDoubleDoor(false);
         descriptor.setOpeningTime(20);
         setDescriptor(descriptor);
-
-        frameState = new BlockState(Blocks.quartz_block);
     }
 
     public BlockState getFrameState() {
@@ -68,6 +69,13 @@ public class BigDoorTileEntity extends DoorTileEntity implements IMultiDoor {
 
     public void setFrameState(BlockState state) {
         if (state != null) frameState = state;
+        this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+    }
+
+    @Override
+    public void setFrameState (Block block)
+    {
+        this.setFrameState(new BlockState(block));
     }
 
     @Override
@@ -87,12 +95,6 @@ public class BigDoorTileEntity extends DoorTileEntity implements IMultiDoor {
 
     @Override
     public void setDoorState(DoorState newState) {
-        boolean moving = this.moving;
-        BlockState state = null;
-        if (getWorldObj() != null) {
-            state = new BlockState(xCoord, yCoord, zCoord, getBlockType());
-        }
-
         super.setDoorState(newState);
     }
 
@@ -130,13 +132,12 @@ public class BigDoorTileEntity extends DoorTileEntity implements IMultiDoor {
             processed = false;
         }
 
-        frameState = Objects.firstNonNull(BlockState.fromNBT(tag), new BlockState(Blocks.quartz_block));
+        frameState = Objects.firstNonNull(BlockState.fromNBT(tag), new BlockState(defaultBorderBlock));
     }
 
     @Override
     public void writeToNBT(NBTTagCompound nbt) {
         super.writeToNBT(nbt);
-
         BlockState.toNBT(nbt, frameState);
     }
 
@@ -149,9 +150,7 @@ public class BigDoorTileEntity extends DoorTileEntity implements IMultiDoor {
 
     @Override
     public boolean onActivated(EntityPlayer entityPlayer) {
-
         if (this.worldObj.isRemote) return true;
-
         this.openOrCloseDoor();
         return true;
     }
@@ -198,6 +197,53 @@ public class BigDoorTileEntity extends DoorTileEntity implements IMultiDoor {
     @Override
     public void onDestroy(TileEntity callingBlock)
     {
+        int meta = this.getBlockMetadata();
+        boolean widthDirectionFlag = meta % 2 == 0;
 
+        if (meta < 4) {
+
+
+            int xStep = meta == 3 ? -1 : 1;
+            int zStep = meta == 0 ? -1 : 1;
+
+            int xMax = widthDirectionFlag ? 1 : 4;
+            int zMax = widthDirectionFlag ? 4 : 1;
+
+            for (int yLoc = 0; yLoc < 5; yLoc++) {
+                for (int xLoc = 0; abs(xLoc) < xMax; xLoc += xStep) {
+                    for (int zLoc = 0; abs(zLoc) < zMax; zLoc += zStep) {
+                        if (xLoc == 0 && yLoc == 0 && zLoc == 0) {
+                            ((MultiTile) callingBlock).dropMainBlockAtLocation();
+                        }
+                        this.worldObj.setBlockToAir(xLoc + this.xCoord, yLoc + this.yCoord, zLoc + this.zCoord);
+                    }
+                }
+            }
+        }
+        else
+        {
+            // Need to remove blocks if we're in the open state.
+        }
+    }
+
+    @Override
+    public boolean shouldRender()
+    {
+        return true;
+    }
+
+    @Override
+    public Packet getDescriptionPacket() {
+        NBTTagCompound nbtTag = new NBTTagCompound();
+        this.writeToNBT(nbtTag);
+        return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 1, nbtTag);
+    }
+
+    @Override
+    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
+    {
+        super.onDataPacket(net, pkt);
+        NBTTagCompound packetData = pkt.func_148857_g();
+        this.setFrameState(BlockState.fromNBT(packetData));
     }
 }

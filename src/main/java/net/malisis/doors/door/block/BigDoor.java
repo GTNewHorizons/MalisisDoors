@@ -25,21 +25,27 @@ import net.malisis.core.util.TileEntityUtils;
 import net.malisis.doors.MalisisDoors;
 import net.malisis.doors.MalisisDoors.Items;
 import net.malisis.doors.door.tileentity.BigDoorTileEntity;
+import net.malisis.doors.door.tileentity.IMultiBlock;
+import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.apache.commons.lang3.tuple.Pair;
 
+import static net.minecraft.util.MathHelper.abs;
 import static net.minecraft.util.Vec3.createVectorHelper;
 
 /**
@@ -83,6 +89,8 @@ public class BigDoor extends MalisisBlock implements ITileEntityProvider {
         Pair.of(createVectorHelper(4,4,1 - Door.DOOR_WIDTH), createVectorHelper(4, 5, 1 - Door.DOOR_WIDTH))
     };
 
+    private final int DoorBlockWidth = 4;
+    private final int DoorBlockHeight = 5;
     public static int renderId;
     public static int renderPass = -1;
     private AxisAlignedBB defaultBoundingBox = AxisAlignedBB.getBoundingBox(0, 0, 1 - Door.DOOR_WIDTH, 4, 5, 1);
@@ -119,8 +127,8 @@ public class BigDoor extends MalisisBlock implements ITileEntityProvider {
     }
 
     @Override
-    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack itemStack) {
-        ForgeDirection dir = EntityUtils.getEntityFacing(player);
+    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase livingEntity, ItemStack itemStack) {
+        ForgeDirection dir = EntityUtils.getEntityFacing(livingEntity);
         int metadata = Door.dirToInt(dir);
         world.setBlockMetadataWithNotify(x, y, z, metadata, 2);
 
@@ -132,22 +140,101 @@ public class BigDoor extends MalisisBlock implements ITileEntityProvider {
             {
                 te.onCreate(x, y, z, metadata);
             }
+            else
+            {
+                world.setBlockToAir(x, y, z);
+                if (!world.isRemote && livingEntity instanceof EntityPlayerMP player) {
+                    player.addChatMessage(
+                        new ChatComponentText("There's no room for the door!"));
+                    if (!player.capabilities.isCreativeMode) {
+                        final ItemStack doorBlock = new ItemStack(this, 1, 0);
+                        final EntityItem entityitem = player.dropPlayerItemWithRandomChoice(doorBlock, false);
+                        entityitem.delayBeforeCanPickup = 0;
+                        entityitem.func_145797_a(player.getCommandSenderName());
+                    }
+                }
+            }
         }
     }
 
-    private boolean checkAreaClearForDoor(World world, int x, int y, int z, int metadata)
+    private boolean checkAreaClearForDoor(World world, int x, int y, int z, int meta)
     {
-        return true;
+        boolean validSpot = true;
+        boolean widthDirectionFlag = meta % 2 == 0;
+        int xStep = meta == 3 ? -1 : 1;
+        int zStep = meta == 0 ? -1 : 1;
+        int xMax = widthDirectionFlag ? 1 : 4;
+        int zMax = widthDirectionFlag ? 4 : 1;
+
+        for (int yLoc = 0; yLoc < 5; yLoc++)
+        {
+            for (int xLoc = 0; abs(xLoc) < xMax; xLoc += xStep)
+            {
+                for (int zLoc = 0; abs(zLoc) < zMax; zLoc += zStep)
+                {
+                    if (!(yLoc == 0 && zLoc == 0 && xLoc == 0))
+                    {
+                        final Block potentialSpot = world.getBlock(x + xLoc, y + yLoc, z + zLoc);
+                        if (!potentialSpot.getMaterial().isReplaceable())
+                        {
+                            validSpot = false;
+                        }
+                    }
+                }
+            }
+        }
+        return validSpot;
+    }
+
+    @Override
+    public void breakBlock(World world, int x, int y, int z, Block block, int meta)
+    {
+        int fakeBlockCount = 0;
+
+        final int buildHeight = world.getHeight() - 6; // No reason to have the door right at world height
+
+        if (y > buildHeight)
+        {
+            return;
+        }
+
+        boolean widthDirectionFlag = meta % 2 == 0;
+        int xStep = meta == 3 ? -1 : 1;
+        int zStep = meta == 0 ? -1 : 1;
+        int xMax = widthDirectionFlag ? 1 : 4;
+        int zMax = widthDirectionFlag ? 4 : 1;
+
+        for (int yLoc = 0; yLoc < 5; yLoc++)
+        {
+            for (int xLoc = 0; abs(xLoc) < xMax; xLoc += xStep)
+            {
+                for (int zLoc = 0; abs(zLoc) < zMax; zLoc += zStep)
+                {
+                    if (!(yLoc == 0 && zLoc == 0 && xLoc == 0))
+                    {
+                        if (world.getBlock(x + xLoc, y + yLoc, z + zLoc) == MalisisDoors.Blocks.collisionHelperBlock)
+                        {
+                            fakeBlockCount++;
+                        }
+                    }
+                }
+            }
+        }
+
+        TileEntity tileEntity = world.getTileEntity(x, y, z);
+        if (fakeBlockCount >= 18 && tileEntity instanceof IMultiBlock)
+        {
+            ((IMultiBlock) tileEntity).onDestroy(tileEntity);
+        }
+        super.breakBlock(world, x, y, z, block, meta);
     }
 
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX,
         float hitY, float hitZ) {
         if (world.isRemote) return true;
-
         BigDoorTileEntity te = TileEntityUtils.getTileEntity(BigDoorTileEntity.class, world, x, y, z);
         if (te == null) return true;
-
         te.openOrCloseDoor();
         return true;
     }
@@ -224,10 +311,10 @@ public class BigDoor extends MalisisBlock implements ITileEntityProvider {
         return super.removedByPlayer(world, player, x, y, z);
     }
 
-    @Override
-    public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
-        return new ArrayList<ItemStack>();
-    }
+//    @Override
+//    public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
+//        return new ArrayList<ItemStack>();
+//    }
 
     @Override
     public boolean isOpaqueCube() {

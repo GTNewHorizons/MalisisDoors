@@ -3,7 +3,7 @@ package net.malisis.doors.door.tileentity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 
-public interface IMultiDoor {
+public interface IMultiBlock {
 
     /**
      * Called when activated

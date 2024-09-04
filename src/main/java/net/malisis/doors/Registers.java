@@ -47,11 +47,11 @@ import net.malisis.doors.door.item.CustomDoorItem;
 import net.malisis.doors.door.item.DoorItem;
 import net.malisis.doors.door.item.ForcefieldItem;
 import net.malisis.doors.door.tileentity.BigDoorTileEntity;
-import net.malisis.doors.door.tileentity.CollisionHelperTileEntity;
 import net.malisis.doors.door.tileentity.CustomDoorTileEntity;
 import net.malisis.doors.door.tileentity.DoorTileEntity;
 import net.malisis.doors.door.tileentity.FenceGateTileEntity;
 import net.malisis.doors.door.tileentity.ForcefieldTileEntity;
+import net.malisis.doors.door.tileentity.MultiTile;
 import net.malisis.doors.door.tileentity.RustyHatchTileEntity;
 import net.malisis.doors.door.tileentity.SaloonDoorTileEntity;
 import net.malisis.doors.entity.BlockMixerTileEntity;
@@ -474,7 +474,7 @@ public class Registers {
         GameRegistry.registerBlock(collisionHelperBlock, collisionHelperBlock.getUnlocalizedName()
             .substring(5));
 
-        GameRegistry.registerTileEntity(CollisionHelperTileEntity.class, "collisionHelperTileEntity");
+        GameRegistry.registerTileEntity(MultiTile.class, "collisionHelperTileEntity");
 
 
     }
