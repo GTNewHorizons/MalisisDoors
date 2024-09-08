@@ -26,4 +26,6 @@ public interface IMultiBlock {
      * @param callingBlock - The tile entity who called the onDestroy function
      */
     void onDestroy(TileEntity callingBlock);
+
+    boolean isChangingState();
 }

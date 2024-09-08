@@ -37,7 +37,10 @@ public class MultiTile extends DoorTileEntity {
         {
             if (mainBlock instanceof IMultiBlock)
             {
-                ((IMultiBlock) mainBlock).onDestroy(this);
+                if (!(((IMultiBlock) mainBlock).isChangingState()))
+                {
+                    ((IMultiBlock) mainBlock).onDestroy(this);
+                }
             }
         }
     }

@@ -101,21 +101,44 @@ public class CollisionHelperBlock extends BlockContainer implements ITileEntityP
     public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
         final int meta = world.getBlockMetadata(x, y, z);
 
-        if (meta == 0)
+        switch (meta)
         {
-            this.setBlockBounds(1.0F - Door.DOOR_WIDTH, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
-        }
-        if (meta == 1)
-        {
-            this.setBlockBounds(0.0F, 0.0F, 1.0F - Door.DOOR_WIDTH, 1.0F, 1.0F, 1.0F);
-        }
-        if (meta == 2)
-        {
-            this.setBlockBounds(0.0F, 0.0F, 0.0F, Door.DOOR_WIDTH, 1.0F, 1.0F);
-        }
-        if (meta == 3)
-        {
-            this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, Door.DOOR_WIDTH);
+            case 0: // 3 Pixels wide on the east side of the block
+                this.setBlockBounds(1.0F - Door.DOOR_WIDTH, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+                break;
+            case 1: // 3 Pixels wide on the south side of the block
+                this.setBlockBounds(0.0F, 0.0F, 1.0F - Door.DOOR_WIDTH, 1.0F, 1.0F, 1.0F);
+                break;
+            case 2: // 3 Pixels wide on the west side of the block
+                this.setBlockBounds(0.0F, 0.0F, 0.0F, Door.DOOR_WIDTH, 1.0F, 1.0F);
+                break;
+            case 3: // 3 Pixels wide on the north side of the block
+                this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, Door.DOOR_WIDTH);
+                break;
+            case 4: // 8 Pixels wide on the east side of the block
+                this.setBlockBounds(0.5F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+                break;
+            case 5: // 8 Pixels wide on the south side of the block
+                this.setBlockBounds(0.0F, 0.0F, 0.5F, 1.0F, 1.0F, 1.0F);
+                break;
+            case 6: // 8 Pixels wide on the west side of the block
+                this.setBlockBounds(0.0F, 0.0F, 0.0F, 0.5F, 1.0F, 1.0F);
+                break;
+            case 7: // 8 Pixels wide on the north side of the block
+                this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 0.5F);
+                break;
+            case 8: // Quarter of a block on north-west corner of the block
+                this.setBlockBounds(0.0F, 0.0F, 0.0F, 0.5F, 1.0F, 0.5F);
+                break;
+            case 9: // Quarter of a block on north-east corner of the block
+                this.setBlockBounds(0.5F, 0.0F, 0.0F, 1.0F, 1.0F, 0.5F);
+                break;
+            case 10: // Quarter of a block on south-east corner of the block
+                this.setBlockBounds(0.5F, 0.0F, 0.5F, 1.0F, 1.0F, 1.0F);
+                break;
+            case 11: // Quarter of a block on the south-west corner of the block
+                this.setBlockBounds(0.0F, 0.0F, 0.5F, 0.5F, 1.0F, 1.0F);
+                break;
         }
     }
 

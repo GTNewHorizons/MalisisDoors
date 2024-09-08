@@ -285,6 +285,7 @@ public class BigDoor extends MalisisBlock implements ITileEntityProvider {
 
             ComplexAxisAlignedBoundingBox CAABB = new ComplexAxisAlignedBoundingBox(clonedFlatSurfaces, clonedVerticals);
             CAABB.rotate(Door.intToDir(te.getDirection()) ,ComplexAxisAlignedBoundingBox.Axis.Y);
+            // Offset needed post-rotation
             switch (Door.intToDir(te.getDirection())) {
                 case EAST -> CAABB.addOffset(x + 1, y, z);
                 case NORTH -> CAABB.addOffset(x, y, z);
@@ -310,11 +311,6 @@ public class BigDoor extends MalisisBlock implements ITileEntityProvider {
         }
         return super.removedByPlayer(world, player, x, y, z);
     }
-
-//    @Override
-//    public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
-//        return new ArrayList<ItemStack>();
-//    }
 
     @Override
     public boolean isOpaqueCube() {
