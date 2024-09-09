@@ -92,7 +92,7 @@ public class CollisionHelperBlock extends BlockContainer implements ITileEntityP
     public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
         final TileEntity tileEntity = world.getTileEntity(x, y, z);
         if (tileEntity instanceof MultiTile) {
-            ((MultiTile) tileEntity).onBlockRemoval();
+            ((MultiTile) tileEntity).onBlockRemoval(type == BigDoor.Type.MEDIEVAL ? MalisisDoors.Blocks.medievalDoor : MalisisDoors.Blocks.carriageDoor);
         }
         super.breakBlock(world, x, y, z, block, meta);
     }
@@ -234,10 +234,12 @@ public class CollisionHelperBlock extends BlockContainer implements ITileEntityP
         return false;
     }
 
-    public void makeCollisionHelperBlock(World world, int x, int y, int z, int xMain, int yMain, int zMain, int meta)
+    public void makeCollisionHelperBlock(World world, int x, int y, int z, int meta, int xMain, int yMain, int zMain, int metaMain)
     {
         world.setBlock(x, y, z, this, meta, 3);
-        ((MultiTile) world.getTileEntity(x, y, z)).setMainBlock(xMain, yMain, zMain);
+        MultiTile tile = (MultiTile) world.getTileEntity(x, y, z);
+        tile.setMainBlock(xMain, yMain, zMain);
+        tile.setMainBlockMeta(metaMain);
     }
 
     @SuppressWarnings("deprecation")

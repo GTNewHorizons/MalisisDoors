@@ -1,5 +1,6 @@
 package net.malisis.doors.door.tileentity;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 
@@ -25,6 +26,6 @@ public interface IMultiBlock {
      *
      * @param callingBlock - The tile entity who called the onDestroy function
      */
-    void onDestroy(TileEntity callingBlock);
+    void onDestroy(Block block, TileEntity callingBlock, int meta);
 
 }

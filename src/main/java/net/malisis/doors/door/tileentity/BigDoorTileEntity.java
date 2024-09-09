@@ -173,10 +173,10 @@ public class BigDoorTileEntity extends MultiTile implements IMultiBlock, IBluePr
     @Override
     public void setDoorState(DoorState newState) {
         super.setDoorState(newState);
-        if (!this.worldObj.isRemote)
-        {
-            this.onStateChange(newState);
-        }
+//        if (!this.worldObj.isRemote)
+//        {
+        this.onStateChange(newState);
+//        }
     }
 
     @Override
@@ -253,12 +253,17 @@ public class BigDoorTileEntity extends MultiTile implements IMultiBlock, IBluePr
     }
 
     @Override
-    public void onDestroy(TileEntity callingBlock)
+    public void onDestroy(Block blockToDrop, TileEntity callingBlock, int meta)
     {
         if (!this.changingState)
         {
+            int metaToUse = meta;
+            if (this.state == DoorState.OPENING && metaToUse < 4)
+            {
+                metaToUse += 4;
+            }
             this.changingState = true;
-            removeBluePrint(this.worldObj, xCoord, yCoord, zCoord, getBlockMetadata(), callingBlock);
+            removeBluePrint(this.worldObj, xCoord, yCoord, zCoord, metaToUse, callingBlock, blockToDrop);
             this.changingState = false;
         }
     }
@@ -267,7 +272,8 @@ public class BigDoorTileEntity extends MultiTile implements IMultiBlock, IBluePr
     // the door.
     public void onStateChange(DoorState newState)
     {
-        int meta = this.getBlockMetadata();
+        if (this.state == newState) return;
+        int meta = this.mainBlockMeta;
         if (newState == DoorState.OPENING && meta < 4)
         {
             this.changingState = true;
@@ -344,7 +350,7 @@ public class BigDoorTileEntity extends MultiTile implements IMultiBlock, IBluePr
                 {
                     if (!(i == print.startingLocation.x && j == print.startingLocation.y && k == print.startingLocation.z) && print.bluePrint[j][i][k] > -1)
                     {
-                        ((CollisionHelperBlock) MalisisDoors.Blocks.collisionHelperBlock).makeCollisionHelperBlock(world, x - mainBlockRelativeX + i, y - mainBlockRelativeY + j, z + mainBlockRelativeZ - k, this.xCoord, this.yCoord, this.zCoord, print.bluePrint[j][i][k]);
+                        ((CollisionHelperBlock) MalisisDoors.Blocks.collisionHelperBlock).makeCollisionHelperBlock(world, x - mainBlockRelativeX + i, y - mainBlockRelativeY + j, z + mainBlockRelativeZ - k, print.bluePrint[j][i][k] , this.xCoord, this.yCoord, this.zCoord, this.getBlockMetadata());
                     }
                     else if(print.bluePrint[j][i][k] == Integer.MIN_VALUE && removeBlockInWay)
                     {
@@ -356,32 +362,32 @@ public class BigDoorTileEntity extends MultiTile implements IMultiBlock, IBluePr
     }
 
     @Override
-    public void removeBluePrint(World world, int x, int y, int z, int meta, TileEntity callingBlock) {
+    public void removeBluePrint(World world, int x, int y, int z, int meta, TileEntity callingBlock, Block blockToDrop) {
         MultiBlueprint print = (meta < 4 ? this.closedBlueprint : this.openBlueprint);
         switch (meta)
         {
             case 0, 4:
-                this.bluePrintRemovalHelper(world, x, y, z, print, callingBlock);
+                this.bluePrintRemovalHelper(world, x, y, z, print, callingBlock, blockToDrop);
                 break;
             case 1, 5:
                 print.rotate(MultiBlueprint.RotationDegrees.ROT90);
-                this.bluePrintRemovalHelper(world, x, y, z, print, callingBlock);
+                this.bluePrintRemovalHelper(world, x, y, z, print, callingBlock, blockToDrop);
                 print.rotate(MultiBlueprint.RotationDegrees.ROT270);
                 break;
             case 2, 6:
                 print.rotate(MultiBlueprint.RotationDegrees.ROT180);
-                this.bluePrintRemovalHelper(world, x, y, z, print, callingBlock);
+                this.bluePrintRemovalHelper(world, x, y, z, print, callingBlock, blockToDrop);
                 print.rotate(MultiBlueprint.RotationDegrees.ROT180);
                 break;
             case 3, 7:
                 print.rotate(MultiBlueprint.RotationDegrees.ROT270);
-                this.bluePrintRemovalHelper(world, x, y, z, print, callingBlock);
+                this.bluePrintRemovalHelper(world, x, y, z, print, callingBlock, blockToDrop);
                 print.rotate(MultiBlueprint.RotationDegrees.ROT90);
                 break;
         }
     }
 
-    private void bluePrintRemovalHelper(World world, int x, int y, int z, MultiBlueprint print, TileEntity callingBlock)
+    private void bluePrintRemovalHelper(World world, int x, int y, int z, MultiBlueprint print, TileEntity callingBlock, Block blockToDrop)
     {
         int mainBlockRelativeX = print.startingLocation.x;
         int mainBlockRelativeY = print.startingLocation.y;
@@ -394,7 +400,7 @@ public class BigDoorTileEntity extends MultiTile implements IMultiBlock, IBluePr
                 {
                     if (print.bluePrint[j][i][k] == MB)
                     {
-                        ((MultiTile) callingBlock).dropMainBlockAtLocation(this.getBlockType());
+                        ((MultiTile) callingBlock).dropMainBlockAtLocation(blockToDrop);
                     }
                     if (print.bluePrint[j][i][k] > -1)
                     {

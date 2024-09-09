@@ -197,7 +197,7 @@ public class BigDoor extends MalisisBlock implements ITileEntityProvider {
         TileEntity tileEntity = world.getTileEntity(x, y, z);
         if (tileEntity instanceof IMultiBlock)
         {
-            ((IMultiBlock) tileEntity).onDestroy(tileEntity);
+            ((IMultiBlock) tileEntity).onDestroy(block, tileEntity, meta);
         }
         super.breakBlock(world, x, y, z, block, meta);
     }

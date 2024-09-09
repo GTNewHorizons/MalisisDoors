@@ -15,6 +15,7 @@ public class MultiTile extends DoorTileEntity {
     public int mainBlockX;
     public int mainBlockY;
     public int mainBlockZ;
+    public int mainBlockMeta;
     public boolean mainBlockSet;
 
     public void setMainBlock(int x, int y, int z)
@@ -30,14 +31,14 @@ public class MultiTile extends DoorTileEntity {
         }
     }
 
-    public void onBlockRemoval()
+    public void onBlockRemoval(Block block)
     {
         TileEntity mainBlock = getMainBlockTile();
         if (mainBlock != null)
         {
             if (mainBlock instanceof IMultiBlock)
             {
-                ((IMultiBlock) mainBlock).onDestroy(this);
+                ((IMultiBlock) mainBlock).onDestroy(block, this, this.mainBlockMeta);
             }
         }
     }
@@ -79,7 +80,9 @@ public class MultiTile extends DoorTileEntity {
         nbt.setInteger("mainBlockX", this.mainBlockX);
         nbt.setInteger("mainBlockY", this.mainBlockY);
         nbt.setInteger("mainBlockZ", this.mainBlockZ);
+        nbt.setInteger("mainBlockMeta", this.mainBlockMeta);
         nbt.setBoolean("mainBlockSet", this.mainBlockSet);
+
     }
 
     @Override
@@ -88,6 +91,7 @@ public class MultiTile extends DoorTileEntity {
         this.mainBlockX = nbt.getInteger("mainBlockX");
         this.mainBlockY = nbt.getInteger("mainBlockY");
         this.mainBlockZ = nbt.getInteger("mainBlockZ");
+        this.mainBlockMeta = nbt.getInteger("mainBlockMeta");
         this.mainBlockSet = nbt.getBoolean("mainBlockSet");
     }
 
@@ -122,5 +126,10 @@ public class MultiTile extends DoorTileEntity {
             int meta = this.getBlockMetadata();
             block.dropBlockAsItem(this.worldObj, xCoord, yCoord, zCoord, meta, 0);
         }
+    }
+
+    public void setMainBlockMeta(int meta)
+    {
+        this.mainBlockMeta = meta;
     }
 }
