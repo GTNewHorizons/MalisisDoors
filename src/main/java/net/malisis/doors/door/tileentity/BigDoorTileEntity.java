@@ -173,6 +173,10 @@ public class BigDoorTileEntity extends MultiTile implements IMultiBlock, IBluePr
     @Override
     public void setDoorState(DoorState newState) {
         super.setDoorState(newState);
+        if (!this.worldObj.isRemote)
+        {
+            this.onStateChange(newState);
+        }
     }
 
     @Override
@@ -231,7 +235,6 @@ public class BigDoorTileEntity extends MultiTile implements IMultiBlock, IBluePr
         {
             this.openOrCloseDoor();
         }
-        this.onStateChange();
         return true;
     }
 
@@ -243,52 +246,43 @@ public class BigDoorTileEntity extends MultiTile implements IMultiBlock, IBluePr
         if (y > buildHeight) {
             return;
         }
+        this.setMainBlock(x,y,z);
+        this.mainBlockSet = true;
         placeBluePrint(this.worldObj, x, y, z, meta, false);
+
     }
 
     @Override
     public void onDestroy(TileEntity callingBlock)
     {
-        int meta = this.getBlockMetadata();
-        boolean widthDirectionFlag = meta % 2 == 0;
-
-        if (meta < 4) {
-
-            int xStep = meta == 3 ? -1 : 1;
-            int zStep = meta == 0 ? -1 : 1;
-
-            int xMax = widthDirectionFlag ? 1 : 4;
-            int zMax = widthDirectionFlag ? 4 : 1;
-
-            for (int yLoc = 0; yLoc < 5; yLoc++) {
-                for (int xLoc = 0; abs(xLoc) < xMax; xLoc += xStep) {
-                    for (int zLoc = 0; abs(zLoc) < zMax; zLoc += zStep) {
-                        if (xLoc == 0 && yLoc == 0 && zLoc == 0) {
-                            ((MultiTile) callingBlock).dropMainBlockAtLocation();
-                        }
-                        this.worldObj.setBlockToAir(xLoc + this.xCoord, yLoc + this.yCoord, zLoc + this.zCoord);
-                    }
-                }
-            }
-        }
-        else
+        if (!this.changingState)
         {
-            // Need to remove blocks if we're in the open state.
+            this.changingState = true;
+            removeBluePrint(this.worldObj, xCoord, yCoord, zCoord, getBlockMetadata(), callingBlock);
+            this.changingState = false;
         }
     }
 
-    @Override
-    public boolean isChangingState() {
-        return this.changingState;
+    // This method is a little complex because unless the door is fully closed I want players to be able to go through
+    // the door.
+    public void onStateChange(DoorState newState)
+    {
+        int meta = this.getBlockMetadata();
+        if (newState == DoorState.OPENING && meta < 4)
+        {
+            this.changingState = true;
+            placeBluePrint(this.worldObj, xCoord, yCoord, zCoord, (meta + 4) % 8, true);
+            this.changingState = false;
+        }
+        else if (newState == DoorState.CLOSED)
+        {
+            this.changingState = true;
+            placeBluePrint(this.worldObj, xCoord, yCoord, zCoord, meta, true);
+            this.changingState = false;
+        }
     }
 
-    public void onStateChange()
-    {
-        this.changingState = true;
-        int meta = this.getBlockMetadata();
-        placeBluePrint(this.worldObj, xCoord, yCoord, zCoord, (meta + 4) % 8, true);
-        changingState = false;
-    }
+
     @Override
     public boolean shouldRender()
     {
@@ -362,7 +356,52 @@ public class BigDoorTileEntity extends MultiTile implements IMultiBlock, IBluePr
     }
 
     @Override
-    public void removeBluePrint(World world, int x, int y, int z, int meta) {
-        return;
+    public void removeBluePrint(World world, int x, int y, int z, int meta, TileEntity callingBlock) {
+        MultiBlueprint print = (meta < 4 ? this.closedBlueprint : this.openBlueprint);
+        switch (meta)
+        {
+            case 0, 4:
+                this.bluePrintRemovalHelper(world, x, y, z, print, callingBlock);
+                break;
+            case 1, 5:
+                print.rotate(MultiBlueprint.RotationDegrees.ROT90);
+                this.bluePrintRemovalHelper(world, x, y, z, print, callingBlock);
+                print.rotate(MultiBlueprint.RotationDegrees.ROT270);
+                break;
+            case 2, 6:
+                print.rotate(MultiBlueprint.RotationDegrees.ROT180);
+                this.bluePrintRemovalHelper(world, x, y, z, print, callingBlock);
+                print.rotate(MultiBlueprint.RotationDegrees.ROT180);
+                break;
+            case 3, 7:
+                print.rotate(MultiBlueprint.RotationDegrees.ROT270);
+                this.bluePrintRemovalHelper(world, x, y, z, print, callingBlock);
+                print.rotate(MultiBlueprint.RotationDegrees.ROT90);
+                break;
+        }
+    }
+
+    private void bluePrintRemovalHelper(World world, int x, int y, int z, MultiBlueprint print, TileEntity callingBlock)
+    {
+        int mainBlockRelativeX = print.startingLocation.x;
+        int mainBlockRelativeY = print.startingLocation.y;
+        int mainBlockRelativeZ = print.startingLocation.z;
+        for (int j = 0; j < print.bluePrint.length; j++) // y
+        {
+            for (int i = 0; i < print.bluePrint[0].length; i++) // x
+            {
+                for (int k = 0; k < print.bluePrint[0][0].length; k++) // z
+                {
+                    if (print.bluePrint[j][i][k] == MB)
+                    {
+                        ((MultiTile) callingBlock).dropMainBlockAtLocation(this.getBlockType());
+                    }
+                    if (print.bluePrint[j][i][k] > -1)
+                    {
+                        world.setBlockToAir(x - mainBlockRelativeX + i, y - mainBlockRelativeY + j, z + mainBlockRelativeZ - k);
+                    }
+                }
+            }
+        }
     }
 }

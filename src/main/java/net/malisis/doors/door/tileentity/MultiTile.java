@@ -37,10 +37,7 @@ public class MultiTile extends DoorTileEntity {
         {
             if (mainBlock instanceof IMultiBlock)
             {
-                if (!(((IMultiBlock) mainBlock).isChangingState()))
-                {
-                    ((IMultiBlock) mainBlock).onDestroy(this);
-                }
+                ((IMultiBlock) mainBlock).onDestroy(this);
             }
         }
     }
@@ -82,6 +79,7 @@ public class MultiTile extends DoorTileEntity {
         nbt.setInteger("mainBlockX", this.mainBlockX);
         nbt.setInteger("mainBlockY", this.mainBlockY);
         nbt.setInteger("mainBlockZ", this.mainBlockZ);
+        nbt.setBoolean("mainBlockSet", this.mainBlockSet);
     }
 
     @Override
@@ -90,6 +88,7 @@ public class MultiTile extends DoorTileEntity {
         this.mainBlockX = nbt.getInteger("mainBlockX");
         this.mainBlockY = nbt.getInteger("mainBlockY");
         this.mainBlockZ = nbt.getInteger("mainBlockZ");
+        this.mainBlockSet = nbt.getBoolean("mainBlockSet");
     }
 
     @Override
@@ -116,14 +115,12 @@ public class MultiTile extends DoorTileEntity {
         }
     }
 
-    public void dropMainBlockAtLocation()
+    public void dropMainBlockAtLocation(Block block)
     {
         if (mainBlockSet)
         {
-            Block block = this.worldObj.getBlock(mainBlockX, mainBlockY, mainBlockZ);
             int meta = this.getBlockMetadata();
             block.dropBlockAsItem(this.worldObj, xCoord, yCoord, zCoord, meta, 0);
         }
-
     }
 }

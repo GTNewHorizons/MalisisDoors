@@ -16,8 +16,7 @@ public class MultiBlueprint
 
     public final static int MB = Integer.MAX_VALUE; // Main Block
     public final static int EMPTY = -1;
-    public final static int RM = Integer.MIN_VALUE; // Shouldn't ever be used for a state that can get placed. Only for
-                                                    // blocks that need to be removed on state change.
+    public final static int RM = Integer.MIN_VALUE;
 
     public int[][][] bluePrint;
     public Vector3i startingLocation;

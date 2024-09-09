@@ -27,5 +27,4 @@ public interface IMultiBlock {
      */
     void onDestroy(TileEntity callingBlock);
 
-    boolean isChangingState();
 }

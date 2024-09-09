@@ -189,40 +189,13 @@ public class BigDoor extends MalisisBlock implements ITileEntityProvider {
     @Override
     public void breakBlock(World world, int x, int y, int z, Block block, int meta)
     {
-        int fakeBlockCount = 0;
-
         final int buildHeight = world.getHeight() - 6; // No reason to have the door right at world height
-
         if (y > buildHeight)
         {
             return;
         }
-
-        boolean widthDirectionFlag = meta % 2 == 0;
-        int xStep = meta == 3 ? -1 : 1;
-        int zStep = meta == 0 ? -1 : 1;
-        int xMax = widthDirectionFlag ? 1 : 4;
-        int zMax = widthDirectionFlag ? 4 : 1;
-
-        for (int yLoc = 0; yLoc < 5; yLoc++)
-        {
-            for (int xLoc = 0; abs(xLoc) < xMax; xLoc += xStep)
-            {
-                for (int zLoc = 0; abs(zLoc) < zMax; zLoc += zStep)
-                {
-                    if (!(yLoc == 0 && zLoc == 0 && xLoc == 0))
-                    {
-                        if (world.getBlock(x + xLoc, y + yLoc, z + zLoc) == MalisisDoors.Blocks.collisionHelperBlock)
-                        {
-                            fakeBlockCount++;
-                        }
-                    }
-                }
-            }
-        }
-
         TileEntity tileEntity = world.getTileEntity(x, y, z);
-        if (fakeBlockCount >= 18 && tileEntity instanceof IMultiBlock)
+        if (tileEntity instanceof IMultiBlock)
         {
             ((IMultiBlock) tileEntity).onDestroy(tileEntity);
         }
@@ -235,7 +208,7 @@ public class BigDoor extends MalisisBlock implements ITileEntityProvider {
         if (world.isRemote) return true;
         BigDoorTileEntity te = TileEntityUtils.getTileEntity(BigDoorTileEntity.class, world, x, y, z);
         if (te == null) return true;
-        te.openOrCloseDoor();
+        te.onBlockActivated(world, x, y, z, player);
         return true;
     }
 
