@@ -740,7 +740,10 @@ public class MalisisRenderer extends TileEntitySpecialRenderer
         // use normals if available
         if ((renderType == RenderType.ITEM_INVENTORY || renderType == RenderType.ISBRH_INVENTORY
             || params.useNormals.get()) && params.direction.get() != null)
-            this.tessellator.setNormal(params.direction.get().offsetX, params.direction.get().offsetY, params.direction.get().offsetZ);
+            this.tessellator.setNormal(
+                params.direction.get().offsetX,
+                params.direction.get().offsetY,
+                params.direction.get().offsetZ);
 
         baseBrightness = getBaseBrightness();
 

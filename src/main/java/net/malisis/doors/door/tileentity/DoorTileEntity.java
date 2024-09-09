@@ -111,10 +111,10 @@ public class DoorTileEntity extends TileEntity {
         return (getBlockMetadata() & Door.FLAG_REVERSED) != 0;
     }
 
-    public boolean shouldRender()
-    {
+    public boolean shouldRender() {
         return true;
     }
+
     public boolean isPowered() {
         return getWorldObj().isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord)
             || getWorldObj().isBlockIndirectlyGettingPowered(xCoord, yCoord + 1, zCoord);

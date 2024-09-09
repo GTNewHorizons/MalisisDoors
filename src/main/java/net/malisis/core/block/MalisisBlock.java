@@ -89,8 +89,7 @@ public class MalisisBlock extends Block implements IBoundingBox {
     }
 
     @Override
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World worldIn, int x, int y, int z)
-    {
+    public AxisAlignedBB getCollisionBoundingBoxFromPool(World worldIn, int x, int y, int z) {
         this.setBlockBoundsBasedOnState(worldIn, x, y, z);
         return super.getCollisionBoundingBoxFromPool(worldIn, x, y, z);
     }

@@ -1,14 +1,12 @@
 package net.malisis.doors.door.multiBlock;
 
-import org.joml.Vector3i;
-
 import java.util.Map;
 
-public class MultiBlueprint
-{
+import org.joml.Vector3i;
 
-    public enum RotationDegrees
-    {
+public class MultiBlueprint {
+
+    public enum RotationDegrees {
         ROT90,
         ROT180,
         ROT270,
@@ -25,8 +23,7 @@ public class MultiBlueprint
     public int zLength;
     private Map<Integer, int[]> metaMap;
 
-    public MultiBlueprint(int[][][] print, Map<Integer, int[]> metaMap, Vector3i startingLocation)
-    {
+    public MultiBlueprint(int[][][] print, Map<Integer, int[]> metaMap, Vector3i startingLocation) {
         this.yLength = print.length;
         this.xLength = print[0].length;
         this.zLength = print[0][0].length;
@@ -35,11 +32,9 @@ public class MultiBlueprint
         this.startingLocation = startingLocation;
     }
 
-    public void rotate(RotationDegrees angle)
-    {
+    public void rotate(RotationDegrees angle) {
         int[][][] rotatedPrint = new int[bluePrint.length][bluePrint.length][bluePrint.length];
-        switch (angle)
-        {
+        switch (angle) {
             case ROT90 -> {
                 for (int i = 0; i < bluePrint.length; i++) {
                     rotatedPrint[i] = rotate90Clockwise(bluePrint[i]);
@@ -61,34 +56,27 @@ public class MultiBlueprint
         this.bluePrint = rotatedPrint;
     }
 
-    private int[][] rotate90Clockwise(int[][] matrix)
-    {
+    private int[][] rotate90Clockwise(int[][] matrix) {
         return transpose(reverseColumns(matrix));
     }
 
-    private int[][] rotate180Clockwise(int[][] matrix)
-    {
+    private int[][] rotate180Clockwise(int[][] matrix) {
         return reverseColumns(reverseRows(matrix));
     }
 
-    private int[][] rotate270Clockwise(int[][] matrix)
-    {
+    private int[][] rotate270Clockwise(int[][] matrix) {
         return transpose(reverseRows(matrix));
     }
 
-    private void convertMeta(int[][][] mat, RotationDegrees angle)
-    {
+    private void convertMeta(int[][][] mat, RotationDegrees angle) {
         int conversionInfo = angle.ordinal();
-        for (int i = 0; i < mat.length; i++)
-        {
-            for (int j = 0; j < mat[i].length; j++)
-            {
+        for (int i = 0; i < mat.length; i++) {
+            for (int j = 0; j < mat[i].length; j++) {
                 for (int k = 0; k < mat[i][j].length; k++) {
                     int[] newState = metaMap.get(mat[i][j][k]);
                     if (newState == null) {
-                        if (mat[i][j][k] == MB)
-                        {
-                            this.startingLocation = new Vector3i(j,i,k);
+                        if (mat[i][j][k] == MB) {
+                            this.startingLocation = new Vector3i(j, i, k);
                         }
                     } else {
                         mat[i][j][k] = newState[conversionInfo];
@@ -110,13 +98,11 @@ public class MultiBlueprint
         return transposed;
     }
 
-    private int[][] reverseColumns(int[][] matrix)
-    {
+    private int[][] reverseColumns(int[][] matrix) {
         return multiplyMatrices(generateRowReversalMatrix(matrix.length), matrix);
     }
 
-    private int[][] reverseRows(int[][] matrix)
-    {
+    private int[][] reverseRows(int[][] matrix) {
         return multiplyMatrices(matrix, generateRowReversalMatrix(matrix[0].length));
     }
 
@@ -135,7 +121,8 @@ public class MultiBlueprint
         int colsB = B[0].length;
 
         if (colsA != rowsB) {
-            throw new IllegalArgumentException("Number of columns in Matrix A must be equal to number of rows in Matrix B.");
+            throw new IllegalArgumentException(
+                "Number of columns in Matrix A must be equal to number of rows in Matrix B.");
         }
 
         int[][] result = new int[rowsA][colsB];

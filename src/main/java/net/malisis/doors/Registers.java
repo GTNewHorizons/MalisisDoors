@@ -468,14 +468,14 @@ public class Registers {
             Items.comparator);
     }
 
-    private static void registerCollisionHelperBlocks()
-    {
+    private static void registerCollisionHelperBlocks() {
         collisionHelperBlock = new CollisionHelperBlock(BigDoor.Type.MEDIEVAL);
-        GameRegistry.registerBlock(collisionHelperBlock, collisionHelperBlock.getUnlocalizedName()
-            .substring(5));
+        GameRegistry.registerBlock(
+            collisionHelperBlock,
+            collisionHelperBlock.getUnlocalizedName()
+                .substring(5));
 
         GameRegistry.registerTileEntity(MultiTile.class, "collisionHelperTileEntity");
-
 
     }
 }

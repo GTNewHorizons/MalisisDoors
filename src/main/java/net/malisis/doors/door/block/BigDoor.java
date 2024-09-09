@@ -13,7 +13,8 @@
 
 package net.malisis.doors.door.block;
 
-import java.util.ArrayList;
+import static net.minecraft.util.MathHelper.abs;
+import static net.minecraft.util.Vec3.createVectorHelper;
 
 import net.malisis.core.block.BoundingBoxType;
 import net.malisis.core.block.MalisisBlock;
@@ -43,10 +44,8 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import org.apache.commons.lang3.tuple.Pair;
 
-import static net.minecraft.util.MathHelper.abs;
-import static net.minecraft.util.Vec3.createVectorHelper;
+import org.apache.commons.lang3.tuple.Pair;
 
 /**
  * @author Ordinastie
@@ -69,25 +68,29 @@ public class BigDoor extends MalisisBlock implements ITileEntityProvider {
     }
 
     private final Vec3[][] selectionOpenHoriztonalFaces = new Vec3[][] {
-            { createVectorHelper(0,5,1), createVectorHelper(0,5,1 - Door.DOOR_WIDTH), createVectorHelper(4,5,1 - Door.DOOR_WIDTH), createVectorHelper(4,5,1) }, // bottom face
-            { createVectorHelper(.5,4,1), createVectorHelper(.5,4,1 - Door.DOOR_WIDTH), createVectorHelper(3.5,4,1 - Door.DOOR_WIDTH), createVectorHelper(3.5,4,1) }, // top face
-            { createVectorHelper(0,4,1 - Door.DOOR_WIDTH), createVectorHelper(0, 4, -.5), createVectorHelper(.5,4,-.5), createVectorHelper(.5,4,1 - Door.DOOR_WIDTH) },
-            { createVectorHelper(3.5, 4, 1 - Door.DOOR_WIDTH), createVectorHelper(4, 4, 1 - Door.DOOR_WIDTH), createVectorHelper(4, 4, -.5), createVectorHelper(3.5, 4, -.5) },
-            { createVectorHelper(0,0,1), createVectorHelper(0, 0, -.5), createVectorHelper(.5,0,-.5), createVectorHelper(.5,0,1) },
-            { createVectorHelper(3.5, 0, 1), createVectorHelper(4, 0, 1), createVectorHelper(4, 0, -.5), createVectorHelper(3.5, 0, -.5) }
-        };
+        { createVectorHelper(0, 5, 1), createVectorHelper(0, 5, 1 - Door.DOOR_WIDTH),
+            createVectorHelper(4, 5, 1 - Door.DOOR_WIDTH), createVectorHelper(4, 5, 1) }, // bottom face
+        { createVectorHelper(.5, 4, 1), createVectorHelper(.5, 4, 1 - Door.DOOR_WIDTH),
+            createVectorHelper(3.5, 4, 1 - Door.DOOR_WIDTH), createVectorHelper(3.5, 4, 1) }, // top face
+        { createVectorHelper(0, 4, 1 - Door.DOOR_WIDTH), createVectorHelper(0, 4, -.5), createVectorHelper(.5, 4, -.5),
+            createVectorHelper(.5, 4, 1 - Door.DOOR_WIDTH) },
+        { createVectorHelper(3.5, 4, 1 - Door.DOOR_WIDTH), createVectorHelper(4, 4, 1 - Door.DOOR_WIDTH),
+            createVectorHelper(4, 4, -.5), createVectorHelper(3.5, 4, -.5) },
+        { createVectorHelper(0, 0, 1), createVectorHelper(0, 0, -.5), createVectorHelper(.5, 0, -.5),
+            createVectorHelper(.5, 0, 1) },
+        { createVectorHelper(3.5, 0, 1), createVectorHelper(4, 0, 1), createVectorHelper(4, 0, -.5),
+            createVectorHelper(3.5, 0, -.5) } };
     private final Pair<Vec3, Vec3>[] selectionOpenVerticals = new Pair[] {
-        Pair.of(createVectorHelper(0,0,1), createVectorHelper(0,5,1)),
-        Pair.of(createVectorHelper(4,0,1), createVectorHelper(4,5,1)),
-        Pair.of(createVectorHelper(.5,0,1), createVectorHelper(.5,4,1)),
-        Pair.of(createVectorHelper(3.5,0,1), createVectorHelper(3.5,4,1)),
-        Pair.of(createVectorHelper(0,0,-.5), createVectorHelper(0,4,-.5)),
-        Pair.of(createVectorHelper(.5,0,-.5), createVectorHelper(.5,4,-.5)),
-        Pair.of(createVectorHelper(3.5,0,-.5), createVectorHelper(3.5,4,-.5)),
-        Pair.of(createVectorHelper(4,0,-.5), createVectorHelper(4,4,-.5)),
-        Pair.of(createVectorHelper(0,4,1 - Door.DOOR_WIDTH), createVectorHelper(0,5,1 - Door.DOOR_WIDTH)),
-        Pair.of(createVectorHelper(4,4,1 - Door.DOOR_WIDTH), createVectorHelper(4, 5, 1 - Door.DOOR_WIDTH))
-    };
+        Pair.of(createVectorHelper(0, 0, 1), createVectorHelper(0, 5, 1)),
+        Pair.of(createVectorHelper(4, 0, 1), createVectorHelper(4, 5, 1)),
+        Pair.of(createVectorHelper(.5, 0, 1), createVectorHelper(.5, 4, 1)),
+        Pair.of(createVectorHelper(3.5, 0, 1), createVectorHelper(3.5, 4, 1)),
+        Pair.of(createVectorHelper(0, 0, -.5), createVectorHelper(0, 4, -.5)),
+        Pair.of(createVectorHelper(.5, 0, -.5), createVectorHelper(.5, 4, -.5)),
+        Pair.of(createVectorHelper(3.5, 0, -.5), createVectorHelper(3.5, 4, -.5)),
+        Pair.of(createVectorHelper(4, 0, -.5), createVectorHelper(4, 4, -.5)),
+        Pair.of(createVectorHelper(0, 4, 1 - Door.DOOR_WIDTH), createVectorHelper(0, 5, 1 - Door.DOOR_WIDTH)),
+        Pair.of(createVectorHelper(4, 4, 1 - Door.DOOR_WIDTH), createVectorHelper(4, 5, 1 - Door.DOOR_WIDTH)) };
 
     private final int DoorBlockWidth = 4;
     private final int DoorBlockHeight = 5;
@@ -133,19 +136,14 @@ public class BigDoor extends MalisisBlock implements ITileEntityProvider {
         world.setBlockMetadataWithNotify(x, y, z, metadata, 2);
 
         BigDoorTileEntity te = TileEntityUtils.getTileEntity(BigDoorTileEntity.class, world, x, y, z);
-        if (te != null)
-        {
+        if (te != null) {
             te.setFrameState(BlockState.fromNBT(itemStack.getTagCompound()));
-            if (checkAreaClearForDoor(world, x, y, z, metadata))
-            {
+            if (checkAreaClearForDoor(world, x, y, z, metadata)) {
                 te.onCreate(x, y, z, metadata);
-            }
-            else
-            {
+            } else {
                 world.setBlockToAir(x, y, z);
                 if (!world.isRemote && livingEntity instanceof EntityPlayerMP player) {
-                    player.addChatMessage(
-                        new ChatComponentText("There's no room for the door!"));
+                    player.addChatMessage(new ChatComponentText("There's no room for the door!"));
                     if (!player.capabilities.isCreativeMode) {
                         final ItemStack doorBlock = new ItemStack(this, 1, 0);
                         final EntityItem entityitem = player.dropPlayerItemWithRandomChoice(doorBlock, false);
@@ -157,8 +155,7 @@ public class BigDoor extends MalisisBlock implements ITileEntityProvider {
         }
     }
 
-    private boolean checkAreaClearForDoor(World world, int x, int y, int z, int meta)
-    {
+    private boolean checkAreaClearForDoor(World world, int x, int y, int z, int meta) {
         boolean validSpot = true;
         boolean widthDirectionFlag = meta % 2 == 0;
         int xStep = meta == 3 ? -1 : 1;
@@ -166,17 +163,13 @@ public class BigDoor extends MalisisBlock implements ITileEntityProvider {
         int xMax = widthDirectionFlag ? 1 : 4;
         int zMax = widthDirectionFlag ? 4 : 1;
 
-        for (int yLoc = 0; yLoc < 5; yLoc++)
-        {
-            for (int xLoc = 0; abs(xLoc) < xMax; xLoc += xStep)
-            {
-                for (int zLoc = 0; abs(zLoc) < zMax; zLoc += zStep)
-                {
-                    if (!(yLoc == 0 && zLoc == 0 && xLoc == 0))
-                    {
+        for (int yLoc = 0; yLoc < 5; yLoc++) {
+            for (int xLoc = 0; abs(xLoc) < xMax; xLoc += xStep) {
+                for (int zLoc = 0; abs(zLoc) < zMax; zLoc += zStep) {
+                    if (!(yLoc == 0 && zLoc == 0 && xLoc == 0)) {
                         final Block potentialSpot = world.getBlock(x + xLoc, y + yLoc, z + zLoc);
-                        if (!potentialSpot.getMaterial().isReplaceable())
-                        {
+                        if (!potentialSpot.getMaterial()
+                            .isReplaceable()) {
                             validSpot = false;
                         }
                     }
@@ -187,16 +180,13 @@ public class BigDoor extends MalisisBlock implements ITileEntityProvider {
     }
 
     @Override
-    public void breakBlock(World world, int x, int y, int z, Block block, int meta)
-    {
+    public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
         final int buildHeight = world.getHeight() - 6; // No reason to have the door right at world height
-        if (y > buildHeight)
-        {
+        if (y > buildHeight) {
             return;
         }
         TileEntity tileEntity = world.getTileEntity(x, y, z);
-        if (tileEntity instanceof IMultiBlock)
-        {
+        if (tileEntity instanceof IMultiBlock) {
             ((IMultiBlock) tileEntity).onDestroy(block, tileEntity, meta);
         }
         super.breakBlock(world, x, y, z, block, meta);
@@ -223,7 +213,8 @@ public class BigDoor extends MalisisBlock implements ITileEntityProvider {
         if (type == BoundingBoxType.RENDER) {
             aabbs[0].minZ = -.5F;
         } else if ((type == BoundingBoxType.COLLISION || type == BoundingBoxType.CHUNKCOLLISION
-            || type == BoundingBoxType.RAYTRACE || type == BoundingBoxType.SELECTION) && (te.isOpened() || te.isMoving())) {
+            || type == BoundingBoxType.RAYTRACE
+            || type == BoundingBoxType.SELECTION) && (te.isOpened() || te.isMoving())) {
                 aabbs = new AxisAlignedBB[] { AxisAlignedBB.getBoundingBox(0, 0, -0.5F, 0.5F, 4, 1),
                     AxisAlignedBB.getBoundingBox(3.5F, 0, -0.5F, 4, 4, 1),
                     AxisAlignedBB.getBoundingBox(0, 4, 1 - Door.DOOR_WIDTH, 4, 5, 1) };
@@ -232,13 +223,12 @@ public class BigDoor extends MalisisBlock implements ITileEntityProvider {
         return AABBUtils.rotate(aabbs, Door.intToDir(te.getDirection()));
     }
 
-    public ComplexAxisAlignedBoundingBox getComplexBoundingBoxWithOffset(IBlockAccess world, int x, int y, int z, BoundingBoxType type)
-    {
+    public ComplexAxisAlignedBoundingBox getComplexBoundingBoxWithOffset(IBlockAccess world, int x, int y, int z,
+        BoundingBoxType type) {
         BigDoorTileEntity te = TileEntityUtils.getTileEntity(BigDoorTileEntity.class, world, x, y, z);
         if (te == null) return ComplexAxisAlignedBoundingBox.defaultComplexBoundingBox;
 
-        if (type == BoundingBoxType.SELECTION && (te.isOpened() || te.isMoving()))
-        {
+        if (type == BoundingBoxType.SELECTION && (te.isOpened() || te.isMoving())) {
             Vec3[][] clonedFlatSurfaces = new Vec3[selectionOpenHoriztonalFaces.length][];
             for (int i = 0; i < selectionOpenHoriztonalFaces.length; i++) {
                 clonedFlatSurfaces[i] = new Vec3[selectionOpenHoriztonalFaces[i].length];
@@ -252,19 +242,22 @@ public class BigDoor extends MalisisBlock implements ITileEntityProvider {
             for (int i = 0; i < selectionOpenVerticals.length; i++) {
                 Vec3 left = selectionOpenVerticals[i].getLeft();
                 Vec3 right = selectionOpenVerticals[i].getRight();
-                clonedVerticals[i] = Pair.of(createVectorHelper(left.xCoord, left.yCoord, left.zCoord),
+                clonedVerticals[i] = Pair.of(
+                    createVectorHelper(left.xCoord, left.yCoord, left.zCoord),
                     createVectorHelper(right.xCoord, right.yCoord, right.zCoord));
             }
 
-            ComplexAxisAlignedBoundingBox CAABB = new ComplexAxisAlignedBoundingBox(clonedFlatSurfaces, clonedVerticals);
-            CAABB.rotate(Door.intToDir(te.getDirection()) ,ComplexAxisAlignedBoundingBox.Axis.Y);
+            ComplexAxisAlignedBoundingBox CAABB = new ComplexAxisAlignedBoundingBox(
+                clonedFlatSurfaces,
+                clonedVerticals);
+            CAABB.rotate(Door.intToDir(te.getDirection()), ComplexAxisAlignedBoundingBox.Axis.Y);
             // Offset needed post-rotation
             switch (Door.intToDir(te.getDirection())) {
                 case EAST -> CAABB.addOffset(x + 1, y, z);
                 case NORTH -> CAABB.addOffset(x, y, z);
                 case SOUTH -> CAABB.addOffset(x + 1, y, z + 1);
                 case WEST -> CAABB.addOffset(x, y, z + 1);
-        }
+            }
             return CAABB;
         }
         return ComplexAxisAlignedBoundingBox.defaultComplexBoundingBox;
@@ -301,9 +294,14 @@ public class BigDoor extends MalisisBlock implements ITileEntityProvider {
     }
 
     @Override
-    public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z)
-    {
-        this.setBlockBounds((float) defaultBoundingBox.minX, (float) defaultBoundingBox.minY, (float) defaultBoundingBox.minZ, (float) defaultBoundingBox.maxX, (float) defaultBoundingBox.maxY, (float) defaultBoundingBox.maxZ);
+    public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
+        this.setBlockBounds(
+            (float) defaultBoundingBox.minX,
+            (float) defaultBoundingBox.minY,
+            (float) defaultBoundingBox.minZ,
+            (float) defaultBoundingBox.maxX,
+            (float) defaultBoundingBox.maxY,
+            (float) defaultBoundingBox.maxZ);
     }
 
     @Override

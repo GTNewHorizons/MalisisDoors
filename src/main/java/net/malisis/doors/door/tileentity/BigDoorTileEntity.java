@@ -13,6 +13,12 @@
 
 package net.malisis.doors.door.tileentity;
 
+import static net.malisis.doors.door.multiBlock.MultiBlueprint.MB;
+import static net.malisis.doors.door.multiBlock.MultiBlueprint.RM;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import net.malisis.core.MalisisCore;
 import net.malisis.core.block.BoundingBoxType;
 import net.malisis.core.util.BlockState;
@@ -21,11 +27,11 @@ import net.malisis.doors.MalisisDoors;
 import net.malisis.doors.door.DoorDescriptor;
 import net.malisis.doors.door.DoorRegistry;
 import net.malisis.doors.door.DoorState;
-import net.malisis.doors.door.multiBlock.MultiBlueprint;
 import net.malisis.doors.door.block.BigDoor;
 import net.malisis.doors.door.block.CollisionHelperBlock;
 import net.malisis.doors.door.block.Door;
 import net.malisis.doors.door.movement.CarriageDoorMovement;
+import net.malisis.doors.door.multiBlock.MultiBlueprint;
 import net.malisis.doors.door.sound.CarriageDoorSound;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -40,15 +46,9 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.google.common.base.Objects;
 import org.joml.Vector3i;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import static net.malisis.doors.door.multiBlock.MultiBlueprint.MB;
-import static net.malisis.doors.door.multiBlock.MultiBlueprint.RM;
-import static net.minecraft.util.MathHelper.abs;
+import com.google.common.base.Objects;
 
 /**
  * @author Ordinastie
@@ -62,73 +62,34 @@ public class BigDoorTileEntity extends MultiTile implements IMultiBlock, IBluePr
     private final Block defaultBorderBlock = Blocks.stonebrick;
     private BlockState frameState = new BlockState(defaultBorderBlock);
     private Boolean changingState = false;
-    private final int[][][] openPrint =
-    {
-        {
-            {10, -1, -1,  9},
-            {MB, RM, RM,  7},
-        },
-        {
-            {10, -1, -1,  9},
-            { 5, RM, RM,  7},
-        },
-        {
-            {10, -1, -1,  9},
-            { 5, RM, RM,  7},
-        },
-        {
-            {10, -1, -1,  9},
-            { 5, RM, RM,  7},
-        },
-        {
-            {-1, -1, -1, -1},
-            { 0,  0,  0,  0},
-        }
-    };
+    private final int[][][] openPrint = { { { 10, -1, -1, 9 }, { MB, RM, RM, 7 }, },
+        { { 10, -1, -1, 9 }, { 5, RM, RM, 7 }, }, { { 10, -1, -1, 9 }, { 5, RM, RM, 7 }, },
+        { { 10, -1, -1, 9 }, { 5, RM, RM, 7 }, }, { { -1, -1, -1, -1 }, { 0, 0, 0, 0 }, } };
 
-    private final int[][][] closedPrint =
-    {
-        {
-            {RM, -1, -1,  RM},
-            {MB,  0,  0,  0},
-        },
-        {
-            {RM, -1, -1,  RM},
-            { 0,  0,  0,  0},
-        },
-        {
-            {RM, -1, -1,  RM},
-            { 0,  0,  0,  0},
-        },
-        {
-            {RM, -1, -1,  RM},
-            { 0,  0,  0,  0},
-        },
-        {
-            {RM, -1, -1,  RM},
-            { 0,  0,  0,  0},
-        }
-    };
-
-
+    private final int[][][] closedPrint = { { { RM, -1, -1, RM }, { MB, 0, 0, 0 }, },
+        { { RM, -1, -1, RM }, { 0, 0, 0, 0 }, }, { { RM, -1, -1, RM }, { 0, 0, 0, 0 }, },
+        { { RM, -1, -1, RM }, { 0, 0, 0, 0 }, }, { { RM, -1, -1, RM }, { 0, 0, 0, 0 }, } };
 
     // This map defines how to choose the next meta based on a rotation.
-    Map<Integer, int[]> metaMap = new HashMap<>() {{
-        put(0, new int[]{1, 2, 3});
-        put(1, new int[]{2, 3, 0});
-        put(2, new int[]{3, 0, 1});
-        put(3, new int[]{0, 1, 2});
-        put(4, new int[]{5, 6, 7});
-        put(5, new int[]{6, 7, 4});
-        put(6, new int[]{7, 4, 5});
-        put(7, new int[]{4, 5, 6});
-        put(8, new int[]{9, 10, 11});
-        put(9, new int[]{10, 11, 8});
-        put(10, new int[]{ 11, 8, 9});
-        put(11, new int[]{8, 9, 10});
-    }};
+    Map<Integer, int[]> metaMap = new HashMap<>() {
 
-    private final MultiBlueprint closedBlueprint = new MultiBlueprint(closedPrint, metaMap, new Vector3i(1,0,0));
+        {
+            put(0, new int[] { 1, 2, 3 });
+            put(1, new int[] { 2, 3, 0 });
+            put(2, new int[] { 3, 0, 1 });
+            put(3, new int[] { 0, 1, 2 });
+            put(4, new int[] { 5, 6, 7 });
+            put(5, new int[] { 6, 7, 4 });
+            put(6, new int[] { 7, 4, 5 });
+            put(7, new int[] { 4, 5, 6 });
+            put(8, new int[] { 9, 10, 11 });
+            put(9, new int[] { 10, 11, 8 });
+            put(10, new int[] { 11, 8, 9 });
+            put(11, new int[] { 8, 9, 10 });
+        }
+    };
+
+    private final MultiBlueprint closedBlueprint = new MultiBlueprint(closedPrint, metaMap, new Vector3i(1, 0, 0));
     private final MultiBlueprint openBlueprint = new MultiBlueprint(openPrint, metaMap, new Vector3i(1, 0, 0));
 
     public BigDoorTileEntity() {
@@ -150,8 +111,7 @@ public class BigDoorTileEntity extends MultiTile implements IMultiBlock, IBluePr
     }
 
     @Override
-    public void setFrameState (Block block)
-    {
+    public void setFrameState(Block block) {
         this.setFrameState(new BlockState(block));
     }
 
@@ -173,10 +133,10 @@ public class BigDoorTileEntity extends MultiTile implements IMultiBlock, IBluePr
     @Override
     public void setDoorState(DoorState newState) {
         super.setDoorState(newState);
-//        if (!this.worldObj.isRemote)
-//        {
+        // if (!this.worldObj.isRemote)
+        // {
         this.onStateChange(newState);
-//        }
+        // }
     }
 
     @Override
@@ -231,8 +191,7 @@ public class BigDoorTileEntity extends MultiTile implements IMultiBlock, IBluePr
 
     @Override
     public boolean onActivated(EntityPlayer entityPlayer) {
-        if (!this.worldObj.isRemote)
-        {
+        if (!this.worldObj.isRemote) {
             this.openOrCloseDoor();
         }
         return true;
@@ -246,20 +205,17 @@ public class BigDoorTileEntity extends MultiTile implements IMultiBlock, IBluePr
         if (y > buildHeight) {
             return;
         }
-        this.setMainBlock(x,y,z);
+        this.setMainBlock(x, y, z);
         this.mainBlockSet = true;
         placeBluePrint(this.worldObj, x, y, z, meta, false);
 
     }
 
     @Override
-    public void onDestroy(Block blockToDrop, TileEntity callingBlock, int meta)
-    {
-        if (!this.changingState)
-        {
+    public void onDestroy(Block blockToDrop, TileEntity callingBlock, int meta) {
+        if (!this.changingState) {
             int metaToUse = meta;
-            if (this.state == DoorState.OPENING && metaToUse < 4)
-            {
+            if (this.state == DoorState.OPENING && metaToUse < 4) {
                 metaToUse += 4;
             }
             this.changingState = true;
@@ -270,28 +226,22 @@ public class BigDoorTileEntity extends MultiTile implements IMultiBlock, IBluePr
 
     // This method is a little complex because unless the door is fully closed I want players to be able to go through
     // the door.
-    public void onStateChange(DoorState newState)
-    {
+    public void onStateChange(DoorState newState) {
         if (this.state == newState) return;
         int meta = this.mainBlockMeta;
-        if (newState == DoorState.OPENING && meta < 4)
-        {
+        if (newState == DoorState.OPENING && meta < 4) {
             this.changingState = true;
             placeBluePrint(this.worldObj, xCoord, yCoord, zCoord, (meta + 4) % 8, true);
             this.changingState = false;
-        }
-        else if (newState == DoorState.CLOSED)
-        {
+        } else if (newState == DoorState.CLOSED) {
             this.changingState = true;
             placeBluePrint(this.worldObj, xCoord, yCoord, zCoord, meta, true);
             this.changingState = false;
         }
     }
 
-
     @Override
-    public boolean shouldRender()
-    {
+    public boolean shouldRender() {
         return true;
     }
 
@@ -303,19 +253,16 @@ public class BigDoorTileEntity extends MultiTile implements IMultiBlock, IBluePr
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
-    {
+    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
         super.onDataPacket(net, pkt);
         NBTTagCompound packetData = pkt.func_148857_g();
         this.setFrameState(BlockState.fromNBT(packetData));
     }
 
     @Override
-    public void placeBluePrint(World world, int x, int y, int z, int meta, boolean removeBlockInWay)
-    {
+    public void placeBluePrint(World world, int x, int y, int z, int meta, boolean removeBlockInWay) {
         MultiBlueprint print = (meta < 4 ? this.closedBlueprint : this.openBlueprint);
-        switch (meta)
-        {
+        switch (meta) {
             case 0, 4:
                 this.bluePrintPlacerHelper(world, x, y, z, print, removeBlockInWay);
                 break;
@@ -337,8 +284,8 @@ public class BigDoorTileEntity extends MultiTile implements IMultiBlock, IBluePr
         }
     }
 
-    private void bluePrintPlacerHelper(World world, int x, int y, int z, MultiBlueprint print, boolean removeBlockInWay)
-    {
+    private void bluePrintPlacerHelper(World world, int x, int y, int z, MultiBlueprint print,
+        boolean removeBlockInWay) {
         int mainBlockRelativeX = print.startingLocation.x;
         int mainBlockRelativeY = print.startingLocation.y;
         int mainBlockRelativeZ = print.startingLocation.z;
@@ -348,13 +295,23 @@ public class BigDoorTileEntity extends MultiTile implements IMultiBlock, IBluePr
             {
                 for (int k = 0; k < print.bluePrint[0][0].length; k++) // z
                 {
-                    if (!(i == print.startingLocation.x && j == print.startingLocation.y && k == print.startingLocation.z) && print.bluePrint[j][i][k] > -1)
-                    {
-                        ((CollisionHelperBlock) MalisisDoors.Blocks.collisionHelperBlock).makeCollisionHelperBlock(world, x - mainBlockRelativeX + i, y - mainBlockRelativeY + j, z + mainBlockRelativeZ - k, print.bluePrint[j][i][k] , this.xCoord, this.yCoord, this.zCoord, this.getBlockMetadata());
-                    }
-                    else if(print.bluePrint[j][i][k] == Integer.MIN_VALUE && removeBlockInWay)
-                    {
-                        world.setBlockToAir(x - mainBlockRelativeX + i, y - mainBlockRelativeY + j, z + mainBlockRelativeZ - k);
+                    if (!(i == print.startingLocation.x && j == print.startingLocation.y
+                        && k == print.startingLocation.z) && print.bluePrint[j][i][k] > -1) {
+                        ((CollisionHelperBlock) MalisisDoors.Blocks.collisionHelperBlock).makeCollisionHelperBlock(
+                            world,
+                            x - mainBlockRelativeX + i,
+                            y - mainBlockRelativeY + j,
+                            z + mainBlockRelativeZ - k,
+                            print.bluePrint[j][i][k],
+                            this.xCoord,
+                            this.yCoord,
+                            this.zCoord,
+                            this.getBlockMetadata());
+                    } else if (print.bluePrint[j][i][k] == Integer.MIN_VALUE && removeBlockInWay) {
+                        world.setBlockToAir(
+                            x - mainBlockRelativeX + i,
+                            y - mainBlockRelativeY + j,
+                            z + mainBlockRelativeZ - k);
                     }
                 }
             }
@@ -362,10 +319,10 @@ public class BigDoorTileEntity extends MultiTile implements IMultiBlock, IBluePr
     }
 
     @Override
-    public void removeBluePrint(World world, int x, int y, int z, int meta, TileEntity callingBlock, Block blockToDrop) {
+    public void removeBluePrint(World world, int x, int y, int z, int meta, TileEntity callingBlock,
+        Block blockToDrop) {
         MultiBlueprint print = (meta < 4 ? this.closedBlueprint : this.openBlueprint);
-        switch (meta)
-        {
+        switch (meta) {
             case 0, 4:
                 this.bluePrintRemovalHelper(world, x, y, z, print, callingBlock, blockToDrop);
                 break;
@@ -387,8 +344,8 @@ public class BigDoorTileEntity extends MultiTile implements IMultiBlock, IBluePr
         }
     }
 
-    private void bluePrintRemovalHelper(World world, int x, int y, int z, MultiBlueprint print, TileEntity callingBlock, Block blockToDrop)
-    {
+    private void bluePrintRemovalHelper(World world, int x, int y, int z, MultiBlueprint print, TileEntity callingBlock,
+        Block blockToDrop) {
         int mainBlockRelativeX = print.startingLocation.x;
         int mainBlockRelativeY = print.startingLocation.y;
         int mainBlockRelativeZ = print.startingLocation.z;
@@ -398,13 +355,14 @@ public class BigDoorTileEntity extends MultiTile implements IMultiBlock, IBluePr
             {
                 for (int k = 0; k < print.bluePrint[0][0].length; k++) // z
                 {
-                    if (print.bluePrint[j][i][k] == MB)
-                    {
+                    if (print.bluePrint[j][i][k] == MB) {
                         ((MultiTile) callingBlock).dropMainBlockAtLocation(blockToDrop);
                     }
-                    if (print.bluePrint[j][i][k] > -1)
-                    {
-                        world.setBlockToAir(x - mainBlockRelativeX + i, y - mainBlockRelativeY + j, z + mainBlockRelativeZ - k);
+                    if (print.bluePrint[j][i][k] > -1) {
+                        world.setBlockToAir(
+                            x - mainBlockRelativeX + i,
+                            y - mainBlockRelativeY + j,
+                            z + mainBlockRelativeZ - k);
                     }
                 }
             }

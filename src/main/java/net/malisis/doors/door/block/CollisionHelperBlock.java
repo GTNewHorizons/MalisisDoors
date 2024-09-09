@@ -1,7 +1,8 @@
 package net.malisis.doors.door.block;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import java.util.List;
+import java.util.Random;
+
 import net.malisis.core.block.BoundingBoxType;
 import net.malisis.core.util.ComplexAxisAlignedBoundingBox;
 import net.malisis.doors.MalisisDoors;
@@ -26,11 +27,10 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import java.util.List;
-import java.util.Random;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class CollisionHelperBlock extends BlockContainer implements ITileEntityProvider {
-
 
     BigDoor.Type type;
 
@@ -81,9 +81,8 @@ public class CollisionHelperBlock extends BlockContainer implements ITileEntityP
     }
 
     @Override
-    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer EntityPlayer, int par6,
-                                    float subx, float suby, float subz)
-    {
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer EntityPlayer, int par6, float subx,
+        float suby, float subz) {
         final MultiTile tileEntity = ((MultiTile) world.getTileEntity(x, y, z));
         return tileEntity.onBlockActivated(world, x, y, z, EntityPlayer);
     }
@@ -92,7 +91,8 @@ public class CollisionHelperBlock extends BlockContainer implements ITileEntityP
     public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
         final TileEntity tileEntity = world.getTileEntity(x, y, z);
         if (tileEntity instanceof MultiTile) {
-            ((MultiTile) tileEntity).onBlockRemoval(type == BigDoor.Type.MEDIEVAL ? MalisisDoors.Blocks.medievalDoor : MalisisDoors.Blocks.carriageDoor);
+            ((MultiTile) tileEntity).onBlockRemoval(
+                type == BigDoor.Type.MEDIEVAL ? MalisisDoors.Blocks.medievalDoor : MalisisDoors.Blocks.carriageDoor);
         }
         super.breakBlock(world, x, y, z, block, meta);
     }
@@ -101,8 +101,7 @@ public class CollisionHelperBlock extends BlockContainer implements ITileEntityP
     public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
         final int meta = world.getBlockMetadata(x, y, z);
 
-        switch (meta)
-        {
+        switch (meta) {
             case 0: // 3 Pixels wide on the east side of the block
                 this.setBlockBounds(1.0F - Door.DOOR_WIDTH, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
                 break;
@@ -144,7 +143,7 @@ public class CollisionHelperBlock extends BlockContainer implements ITileEntityP
 
     @Override
     public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB axisalignedbb,
-                                        List<AxisAlignedBB> list, Entity entity) {
+        List<AxisAlignedBB> list, Entity entity) {
         setBlockBoundsBasedOnState(world, x, y, z);
         super.addCollisionBoxesToList(world, x, y, z, axisalignedbb, list, entity);
     }
@@ -158,38 +157,39 @@ public class CollisionHelperBlock extends BlockContainer implements ITileEntityP
     @Override
     public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int x, int y, int z) {
         this.setBlockBoundsBasedOnState(world, x, y, z);
-        MultiTile thisTE = ((MultiTile) world.getTileEntity(x,y,z));
+        MultiTile thisTE = ((MultiTile) world.getTileEntity(x, y, z));
         Block mainBlock = world.getBlock(thisTE.mainBlockX, thisTE.mainBlockY, thisTE.mainBlockZ);
-        if (mainBlock instanceof BigDoor)
-        {
-            return mainBlock.getSelectedBoundingBoxFromPool(world, thisTE.mainBlockX, thisTE.mainBlockY, thisTE.mainBlockZ);
+        if (mainBlock instanceof BigDoor) {
+            return mainBlock
+                .getSelectedBoundingBoxFromPool(world, thisTE.mainBlockX, thisTE.mainBlockY, thisTE.mainBlockZ);
         }
         return super.getSelectedBoundingBoxFromPool(world, x, y, z);
     }
 
-    public ComplexAxisAlignedBoundingBox getComplexBoundingBox(World world, int x, int y, int z)
-    {
+    public ComplexAxisAlignedBoundingBox getComplexBoundingBox(World world, int x, int y, int z) {
         this.setBlockBoundsBasedOnState(world, x, y, z);
         MultiTile TE = getTileEntity(world, x, y, z);
         BigDoor mainBlock = getMainBlock(world, x, y, z);
-        return mainBlock.getComplexBoundingBoxWithOffset(world, TE.mainBlockX, TE.mainBlockY, TE.mainBlockZ, BoundingBoxType.SELECTION);
+        return mainBlock.getComplexBoundingBoxWithOffset(
+            world,
+            TE.mainBlockX,
+            TE.mainBlockY,
+            TE.mainBlockZ,
+            BoundingBoxType.SELECTION);
     }
 
-    public BigDoor getMainBlock(World world, int x, int y, int z)
-    {
+    public BigDoor getMainBlock(World world, int x, int y, int z) {
         MultiTile cTE = this.getTileEntity(world, x, y, z);
         return (BigDoor) world.getBlock(cTE.mainBlockX, cTE.mainBlockY, cTE.mainBlockZ);
     }
 
-    public BigDoorTileEntity getMainTileEntity(World world, int x, int y, int z)
-    {
+    public BigDoorTileEntity getMainTileEntity(World world, int x, int y, int z) {
         MultiTile cTE = this.getTileEntity(world, x, y, z);
         return (BigDoorTileEntity) world.getTileEntity(cTE.mainBlockX, cTE.mainBlockY, cTE.mainBlockZ);
     }
 
-    public MultiTile getTileEntity(World world, int x, int y, int z)
-    {
-        return (MultiTile) world.getTileEntity(x,y,z);
+    public MultiTile getTileEntity(World world, int x, int y, int z) {
+        return (MultiTile) world.getTileEntity(x, y, z);
     }
 
     @Override
@@ -204,7 +204,8 @@ public class CollisionHelperBlock extends BlockContainer implements ITileEntityP
             final int mainX = ((MultiTile) tileEntity).mainBlockX;
             final int mainY = ((MultiTile) tileEntity).mainBlockY;
             final int mainZ = ((MultiTile) tileEntity).mainBlockZ;
-            return world.getBlock(mainX, mainY, mainZ).getBlockHardness(world, mainX, mainY, mainZ);
+            return world.getBlock(mainX, mainY, mainZ)
+                .getBlockHardness(world, mainX, mainY, mainZ);
         }
         return this.blockHardness;
     }
@@ -234,8 +235,8 @@ public class CollisionHelperBlock extends BlockContainer implements ITileEntityP
         return false;
     }
 
-    public void makeCollisionHelperBlock(World world, int x, int y, int z, int meta, int xMain, int yMain, int zMain, int metaMain)
-    {
+    public void makeCollisionHelperBlock(World world, int x, int y, int z, int meta, int xMain, int yMain, int zMain,
+        int metaMain) {
         world.setBlock(x, y, z, this, meta, 3);
         MultiTile tile = (MultiTile) world.getTileEntity(x, y, z);
         tile.setMainBlock(xMain, yMain, zMain);
@@ -244,17 +245,19 @@ public class CollisionHelperBlock extends BlockContainer implements ITileEntityP
 
     @SuppressWarnings("deprecation")
     @Override
-    public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
-    {
+    public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z) {
         final TileEntity tileEntity = world.getTileEntity(x, y, z);
-        if (tileEntity instanceof MultiTile multiTileEntity)
-        {
-            if (multiTileEntity.mainBlockSet)
-            {
-                final Block mainBlock = world.getBlock(multiTileEntity.mainBlockX, multiTileEntity.mainBlockY, multiTileEntity.mainBlockZ);
-                if (Blocks.air != mainBlock)
-                {
-                    return mainBlock.getPickBlock(target, world, multiTileEntity.mainBlockX, multiTileEntity.mainBlockY, multiTileEntity.mainBlockZ);
+        if (tileEntity instanceof MultiTile multiTileEntity) {
+            if (multiTileEntity.mainBlockSet) {
+                final Block mainBlock = world
+                    .getBlock(multiTileEntity.mainBlockX, multiTileEntity.mainBlockY, multiTileEntity.mainBlockZ);
+                if (Blocks.air != mainBlock) {
+                    return mainBlock.getPickBlock(
+                        target,
+                        world,
+                        multiTileEntity.mainBlockX,
+                        multiTileEntity.mainBlockY,
+                        multiTileEntity.mainBlockZ);
                 }
             }
         }
@@ -264,17 +267,16 @@ public class CollisionHelperBlock extends BlockContainer implements ITileEntityP
 
     @SideOnly(Side.CLIENT)
     @Override
-    public boolean addDestroyEffects(World world, int x, int y, int z, int meta, EffectRenderer effectRenderer)
-    {
+    public boolean addDestroyEffects(World world, int x, int y, int z, int meta, EffectRenderer effectRenderer) {
         final TileEntity tileEntity = world.getTileEntity(x, y, z);
-        if (tileEntity instanceof MultiTile multiTileEntity)
-        {
-            if (multiTileEntity.mainBlockSet)
-            {
-                final Block mainBlock = world.getBlock(multiTileEntity.mainBlockX, multiTileEntity.mainBlockY, multiTileEntity.mainBlockZ);
-                if (Blocks.air != mainBlock)
-                {
-                    return world.getBlock(multiTileEntity.mainBlockX, multiTileEntity.mainBlockY, multiTileEntity.mainBlockZ).addDestroyEffects(world, x, y, z, meta, effectRenderer);
+        if (tileEntity instanceof MultiTile multiTileEntity) {
+            if (multiTileEntity.mainBlockSet) {
+                final Block mainBlock = world
+                    .getBlock(multiTileEntity.mainBlockX, multiTileEntity.mainBlockY, multiTileEntity.mainBlockZ);
+                if (Blocks.air != mainBlock) {
+                    return world
+                        .getBlock(multiTileEntity.mainBlockX, multiTileEntity.mainBlockY, multiTileEntity.mainBlockZ)
+                        .addDestroyEffects(world, x, y, z, meta, effectRenderer);
                 }
             }
         }

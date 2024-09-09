@@ -14,9 +14,9 @@ public interface IMultiBlock {
     /**
      * Called when this multiblock is created
      *
-     * @param x - placed x coord
-     * @param y - placed y coord
-     * @param z - placed z coord'
+     * @param x    - placed x coord
+     * @param y    - placed y coord
+     * @param z    - placed z coord'
      * @param meta - meta of the placed door
      */
     void onCreate(int x, int y, int z, int meta);

@@ -1,6 +1,5 @@
 package net.malisis.doors.event;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.malisis.doors.door.DoorState;
 import net.malisis.doors.door.block.CollisionHelperBlock;
 import net.malisis.doors.door.tileentity.DoorTileEntity;
@@ -17,7 +16,10 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+
 import org.lwjgl.input.Keyboard;
+
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class DoorEventHandler {
 
@@ -42,7 +44,12 @@ public class DoorEventHandler {
                         DoorState state = ((DoorTileEntity) mainDoorTE).getState();
                         if (state == DoorState.OPENED || state == DoorState.OPENING || state == DoorState.CLOSING) {
                             event.setCanceled(true);
-                            cdbbRenderer.renderOpenDoorBoundingBox(world, (CollisionHelperBlock) block, event.player, event.partialTicks, target);
+                            cdbbRenderer.renderOpenDoorBoundingBox(
+                                world,
+                                (CollisionHelperBlock) block,
+                                event.player,
+                                event.partialTicks,
+                                target);
                         }
                     }
                 }
@@ -51,18 +58,16 @@ public class DoorEventHandler {
     }
 
     @SubscribeEvent
-    public void PlayerInteractEvent(PlayerInteractEvent event)
-    {
+    public void PlayerInteractEvent(PlayerInteractEvent event) {
         TileEntity tileEntity = getTileEntityLookingAt(event.entityPlayer);
-        if (event.entityPlayer.isSneaking() && event.action.equals(PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK) && tileEntity instanceof MultiTile multiTile && Keyboard.isKeyDown(Keyboard.KEY_LCONTROL))
-        {
+        if (event.entityPlayer.isSneaking() && event.action.equals(PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK)
+            && tileEntity instanceof MultiTile multiTile
+            && Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
             ItemStack heldStack = event.entityPlayer.getHeldItem();
-            if (heldStack != null)
-            {
+            if (heldStack != null) {
                 Block block = Block.getBlockFromItem(heldStack.getItem());
                 int damageValue = heldStack.getItemDamage();
-                if (block != null)
-                {
+                if (block != null) {
                     event.setCanceled(true);
                     FrameUpdateMessage.SendFrameUpdateMessage(multiTile, block, damageValue);
                 }
@@ -75,11 +80,8 @@ public class DoorEventHandler {
         double maxReach = mc.playerController.getBlockReachDistance();
         Vec3 eyePosition = player.getPosition(1.0F);
         Vec3 lookVector = player.getLook(1.0F);
-        Vec3 endPosition = eyePosition.addVector(
-            lookVector.xCoord * maxReach,
-            lookVector.yCoord * maxReach,
-            lookVector.zCoord * maxReach
-        );
+        Vec3 endPosition = eyePosition
+            .addVector(lookVector.xCoord * maxReach, lookVector.yCoord * maxReach, lookVector.zCoord * maxReach);
         MovingObjectPosition rayTraceResult = mc.theWorld.rayTraceBlocks(eyePosition, endPosition);
         if (rayTraceResult != null && rayTraceResult.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
             int blockX = rayTraceResult.blockX;

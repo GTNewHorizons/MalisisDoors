@@ -1,12 +1,14 @@
 package net.malisis.core.util;
-import net.minecraft.util.Vec3;
-import net.minecraftforge.common.util.ForgeDirection;
-import org.apache.commons.lang3.tuple.Pair;
 
 import static net.minecraft.util.Vec3.createVectorHelper;
 
-public class ComplexAxisAlignedBoundingBox
-{
+import net.minecraft.util.Vec3;
+import net.minecraftforge.common.util.ForgeDirection;
+
+import org.apache.commons.lang3.tuple.Pair;
+
+public class ComplexAxisAlignedBoundingBox {
+
     public enum Axis {
         X,
         Y,
@@ -16,31 +18,27 @@ public class ComplexAxisAlignedBoundingBox
     private static final int[] cos = { 1, 0, -1, 0 };
     private static final int[] sin = { 0, 1, 0, -1 };
 
-
     public Vec3[][] flatSurfaces;
     public Pair<Vec3, Vec3>[] verticals;
 
     public static ComplexAxisAlignedBoundingBox defaultComplexBoundingBox = new ComplexAxisAlignedBoundingBox(
         new Vec3[][] {
-            { createVectorHelper(0,0,0), createVectorHelper(0,0,1), createVectorHelper(1,0,1), createVectorHelper(1,0,0) }, // bottom face
-            { createVectorHelper(0,1,0), createVectorHelper(0,1,1), createVectorHelper(1,1,1), createVectorHelper(1,1,0) }, // top face
+            { createVectorHelper(0, 0, 0), createVectorHelper(0, 0, 1), createVectorHelper(1, 0, 1),
+                createVectorHelper(1, 0, 0) }, // bottom face
+            { createVectorHelper(0, 1, 0), createVectorHelper(0, 1, 1), createVectorHelper(1, 1, 1),
+                createVectorHelper(1, 1, 0) }, // top face
         },
-        new Pair[] {
-            Pair.of(createVectorHelper(0,0,0), createVectorHelper(0,1,0)),
-            Pair.of(createVectorHelper(1,0,0), createVectorHelper(1,1,0)),
-            Pair.of(createVectorHelper(0,0,1), createVectorHelper(0,1,1)),
-            Pair.of(createVectorHelper(1,0,1), createVectorHelper(1,1,1))
-        }
-    );
+        new Pair[] { Pair.of(createVectorHelper(0, 0, 0), createVectorHelper(0, 1, 0)),
+            Pair.of(createVectorHelper(1, 0, 0), createVectorHelper(1, 1, 0)),
+            Pair.of(createVectorHelper(0, 0, 1), createVectorHelper(0, 1, 1)),
+            Pair.of(createVectorHelper(1, 0, 1), createVectorHelper(1, 1, 1)) });
 
-    public ComplexAxisAlignedBoundingBox(Vec3[][] flatSurfaces, Pair<Vec3, Vec3>[] verticals )
-    {
+    public ComplexAxisAlignedBoundingBox(Vec3[][] flatSurfaces, Pair<Vec3, Vec3>[] verticals) {
         this.flatSurfaces = flatSurfaces;
         this.verticals = verticals;
     }
 
-    public void addOffset(double x, double y, double z)
-    {
+    public void addOffset(double x, double y, double z) {
         for (Vec3[] face : flatSurfaces) {
             for (Vec3 vec : face) {
                 vec.xCoord += x;
@@ -108,5 +106,4 @@ public class ComplexAxisAlignedBoundingBox
             default -> 0;
         };
     }
-
 }

@@ -1,6 +1,5 @@
 package net.malisis.doors.door.tileentity;
 
-
 import net.malisis.core.util.BlockState;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -12,32 +11,28 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
 public class MultiTile extends DoorTileEntity {
+
     public int mainBlockX;
     public int mainBlockY;
     public int mainBlockZ;
     public int mainBlockMeta;
     public boolean mainBlockSet;
 
-    public void setMainBlock(int x, int y, int z)
-    {
+    public void setMainBlock(int x, int y, int z) {
         this.mainBlockX = x;
         this.mainBlockY = y;
         this.mainBlockZ = z;
         this.mainBlockSet = true;
         this.markDirty();
-        if (!this.worldObj.isRemote)
-        {
+        if (!this.worldObj.isRemote) {
             this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
         }
     }
 
-    public void onBlockRemoval(Block block)
-    {
+    public void onBlockRemoval(Block block) {
         TileEntity mainBlock = getMainBlockTile();
-        if (mainBlock != null)
-        {
-            if (mainBlock instanceof IMultiBlock)
-            {
+        if (mainBlock != null) {
+            if (mainBlock instanceof IMultiBlock) {
                 ((IMultiBlock) mainBlock).onDestroy(block, this, this.mainBlockMeta);
             }
         }
@@ -65,8 +60,7 @@ public class MultiTile extends DoorTileEntity {
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
-    {
+    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
         super.onDataPacket(net, pkt);
         NBTTagCompound packetData = pkt.func_148857_g();
         this.mainBlockX = packetData.getInteger("mainBlockX");
@@ -96,40 +90,32 @@ public class MultiTile extends DoorTileEntity {
     }
 
     @Override
-    public boolean shouldRender()
-    {
+    public boolean shouldRender() {
         return false;
     }
 
-    public void setFrameState(Block block)
-    {
+    public void setFrameState(Block block) {
         TileEntity mainTile = this.getMainBlockTile();
-        if (mainTile instanceof BigDoorTileEntity bigDoorMainTile)
-        {
+        if (mainTile instanceof BigDoorTileEntity bigDoorMainTile) {
             bigDoorMainTile.setFrameState(block);
         }
     }
 
-    public void setFrameState(BlockState blockState)
-    {
+    public void setFrameState(BlockState blockState) {
         TileEntity mainTile = this.getMainBlockTile();
-        if (mainTile instanceof BigDoorTileEntity bigDoorTileEntity)
-        {
+        if (mainTile instanceof BigDoorTileEntity bigDoorTileEntity) {
             bigDoorTileEntity.setFrameState(blockState);
         }
     }
 
-    public void dropMainBlockAtLocation(Block block)
-    {
-        if (mainBlockSet)
-        {
+    public void dropMainBlockAtLocation(Block block) {
+        if (mainBlockSet) {
             int meta = this.getBlockMetadata();
             block.dropBlockAsItem(this.worldObj, xCoord, yCoord, zCoord, meta, 0);
         }
     }
 
-    public void setMainBlockMeta(int meta)
-    {
+    public void setMainBlockMeta(int meta) {
         this.mainBlockMeta = meta;
     }
 }

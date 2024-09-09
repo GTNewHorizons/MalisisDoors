@@ -2,9 +2,6 @@ package net.malisis.doors;
 
 import static net.malisis.doors.Tags.VERSION;
 
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.malisis.core.IMalisisMod;
 import net.malisis.core.MalisisCore;
 import net.malisis.core.configuration.Settings;
@@ -28,13 +25,14 @@ import net.malisis.doors.proxy.IProxy;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
+import net.minecraftforge.common.MinecraftForge;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.SidedProxy;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.common.MinecraftForge;
 
 @Mod(
     modid = MalisisDoors.modid,
@@ -82,7 +80,6 @@ public class MalisisDoors implements IMalisisMod {
         return settings;
     }
 
-
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         settings = new MalisisDoorsSettings(event.getSuggestedConfigurationFile());
@@ -93,8 +90,7 @@ public class MalisisDoors implements IMalisisMod {
     }
 
     @EventHandler
-    public void init(FMLInitializationEvent event)
-    {
+    public void init(FMLInitializationEvent event) {
         MinecraftForge.EVENT_BUS.register(new DoorEventHandler());
     }
 

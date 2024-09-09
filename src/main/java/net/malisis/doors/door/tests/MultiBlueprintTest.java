@@ -1,23 +1,23 @@
-//package net.malisis.doors.door.tests;
+// package net.malisis.doors.door.tests;
 //
 //
-//import net.malisis.doors.door.multiBlock.MultiBlueprint;
+// import net.malisis.doors.door.multiBlock.MultiBlueprint;
 //
-//public class MultiBlueprintTest {
+// public class MultiBlueprintTest {
 //
-//    private MultiBlueprint blueprint;
+// private MultiBlueprint blueprint;
 //
-//    @BeforeEach
-//    public void setUp() {// Set up before each test
-//    }
+// @BeforeEach
+// public void setUp() {// Set up before each test
+// }
 //
-//    @Test
-//    public void testAddition() {
+// @Test
+// public void testAddition() {
 //
-//    }
+// }
 //
-//    @Test
-//    public void testSubtraction() {
+// @Test
+// public void testSubtraction() {
 //
-//    }
-//}
+// }
+// }
