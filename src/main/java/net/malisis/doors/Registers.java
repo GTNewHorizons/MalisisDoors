@@ -473,7 +473,13 @@ public class Registers {
         GameRegistry.registerBlock(
             collisionHelperBlock,
             collisionHelperBlock.getUnlocalizedName()
-                .substring(5));
+                .substring(5) + "_" + BigDoor.Type.MEDIEVAL);
+
+        collisionHelperBlock = new CollisionHelperBlock(BigDoor.Type.CARRIAGE);
+        GameRegistry.registerBlock(
+            collisionHelperBlock,
+            collisionHelperBlock.getUnlocalizedName()
+                .substring(5) + "_" + BigDoor.Type.CARRIAGE);
 
         GameRegistry.registerTileEntity(MultiTile.class, "collisionHelperTileEntity");
 

@@ -132,11 +132,8 @@ public class BigDoorTileEntity extends MultiTile implements IMultiBlock, IBluePr
 
     @Override
     public void setDoorState(DoorState newState) {
-        super.setDoorState(newState);
-        // if (!this.worldObj.isRemote)
-        // {
         this.onStateChange(newState);
-        // }
+        super.setDoorState(newState);
     }
 
     @Override
@@ -211,12 +208,18 @@ public class BigDoorTileEntity extends MultiTile implements IMultiBlock, IBluePr
 
     }
 
+    // This blocks meta is not to be trusted for state. I eventually need to look into why this is but it breaks stuff
+    // to try to use the meta. Use this.state instead.
     @Override
     public void onDestroy(Block blockToDrop, TileEntity callingBlock, int meta) {
         if (!this.changingState) {
             int metaToUse = meta;
-            if (this.state == DoorState.OPENING && metaToUse < 4) {
+            if ((this.state == DoorState.OPENING || this.state == DoorState.CLOSING || this.state == DoorState.OPENED ) && metaToUse < 4) {
                 metaToUse += 4;
+            }
+            else if (this.state == DoorState.CLOSED && metaToUse > 3)
+            {
+                metaToUse -= 4;
             }
             this.changingState = true;
             removeBluePrint(this.worldObj, xCoord, yCoord, zCoord, metaToUse, callingBlock, blockToDrop);
@@ -228,13 +231,16 @@ public class BigDoorTileEntity extends MultiTile implements IMultiBlock, IBluePr
     // the door.
     public void onStateChange(DoorState newState) {
         if (this.state == newState) return;
-        int meta = this.mainBlockMeta;
-        if (newState == DoorState.OPENING && meta < 4) {
+        if (getWorldObj() == null) return; // On startup the worldObj is null for some reason
+        int meta = this.getBlockMetadata();
+        if (newState == DoorState.OPENING) {
             this.changingState = true;
-            placeBluePrint(this.worldObj, xCoord, yCoord, zCoord, (meta + 4) % 8, true);
+            if (meta < 4) meta = (meta + 4) % 8;
+            placeBluePrint(this.worldObj, xCoord, yCoord, zCoord, meta, true);
             this.changingState = false;
         } else if (newState == DoorState.CLOSED) {
             this.changingState = true;
+            if (meta > 3) meta -= 4;
             placeBluePrint(this.worldObj, xCoord, yCoord, zCoord, meta, true);
             this.changingState = false;
         }
