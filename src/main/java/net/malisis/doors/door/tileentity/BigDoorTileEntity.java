@@ -43,6 +43,7 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -106,6 +107,7 @@ public class BigDoorTileEntity extends MultiTile implements IMultiBlock, IBluePr
         return frameState;
     }
 
+    @Override
     public void setFrameState(BlockState state) {
         if (state != null) frameState = state;
         this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
@@ -190,7 +192,145 @@ public class BigDoorTileEntity extends MultiTile implements IMultiBlock, IBluePr
     @Override
     public boolean onActivated(EntityPlayer entityPlayer) {
         if (!this.worldObj.isRemote) {
-            this.openOrCloseDoor();
+            if (hasRoomToOpenOrClose())
+            {
+                this.openOrCloseDoor();
+            }
+            else
+            {
+                entityPlayer.addChatMessage(new ChatComponentText("There's no room for the door to open or close!"));
+            }
+        }
+        return true;
+    }
+
+    private boolean hasRoomToOpenOrClose()
+    {
+        int meta = this.getBlockMetadata() % 4; // We don't care if it's closed or open we just want to know what direction it's facing
+        return switch (this.state) {
+            case CLOSED -> doorsCanSwingOpen(meta);
+            case OPENED, OPENING -> doorsCanClose(meta);
+            case CLOSING -> true;
+        };
+    }
+
+    // Check if there's nothing inside of the doors.
+    private boolean doorsCanClose(int meta)
+    {
+        switch (meta)
+        {
+            case 0:
+                for (int yRel = 0; yRel < 4; yRel++)
+                {
+                    if (worldObj.getBlock(xCoord, yCoord + yRel, zCoord - 1) != Blocks.air)
+                    {
+                        return false;
+                    }
+                    if (worldObj.getBlock(xCoord, yCoord + yRel, zCoord - 2) != Blocks.air)
+                    {
+                        return false;
+                    }
+                }
+                break;
+            case 1:
+                for (int yRel = 0; yRel < 4; yRel++)
+                {
+                    if (worldObj.getBlock(xCoord + 1,yCoord + yRel,zCoord) != Blocks.air)
+                    {
+                        return false;
+                    }
+                    if (worldObj.getBlock(xCoord + 2,yCoord + yRel,zCoord) != Blocks.air)
+                    {
+                        return false;
+                    }
+                }
+                break;
+            case 2:
+                for (int yRel = 0; yRel < 4; yRel++)
+                {
+                    if (worldObj.getBlock(xCoord, yCoord + yRel, zCoord + 1) != Blocks.air)
+                    {
+                        return false;
+                    }
+                    if (worldObj.getBlock(xCoord, yCoord + yRel, zCoord + 2) != Blocks.air)
+                    {
+                        return false;
+                    }
+                }
+                break;
+            case 3:
+                for (int yRel = 0; yRel < 4; yRel++)
+                {
+                    if (worldObj.getBlock(xCoord - 1, yCoord + yRel, zCoord) != Blocks.air)
+                    {
+                        return false;
+                    }
+                    if (worldObj.getBlock(xCoord - 2, yCoord + yRel, zCoord) != Blocks.air)
+                    {
+                        return false;
+                    }
+                }
+                break;
+        }
+        return true;
+    }
+
+    private boolean doorsCanSwingOpen(int meta)
+    {
+        switch (meta)
+        {
+            case 0:
+                for (int yRel = 0; yRel < 4; yRel++)
+                {
+                    if (worldObj.getBlock(xCoord - 1, yCoord + yRel, zCoord) != Blocks.air)
+                    {
+                        return false;
+                    }
+                    if (worldObj.getBlock(xCoord - 1, yCoord + yRel, zCoord - 3) != Blocks.air)
+                    {
+                        return false;
+                    }
+                }
+                break;
+            case 1:
+                for (int yRel = 0; yRel < 4; yRel++)
+                {
+                    if (worldObj.getBlock(xCoord, yCoord + yRel, zCoord - 1) != Blocks.air)
+                    {
+                        return false;
+                    }
+                    if (worldObj.getBlock(xCoord + 3, yCoord + yRel, zCoord - 1) != Blocks.air)
+                    {
+                        return false;
+                    }
+                }
+                break;
+            case 2:
+                for (int yRel = 0; yRel < 4; yRel++)
+                {
+                    if (worldObj.getBlock(xCoord + 1, yCoord + yRel, zCoord) != Blocks.air)
+                    {
+                        return false;
+                    }
+                    if (worldObj.getBlock(xCoord + 1, yCoord + yRel, zCoord + 3) != Blocks.air)
+                    {
+                        return false;
+                    }
+                }
+                break;
+            case 3:
+                for (int yRel = 0; yRel < 4; yRel++)
+                {
+                    if (worldObj.getBlock(xCoord, yCoord + yRel, zCoord + 1) != Blocks.air)
+                    {
+                        return false;
+                    }
+                    if (worldObj.getBlock(xCoord + 3, yCoord + yRel, zCoord + 1) != Blocks.air)
+                    {
+                        return false;
+                    }
+                }
+                break;
         }
         return true;
     }
