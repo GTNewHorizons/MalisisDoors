@@ -91,8 +91,9 @@ public class BigDoorTileEntity extends MultiTile implements IMultiBlock, IBluePr
 
     private final MultiBlueprint closedBlueprint = new MultiBlueprint(closedPrint, metaMap, new Vector3i(1, 0, 0));
     private final MultiBlueprint openBlueprint = new MultiBlueprint(openPrint, metaMap, new Vector3i(1, 0, 0));
-
-    public BigDoorTileEntity() {
+    private final BigDoor.Type type;
+    public BigDoorTileEntity(BigDoor.Type type) {
+        this.type = type;
         DoorDescriptor descriptor = new DoorDescriptor();
         descriptor.setMovement(DoorRegistry.getMovement(CarriageDoorMovement.class));
         descriptor.setSound(DoorRegistry.getSound(CarriageDoorSound.class));
@@ -211,7 +212,7 @@ public class BigDoorTileEntity extends MultiTile implements IMultiBlock, IBluePr
     // This blocks meta is not to be trusted for state. I eventually need to look into why this is but it breaks stuff
     // to try to use the meta. Use this.state instead.
     @Override
-    public void onDestroy(Block blockToDrop, TileEntity callingBlock, int meta) {
+    public void onDestroy(TileEntity callingBlock, int meta) {
         if (!this.changingState) {
             int metaToUse = meta;
             if ((this.state == DoorState.OPENING || this.state == DoorState.CLOSING || this.state == DoorState.OPENED ) && metaToUse < 4) {
@@ -222,7 +223,7 @@ public class BigDoorTileEntity extends MultiTile implements IMultiBlock, IBluePr
                 metaToUse -= 4;
             }
             this.changingState = true;
-            removeBluePrint(this.worldObj, xCoord, yCoord, zCoord, metaToUse, callingBlock, blockToDrop);
+            removeBluePrint(this.worldObj, xCoord, yCoord, zCoord, metaToUse, callingBlock);
             this.changingState = false;
         }
     }
@@ -303,16 +304,32 @@ public class BigDoorTileEntity extends MultiTile implements IMultiBlock, IBluePr
                 {
                     if (!(i == print.startingLocation.x && j == print.startingLocation.y
                         && k == print.startingLocation.z) && print.bluePrint[j][i][k] > -1) {
-                        ((CollisionHelperBlock) MalisisDoors.Blocks.collisionHelperBlock).makeCollisionHelperBlock(
-                            world,
-                            x - mainBlockRelativeX + i,
-                            y - mainBlockRelativeY + j,
-                            z + mainBlockRelativeZ - k,
-                            print.bluePrint[j][i][k],
-                            this.xCoord,
-                            this.yCoord,
-                            this.zCoord,
-                            this.getBlockMetadata());
+
+                        switch(this.type)
+                        {
+                            case CARRIAGE ->
+                                ((CollisionHelperBlock) MalisisDoors.Blocks.collisionHelperBlockCarriage).makeCollisionHelperBlock(
+                                    world,
+                                    x - mainBlockRelativeX + i,
+                                    y - mainBlockRelativeY + j,
+                                    z + mainBlockRelativeZ - k,
+                                    print.bluePrint[j][i][k],
+                                    this.xCoord,
+                                    this.yCoord,
+                                    this.zCoord,
+                                    this.getBlockMetadata());
+                            case MEDIEVAL ->
+                                ((CollisionHelperBlock) MalisisDoors.Blocks.collisionHelperBlockMedieval).makeCollisionHelperBlock(
+                                    world,
+                                    x - mainBlockRelativeX + i,
+                                    y - mainBlockRelativeY + j,
+                                    z + mainBlockRelativeZ - k,
+                                    print.bluePrint[j][i][k],
+                                    this.xCoord,
+                                    this.yCoord,
+                                    this.zCoord,
+                                    this.getBlockMetadata());
+                        }
                     } else if (print.bluePrint[j][i][k] == Integer.MIN_VALUE && removeBlockInWay) {
                         world.setBlockToAir(
                             x - mainBlockRelativeX + i,
@@ -325,33 +342,33 @@ public class BigDoorTileEntity extends MultiTile implements IMultiBlock, IBluePr
     }
 
     @Override
-    public void removeBluePrint(World world, int x, int y, int z, int meta, TileEntity callingBlock,
-        Block blockToDrop) {
+    public void removeBluePrint(World world, int x, int y, int z, int meta, TileEntity callingBlock) {
         MultiBlueprint print = (meta < 4 ? this.closedBlueprint : this.openBlueprint);
         switch (meta) {
             case 0, 4:
-                this.bluePrintRemovalHelper(world, x, y, z, print, callingBlock, blockToDrop);
+                this.bluePrintRemovalHelper(world, x, y, z, print, callingBlock);
                 break;
             case 1, 5:
                 print.rotate(MultiBlueprint.RotationDegrees.ROT90);
-                this.bluePrintRemovalHelper(world, x, y, z, print, callingBlock, blockToDrop);
+                this.bluePrintRemovalHelper(world, x, y, z, print, callingBlock);
                 print.rotate(MultiBlueprint.RotationDegrees.ROT270);
                 break;
             case 2, 6:
                 print.rotate(MultiBlueprint.RotationDegrees.ROT180);
-                this.bluePrintRemovalHelper(world, x, y, z, print, callingBlock, blockToDrop);
+                this.bluePrintRemovalHelper(world, x, y, z, print, callingBlock);
                 print.rotate(MultiBlueprint.RotationDegrees.ROT180);
                 break;
             case 3, 7:
                 print.rotate(MultiBlueprint.RotationDegrees.ROT270);
-                this.bluePrintRemovalHelper(world, x, y, z, print, callingBlock, blockToDrop);
+                this.bluePrintRemovalHelper(world, x, y, z, print, callingBlock);
                 print.rotate(MultiBlueprint.RotationDegrees.ROT90);
                 break;
         }
     }
 
-    private void bluePrintRemovalHelper(World world, int x, int y, int z, MultiBlueprint print, TileEntity callingBlock,
-        Block blockToDrop) {
+    private void bluePrintRemovalHelper(World world, int x, int y, int z, MultiBlueprint print, TileEntity callingBlock) {
+
+        Block blockToDrop = this.type == BigDoor.Type.CARRIAGE ? MalisisDoors.Blocks.carriageDoor : MalisisDoors.Blocks.medievalDoor;
         int mainBlockRelativeX = print.startingLocation.x;
         int mainBlockRelativeY = print.startingLocation.y;
         int mainBlockRelativeZ = print.startingLocation.z;

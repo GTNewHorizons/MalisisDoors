@@ -26,6 +26,6 @@ public interface IMultiBlock {
      *
      * @param callingBlock - The tile entity who called the onDestroy function
      */
-    void onDestroy(Block block, TileEntity callingBlock, int meta);
+    void onDestroy(TileEntity callingBlock, int meta);
 
 }

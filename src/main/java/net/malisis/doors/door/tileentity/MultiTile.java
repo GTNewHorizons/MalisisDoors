@@ -29,11 +29,11 @@ public class MultiTile extends DoorTileEntity {
         }
     }
 
-    public void onBlockRemoval(Block block) {
+    public void onBlockRemoval() {
         TileEntity mainBlock = getMainBlockTile();
         if (mainBlock != null) {
             if (mainBlock instanceof IMultiBlock) {
-                ((IMultiBlock) mainBlock).onDestroy(block, this, this.mainBlockMeta);
+                ((IMultiBlock) mainBlock).onDestroy(this, this.mainBlockMeta);
             }
         }
     }

@@ -187,7 +187,7 @@ public class BigDoor extends MalisisBlock implements ITileEntityProvider {
         }
         TileEntity tileEntity = world.getTileEntity(x, y, z);
         if (tileEntity instanceof IMultiBlock) {
-            ((IMultiBlock) tileEntity).onDestroy(block, tileEntity, meta);
+            ((IMultiBlock) tileEntity).onDestroy(tileEntity, meta);
         }
         super.breakBlock(world, x, y, z, block, meta);
     }
@@ -265,7 +265,7 @@ public class BigDoor extends MalisisBlock implements ITileEntityProvider {
 
     @Override
     public TileEntity createNewTileEntity(World world, int metadata) {
-        return new BigDoorTileEntity();
+        return new BigDoorTileEntity(this.type);
     }
 
     @SuppressWarnings("deprecation")
@@ -293,6 +293,10 @@ public class BigDoor extends MalisisBlock implements ITileEntityProvider {
         return renderId;
     }
 
+    public BigDoor.Type getType()
+    {
+        return type;
+    }
     @Override
     public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
         this.setBlockBounds(

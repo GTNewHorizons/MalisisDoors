@@ -32,7 +32,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class CollisionHelperBlock extends BlockContainer implements ITileEntityProvider {
 
-    BigDoor.Type type;
+    public BigDoor.Type type;
 
     private IIcon[] fakeIcons;
 
@@ -91,8 +91,7 @@ public class CollisionHelperBlock extends BlockContainer implements ITileEntityP
     public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
         final TileEntity tileEntity = world.getTileEntity(x, y, z);
         if (tileEntity instanceof MultiTile) {
-            ((MultiTile) tileEntity).onBlockRemoval(
-                type == BigDoor.Type.MEDIEVAL ? MalisisDoors.Blocks.medievalDoor : MalisisDoors.Blocks.carriageDoor);
+            ((MultiTile) tileEntity).onBlockRemoval();
         }
         super.breakBlock(world, x, y, z, block, meta);
     }
