@@ -93,6 +93,7 @@ public class BigDoorTileEntity extends MultiTile implements IMultiBlock, IBluePr
     private final MultiBlueprint closedBlueprint = new MultiBlueprint(closedPrint, metaMap, new Vector3i(1, 0, 0));
     private final MultiBlueprint openBlueprint = new MultiBlueprint(openPrint, metaMap, new Vector3i(1, 0, 0));
     private final BigDoor.Type type;
+
     public BigDoorTileEntity(BigDoor.Type type) {
         this.type = type;
         DoorDescriptor descriptor = new DoorDescriptor();
@@ -192,21 +193,18 @@ public class BigDoorTileEntity extends MultiTile implements IMultiBlock, IBluePr
     @Override
     public boolean onActivated(EntityPlayer entityPlayer) {
         if (!this.worldObj.isRemote) {
-            if (hasRoomToOpenOrClose())
-            {
+            if (hasRoomToOpenOrClose()) {
                 this.openOrCloseDoor();
-            }
-            else
-            {
+            } else {
                 entityPlayer.addChatMessage(new ChatComponentText("There's no room for the door to open or close!"));
             }
         }
         return true;
     }
 
-    private boolean hasRoomToOpenOrClose()
-    {
-        int meta = this.getBlockMetadata() % 4; // We don't care if it's closed or open we just want to know what direction it's facing
+    private boolean hasRoomToOpenOrClose() {
+        int meta = this.getBlockMetadata() % 4; // We don't care if it's closed or open we just want to know what
+                                                // direction it's facing
         return switch (this.state) {
             case CLOSED -> doorsCanSwingOpen(meta);
             case OPENED, OPENING -> doorsCanClose(meta);
@@ -215,58 +213,44 @@ public class BigDoorTileEntity extends MultiTile implements IMultiBlock, IBluePr
     }
 
     // Check if there's nothing inside of the doors.
-    private boolean doorsCanClose(int meta)
-    {
-        switch (meta)
-        {
+    private boolean doorsCanClose(int meta) {
+        switch (meta) {
             case 0:
-                for (int yRel = 0; yRel < 4; yRel++)
-                {
-                    if (worldObj.getBlock(xCoord, yCoord + yRel, zCoord - 1) != Blocks.air)
-                    {
+                for (int yRel = 0; yRel < 4; yRel++) {
+                    if (worldObj.getBlock(xCoord, yCoord + yRel, zCoord - 1) != Blocks.air) {
                         return false;
                     }
-                    if (worldObj.getBlock(xCoord, yCoord + yRel, zCoord - 2) != Blocks.air)
-                    {
+                    if (worldObj.getBlock(xCoord, yCoord + yRel, zCoord - 2) != Blocks.air) {
                         return false;
                     }
                 }
                 break;
             case 1:
-                for (int yRel = 0; yRel < 4; yRel++)
-                {
-                    if (worldObj.getBlock(xCoord + 1,yCoord + yRel,zCoord) != Blocks.air)
-                    {
+                for (int yRel = 0; yRel < 4; yRel++) {
+                    if (worldObj.getBlock(xCoord + 1, yCoord + yRel, zCoord) != Blocks.air) {
                         return false;
                     }
-                    if (worldObj.getBlock(xCoord + 2,yCoord + yRel,zCoord) != Blocks.air)
-                    {
+                    if (worldObj.getBlock(xCoord + 2, yCoord + yRel, zCoord) != Blocks.air) {
                         return false;
                     }
                 }
                 break;
             case 2:
-                for (int yRel = 0; yRel < 4; yRel++)
-                {
-                    if (worldObj.getBlock(xCoord, yCoord + yRel, zCoord + 1) != Blocks.air)
-                    {
+                for (int yRel = 0; yRel < 4; yRel++) {
+                    if (worldObj.getBlock(xCoord, yCoord + yRel, zCoord + 1) != Blocks.air) {
                         return false;
                     }
-                    if (worldObj.getBlock(xCoord, yCoord + yRel, zCoord + 2) != Blocks.air)
-                    {
+                    if (worldObj.getBlock(xCoord, yCoord + yRel, zCoord + 2) != Blocks.air) {
                         return false;
                     }
                 }
                 break;
             case 3:
-                for (int yRel = 0; yRel < 4; yRel++)
-                {
-                    if (worldObj.getBlock(xCoord - 1, yCoord + yRel, zCoord) != Blocks.air)
-                    {
+                for (int yRel = 0; yRel < 4; yRel++) {
+                    if (worldObj.getBlock(xCoord - 1, yCoord + yRel, zCoord) != Blocks.air) {
                         return false;
                     }
-                    if (worldObj.getBlock(xCoord - 2, yCoord + yRel, zCoord) != Blocks.air)
-                    {
+                    if (worldObj.getBlock(xCoord - 2, yCoord + yRel, zCoord) != Blocks.air) {
                         return false;
                     }
                 }
@@ -275,58 +259,44 @@ public class BigDoorTileEntity extends MultiTile implements IMultiBlock, IBluePr
         return true;
     }
 
-    private boolean doorsCanSwingOpen(int meta)
-    {
-        switch (meta)
-        {
+    private boolean doorsCanSwingOpen(int meta) {
+        switch (meta) {
             case 0:
-                for (int yRel = 0; yRel < 4; yRel++)
-                {
-                    if (worldObj.getBlock(xCoord - 1, yCoord + yRel, zCoord) != Blocks.air)
-                    {
+                for (int yRel = 0; yRel < 4; yRel++) {
+                    if (worldObj.getBlock(xCoord - 1, yCoord + yRel, zCoord) != Blocks.air) {
                         return false;
                     }
-                    if (worldObj.getBlock(xCoord - 1, yCoord + yRel, zCoord - 3) != Blocks.air)
-                    {
+                    if (worldObj.getBlock(xCoord - 1, yCoord + yRel, zCoord - 3) != Blocks.air) {
                         return false;
                     }
                 }
                 break;
             case 1:
-                for (int yRel = 0; yRel < 4; yRel++)
-                {
-                    if (worldObj.getBlock(xCoord, yCoord + yRel, zCoord - 1) != Blocks.air)
-                    {
+                for (int yRel = 0; yRel < 4; yRel++) {
+                    if (worldObj.getBlock(xCoord, yCoord + yRel, zCoord - 1) != Blocks.air) {
                         return false;
                     }
-                    if (worldObj.getBlock(xCoord + 3, yCoord + yRel, zCoord - 1) != Blocks.air)
-                    {
+                    if (worldObj.getBlock(xCoord + 3, yCoord + yRel, zCoord - 1) != Blocks.air) {
                         return false;
                     }
                 }
                 break;
             case 2:
-                for (int yRel = 0; yRel < 4; yRel++)
-                {
-                    if (worldObj.getBlock(xCoord + 1, yCoord + yRel, zCoord) != Blocks.air)
-                    {
+                for (int yRel = 0; yRel < 4; yRel++) {
+                    if (worldObj.getBlock(xCoord + 1, yCoord + yRel, zCoord) != Blocks.air) {
                         return false;
                     }
-                    if (worldObj.getBlock(xCoord + 1, yCoord + yRel, zCoord + 3) != Blocks.air)
-                    {
+                    if (worldObj.getBlock(xCoord + 1, yCoord + yRel, zCoord + 3) != Blocks.air) {
                         return false;
                     }
                 }
                 break;
             case 3:
-                for (int yRel = 0; yRel < 4; yRel++)
-                {
-                    if (worldObj.getBlock(xCoord, yCoord + yRel, zCoord + 1) != Blocks.air)
-                    {
+                for (int yRel = 0; yRel < 4; yRel++) {
+                    if (worldObj.getBlock(xCoord, yCoord + yRel, zCoord + 1) != Blocks.air) {
                         return false;
                     }
-                    if (worldObj.getBlock(xCoord + 3, yCoord + yRel, zCoord + 1) != Blocks.air)
-                    {
+                    if (worldObj.getBlock(xCoord + 3, yCoord + yRel, zCoord + 1) != Blocks.air) {
                         return false;
                     }
                 }
@@ -355,11 +325,10 @@ public class BigDoorTileEntity extends MultiTile implements IMultiBlock, IBluePr
     public void onDestroy(TileEntity callingBlock, int meta) {
         if (!this.changingState) {
             int metaToUse = meta;
-            if ((this.state == DoorState.OPENING || this.state == DoorState.CLOSING || this.state == DoorState.OPENED ) && metaToUse < 4) {
+            if ((this.state == DoorState.OPENING || this.state == DoorState.CLOSING || this.state == DoorState.OPENED)
+                && metaToUse < 4) {
                 metaToUse += 4;
-            }
-            else if (this.state == DoorState.CLOSED && metaToUse > 3)
-            {
+            } else if (this.state == DoorState.CLOSED && metaToUse > 3) {
                 metaToUse -= 4;
             }
             this.changingState = true;
@@ -445,10 +414,9 @@ public class BigDoorTileEntity extends MultiTile implements IMultiBlock, IBluePr
                     if (!(i == print.startingLocation.x && j == print.startingLocation.y
                         && k == print.startingLocation.z) && print.bluePrint[j][i][k] > -1) {
 
-                        switch(this.type)
-                        {
-                            case CARRIAGE ->
-                                ((CollisionHelperBlock) MalisisDoors.Blocks.collisionHelperBlockCarriage).makeCollisionHelperBlock(
+                        switch (this.type) {
+                            case CARRIAGE -> ((CollisionHelperBlock) MalisisDoors.Blocks.collisionHelperBlockCarriage)
+                                .makeCollisionHelperBlock(
                                     world,
                                     x - mainBlockRelativeX + i,
                                     y - mainBlockRelativeY + j,
@@ -458,8 +426,8 @@ public class BigDoorTileEntity extends MultiTile implements IMultiBlock, IBluePr
                                     this.yCoord,
                                     this.zCoord,
                                     this.getBlockMetadata());
-                            case MEDIEVAL ->
-                                ((CollisionHelperBlock) MalisisDoors.Blocks.collisionHelperBlockMedieval).makeCollisionHelperBlock(
+                            case MEDIEVAL -> ((CollisionHelperBlock) MalisisDoors.Blocks.collisionHelperBlockMedieval)
+                                .makeCollisionHelperBlock(
                                     world,
                                     x - mainBlockRelativeX + i,
                                     y - mainBlockRelativeY + j,
@@ -506,9 +474,11 @@ public class BigDoorTileEntity extends MultiTile implements IMultiBlock, IBluePr
         }
     }
 
-    private void bluePrintRemovalHelper(World world, int x, int y, int z, MultiBlueprint print, TileEntity callingBlock) {
+    private void bluePrintRemovalHelper(World world, int x, int y, int z, MultiBlueprint print,
+        TileEntity callingBlock) {
 
-        Block blockToDrop = this.type == BigDoor.Type.CARRIAGE ? MalisisDoors.Blocks.carriageDoor : MalisisDoors.Blocks.medievalDoor;
+        Block blockToDrop = this.type == BigDoor.Type.CARRIAGE ? MalisisDoors.Blocks.carriageDoor
+            : MalisisDoors.Blocks.medievalDoor;
         int mainBlockRelativeX = print.startingLocation.x;
         int mainBlockRelativeY = print.startingLocation.y;
         int mainBlockRelativeZ = print.startingLocation.z;

@@ -293,10 +293,10 @@ public class BigDoor extends MalisisBlock implements ITileEntityProvider {
         return renderId;
     }
 
-    public BigDoor.Type getType()
-    {
+    public BigDoor.Type getType() {
         return type;
     }
+
     @Override
     public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
         this.setBlockBounds(
