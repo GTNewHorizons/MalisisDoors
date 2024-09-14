@@ -1,7 +1,5 @@
 package net.malisis.doors.network;
 
-import java.awt.*;
-
 import net.malisis.core.network.MalisisMessage;
 import net.malisis.core.util.BlockState;
 import net.malisis.doors.MalisisDoors;
