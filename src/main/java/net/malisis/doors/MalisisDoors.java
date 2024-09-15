@@ -20,12 +20,10 @@ import net.malisis.doors.door.block.FenceGate;
 import net.malisis.doors.door.block.ForcefieldDoor;
 import net.malisis.doors.door.block.RustyHatch;
 import net.malisis.doors.door.item.ForcefieldItem;
-import net.malisis.doors.event.DoorEventHandlerClient;
 import net.malisis.doors.proxy.IProxy;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
-import net.minecraftforge.common.MinecraftForge;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;

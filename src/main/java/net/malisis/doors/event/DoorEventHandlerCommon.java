@@ -1,6 +1,5 @@
 package net.malisis.doors.event;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.malisis.doors.door.tileentity.MultiTile;
 import net.malisis.doors.network.FrameUpdateMessage;
 import net.minecraft.block.Block;
@@ -11,9 +10,13 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+
 import org.lwjgl.input.Keyboard;
 
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+
 public class DoorEventHandlerCommon {
+
     @SubscribeEvent
     public void PlayerInteractEvent(PlayerInteractEvent event) {
         TileEntity tileEntity = getTileEntityLookingAt(event.entityPlayer);

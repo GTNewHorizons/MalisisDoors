@@ -104,8 +104,7 @@ public class ClientProxy implements IProxy {
     }
 
     @Override
-    public void initEventHandlers()
-    {
+    public void initEventHandlers() {
         MinecraftForge.EVENT_BUS.register(new DoorEventHandlerClient());
     }
 }

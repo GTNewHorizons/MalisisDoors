@@ -4,20 +4,12 @@ import net.malisis.doors.door.DoorState;
 import net.malisis.doors.door.block.CollisionHelperBlock;
 import net.malisis.doors.door.tileentity.DoorTileEntity;
 import net.malisis.doors.door.tileentity.MultiTile;
-import net.malisis.doors.network.FrameUpdateMessage;
 import net.malisis.doors.renderer.CustomDoorBoundingBoxRenderer;
 import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-
-import org.lwjgl.input.Keyboard;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 

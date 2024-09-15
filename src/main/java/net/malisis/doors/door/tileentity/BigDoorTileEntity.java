@@ -185,9 +185,8 @@ public class BigDoorTileEntity extends MultiTile implements IMultiBlock, IBluePr
             processed = false;
         }
         int typeInt = tag.getInteger("type");
-        switch (typeInt)
-        {
-            case 0,1:
+        switch (typeInt) {
+            case 0, 1:
                 this.type = BigDoor.Type.CARRIAGE;
                 break;
             case 2:
@@ -432,8 +431,8 @@ public class BigDoorTileEntity extends MultiTile implements IMultiBlock, IBluePr
             {
                 for (int k = 0; k < print.bluePrint[0][0].length; k++) // z
                 {
-                    if (!(i == mainBlockRelativeX && j == mainBlockRelativeY
-                        && k == mainBlockRelativeZ) && print.bluePrint[j][i][k] > -1) {
+                    if (!(i == mainBlockRelativeX && j == mainBlockRelativeY && k == mainBlockRelativeZ)
+                        && print.bluePrint[j][i][k] > -1) {
 
                         switch (this.type) {
                             case CARRIAGE -> ((CollisionHelperBlock) MalisisDoors.Blocks.collisionHelperBlockCarriage)
