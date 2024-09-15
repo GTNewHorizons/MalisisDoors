@@ -20,7 +20,7 @@ import net.malisis.doors.door.block.FenceGate;
 import net.malisis.doors.door.block.ForcefieldDoor;
 import net.malisis.doors.door.block.RustyHatch;
 import net.malisis.doors.door.item.ForcefieldItem;
-import net.malisis.doors.event.DoorEventHandler;
+import net.malisis.doors.event.DoorEventHandlerClient;
 import net.malisis.doors.proxy.IProxy;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
@@ -91,7 +91,7 @@ public class MalisisDoors implements IMalisisMod {
 
     @EventHandler
     public void init(FMLInitializationEvent event) {
-        MinecraftForge.EVENT_BUS.register(new DoorEventHandler());
+        proxy.initEventHandlers();
     }
 
     @EventHandler

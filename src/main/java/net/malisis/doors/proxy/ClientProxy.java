@@ -28,6 +28,7 @@ import net.malisis.doors.door.tileentity.RustyHatchTileEntity;
 import net.malisis.doors.door.tileentity.SaloonDoorTileEntity;
 import net.malisis.doors.entity.GarageDoorTileEntity;
 import net.malisis.doors.entity.VanishingTileEntity;
+import net.malisis.doors.event.DoorEventHandlerClient;
 import net.malisis.doors.renderer.GarageDoorRenderer;
 import net.malisis.doors.renderer.MixedBlockRenderer;
 import net.malisis.doors.renderer.RustyLadderRenderer;
@@ -37,6 +38,7 @@ import net.malisis.doors.trapdoor.renderer.TrapDoorRenderer;
 import net.malisis.doors.trapdoor.tileentity.TrapDoorTileEntity;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.MinecraftForge;
 
 public class ClientProxy implements IProxy {
 
@@ -99,5 +101,11 @@ public class ClientProxy implements IProxy {
     public void initFonts() {
         ResourceLocation rl = new ResourceLocation(MalisisDoors.modid + ":fonts/digital-7 (mono).ttf");
         MalisisDoors.digitalFont = new MalisisFont(rl);
+    }
+
+    @Override
+    public void initEventHandlers()
+    {
+        MinecraftForge.EVENT_BUS.register(new DoorEventHandlerClient());
     }
 }

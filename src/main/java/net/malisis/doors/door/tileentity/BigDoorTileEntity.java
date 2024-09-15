@@ -92,7 +92,17 @@ public class BigDoorTileEntity extends MultiTile implements IMultiBlock, IBluePr
 
     private final MultiBlueprint closedBlueprint = new MultiBlueprint(closedPrint, metaMap, new Vector3i(1, 0, 0));
     private final MultiBlueprint openBlueprint = new MultiBlueprint(openPrint, metaMap, new Vector3i(1, 0, 0));
-    private final BigDoor.Type type;
+    private BigDoor.Type type;
+
+    public BigDoorTileEntity() {
+        this.type = BigDoor.Type.DEFAULT;
+        DoorDescriptor descriptor = new DoorDescriptor();
+        descriptor.setMovement(DoorRegistry.getMovement(CarriageDoorMovement.class));
+        descriptor.setSound(DoorRegistry.getSound(CarriageDoorSound.class));
+        descriptor.setDoubleDoor(false);
+        descriptor.setOpeningTime(20);
+        setDescriptor(descriptor);
+    }
 
     public BigDoorTileEntity(BigDoor.Type type) {
         this.type = type;
@@ -112,6 +122,7 @@ public class BigDoorTileEntity extends MultiTile implements IMultiBlock, IBluePr
     public void setFrameState(BlockState state) {
         if (state != null) frameState = state;
         this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+        this.markDirty();
     }
 
     @Override
@@ -173,13 +184,23 @@ public class BigDoorTileEntity extends MultiTile implements IMultiBlock, IBluePr
             direction = mb.getDirection();
             processed = false;
         }
-
-        frameState = Objects.firstNonNull(BlockState.fromNBT(tag), new BlockState(defaultBorderBlock));
+        int typeInt = tag.getInteger("type");
+        switch (typeInt)
+        {
+            case 0,1:
+                this.type = BigDoor.Type.CARRIAGE;
+                break;
+            case 2:
+                this.type = BigDoor.Type.MEDIEVAL;
+                break;
+        }
+        this.frameState = Objects.firstNonNull(BlockState.fromNBT(tag), new BlockState(defaultBorderBlock));
     }
 
     @Override
     public void writeToNBT(NBTTagCompound nbt) {
         super.writeToNBT(nbt);
+        nbt.setInteger("type", this.type.ordinal());
         BlockState.toNBT(nbt, frameState);
     }
 
@@ -411,8 +432,8 @@ public class BigDoorTileEntity extends MultiTile implements IMultiBlock, IBluePr
             {
                 for (int k = 0; k < print.bluePrint[0][0].length; k++) // z
                 {
-                    if (!(i == print.startingLocation.x && j == print.startingLocation.y
-                        && k == print.startingLocation.z) && print.bluePrint[j][i][k] > -1) {
+                    if (!(i == mainBlockRelativeX && j == mainBlockRelativeY
+                        && k == mainBlockRelativeZ) && print.bluePrint[j][i][k] > -1) {
 
                         switch (this.type) {
                             case CARRIAGE -> ((CollisionHelperBlock) MalisisDoors.Blocks.collisionHelperBlockCarriage)

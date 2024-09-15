@@ -55,6 +55,7 @@ public class BigDoor extends MalisisBlock implements ITileEntityProvider {
 
     public enum Type {
 
+        DEFAULT("carriage_door", net.minecraft.init.Items.wooden_door),
         CARRIAGE("carriage_door", net.minecraft.init.Items.wooden_door),
         MEDIEVAL("medieval_door", Items.doorSpruceItem);
 
@@ -92,8 +93,6 @@ public class BigDoor extends MalisisBlock implements ITileEntityProvider {
         Pair.of(createVectorHelper(0, 4, 1 - Door.DOOR_WIDTH), createVectorHelper(0, 5, 1 - Door.DOOR_WIDTH)),
         Pair.of(createVectorHelper(4, 4, 1 - Door.DOOR_WIDTH), createVectorHelper(4, 5, 1 - Door.DOOR_WIDTH)) };
 
-    private final int DoorBlockWidth = 4;
-    private final int DoorBlockHeight = 5;
     public static int renderId;
     public static int renderPass = -1;
     private AxisAlignedBB defaultBoundingBox = AxisAlignedBB.getBoundingBox(0, 0, 1 - Door.DOOR_WIDTH, 4, 5, 1);
@@ -266,16 +265,6 @@ public class BigDoor extends MalisisBlock implements ITileEntityProvider {
     @Override
     public TileEntity createNewTileEntity(World world, int metadata) {
         return new BigDoorTileEntity(this.type);
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z) {
-        if (!player.capabilities.isCreativeMode) {
-            BigDoorTileEntity te = TileEntityUtils.getTileEntity(BigDoorTileEntity.class, world, x, y, z);
-            if (te != null) dropBlockAsItem(world, x, y, z, te.getDroppedItemStack());
-        }
-        return super.removedByPlayer(world, player, x, y, z);
     }
 
     @Override
