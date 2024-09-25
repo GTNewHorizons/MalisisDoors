@@ -28,6 +28,7 @@ import net.minecraft.item.Item;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.SidedProxy;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
@@ -87,6 +88,11 @@ public class MalisisDoors implements IMalisisMod {
     }
 
     @EventHandler
+    public void init(FMLInitializationEvent event) {
+        proxy.initEventHandlers();
+    }
+
+    @EventHandler
     public void postInit(FMLPostInitializationEvent event) {
         proxy.initFonts();
     }
@@ -130,6 +136,8 @@ public class MalisisDoors implements IMalisisMod {
         public static Block ironTrapDoor;
         public static Block slidingTrapDoor;
         public static Block saloonDoor;
+        public static Block collisionHelperBlockMedieval;
+        public static Block collisionHelperBlockCarriage;
     }
 
     public static class Items {

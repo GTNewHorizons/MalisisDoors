@@ -70,7 +70,6 @@ public class MalisisBlock extends Block implements IBoundingBox {
         super.registerBlockIcons(reg);
     }
 
-    @Override
     public AxisAlignedBB[] getBoundingBox(IBlockAccess world, int x, int y, int z, BoundingBoxType type) {
         return new AxisAlignedBB[] { AxisAlignedBB.getBoundingBox(minX, minY, minZ, maxX, maxY, maxZ) };
     }
@@ -85,7 +84,14 @@ public class MalisisBlock extends Block implements IBoundingBox {
 
     @Override
     public MovingObjectPosition collisionRayTrace(World world, int x, int y, int z, Vec3 src, Vec3 dest) {
+        this.setBlockBoundsBasedOnState(world, x, y, z);
         return new RaytraceBlock(world, src, dest, x, y, z).trace();
+    }
+
+    @Override
+    public AxisAlignedBB getCollisionBoundingBoxFromPool(World worldIn, int x, int y, int z) {
+        this.setBlockBoundsBasedOnState(worldIn, x, y, z);
+        return super.getCollisionBoundingBoxFromPool(worldIn, x, y, z);
     }
 
     @Override

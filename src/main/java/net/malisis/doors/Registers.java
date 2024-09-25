@@ -27,6 +27,7 @@ import net.malisis.doors.block.VanishingBlock;
 import net.malisis.doors.block.VanishingDiamondBlock;
 import net.malisis.doors.door.DoorDescriptor;
 import net.malisis.doors.door.block.BigDoor;
+import net.malisis.doors.door.block.CollisionHelperBlock;
 import net.malisis.doors.door.block.CustomDoor;
 import net.malisis.doors.door.block.FenceGate;
 import net.malisis.doors.door.block.FenceGate.Type;
@@ -50,6 +51,7 @@ import net.malisis.doors.door.tileentity.CustomDoorTileEntity;
 import net.malisis.doors.door.tileentity.DoorTileEntity;
 import net.malisis.doors.door.tileentity.FenceGateTileEntity;
 import net.malisis.doors.door.tileentity.ForcefieldTileEntity;
+import net.malisis.doors.door.tileentity.MultiTile;
 import net.malisis.doors.door.tileentity.RustyHatchTileEntity;
 import net.malisis.doors.door.tileentity.SaloonDoorTileEntity;
 import net.malisis.doors.entity.BlockMixerTileEntity;
@@ -113,6 +115,8 @@ public class Registers {
         registerBigDoors();
 
         registerForcefieldDoor();
+
+        registerCollisionHelperBlocks();
 
         GameRegistry.registerTileEntity(DoorTileEntity.class, "doorTileEntity");
         GameRegistry.registerTileEntity(TrapDoorTileEntity.class, "trapDoorTileEntity");
@@ -462,5 +466,24 @@ public class Registers {
             Items.ender_eye,
             'E',
             Items.comparator);
+    }
+
+    private static void registerCollisionHelperBlocks() {
+        collisionHelperBlockMedieval = new CollisionHelperBlock(BigDoor.Type.MEDIEVAL);
+        GameRegistry.registerBlock(
+            collisionHelperBlockMedieval,
+            collisionHelperBlockMedieval.getUnlocalizedName()
+                .substring(5) + "_"
+                + BigDoor.Type.MEDIEVAL);
+
+        collisionHelperBlockCarriage = new CollisionHelperBlock(BigDoor.Type.CARRIAGE);
+        GameRegistry.registerBlock(
+            collisionHelperBlockCarriage,
+            collisionHelperBlockCarriage.getUnlocalizedName()
+                .substring(5) + "_"
+                + BigDoor.Type.CARRIAGE);
+
+        GameRegistry.registerTileEntity(MultiTile.class, "collisionHelperTileEntity");
+
     }
 }
