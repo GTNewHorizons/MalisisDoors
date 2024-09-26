@@ -13,9 +13,6 @@
 
 package net.malisis.doors.proxy;
 
-import net.malisis.doors.event.DoorEventHandlerCommon;
-import net.minecraftforge.common.MinecraftForge;
-
 /**
  * @author Ordinastie
  *
@@ -29,7 +26,5 @@ public class ServerProxy implements IProxy {
     public void initFonts() {}
 
     @Override
-    public void initEventHandlers() {
-        MinecraftForge.EVENT_BUS.register(new DoorEventHandlerCommon());
-    }
+    public void initEventHandlers() {}
 }
