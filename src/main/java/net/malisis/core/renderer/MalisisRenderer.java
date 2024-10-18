@@ -733,14 +733,14 @@ public class MalisisRenderer extends TileEntitySpecialRenderer
         // use normals if available
         if ((renderType == RenderType.ITEM_INVENTORY || renderType == RenderType.ISBRH_INVENTORY
             || params.useNormals.get()) && params.direction.get() != null)
-            Tessellator.instance.setNormal(
+            tess.setNormal(
                 params.direction.get().offsetX,
                 params.direction.get().offsetY,
                 params.direction.get().offsetZ);
 
         baseBrightness = getBaseBrightness();
 
-        drawVertexes(face.getVertexes());
+        drawVertexes(face.getVertexes(), tess);
 
         // we need to separate each face
         if (drawMode == GL11.GL_POLYGON || drawMode == GL11.GL_LINE
@@ -753,8 +753,8 @@ public class MalisisRenderer extends TileEntitySpecialRenderer
      *
      * @param vertexes the vertexes
      */
-    protected void drawVertexes(Vertex[] vertexes) {
-        for (int i = 0; i < vertexes.length; i++) drawVertex(vertexes[i], i);
+    protected void drawVertexes(Vertex[] vertexes, Tessellator tess) {
+        for (int i = 0; i < vertexes.length; i++) drawVertex(vertexes[i], i, tess);
     }
 
     /**
@@ -763,7 +763,7 @@ public class MalisisRenderer extends TileEntitySpecialRenderer
      * @param vertex the vertex
      * @param number the offset inside the face. (Used for AO)
      */
-    protected void drawVertex(Vertex vertex, int number) {
+    protected void drawVertex(Vertex vertex, int number, Tessellator tess) {
         if (vertex == null) vertex = new Vertex(0, 0, 0);
 
         // brightness
@@ -776,7 +776,6 @@ public class MalisisRenderer extends TileEntitySpecialRenderer
 
         // alpha
         if (!params.usePerVertexAlpha.get()) vertex.setAlpha(params.alpha.get());
-        Tessellator tess = Tessellator.instance;
         tess.setColorRGBA_I(vertex.getColor(), vertex.getAlpha());
         tess.setBrightness(vertex.getBrightness());
 
