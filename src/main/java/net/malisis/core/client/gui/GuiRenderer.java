@@ -253,7 +253,8 @@ public class GuiRenderer extends MalisisRenderer {
 
         applyTexture(shape, rp);
 
-        for (Face face : s.getFaces()) drawFace(face, face.getParameters());
+        Tessellator tess = Tessellator.instance;
+        for (Face face : s.getFaces()) drawFace(face, face.getParameters(), tess);
     }
 
     public void drawRectangle(int x, int y, int z, int width, int height, int color, int alpha) {
@@ -293,11 +294,11 @@ public class GuiRenderer extends MalisisRenderer {
      *
      * @param tooltip the tooltip
      */
-    public void drawTooltip(UITooltip tooltip) {
+    public void drawTooltip(UITooltip tooltip, Tessellator tess) {
         if (tooltip != null) {
-            Tessellator.instance.startDrawingQuads();
+            tess.startDrawingQuads();
             tooltip.draw(this, mouseX, mouseY, partialTick);
-            Tessellator.instance.draw();
+            tess.draw();
         }
     }
 

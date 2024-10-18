@@ -693,7 +693,8 @@ public class MalisisRenderer extends TileEntitySpecialRenderer
 
         if (rp.applyTexture.get()) applyTexture(s, rp);
 
-        for (Face f : s.getFaces()) drawFace(f, f.getParameters());
+        Tessellator tess = Tessellator.instance;
+        for (Face f : s.getFaces()) drawFace(f, f.getParameters(), tess);
     }
 
     /**
@@ -701,8 +702,8 @@ public class MalisisRenderer extends TileEntitySpecialRenderer
      *
      * @param face the face
      */
-    public void drawFace(Face face) {
-        drawFace(face, face.getParameters());
+    public void drawFace(Face face, Tessellator tess) {
+        drawFace(face, face.getParameters(), tess);
     }
 
     /**
@@ -711,7 +712,7 @@ public class MalisisRenderer extends TileEntitySpecialRenderer
      * @param f          the f
      * @param faceParams the face params
      */
-    protected void drawFace(Face f, RenderParameters faceParams) {
+    protected void drawFace(Face f, RenderParameters faceParams, Tessellator tess) {
         if (f == null) return;
 
         int vertexCount = f.getVertexes().length;
@@ -775,13 +776,13 @@ public class MalisisRenderer extends TileEntitySpecialRenderer
 
         // alpha
         if (!params.usePerVertexAlpha.get()) vertex.setAlpha(params.alpha.get());
-
-        Tessellator.instance.setColorRGBA_I(vertex.getColor(), vertex.getAlpha());
-        Tessellator.instance.setBrightness(vertex.getBrightness());
+        Tessellator tess = Tessellator.instance;
+        tess.setColorRGBA_I(vertex.getColor(), vertex.getAlpha());
+        tess.setBrightness(vertex.getBrightness());
 
         if (params.useTexture.get())
-            Tessellator.instance.addVertexWithUV(vertex.getX(), vertex.getY(), vertex.getZ(), vertex.getU(), vertex.getV());
-        else Tessellator.instance.addVertex(vertex.getX(), vertex.getY(), vertex.getZ());
+            tess.addVertexWithUV(vertex.getX(), vertex.getY(), vertex.getZ(), vertex.getU(), vertex.getV());
+        else tess.addVertex(vertex.getX(), vertex.getY(), vertex.getZ());
 
         vertexDrawn = true;
     }
