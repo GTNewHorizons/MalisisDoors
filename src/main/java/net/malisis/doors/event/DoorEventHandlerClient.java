@@ -51,19 +51,20 @@ public class DoorEventHandlerClient {
 
     @SubscribeEvent
     public void onClientInteract(PlayerInteractEvent event) {
+        if (!event.world.isRemote) return;
         EntityPlayer player = event.entityPlayer;
-        TileEntity tileEntity = getTileEntityLookingAt(player);
-        if (player.isSneaking() && event.action.equals(PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK)
-            && tileEntity instanceof MultiTile multiTile
-            && Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
-            ItemStack heldStack = player.getHeldItem();
-            if (heldStack == null) return;
+        if (player.isSneaking() && event.action.equals(PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK)) {
+            TileEntity tileEntity = getTileEntityLookingAt(player);
+            if (tileEntity instanceof MultiTile multiTile && Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
+                ItemStack heldStack = player.getHeldItem();
+                if (heldStack == null) return;
 
-            Block block = Block.getBlockFromItem(heldStack.getItem());
-            int damageValue = heldStack.getItemDamage();
-            if (block != null) {
-                event.setCanceled(true);
-                FrameUpdateMessage.SendFrameUpdateMessage(multiTile, block, damageValue);
+                Block block = Block.getBlockFromItem(heldStack.getItem());
+                int damageValue = heldStack.getItemDamage();
+                if (block != null) {
+                    event.setCanceled(true);
+                    FrameUpdateMessage.SendFrameUpdateMessage(multiTile, block, damageValue);
+                }
             }
         }
     }
