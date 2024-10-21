@@ -41,6 +41,7 @@ import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -498,14 +499,15 @@ public abstract class MalisisGui extends GuiScreen {
             }
         }
 
+        Tessellator tess = Tessellator.instance;
         if (inventoryContainer != null) {
             ItemStack itemStack = inventoryContainer.getPickedItemStack();
             if (itemStack != null) renderer.renderPickedItemStack(itemStack);
             else if (hoveredComponent != null && hoveredComponent.isHovered()) // do not draw the tooltip if an
                                                                                // itemStack is picked up
-                renderer.drawTooltip(hoveredComponent.getTooltip());
+                renderer.drawTooltip(hoveredComponent.getTooltip(), tess);
         } else if (hoveredComponent != null && hoveredComponent.isHovered())
-            renderer.drawTooltip(hoveredComponent.getTooltip());
+            renderer.drawTooltip(hoveredComponent.getTooltip(), tess);
 
         GL11.glEnable(GL11.GL_LIGHTING);
         GL11.glEnable(GL11.GL_DEPTH_TEST);

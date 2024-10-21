@@ -253,7 +253,8 @@ public class GuiRenderer extends MalisisRenderer {
 
         applyTexture(shape, rp);
 
-        for (Face face : s.getFaces()) drawFace(face, face.getParameters());
+        Tessellator tess = Tessellator.instance;
+        for (Face face : s.getFaces()) drawFace(face, face.getParameters(), tess);
     }
 
     public void drawRectangle(int x, int y, int z, int width, int height, int color, int alpha) {
@@ -293,11 +294,11 @@ public class GuiRenderer extends MalisisRenderer {
      *
      * @param tooltip the tooltip
      */
-    public void drawTooltip(UITooltip tooltip) {
+    public void drawTooltip(UITooltip tooltip, Tessellator tess) {
         if (tooltip != null) {
-            this.tessellator.startDrawingQuads();
+            tess.startDrawingQuads();
             tooltip.draw(this, mouseX, mouseY, partialTick);
-            this.tessellator.draw();
+            tess.draw();
         }
     }
 
@@ -446,7 +447,7 @@ public class GuiRenderer extends MalisisRenderer {
         if (label == null) label = "";
         if (format != null) label = format + label;
 
-        this.tessellator.draw();
+        Tessellator.instance.draw();
         RenderHelper.enableGUIStandardItemLighting();
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 
@@ -472,7 +473,7 @@ public class GuiRenderer extends MalisisRenderer {
 
         currentTexture = null;
         bindDefaultTexture();
-        this.tessellator.startDrawingQuads();
+        Tessellator.instance.startDrawingQuads();
     }
 
     /**
@@ -482,9 +483,8 @@ public class GuiRenderer extends MalisisRenderer {
      */
     public void renderPickedItemStack(ItemStack itemStack) {
         if (itemStack == null) return;
-        this.tessellator = Tessellator.instance;
         itemRenderer.zLevel = 100;
-        this.tessellator.startDrawingQuads();
+        Tessellator.instance.startDrawingQuads();
         drawItemStack(
             itemStack,
             mouseX - 8,
@@ -492,7 +492,7 @@ public class GuiRenderer extends MalisisRenderer {
             null,
             itemStack.stackSize == 0 ? EnumChatFormatting.YELLOW : null,
             false);
-        this.tessellator.draw();
+        Tessellator.instance.draw();
         itemRenderer.zLevel = 0;
     }
 
