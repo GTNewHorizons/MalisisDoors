@@ -94,9 +94,13 @@ public abstract class Setting<T> {
      * @param config the config
      */
     public void load(Configuration config) {
-        String comment = null;
-        for (String c : comments) comment += StatCollector.translateToLocal(c) + " ";
-        property = config.get(category, key, writeValue(defaultValue), comment, type);
+        if (comments.length > 0) {
+            String comment = "";
+            for (String c : comments) comment += StatCollector.translateToLocal(c) + " ";
+            property = config.get(category, key, writeValue(defaultValue), comment, type);
+        } else {
+            property = config.get(category, key, writeValue(defaultValue), null, type);
+        }
         value = readValue(property.getString());
         if (value == null) throw new NullPointerException("readPropertyValue should not return null!");
     }
