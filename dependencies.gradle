@@ -1,7 +1,7 @@
 dependencies {
-	compileOnly 'org.projectlombok:lombok:1.18.24'
-	annotationProcessor 'org.projectlombok:lombok:1.18.24'
+    compileOnly 'org.projectlombok:lombok:1.18.24'
+    annotationProcessor 'org.projectlombok:lombok:1.18.24'
 
-    implementation 'com.github.GTNewHorizons:GTNHLib:0.6.0:dev'
-    runtimeOnlyNonPublishable("com.github.GTNewHorizons:NotEnoughItems:2.7.11-GTNH:dev")
+    implementation 'com.github.GTNewHorizons:GTNHLib:0.6.32:dev'
+    runtimeOnlyNonPublishable("com.github.GTNewHorizons:NotEnoughItems:2.7.59-GTNH:dev")
 }
