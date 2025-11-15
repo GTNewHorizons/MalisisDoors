@@ -105,10 +105,12 @@ public class Parameter<T> {
     }
 
     public T merged(Parameter<T> other) {
-        if (other.value != null) {
-            return other.value;
-        } else if (value != null) {
-            return value;
+        T val = this.value;
+        T otherVal = other.value;
+        if (otherVal != null) {
+            return otherVal;
+        } else if (val != null) {
+            return val;
         } else {
             return defaultValue;
         }
