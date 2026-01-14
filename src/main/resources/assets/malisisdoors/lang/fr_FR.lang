@@ -174,3 +174,6 @@ gui.door_factory.edit_door=Modifier la porte
 
 gui.block_mixer.simple_rendering=Rendu simplifié
 gui.block_mixer.simple_rendering_tooltip=Nécessite une mise à jour de tronçons pour les blocs du monde
+
+gui.block_mixer.title=Mixeur de blocs
+gui.door_factory.title=Assembleur de porte

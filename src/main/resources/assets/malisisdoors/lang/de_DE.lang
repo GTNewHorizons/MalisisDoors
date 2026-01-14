@@ -90,3 +90,6 @@ gui.door_factory.create_door=Tür bauen
 
 gui.block_mixer.simple_rendering=Einfaches zeichnen rendern
 gui.block_mixer.simple_rendering_tooltip=Blöcke benötigen ein Chunk-Update um den Effekt zu sehen.
+
+gui.block_mixer.title=Blockmischer
+gui.door_factory.title=Türfabrik
