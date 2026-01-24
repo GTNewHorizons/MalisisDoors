@@ -179,3 +179,6 @@ gui.door_factory.edit_door=Uprav dveře
 
 gui.block_mixer.simple_rendering=Jednoduché renderování
 gui.block_mixer.simple_rendering_tooltip=Ve světe blok vyžaduje znovunačtení chunku k zafungování.
+
+gui.block_mixer.title=Mixér bloků
+gui.door_factory.title=Továrna na dveře

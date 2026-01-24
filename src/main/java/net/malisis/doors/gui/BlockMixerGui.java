@@ -31,7 +31,7 @@ public class BlockMixerGui extends MalisisGui {
     @Override
     public void construct() {
 
-        UIWindow window = new UIWindow(this, "tile.block_mixer.name", 176, 166);
+        UIWindow window = new UIWindow(this, "gui.block_mixer.title", 176, 166);
 
         UISlot firstInputSlot = new UISlot(this, tileEntity.firstInput).setPosition(-60, 20, Anchor.CENTER);
         UISlot secondInputSlot = new UISlot(this, tileEntity.secondInput).setPosition(60, 20, Anchor.CENTER);

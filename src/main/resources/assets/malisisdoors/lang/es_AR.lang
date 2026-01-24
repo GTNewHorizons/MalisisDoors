@@ -79,3 +79,6 @@ gui.door_factory.create_door=Construir puerta
 
 gui.block_mixer.simple_rendering=Renderizado Simple
 gui.block_mixer.simple_rendering_tooltip=En el mundo, los bloques requieren actualización de los chunks para que se muestren los cambios.
+
+gui.block_mixer.title=Mezclador de Bloques
+gui.door_factory.title=Puerta de Fábrica

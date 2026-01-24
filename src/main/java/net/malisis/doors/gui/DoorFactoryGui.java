@@ -89,7 +89,7 @@ public class DoorFactoryGui extends MalisisGui {
 
     @Override
     public void construct() {
-        UIWindow window = new UIWindow(this, "tile.door_factory.name", UIPlayerInventory.INVENTORY_WIDTH + 10, 240);
+        UIWindow window = new UIWindow(this, "gui.door_factory.title", UIPlayerInventory.INVENTORY_WIDTH + 10, 240);
 
         UIContainer propContainer = getPropertiesContainer();
         UIContainer matContainer = getMaterialsContainer();
