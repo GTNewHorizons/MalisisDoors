@@ -57,7 +57,7 @@ import com.google.common.io.Files;
  */
 public class MalisisFont {
 
-    public static MalisisFont minecraftFont = new MinecraftFont();
+    public static MalisisFont minecraftFont = new VanillaFont();
 
     private static Pattern pattern = Pattern.compile("\\{(.*?)}");
 
