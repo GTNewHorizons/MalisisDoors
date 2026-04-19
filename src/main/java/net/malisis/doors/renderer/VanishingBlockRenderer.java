@@ -153,8 +153,4 @@ public class VanishingBlockRenderer extends MalisisRenderer {
         } else drawShape(shape, rp);
     }
 
-    @Override
-    public boolean shouldRender3DInInventory(int modelId) {
-        return true;
-    }
 }

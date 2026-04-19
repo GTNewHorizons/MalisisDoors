@@ -170,11 +170,6 @@ public abstract class FiniteLiquid extends BlockDynamicLiquid {
     }
 
     @Override
-    public boolean isOpaqueCube() {
-        return false;
-    }
-
-    @Override
     public boolean canRenderInPass(int pass) {
         return pass == getRenderBlockPass();
     }

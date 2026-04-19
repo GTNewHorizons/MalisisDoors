@@ -116,11 +116,6 @@ public class MalisisCommand extends CommandBase {
         else return null;
     }
 
-    @Override
-    public boolean isUsernameIndex(String[] astring, int i) {
-        return false;
-    }
-
     /**
      * Handles the config command.<br>
      * Opens the configuration GUI for the {@link IMalisisMod} with the id specified as parameter, if the mod as

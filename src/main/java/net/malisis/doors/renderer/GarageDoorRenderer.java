@@ -168,8 +168,4 @@ public class GarageDoorRenderer extends MalisisRenderer {
         return false;
     }
 
-    @Override
-    public boolean shouldRender3DInInventory(int modelId) {
-        return true;
-    }
 }

@@ -222,8 +222,4 @@ public class CustomDoorRenderer extends DoorRenderer {
         model.render(this, rp);
     }
 
-    @Override
-    public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
-        return true;
-    }
 }
