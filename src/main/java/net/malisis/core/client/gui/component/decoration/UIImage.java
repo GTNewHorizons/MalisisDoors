@@ -19,10 +19,8 @@ import net.malisis.core.client.gui.MalisisGui;
 import net.malisis.core.client.gui.component.UIComponent;
 import net.malisis.core.client.gui.element.SimpleGuiShape;
 import net.malisis.core.renderer.icon.MalisisIcon;
-import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.ResourceLocation;
 
 /**
  * UIImage.
@@ -30,11 +28,6 @@ import net.minecraft.util.ResourceLocation;
  * @author Ordinastie
  */
 public class UIImage extends UIComponent<UIImage> {
-
-    /** {@link ResourceLocation} for Block textures. */
-    public static final ResourceLocation BLOCKS_TEXTURE = TextureMap.locationBlocksTexture;
-    /** {@link ResourceLocation} for Item textures. */
-    public static final ResourceLocation ITEMS_TEXTURE = TextureMap.locationItemsTexture;
 
     /** {@link GuiTexture} to use for the icon. */
     private GuiTexture texture;
@@ -59,32 +52,6 @@ public class UIImage extends UIComponent<UIImage> {
     }
 
     /**
-     * Instantiates a new {@link UIImage}.
-     *
-     * @param gui       the gui
-     * @param itemStack the item stack
-     */
-    public UIImage(MalisisGui gui, ItemStack itemStack) {
-        super(gui);
-        setItemStack(itemStack);
-        setSize(16, 16);
-
-        shape = new SimpleGuiShape();
-    }
-
-    /**
-     * Sets the icon for this {@link UIImage}.
-     *
-     * @param icon the icon
-     * @return this UIImage
-     */
-    public UIImage setIcon(IIcon icon) {
-        this.itemStack = null;
-        this.icon = icon != null ? icon : new MalisisIcon();
-        return this;
-    }
-
-    /**
      * Sets the icon for this {@link UIImage} to be used with the specified {@link GuiTexture}.
      *
      * @param texture the texture
@@ -96,47 +63,6 @@ public class UIImage extends UIComponent<UIImage> {
         this.icon = icon != null ? icon : new MalisisIcon();
         this.texture = texture;
         return this;
-    }
-
-    /**
-     * Sets the {@link ItemStack} to render.
-     *
-     * @param itemStack the item stack
-     * @return this UIImage
-     */
-    public UIImage setItemStack(ItemStack itemStack) {
-        this.icon = null;
-        this.texture = null;
-        this.itemStack = itemStack;
-        setSize(16, 16);
-        return this;
-    }
-
-    /**
-     * Gets the {@link IIcon} for this {@link UIImage}.
-     *
-     * @return the icon
-     */
-    public IIcon getIcon() {
-        return icon;
-    }
-
-    /**
-     * Gets the {@link GuiTexture} for this {@link UIImage}.
-     *
-     * @return the texture
-     */
-    public GuiTexture getTexture() {
-        return texture;
-    }
-
-    /**
-     * Gets the {@link ItemStack} for this {@link UIImage}.
-     *
-     * @return the item stack
-     */
-    public ItemStack getItemStack() {
-        return itemStack;
     }
 
     /**

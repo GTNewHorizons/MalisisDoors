@@ -77,15 +77,6 @@ public class UISlot extends UIComponent<UISlot> {
             .getIcon(209, 30, 18, 1);
     }
 
-    /**
-     * Instantiates a new {@link UISlot}.
-     *
-     * @param gui the gui
-     */
-    public UISlot(MalisisGui gui) {
-        this(gui, null);
-    }
-
     @Override
     public UISlot setTooltip(UITooltip tooltip) {
         defaultTooltip = tooltip;

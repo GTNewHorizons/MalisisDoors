@@ -25,10 +25,7 @@ import net.malisis.core.configuration.ConfigurationGui;
 import net.malisis.core.configuration.Settings;
 import net.malisis.core.network.MalisisNetwork;
 import net.malisis.core.tileentity.MultiBlockTileEntity;
-import net.malisis.core.util.finiteliquid.FiniteLiquid;
-import net.malisis.core.util.finiteliquid.FiniteLiquidRenderer;
 import net.malisis.core.util.replacement.ReplacementTool;
-import net.malisis.core.util.syncer.Syncer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraft.server.MinecraftServer;
@@ -160,8 +157,6 @@ public class MalisisCore implements IMalisisMod {
         GameRegistry.registerTileEntity(MultiBlockTileEntity.class, "MalisisCoreMultiBlockTileEntity");
 
         MalisisNetwork.createMessages(event.getAsmData());
-        Syncer.get()
-            .discover(event.getAsmData());
     }
 
     /**
@@ -172,9 +167,6 @@ public class MalisisCore implements IMalisisMod {
     @EventHandler
     public void init(FMLInitializationEvent event) {
         ClientCommandHandler.instance.registerCommand(new MalisisCommand());
-
-        if (FMLCommonHandler.instance()
-            .getSide() == Side.CLIENT) new FiniteLiquidRenderer().registerFor(FiniteLiquid.class);
     }
 
     /**

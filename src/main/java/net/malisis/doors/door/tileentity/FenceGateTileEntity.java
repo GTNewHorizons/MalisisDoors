@@ -45,11 +45,7 @@ public class FenceGateTileEntity extends DoorTileEntity {
         setDescriptor(descriptor);
     }
 
-    public BlockState getCamoState() {
-        return camoState;
-    }
-
-    public int getCamoColor() {
+   public int getCamoColor() {
         return camoColor;
     }
 

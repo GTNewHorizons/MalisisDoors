@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.WeakHashMap;
 
-import net.malisis.core.MalisisCore;
 import net.malisis.core.client.gui.MalisisGui;
 import net.malisis.core.inventory.message.OpenInventoryMessage;
 import net.malisis.core.inventory.player.PlayerInventory;
@@ -55,8 +54,6 @@ public class MalisisInventory implements IInventory {
     protected int inventoryId;
     /** Object containing this {@link MalisisInventory}. */
     protected IInventoryProvider inventoryProvider;
-    /** ItemStack holding the inventory when inventoryProvider is an Item. */
-    protected ItemStack itemStackProvider;
     /** Slots for this {@link MalisisInventory}. */
     protected MalisisSlot[] slots;
     /** Name of this {@link MalisisInventory}. */
@@ -96,15 +93,6 @@ public class MalisisInventory implements IInventory {
     }
 
     /**
-     * Gets the {@link IInventoryProvider} of this {@link MalisisInventory}.
-     *
-     * @return the provider.
-     */
-    public IInventoryProvider getProvider() {
-        return inventoryProvider;
-    }
-
-    /**
      * Sets the slots for this {@link MalisisInventory}.
      *
      * @param slots the new slots
@@ -113,19 +101,6 @@ public class MalisisInventory implements IInventory {
         this.size = slots.length;
         this.slots = slots;
         for (MalisisSlot slot : slots) slot.setInventory(this);
-    }
-
-    /**
-     * Overrides a specific slot with a new one.
-     *
-     * @param slot       the slot
-     * @param slotNumber the slot number
-     */
-    public void overrideSlot(MalisisSlot slot, int slotNumber) {
-        if (slotNumber < 0 || slotNumber >= getSizeInventory()) return;
-
-        slots[slotNumber] = slot;
-        slot.setInventory(this);
     }
 
     /**
@@ -144,14 +119,6 @@ public class MalisisInventory implements IInventory {
      */
     public void setInventoryId(int id) {
         inventoryId = id;
-        if (itemStackProvider == null) return;
-
-        NBTTagCompound tag = itemStackProvider.stackTagCompound;
-        if (tag == null) {
-            tag = new NBTTagCompound();
-            itemStackProvider.stackTagCompound = tag;
-        }
-        itemStackProvider.stackTagCompound.setInteger("inventoryId", id);
     }
 
     /**
@@ -164,14 +131,6 @@ public class MalisisInventory implements IInventory {
     }
 
     // #region getters/setters
-    /**
-     * Sets the name.
-     *
-     * @param name the new name
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
 
     /**
      * Gets the inventory name.
@@ -259,17 +218,6 @@ public class MalisisInventory implements IInventory {
     }
 
     /**
-     * Checks whether itemStack can be contained by slot.
-     *
-     * @param slot      the slot
-     * @param itemStack the item stack
-     * @return true, if successful
-     */
-    public boolean itemValidForSlot(MalisisSlot slot, ItemStack itemStack) {
-        return true;
-    }
-
-    /**
      * Checks whether itemStack can be contained by the slot at position slotNumber.
      *
      * @param slotNumber the slot number
@@ -313,30 +261,6 @@ public class MalisisInventory implements IInventory {
     }
 
     /**
-     * Set this {@link MalisisInventory} contents based on the itemStack NBT. <br>
-     * The inventoryProvider need to be an Item.
-     *
-     * @param itemStack the new item stack provider
-     */
-    public void setItemStackProvider(ItemStack itemStack) {
-        if (!(inventoryProvider instanceof Item)) throw new IllegalArgumentException(
-            "setItemStack not allowed with " + inventoryProvider.getClass()
-                .getSimpleName() + " provider.");
-
-        if (itemStack.getItem() != inventoryProvider) {
-            MalisisCore.log.error(
-                "[MalisisInventory] Tried to set itemStack with an different item (" + itemStack.getItem()
-                    + ") than the provider ("
-                    + inventoryProvider
-                    + ")");
-            return;
-        }
-
-        this.itemStackProvider = itemStack;
-        readFromNBT(itemStack.getTagCompound());
-    }
-
-    /**
      * Adds the opened container.
      *
      * @param container the container
@@ -352,37 +276,6 @@ public class MalisisInventory implements IInventory {
      */
     public void removeOpenedContainer(MalisisInventoryContainer container) {
         containers.remove(container);
-        if (containers.size() == 0 && itemStackProvider != null && itemStackProvider.stackTagCompound != null)
-            itemStackProvider.stackTagCompound.removeTag("inventoryId");
-    }
-
-    /**
-     * Gets the opened containers.
-     *
-     * @return the opened containers
-     */
-    public Set<MalisisInventoryContainer> getOpenedContainers() {
-        return containers;
-    }
-
-    /**
-     * Checks if at least one itemStack is present in inventory.
-     *
-     * @return true, if is empty
-     */
-    public boolean isEmpty() {
-        return getItemStackList().size() == 0;
-    }
-
-    /**
-     * Checks if at least one slot is not full.
-     *
-     * @return true, if is full
-     */
-    public boolean isFull() {
-        for (MalisisSlot slot : slots) if (!slot.isFull()) return false;
-
-        return true;
     }
 
     // #end getters/setters
@@ -393,9 +286,6 @@ public class MalisisInventory implements IInventory {
      * @param slot the slot
      */
     public void onSlotChanged(MalisisSlot slot) {
-        if (inventoryProvider instanceof Item && itemStackProvider != null)
-            this.writeToNBT(itemStackProvider.getTagCompound());
-
         bus.post(new InventoryEvent.SlotChanged(this, slot));
     }
 
@@ -404,31 +294,6 @@ public class MalisisInventory implements IInventory {
      */
     @Override
     public void openInventory() {}
-
-    /**
-     * Gets the first {@link MalisisSlot} containing an {@link ItemStack}.
-     *
-     * @return the first occupied slot
-     */
-    public MalisisSlot getFirstOccupiedSlot() {
-        for (MalisisSlot slot : slots) if (slot.getItemStack() != null) return slot;
-        return null;
-    }
-
-    /**
-     * Removes the first {@link ItemStack} in this {@link MalisisInventory} and returns it.
-     *
-     * @return the item stack
-     */
-    public ItemStack pullItemStack() {
-        MalisisSlot slot = getFirstOccupiedSlot();
-        if (slot == null) return null;
-
-        ItemStack itemStack = slot.getItemStack();
-        slot.setItemStack(null);
-        slot.onSlotChanged();
-        return itemStack;
-    }
 
     /**
      * Transfers an {@link ItemStack} inside this {@link MalisisInventory}.

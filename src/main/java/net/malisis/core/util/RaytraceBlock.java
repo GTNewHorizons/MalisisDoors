@@ -77,35 +77,6 @@ public class RaytraceBlock {
      *
      * @param world the world
      * @param src   the src
-     * @param v     the v
-     * @param x     the x
-     * @param y     the y
-     * @param z     the z
-     */
-    public RaytraceBlock(World world, Point src, Vector v, int x, int y, int z) {
-        this(world, new Ray(src, v), x, y, z);
-    }
-
-    /**
-     * Instantiates a new {@link RaytraceBlock}.
-     *
-     * @param world the world
-     * @param src   the src
-     * @param dest  the dest
-     * @param x     the x
-     * @param y     the y
-     * @param z     the z
-     */
-    public RaytraceBlock(World world, Point src, Point dest, int x, int y, int z) {
-        this(world, new Ray(src, new Vector(src, dest)), x, y, z);
-        this.dest = dest;
-    }
-
-    /**
-     * Instantiates a new {@link RaytraceBlock}.
-     *
-     * @param world the world
-     * @param src   the src
      * @param dest  the dest
      * @param x     the x
      * @param y     the y
@@ -123,24 +94,6 @@ public class RaytraceBlock {
      */
     public World world() {
         return world.get();
-    }
-
-    /**
-     * Gets the direction vector of the ray.
-     *
-     * @return the direction
-     */
-    public Vector direction() {
-        return ray.direction;
-    }
-
-    /**
-     * Gets the length of the ray.
-     *
-     * @return the distance
-     */
-    public double distance() {
-        return ray.direction.length();
     }
 
     /**

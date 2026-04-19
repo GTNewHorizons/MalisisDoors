@@ -5,7 +5,6 @@ import net.malisis.doors.door.block.CollisionHelperBlock;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
@@ -71,19 +70,4 @@ public class CustomDoorBoundingBoxRenderer {
         }
     }
 
-    public static void drawOutlineBoundingBoxWithMultipleBoxes(AxisAlignedBB AABB, int color) {
-        Tessellator tessellator = Tessellator.instance;
-        tessellator.startDrawing(3);
-
-        if (color != -1) {
-            tessellator.setColorOpaque_I(color);
-        }
-
-        tessellator.addVertex(AABB.minX, AABB.minY, AABB.minZ);
-        tessellator.addVertex(AABB.maxX, AABB.minY, AABB.minZ);
-        tessellator.addVertex(AABB.maxX, AABB.minY, AABB.maxZ);
-        tessellator.addVertex(AABB.minX, AABB.minY, AABB.maxZ);
-        tessellator.addVertex(AABB.minX, AABB.minY, AABB.minZ);
-        tessellator.draw();
-    }
 }

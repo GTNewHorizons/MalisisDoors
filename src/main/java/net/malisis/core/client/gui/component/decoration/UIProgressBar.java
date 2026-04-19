@@ -42,10 +42,6 @@ public class UIProgressBar extends UIComponent<UIProgressBar> {
             .getIcon(246, 16, 22, 16);
     }
 
-    public float getProgress() {
-        return progress;
-    }
-
     public UIProgressBar setReversed() {
         reversed = true;
         return this;

@@ -13,30 +13,16 @@
 
 package net.malisis.core.util;
 
-import java.lang.ref.WeakReference;
-
-import net.malisis.core.util.BlockPos.BlockIterator;
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants.NBT;
-import net.minecraftforge.common.util.ForgeDirection;
-
-import com.google.common.base.Function;
-import com.google.common.base.Predicate;
-import com.google.common.collect.FluentIterable;
 
 /**
  * @author Ordinastie
  *
  */
 public class BlockState {
-
-    private static BlockStateFunction toBlockState = new BlockStateFunction();
-    private static BlockPredicate blockFilter = new BlockPredicate();
 
     protected BlockPos pos;
     protected Block block;
@@ -48,16 +34,8 @@ public class BlockState {
         this.metadata = metadata;
     }
 
-    public BlockState(BlockPos pos, Block block) {
-        this(pos, block, 0);
-    }
-
     public BlockState(int x, int y, int z, Block block, int metadata) {
         this(new BlockPos(x, y, z), block, metadata);
-    }
-
-    public BlockState(int x, int y, int z, Block block) {
-        this(new BlockPos(x, y, z), block, 0);
     }
 
     public BlockState(Block block, int metadata) {
@@ -77,10 +55,6 @@ public class BlockState {
 
     public BlockState(IBlockAccess world, int x, int y, int z) {
         this(new BlockPos(x, y, z), world.getBlock(x, y, z), world.getBlockMetadata(x, y, z));
-    }
-
-    public BlockState(IBlockAccess world, long coord) {
-        this(world, BlockPos.fromLong(coord));
     }
 
     public BlockState(BlockPos pos, BlockState state) {
@@ -111,47 +85,12 @@ public class BlockState {
         return pos.getZ();
     }
 
-    public boolean isAir() {
-        return getBlock().getMaterial() == Material.air;
-    }
-
     public BlockState offset(BlockPos pos) {
         return new BlockState(this.pos.add(pos), this);
     }
 
     public BlockState rotate(int rotation) {
         return new BlockState(this.pos.rotate(rotation), this);
-    }
-
-    public void rotateInWorld(World world, int rotation) {
-        ForgeDirection[] dirs = new ForgeDirection[] { ForgeDirection.NORTH, ForgeDirection.EAST, ForgeDirection.SOUTH,
-            ForgeDirection.WEST };
-        block.rotateBlock(world, getX(), getY(), getZ(), dirs[rotation / 90]);
-    }
-
-    public void placeBlock(World world) {
-        world.setBlock(getX(), getY(), getZ(), block, metadata, 3);
-    }
-
-    public void placeBlock(World world, int flag) {
-        world.setBlock(getX(), getY(), getZ(), block, metadata, flag);
-    }
-
-    public void breakBlock(World world, int flag) {
-        world.setBlock(getX(), getY(), getZ(), Blocks.air, 0, flag);
-    }
-
-    public boolean matchesWorld(IBlockAccess world) {
-        return new BlockState(world, pos).equals(this);
-    }
-
-    public static Iterable<BlockState> getAllInBox(IBlockAccess world, BlockPos from, BlockPos to, Block block,
-        boolean skipAir) {
-        FluentIterable<BlockState> it = FluentIterable.from(new BlockIterator(from, to).asIterable())
-            .transform(toBlockState.set(world));
-        if (block != null || skipAir) it.filter(blockFilter.set(block, skipAir));
-
-        return it;
     }
 
     @Override
@@ -203,36 +142,4 @@ public class BlockState {
         return nbt;
     }
 
-    public static class BlockStateFunction implements Function<BlockPos, BlockState> {
-
-        public WeakReference<IBlockAccess> world;
-
-        public BlockStateFunction set(IBlockAccess world) {
-            this.world = new WeakReference<IBlockAccess>(world);
-            return this;
-        }
-
-        @Override
-        public BlockState apply(BlockPos pos) {
-            return new BlockState(world.get(), pos);
-        }
-    }
-
-    public static class BlockPredicate implements Predicate<BlockState> {
-
-        public Block block;
-        public boolean skipAir;
-
-        public BlockPredicate set(Block block, boolean skipAir) {
-            this.block = block;
-            this.skipAir = skipAir;
-            return this;
-        }
-
-        @Override
-        public boolean apply(BlockState state) {
-            if (block == null) return state.getBlock() != Blocks.air;
-            else return state.getBlock() == block;
-        }
-    }
 }

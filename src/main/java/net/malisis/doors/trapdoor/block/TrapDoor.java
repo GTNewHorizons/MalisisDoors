@@ -14,7 +14,6 @@
 package net.malisis.doors.trapdoor.block;
 
 import net.malisis.core.block.BoundingBoxType;
-import net.malisis.doors.door.DoorDescriptor;
 import net.malisis.doors.door.block.Door;
 import net.malisis.doors.door.tileentity.DoorTileEntity;
 import net.malisis.doors.trapdoor.TrapDoorDescriptor;
@@ -58,10 +57,6 @@ public class TrapDoor extends BlockTrapDoor implements ITileEntityProvider {
         setCreativeTab(desc.getTab());
 
         disableStats();
-    }
-
-    public DoorDescriptor getDescriptor() {
-        return descriptor;
     }
 
     /**

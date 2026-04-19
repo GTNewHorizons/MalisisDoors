@@ -22,6 +22,7 @@ import net.malisis.core.client.gui.event.ComponentEvent.ValueChange;
 import net.malisis.core.client.gui.icon.GuiIcon;
 import net.malisis.core.renderer.font.FontRenderOptions;
 import net.malisis.core.renderer.font.MalisisFont;
+import net.malisis.core.renderer.font.VanillaFont;
 import net.minecraft.client.renderer.OpenGlHelper;
 
 import org.apache.commons.lang3.StringUtils;
@@ -41,8 +42,7 @@ public class UICheckBox extends UIComponent<UICheckBox> implements IGuiText<UICh
     protected GuiIcon cbChecked;
     protected GuiIcon cbHovered;
 
-    /** The {@link MalisisFont} to use for this {@link UICheckBox}. */
-    protected MalisisFont font = MalisisFont.minecraftFont;
+    protected VanillaFont font = VanillaFont.vanillaFont;
     /** The {@link FontRenderOptions} to use for this {@link UICheckBox}. */
     protected FontRenderOptions fro = new FontRenderOptions();
     /** Text to draw beside the checkbox. **/
@@ -73,29 +73,9 @@ public class UICheckBox extends UIComponent<UICheckBox> implements IGuiText<UICh
         this(gui, null);
     }
 
-    // #region Getters/Setters
-    @Override
-    public MalisisFont getFont() {
-        return font;
-    }
-
-    @Override
-    public UICheckBox setFont(MalisisFont font) {
-        this.font = font;
-        calculateSize();
-        return this;
-    }
-
     @Override
     public FontRenderOptions getFontRenderOptions() {
         return fro;
-    }
-
-    @Override
-    public UICheckBox setFontRenderOptions(FontRenderOptions fro) {
-        this.fro = fro;
-        calculateSize();
-        return this;
     }
 
     /**

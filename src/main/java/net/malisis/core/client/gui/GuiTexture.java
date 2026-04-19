@@ -54,60 +54,6 @@ public class GuiTexture {
     }
 
     /**
-     * Instantiates a new {@link GuiTexture}. <br>
-     * Automatically determines the width and height for the {@link File}.
-     *
-     * @param file the file
-     * @throws IOException Signals that an I/O exception has occurred.
-     */
-    public GuiTexture(File file) throws IOException {
-        this(ImageIO.read(file), file.getName());
-    }
-
-    /**
-     * Instantiates a new {@link GuiTexture}.<br>
-     * Automatically determines the width and height for the {@link BufferedImage}.
-     *
-     * @param image the image
-     * @param name  the name
-     */
-    public GuiTexture(BufferedImage image, String name) {
-        DynamicTexture dynTex = new DynamicTexture(image);
-        width = image.getWidth();
-        height = image.getHeight();
-        resourceLocation = Minecraft.getMinecraft()
-            .getTextureManager()
-            .getDynamicTextureLocation(name, dynTex);
-    }
-
-    /**
-     * Instantiates a new {@link GuiTexture}.
-     *
-     * @param rl the rl
-     */
-    public GuiTexture(ResourceLocation rl) {
-        this(rl, 1, 1);
-    }
-
-    /**
-     * Gets the width of this {@link GuiTexture}.
-     *
-     * @return the width
-     */
-    public int getWidth() {
-        return width;
-    }
-
-    /**
-     * Gets the height of this {@link GuiTexture}.
-     *
-     * @return the height
-     */
-    public int getHeight() {
-        return height;
-    }
-
-    /**
      * Gets the {@link ResourceLocation} of this {@link GuiTexture}.
      *
      * @return the resource location
@@ -202,12 +148,6 @@ public class GuiTexture {
         // @formatter:on
 
         return new GuiIcon(icons);
-    }
-
-    public void delete() {
-        Minecraft.getMinecraft()
-            .getTextureManager()
-            .deleteTexture(resourceLocation);
     }
 
     @Override

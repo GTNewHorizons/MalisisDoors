@@ -64,8 +64,6 @@ public abstract class UIComponent<T extends UIComponent>
 
     /** Reference to the {@link MalisisGui} this {@link UIComponent} was added to. */
     private final MalisisGui gui;
-    /** Reference to the {@link GuiRenderer} that will draw this {@link UIComponent}. */
-    private final GuiRenderer renderer;
     /** List of {@link UIComponent components} controlling this {@link UIContainer}. */
     private final Set<IControlComponent> controlComponents;
     /** Position of this {@link UIComponent}. */
@@ -113,7 +111,6 @@ public abstract class UIComponent<T extends UIComponent>
      */
     public UIComponent(MalisisGui gui) {
         this.gui = gui;
-        this.renderer = gui.getRenderer();
         bus = new EventBus(exceptionHandler);
         bus.register(this);
         controlComponents = new LinkedHashSet<>();
@@ -129,15 +126,6 @@ public abstract class UIComponent<T extends UIComponent>
      */
     public MalisisGui getGui() {
         return gui;
-    }
-
-    /**
-     * Gets the {@link GuiRenderer} that will draw this {@link UIComponent}.
-     *
-     * @return the renderer
-     */
-    public GuiRenderer getRenderer() {
-        return renderer;
     }
 
     /**
@@ -298,15 +286,6 @@ public abstract class UIComponent<T extends UIComponent>
     }
 
     /**
-     * Checks if the width of this {@link UIComponent} is relative to its parent <code>UIComponent</code>.
-     *
-     * @return true, if the width is relative
-     */
-    public boolean isRelativeWidth() {
-        return width <= 0;
-    }
-
-    /**
      * Gets the raw height of this {@link UIComponent}.
      *
      * @return the height
@@ -330,15 +309,6 @@ public abstract class UIComponent<T extends UIComponent>
         if (parent instanceof UIContainer) h -= 2 * ((UIContainer) parent).getVerticalPadding();
 
         return h;
-    }
-
-    /**
-     * Checks if the height of this {@link UIComponent} is relative to its parent <code>UIComponent</code>.
-     *
-     * @return true, if the height is relative
-     */
-    public boolean isRelativeHeight() {
-        return height <= 0;
     }
 
     /**
@@ -503,17 +473,6 @@ public abstract class UIComponent<T extends UIComponent>
      */
     public T setTooltip(UITooltip tooltip) {
         this.tooltip = tooltip;
-        return (T) this;
-    }
-
-    /**
-     * Sets the {@link UITooltip} of this {@link UIComponent}.
-     *
-     * @param text the text of the tooltip
-     * @return the t
-     */
-    public T setTooltip(String text) {
-        setTooltip(new UITooltip(getGui(), text));
         return (T) this;
     }
 
@@ -837,26 +796,6 @@ public abstract class UIComponent<T extends UIComponent>
     public void addControlComponent(IControlComponent component) {
         controlComponents.add(component);
         component.setParent(this);
-    }
-
-    /**
-     * Removes the {@link IControlComponent} from this {@link UIComponent}.
-     *
-     * @param component the component
-     */
-    public void removeControlComponent(IControlComponent component) {
-        if (component.getParent() != this) return;
-
-        controlComponents.remove(component);
-        component.setParent(null);
-    }
-
-    /**
-     * Removes all the {@link IControlComponent} from this {@link UIContainer}.
-     */
-    public void removeAllControlComponents() {
-        for (IControlComponent component : controlComponents) component.setParent(null);
-        controlComponents.clear();
     }
 
     /**

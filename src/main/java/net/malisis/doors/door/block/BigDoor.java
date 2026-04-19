@@ -62,7 +62,7 @@ public class BigDoor extends MalisisBlock implements ITileEntityProvider {
         public final String name;
         public final Item door;
 
-        private Type(String name, Item door) {
+        Type(String name, Item door) {
             this.name = name;
             this.door = door;
         }
@@ -93,10 +93,9 @@ public class BigDoor extends MalisisBlock implements ITileEntityProvider {
         Pair.of(createVectorHelper(0, 4, 1 - Door.DOOR_WIDTH), createVectorHelper(0, 5, 1 - Door.DOOR_WIDTH)),
         Pair.of(createVectorHelper(4, 4, 1 - Door.DOOR_WIDTH), createVectorHelper(4, 5, 1 - Door.DOOR_WIDTH)) };
 
-    public static int renderId;
     public static int renderPass = -1;
-    private AxisAlignedBB defaultBoundingBox = AxisAlignedBB.getBoundingBox(0, 0, 1 - Door.DOOR_WIDTH, 4, 5, 1);
-    private Type type;
+    private final AxisAlignedBB defaultBoundingBox = AxisAlignedBB.getBoundingBox(0, 0, 1 - Door.DOOR_WIDTH, 4, 5, 1);
+    private final Type type;
 
     public BigDoor(Type type) {
         super(Material.wood);
@@ -275,15 +274,6 @@ public class BigDoor extends MalisisBlock implements ITileEntityProvider {
     @Override
     public boolean renderAsNormalBlock() {
         return false;
-    }
-
-    @Override
-    public int getRenderType() {
-        return renderId;
-    }
-
-    public BigDoor.Type getType() {
-        return type;
     }
 
     @Override

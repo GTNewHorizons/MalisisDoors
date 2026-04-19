@@ -117,16 +117,6 @@ public class Point {
     }
 
     /**
-     * Checks if this {@link Point} is inside the {@link AxisAlignedBB}.
-     *
-     * @param aabb the aabb
-     * @return true, if it is inside
-     */
-    public boolean isInside(AxisAlignedBB aabb) {
-        return x >= aabb.minX && x <= aabb.maxX && y >= aabb.minY && y <= aabb.maxY && z >= aabb.minZ && z <= aabb.maxZ;
-    }
-
-    /**
      * Creates a {@link Vec3} from this {@link Point} coordinates.
      *
      * @return the vec3
@@ -163,19 +153,5 @@ public class Point {
         double y = p2.y - p1.y;
         double z = p2.z - p1.z;
         return x * x + y * y + z * z;
-    }
-
-    /**
-     * Calculates the distance between two {@link Point points}.
-     *
-     * @param p1 fist point
-     * @param p2 second point
-     * @return the distance
-     */
-    public static double distance(Point p1, Point p2) {
-        double x = p2.x - p1.x;
-        double y = p2.y - p1.y;
-        double z = p2.z - p1.z;
-        return Math.sqrt(x * x + y * y + z * z);
     }
 }

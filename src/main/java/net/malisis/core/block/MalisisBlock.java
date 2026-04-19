@@ -38,7 +38,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 public class MalisisBlock extends Block implements IBoundingBox {
 
     protected String name;
-    protected AxisAlignedBB boundingBox;
 
     protected MalisisBlock(Material material) {
         super(material);

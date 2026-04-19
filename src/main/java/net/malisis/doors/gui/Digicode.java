@@ -49,10 +49,6 @@ public class Digicode extends UIContainer<Digicode> {
         this(gui, null);
     }
 
-    public String getExpectedCode() {
-        return expectedCode;
-    }
-
     public String getEnteredCode() {
         return enteredCode;
     }

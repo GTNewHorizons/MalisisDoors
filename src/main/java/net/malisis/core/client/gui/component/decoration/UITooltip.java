@@ -25,6 +25,7 @@ import net.malisis.core.renderer.animation.Animation;
 import net.malisis.core.renderer.animation.transformation.AlphaTransform;
 import net.malisis.core.renderer.font.FontRenderOptions;
 import net.malisis.core.renderer.font.MalisisFont;
+import net.malisis.core.renderer.font.VanillaFont;
 
 /**
  * UITooltip
@@ -34,7 +35,7 @@ import net.malisis.core.renderer.font.MalisisFont;
 public class UITooltip extends UIComponent implements IGuiText<UITooltip> {
 
     /** The {@link MalisisFont} to use for this {@link UITooltip}. */
-    protected MalisisFont font = MalisisFont.minecraftFont;
+    protected VanillaFont font = VanillaFont.vanillaFont;
     /** The {@link FontRenderOptions} to use for this {@link UITooltip}. */
     protected FontRenderOptions fro = new FontRenderOptions();
 
@@ -62,40 +63,9 @@ public class UITooltip extends UIComponent implements IGuiText<UITooltip> {
         setText(text);
     }
 
-    public UITooltip(MalisisGui gui, int delay) {
-        this(gui);
-        setDelay(delay);
-    }
-
-    public UITooltip(MalisisGui gui, String text, int delay) {
-        this(gui);
-        setText(text);
-        setDelay(delay);
-    }
-
-    // #region Getters/Setters
-    @Override
-    public MalisisFont getFont() {
-        return font;
-    }
-
-    @Override
-    public UITooltip setFont(MalisisFont font) {
-        this.font = font;
-        calculateSize();
-        return this;
-    }
-
     @Override
     public FontRenderOptions getFontRenderOptions() {
         return fro;
-    }
-
-    @Override
-    public UITooltip setFontRenderOptions(FontRenderOptions fro) {
-        this.fro = fro;
-        calculateSize();
-        return this;
     }
 
     public UITooltip setText(String text) {
@@ -108,15 +78,6 @@ public class UITooltip extends UIComponent implements IGuiText<UITooltip> {
         this.lines = lines;
         calculateSize();
         return this;
-    }
-
-    public UITooltip setDelay(int delay) {
-        this.delay = delay;
-        return this;
-    }
-
-    public int getDelay() {
-        return delay;
     }
 
     protected int getOffsetX() {

@@ -142,25 +142,6 @@ public class Face implements ITransformable.Translate, ITransformable.Rotate {
         return params;
     }
 
-    public Face setColor(int color) {
-        for (Vertex v : vertexes) v.setColor(color);
-        return this;
-    }
-
-    public Face setAlpha(int alpha) {
-        for (Vertex v : vertexes) v.setAlpha(alpha);
-        return this;
-    }
-
-    public Face setBrightness(int brightness) {
-        for (Vertex v : vertexes) v.setBrightness(brightness);
-        return this;
-    }
-
-    public Face setTexture(IIcon icon) {
-        return setTexture(icon, params.flipU.get(), params.flipV.get(), false);
-    }
-
     public Face setStandardUV() {
         vertexes[0].setUV(0, 0);
         vertexes[1].setUV(0, 1);
@@ -277,32 +258,16 @@ public class Face implements ITransformable.Translate, ITransformable.Rotate {
         for (Vertex v : vertexes) v.add(x, y, z);
     }
 
-    public void scale(float f) {
-        scale(f, 0.5, 0.5, 0.5);
-    }
-
     public void scale(float f, double x, double y, double z) {
         for (Vertex v : vertexes) v.scale(f, x, y, z);
-    }
-
-    public void rotateAroundX(double angle) {
-        rotateAroundX(angle, 0.5, 0.5, 0.5);
     }
 
     public void rotateAroundX(double angle, double centerX, double centerY, double centerZ) {
         for (Vertex v : vertexes) v.rotateAroundX(angle, centerX, centerY, centerZ);
     }
 
-    public void rotateAroundY(double angle) {
-        rotateAroundY(angle, 0.5, 0.5, 0.5);
-    }
-
     public void rotateAroundY(double angle, double centerX, double centerY, double centerZ) {
         for (Vertex v : vertexes) v.rotateAroundY(angle, centerX, centerY, centerZ);
-    }
-
-    public void rotateAroundZ(double angle) {
-        rotateAroundZ(angle, 0.5, 0.5, 0.5);
     }
 
     public void rotateAroundZ(double angle, double centerX, double centerY, double centerZ) {
@@ -336,13 +301,6 @@ public class Face implements ITransformable.Translate, ITransformable.Rotate {
     }
 
     /**
-     * Calculates the normal of this {@link Face} based on the vertex coordinates.
-     */
-    public void calculateNormal() {
-        calculateNormal(getVertexNormals());
-    }
-
-    /**
      * Calculates normal of this {@link Face} using the vertex normals provided.
      *
      * @param normals the normals
@@ -371,13 +329,6 @@ public class Face implements ITransformable.Translate, ITransformable.Rotate {
             (float) Math.round(z * factor) / factor);
         normal.normalize();
         return normal;
-    }
-
-    /**
-     * Deducts the parameters for this {@link Face} based on the calculated normal.
-     */
-    public void deductParameters() {
-        deductParameters(getVertexNormals());
     }
 
     /**

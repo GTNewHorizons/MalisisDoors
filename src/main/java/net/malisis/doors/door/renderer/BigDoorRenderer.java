@@ -41,7 +41,7 @@ public class BigDoorRenderer extends MalisisRenderer {
     private Shape frame;
     private Shape doorLeft;
     private Shape doorRight;
-    private AnimationRenderer ar = new AnimationRenderer();
+    private final AnimationRenderer ar = new AnimationRenderer();
     private BigDoorTileEntity tileEntity;
 
     private ForgeDirection direction;

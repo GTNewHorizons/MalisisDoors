@@ -33,6 +33,7 @@ import net.malisis.core.client.gui.icon.GuiIcon;
 import net.malisis.core.renderer.font.FontRenderOptions;
 import net.malisis.core.renderer.font.Link;
 import net.malisis.core.renderer.font.MalisisFont;
+import net.malisis.core.renderer.font.VanillaFont;
 import net.malisis.core.util.MouseButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.ChatAllowedCharacters;
@@ -52,7 +53,7 @@ import com.google.common.base.Predicates;
 public class UITextField extends UIComponent<UITextField> implements IScrollable, IGuiText<UITextField> {
 
     /** The {@link MalisisFont} to use for this {@link UITooltip}. */
-    protected MalisisFont font = MalisisFont.minecraftFont;
+    protected VanillaFont font = VanillaFont.vanillaFont;
     /** The {@link FontRenderOptions} to use for this {@link UITooltip}. */
     protected FontRenderOptions fro = new FontRenderOptions();
     /** The {@link FontRenderOptions} to use for this {@link UITooltip} when disabled. */
@@ -104,8 +105,6 @@ public class UITextField extends UIComponent<UITextField> implements IScrollable
     protected int selectColor = 0x0000FF;
 
     // drawing
-    /** Shape used to draw the cursor of this {@link UITextField}. */
-    protected GuiShape cursorShape;
     /** Shape used to draw the selection box. */
     protected GuiShape selectShape;
     /** Icon used to draw this {@link UITextField}. */
@@ -132,7 +131,6 @@ public class UITextField extends UIComponent<UITextField> implements IScrollable
         fro.shadow = true;
 
         shape = new XYResizableGuiShape(1);
-        cursorShape = new SimpleGuiShape();
         selectShape = new SimpleGuiShape();
 
         iconTextfield = gui.getGuiTexture()
@@ -175,49 +173,9 @@ public class UITextField extends UIComponent<UITextField> implements IScrollable
         buildLines();
     }
 
-    // #region Getters/Setters
-    @Override
-    public MalisisFont getFont() {
-        return font;
-    }
-
-    @Override
-    public UITextField setFont(MalisisFont font) {
-        this.font = font;
-        buildLines();
-        return this;
-    }
-
     @Override
     public FontRenderOptions getFontRenderOptions() {
         return fro;
-    }
-
-    @Override
-    public UITextField setFontRenderOptions(FontRenderOptions fro) {
-        this.fro = fro;
-        buildLines();
-        return this;
-    }
-
-    /**
-     * Gets the {@link FontRenderOptions} used when disabled.
-     *
-     * @return the disabled font renderer options
-     */
-    public FontRenderOptions getDisabledFontRendererOptions() {
-        return disabledFro;
-    }
-
-    /**
-     * Sets the {@link FontRenderOptions} to use when disabled.
-     *
-     * @param fro the fro
-     * @return this {@link UITextField}
-     */
-    public UITextField setDisabledFontRendererOptions(FontRenderOptions fro) {
-        this.disabledFro = fro;
-        return this;
     }
 
     /**
@@ -264,62 +222,6 @@ public class UITextField extends UIComponent<UITextField> implements IScrollable
     }
 
     /**
-     * Gets the cursor color.
-     *
-     * @return the cursor color
-     */
-    public int getCursorColor() {
-        return cursorColor;
-    }
-
-    /**
-     * Sets the cursor color.
-     *
-     * @param cursorColor the cursor color
-     * @return the UI text field
-     */
-    public UITextField setCursorColor(int cursorColor) {
-        this.cursorColor = cursorColor;
-        return this;
-    }
-
-    /**
-     * Gets the select color.
-     *
-     * @return the select color
-     */
-    public int getSelectColor() {
-        return selectColor;
-    }
-
-    /**
-     * Sets the select color.
-     *
-     * @param selectColor the select color
-     * @return the UI text field
-     */
-    public UITextField setSelectColor(int selectColor) {
-        this.selectColor = selectColor;
-        return this;
-    }
-
-    /**
-     * Sets the options.
-     *
-     * @param bgColor     the bg color
-     * @param cursorColor the cursor color
-     * @param selectColor the select color
-     * @return the UI text field
-     */
-    public UITextField setOptions(int bgColor, int cursorColor, int selectColor) {
-        this.bgColor = bgColor;
-        this.cursorColor = cursorColor;
-        this.selectColor = selectColor;
-
-        return this;
-    }
-
-    /**
      * Sets the size of this {@link UITextField}.<br>
      * If {@link #multiLine} is <code>false</code>, <b>height</b> is forced to 12.
      *
@@ -347,26 +249,6 @@ public class UITextField extends UIComponent<UITextField> implements IScrollable
     }
 
     /**
-     * Gets the line spacing used when drawing.
-     *
-     * @return the lineSpacing
-     */
-    public int getLineSpacing() {
-        return lineSpacing;
-    }
-
-    /**
-     * Sets the line spacing for this {@link UITextField}.
-     *
-     * @param lineSpacing the lineSpacing to set
-     * @return this {@link UITextField}
-     */
-    public UITextField setLineSpacing(int lineSpacing) {
-        this.lineSpacing = lineSpacing;
-        return this;
-    }
-
-    /**
      * Sets the line offset.
      *
      * @param line the new line offset
@@ -377,93 +259,12 @@ public class UITextField extends UIComponent<UITextField> implements IScrollable
     }
 
     /**
-     * Gets the current cursor position.
-     *
-     * @return the position of the cursor.
-     */
-    public CursorPosition getCursorPosition() {
-        return cursorPosition;
-    }
-
-    /**
-     * Gets the selection position.
-     *
-     * @return the selection position
-     */
-    public CursorPosition getSelectionPosition() {
-        return selectionPosition;
-    }
-
-    /**
-     * Sets the position of the cursor at the specified cooridnates.
-     *
-     * @param x the x coordinate
-     * @param y the y coordinate
-     */
-    public void setCursorPosition(int x, int y) {
-        cursorPosition.setPosition(x, y);
-
-        startTimer = System.currentTimeMillis();
-    }
-
-    /**
-     * Sets whether this {@link UITextField} should automatically select its {@link #text} when focused.
-     *
-     * @param auto the auto
-     * @return this {@link UITextField}
-     */
-    public UITextField setAutoSelectOnFocus(boolean auto) {
-        autoSelectOnFocus = auto;
-        return this;
-    }
-
-    /**
      * Checks if is editable.
      *
      * @return true, if is editable
      */
     public boolean isEditable() {
         return editable;
-    }
-
-    /**
-     * Sets the editable.
-     *
-     * @param editable the editable
-     * @return the UI text field
-     */
-    public UITextField setEditable(boolean editable) {
-        this.editable = editable;
-        return this;
-    }
-
-    /**
-     * Gets the {@link UISlimScrollbar} of this {@link UITextField}.
-     *
-     * @return the scrollbar
-     */
-    public UISlimScrollbar getScrollbar() {
-        return scrollBar;
-    }
-
-    /**
-     * Gets the predicate used to validate input text.
-     *
-     * @return the predicate
-     */
-    public Predicate<String> getValidator() {
-        return validator;
-    }
-
-    /**
-     * Sets the predicate used to validate input text.
-     *
-     * @param validator the validator
-     * @return the UI text field
-     */
-    public UITextField setValidator(Predicate<String> validator) {
-        this.validator = validator;
-        return this;
     }
 
     // #end Getters/Setters

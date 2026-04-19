@@ -20,7 +20,6 @@ import java.util.Map;
 import net.malisis.core.renderer.MalisisRenderer;
 import net.malisis.core.renderer.RenderParameters;
 import net.malisis.core.renderer.animation.transformation.ITransformable;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -65,13 +64,6 @@ public class Shape implements ITransformable.Translate, ITransformable.Rotate, I
 
     /**
      * Instantiates a new {@link Shape}.
-     */
-    public Shape(int capacity) {
-        this.faces = new Face[capacity];
-    }
-
-    /**
-     * Instantiates a new {@link Shape}.
      *
      * @param faces the faces
      */
@@ -109,32 +101,6 @@ public class Shape implements ITransformable.Translate, ITransformable.Rotate, I
     }
 
     // #region FACES
-    /**
-     * Adds {@link Face faces} to this {@link Shape}.
-     *
-     * @param faces the faces
-     * @return this {@link Shape}
-     */
-    public Shape addFaces(Face[] faces) {
-        return addFaces(faces, null);
-    }
-
-    /**
-     * Adds {@link Face faces} to this {@link Shape} with the specified <b>groupName</b>.
-     *
-     * @param faces     the faces
-     * @param groupName the group name
-     * @return this {@link Shape}
-     */
-    public Shape addFaces(Face[] faces, String groupName) {
-        if (groupName != null) {
-            for (Face f : faces) f.setName(groupName);
-        }
-
-        this.faces = ArrayUtils.addAll(this.faces, faces);
-
-        return this;
-    }
 
     /**
      * Gets the {@link Face faces} that make up this {@link Shape} which match the specified <b>name</b>.
@@ -192,46 +158,6 @@ public class Shape implements ITransformable.Translate, ITransformable.Rotate, I
         this.mergedVertexes = MergedVertex.getMergedVertexes(this);
         // transfer current transforms into the mergedVertexes if any
         for (MergedVertex mv : mergedVertexes.values()) mv.copyMatrix(transformMatrix);
-    }
-
-    /**
-     * Gets a list of {@link Vertex} with a base name containing <b>name</b>.
-     *
-     * @param name the name
-     * @return the vertexes
-     */
-    public List<Vertex> getVertexes(String name) {
-        List<Vertex> vertexes = new ArrayList<>();
-        for (Face f : faces) {
-            for (Vertex v : f.getVertexes()) {
-                if (v.baseName()
-                    .toLowerCase()
-                    .contains(name.toLowerCase())) vertexes.add(v);
-            }
-        }
-        return vertexes;
-    }
-
-    /**
-     * Gets a list of {@link Vertex} with a base name containing {@link Face} name.
-     *
-     * @param face the face
-     * @return the vertexes
-     */
-    public List<Vertex> getVertexes(Face face) {
-        if (face == null) return new ArrayList<>();
-
-        return getVertexes(face.name());
-    }
-
-    /**
-     * Gets a list of {@link Vertex} with a base name containing the {@link ForgeDirection} name.
-     *
-     * @param direction the direction
-     * @return the vertexes
-     */
-    public List<Vertex> getVertexes(ForgeDirection direction) {
-        return getVertexes(Face.nameFromDirection(direction));
     }
 
     /**
@@ -328,21 +254,6 @@ public class Shape implements ITransformable.Translate, ITransformable.Rotate, I
     }
 
     /**
-     * Sets the parameters for all the {@link Face faces} making up this {@link Shape}.
-     *
-     * @param params the params
-     * @param merge  the merge
-     * @return this {@link Shape}
-     */
-    public Shape setParameters(RenderParameters params, boolean merge) {
-        for (Face f : faces) if (merge) f.getParameters()
-            .merge(params);
-        else f.setParameters(params);
-
-        return this;
-    }
-
-    /**
      * Set {@link RenderParameters} for {@link Face faces} matching the specified <b>name</b>. If <b>merge</b> is true,
      * the parameters will be merge with the <code>face</code> parameters instead of completely overriding them.
      *
@@ -388,17 +299,6 @@ public class Shape implements ITransformable.Translate, ITransformable.Rotate, I
     /**
      * Sets the bounds for this {@link Shape}. Calculations are based on {@link Vertex#baseName()}.
      *
-     * @param aabb the aabb
-     * @return this {@link Shape}
-     */
-    public Shape setBounds(AxisAlignedBB aabb) {
-        if (aabb == null) return this;
-        return setBounds(aabb.minX, aabb.minY, aabb.minZ, aabb.maxX, aabb.maxY, aabb.maxZ);
-    }
-
-    /**
-     * Sets the bounds for this {@link Shape}. Calculations are based on {@link Vertex#baseName()}.
-     *
      * @param minX the x
      * @param minY the y
      * @param minZ the z
@@ -420,16 +320,6 @@ public class Shape implements ITransformable.Translate, ITransformable.Rotate, I
             }
         }
         return this;
-    }
-
-    /**
-     * Limits this {@link Shape} to the bounding box passed.
-     *
-     * @param aabb the aabb
-     * @return this {@link Shape}
-     */
-    public Shape limit(AxisAlignedBB aabb) {
-        return limit(aabb.minX, aabb.minY, aabb.minZ, aabb.maxX, aabb.maxY, aabb.maxZ);
     }
 
     /**
@@ -609,10 +499,6 @@ public class Shape implements ITransformable.Translate, ITransformable.Rotate, I
         }
 
         return this;
-    }
-
-    public void deductParameters() {
-        for (Face f : faces) f.deductParameters();
     }
 
     /**

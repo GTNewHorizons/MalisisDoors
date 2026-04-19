@@ -136,10 +136,6 @@ public class DoorDescriptor {
         return tileEntityClass;
     }
 
-    public void setTileEntityClass(Class<? extends DoorTileEntity> clazz) {
-        this.tileEntityClass = clazz;
-    }
-
     public IDoorMovement getMovement() {
         return movement;
     }
@@ -196,10 +192,6 @@ public class DoorDescriptor {
         this.tab = tab;
     }
 
-    public Object[] getRecipe() {
-        return recipe;
-    }
-
     public void setRecipe(Object... recipe) {
         this.recipe = recipe;
     }
@@ -209,20 +201,12 @@ public class DoorDescriptor {
         oredict = true;
     }
 
-    public int getNumCrafted() {
-        return numCrafted;
-    }
-
     public void setNumCrafted(int numCrafted) {
         this.numCrafted = numCrafted;
     }
 
     public int getMaxStackSize() {
         return maxStackSize;
-    }
-
-    public void setMaxStackSize(int maxStackSize) {
-        this.maxStackSize = maxStackSize;
     }
 
     public void setCode(String code) {

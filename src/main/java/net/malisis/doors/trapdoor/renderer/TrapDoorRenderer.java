@@ -33,7 +33,6 @@ import net.minecraftforge.common.util.ForgeDirection;
  */
 public class TrapDoorRenderer extends DoorRenderer {
 
-    RenderParameters rpTop;
     MalisisModel trapDoorModel;
     MalisisModel slidingTrapDoorModel;
 

@@ -15,7 +15,6 @@ package net.malisis.core.client.gui.component;
 
 import net.malisis.core.client.gui.MalisisGui;
 import net.malisis.core.renderer.font.FontRenderOptions;
-import net.malisis.core.renderer.font.MalisisFont;
 
 /**
  * Defines a {@link UIComponent} that uses text to be rendered on the {@link MalisisGui}.
@@ -26,32 +25,10 @@ import net.malisis.core.renderer.font.MalisisFont;
 public interface IGuiText<T> {
 
     /**
-     * Gets the {@link MalisisFont}.
-     *
-     * @return the font
-     */
-    public MalisisFont getFont();
-
-    /**
-     * Sets the {@link MalisisFont}.
-     *
-     * @param font the new font
-     * @return the t
-     */
-    public T setFont(MalisisFont font);
-
-    /**
      * Gets the {@link FontRenderOptions}.
      *
      * @return the font renderer options
      */
     public FontRenderOptions getFontRenderOptions();
 
-    /**
-     * Sets the {@link FontRenderOptions}.
-     *
-     * @param fro the fro
-     * @return the t
-     */
-    public T setFontRenderOptions(FontRenderOptions fro);
 }

@@ -47,16 +47,6 @@ public class Ray {
     }
 
     /**
-     * Instantiates a new {@link Ray} from a specified one.
-     *
-     * @param r the ray to copy
-     */
-    public Ray(Ray r) {
-        origin = new Point(r.origin);
-        direction = new Vector(r.direction);
-    }
-
-    /**
      * Instantiates a new {@link Ray} from two {@link Vec3}.
      *
      * @param src  the src

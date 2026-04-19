@@ -71,9 +71,5 @@ public abstract class GuiShape extends Shape {
             setStandardUV();
         }
 
-        public GuiFace(int width, int height) {
-            this();
-            factor(width, height, 0);
-        }
     }
 }

@@ -94,13 +94,6 @@ public class MultiTile extends DoorTileEntity {
         return false;
     }
 
-    public void setFrameState(Block block) {
-        TileEntity mainTile = this.getMainBlockTile();
-        if (mainTile instanceof BigDoorTileEntity bigDoorMainTile) {
-            bigDoorMainTile.setFrameState(block);
-        }
-    }
-
     public void setFrameState(BlockState blockState) {
         TileEntity mainTile = this.getMainBlockTile();
         if (mainTile instanceof BigDoorTileEntity bigDoorTileEntity) {

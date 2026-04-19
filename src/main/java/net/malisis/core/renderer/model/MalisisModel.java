@@ -49,15 +49,6 @@ public class MalisisModel
     public MalisisModel() {}
 
     /**
-     * Instantiates a new {@link MalisisModel} with the specified {@link IModelLoader}.
-     *
-     * @param loader the loader
-     */
-    public MalisisModel(IModelLoader loader) {
-        load(loader);
-    }
-
-    /**
      * Instantiates a new {@link MalisisModel}. The loader will be determined by the model file extension.
      *
      * @param resource the {@link ResourceLocation} for the model file
@@ -83,15 +74,6 @@ public class MalisisModel
 
         shapes = loader.getShapes();
         storeState();
-    }
-
-    /**
-     * Adds the {@link Shape shapes} to this {@link MalisisModel} with default names.
-     *
-     * @param shapes the shapes
-     */
-    public void addShapes(Shape... shapes) {
-        for (Shape shape : shapes) addShape(shape);
     }
 
     /**
@@ -124,15 +106,6 @@ public class MalisisModel
     }
 
     /**
-     * Renders all the {@link Shape shapes} of this {@link MalisisModel} using the specified {@link MalisisRenderer}.
-     *
-     * @param renderer the renderer
-     */
-    public void render(MalisisRenderer renderer) {
-        render(renderer, (RenderParameters) null);
-    }
-
-    /**
      * Renders all the {@link Shape shapes} of this {@link MalisisModel} using the specified {@link MalisisRenderer} and
      * {@link RenderParameters}.
      *
@@ -141,16 +114,6 @@ public class MalisisModel
      */
     public void render(MalisisRenderer renderer, RenderParameters rp) {
         for (String name : shapes.keySet()) render(renderer, name, rp);
-    }
-
-    /**
-     * Renders a specific {@link Shape} of this {@link MalisisModel} using the specified {@link MalisisRenderer}.
-     *
-     * @param renderer the renderer
-     * @param name     the name of the shape
-     */
-    public void render(MalisisRenderer renderer, String name) {
-        render(renderer, name, null);
     }
 
     /**

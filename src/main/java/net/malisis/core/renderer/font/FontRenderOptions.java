@@ -79,60 +79,6 @@ public class FontRenderOptions {
         // 'this' object should already be the default for another FRO
     }
 
-    public FontRenderOptions(FontRenderOptions fro) {
-        defaultFro = new FontRenderOptions(false);
-
-        from(fro);
-
-        saveDefault();
-        defaultSaved = false;
-    }
-
-    public FontRenderOptions(String ecfs) {
-        defaultFro = new FontRenderOptions(false);
-        processStyles(ecfs);
-        saveDefault();
-        defaultSaved = false;
-    }
-
-    public FontRenderOptions(String ecfs, int color) {
-        this(ecfs);
-        this.color = color;
-        defaultFro.color = color;
-    }
-
-    /**
-     * Process styles applied to the beginning of the text with {@link EnumChatFormatting} values.<br>
-     * Applies the styles to this {@link FontRenderOptions} and returns the number of characters read.
-     *
-     * @param text the text
-     * @return the string with ECF
-     */
-    public int processStyles(String text) {
-        return processStyles(text, 0);
-    }
-
-    /**
-     * Process styles applied at the specified position in the text with {@link EnumChatFormatting} values.<br>
-     * Applies the styles to this {@link FontRenderOptions} and returns the number of characters read.
-     *
-     * @param text  the text
-     * @param index the index
-     * @return the int
-     */
-    public int processStyles(String text, int index) {
-        if (!defaultSaved) saveDefault();
-        if (disableECF) return 0;
-        EnumChatFormatting ecf;
-        int offset = 0;
-        while ((ecf = getFormatting(text, index + offset)) != null) {
-            offset += 2;
-            apply(ecf);
-        }
-
-        return offset;
-    }
-
     /**
      * Applies the {@link EnumChatFormatting} style to this {@link FontRenderOptions}.
      *

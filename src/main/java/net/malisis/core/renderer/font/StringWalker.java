@@ -27,16 +27,11 @@ public class StringWalker {
     private boolean litteral;
     private boolean skipChars = true;
     private boolean applyStyles;
-    private boolean isText;
-
-    private int prevColor;
-    private boolean prevUnderline;
 
     private int index;
     private int endIndex;
     private char c;
     private EnumChatFormatting ecf;
-    private Link link;
     private float width;
 
     public StringWalker(String str, MalisisFont font, FontRenderOptions fro) {
@@ -50,20 +45,12 @@ public class StringWalker {
 
     // #region Getters/Setters
 
-    public void setLitteral(boolean litteral) {
-        this.litteral = litteral;
-    }
-
     public void skipChars(boolean skip) {
         this.skipChars = skip;
     }
 
     public void applyStyles(boolean apply) {
         this.applyStyles = apply;
-    }
-
-    public boolean isApplyStyles() {
-        return applyStyles;
     }
 
     public int getIndex() {
@@ -74,20 +61,8 @@ public class StringWalker {
         return c;
     }
 
-    public EnumChatFormatting getFormatting() {
-        return ecf;
-    }
-
     public boolean isFormatting() {
         return ecf != null;
-    }
-
-    public Link getLink() {
-        return link;
-    }
-
-    public boolean isLink() {
-        return link != null;
     }
 
     public float getWidth() {
@@ -98,28 +73,6 @@ public class StringWalker {
         this.index = index;
     }
 
-    public void endIndex(int index) {
-        if (index == 0) index = str.length();
-        this.endIndex = index;
-    }
-
-    private void setLinkStyle(FontRenderOptions fro) {
-        if (fro == null || litteral || !applyStyles) return;
-
-        prevColor = fro.color;
-        prevUnderline = fro.underline;
-        // fro.saveDefault();
-        fro.color = 0x6666FF;
-        fro.underline = true;
-    }
-
-    private void resetLinkStyle(FontRenderOptions fro) {
-        if (fro == null || litteral || !applyStyles) return;
-
-        fro.color = prevColor;
-        fro.underline = prevUnderline;
-    }
-
     // #end Getters/Setters
 
     private void checkEcf() {
@@ -128,28 +81,11 @@ public class StringWalker {
 
         if (ecf == null) return;
 
-        if (applyStyles && fro != null && !isLink()) fro.apply(ecf);
+        if (applyStyles && fro != null) fro.apply(ecf);
 
         if (skipChars && !litteral) {
             index += 2;
             checkEcf();
-        }
-    }
-
-    public void checkLink() {
-        if (link != null) {
-            isText = link.isText(getIndex());
-
-            if (str.charAt(index) == ']') {
-                resetLinkStyle(fro);
-                if (skipChars && !litteral) index++;
-            }
-        } else {
-            link = FontRenderOptions.getLink(str, index);
-            if (isLink()) {
-                if (skipChars && !litteral) index += link.indexAdvance();
-                setLinkStyle(fro);
-            }
         }
     }
 
@@ -174,7 +110,7 @@ public class StringWalker {
         c = str.charAt(index);
         width = font.getCharWidth(c, fro);
 
-        if (!litteral && !skipChars && (ecf != null || (link != null && !isText))) width = 0;
+        if (!litteral && !skipChars && ecf != null) width = 0;
 
         index++;
         return true;

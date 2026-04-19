@@ -75,7 +75,6 @@ public class Door extends BlockDoor implements ITileEntityProvider, IBoundingBox
 
     protected MalisisIcon[] iconTop;
     protected MalisisIcon[] iconBottom;
-    protected String soundPath;
 
     private DoorDescriptor descriptor;
 

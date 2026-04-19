@@ -32,10 +32,6 @@ public class AABBUtils {
     private static int[] cos = { 1, 0, -1, 0 };
     private static int[] sin = { 0, 1, 0, -1 };
 
-    public static AxisAlignedBB identity(BlockPos pos) {
-        return identity(pos.getX(), pos.getY(), pos.getZ());
-    }
-
     public static AxisAlignedBB identity(int x, int y, int z) {
         return AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1);
     }
@@ -167,25 +163,6 @@ public class AABBUtils {
         tag.setDouble("maxX", aabb.maxX);
         tag.setDouble("maxY", aabb.maxY);
         tag.setDouble("maxZ", aabb.maxZ);
-    }
-
-    /**
-     * Offsets the passed {@link AxisAlignedBB}s by the specified coordinates.
-     *
-     * @param x     the x
-     * @param y     the y
-     * @param z     the z
-     * @param aabbs the aabbs
-     */
-    public static AxisAlignedBB[] offset(double x, double y, double z, AxisAlignedBB... aabbs) {
-        return offset(new BlockPos(x, y, z), aabbs);
-    }
-
-    public static AxisAlignedBB[] offset(BlockPos pos, AxisAlignedBB... aabbs) {
-        if (aabbs == null) return null;
-
-        for (AxisAlignedBB aabb : aabbs) if (aabb != null) aabb.offset(pos.getX(), pos.getY(), pos.getZ());
-        return aabbs;
     }
 
 }

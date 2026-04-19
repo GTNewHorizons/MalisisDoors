@@ -88,15 +88,6 @@ public class ObjFileImporter implements IModelLoader {
     }
 
     /**
-     * Instantiates a new {@link ObjFileImporter} from {@link InputStream}.
-     *
-     * @param inputStream the input stream
-     */
-    public ObjFileImporter(InputStream inputStream) {
-        load(inputStream);
-    }
-
-    /**
      * Gets the shapes.
      *
      * @return the shapes

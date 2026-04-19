@@ -25,9 +25,8 @@ import net.malisis.core.client.gui.component.decoration.UIImage;
 import net.malisis.core.client.gui.component.decoration.UITooltip;
 import net.malisis.core.client.gui.element.XYResizableGuiShape;
 import net.malisis.core.client.gui.event.component.StateChangeEvent.ActiveStateChange;
-import net.malisis.core.renderer.animation.transformation.ITransformable;
 import net.malisis.core.renderer.font.FontRenderOptions;
-import net.malisis.core.renderer.font.MalisisFont;
+import net.malisis.core.renderer.font.VanillaFont;
 import net.minecraft.util.IIcon;
 
 /**
@@ -36,8 +35,7 @@ import net.minecraft.util.IIcon;
  */
 public class UITab extends UIComponent<UITab> implements IGuiText<UITab> {
 
-    /** The {@link MalisisFont} to use for this {@link UITooltip}. */
-    protected MalisisFont font = MalisisFont.minecraftFont;
+    protected VanillaFont font = VanillaFont.vanillaFont;
     /** The {@link FontRenderOptions} to use for this {@link UITooltip}. */
     protected FontRenderOptions fro = new FontRenderOptions();
     /** The {@link FontRenderOptions} to use for this {@link UITooltip} when active. */
@@ -64,25 +62,6 @@ public class UITab extends UIComponent<UITab> implements IGuiText<UITab> {
      * Instantiates a new {@link UITab}.
      *
      * @param gui   the gui
-     * @param label the label
-     */
-    public UITab(MalisisGui gui, String label) {
-        super(gui);
-        fro.color = 0x444444;
-        activeFro.color = 0xFFFFFF;
-        activeFro.shadow = true;
-        hoveredFro.color = 0xFFFFA0;
-
-        setSize(0, 0);
-        setLabel(label);
-
-        shape = new XYResizableGuiShape();
-    }
-
-    /**
-     * Instantiates a new {@link UITab}.
-     *
-     * @param gui   the gui
      * @param image the image
      */
     public UITab(MalisisGui gui, UIImage image) {
@@ -93,87 +72,9 @@ public class UITab extends UIComponent<UITab> implements IGuiText<UITab> {
         shape = new XYResizableGuiShape();
     }
 
-    // #region Getters/Setters
-    @Override
-    public MalisisFont getFont() {
-        return font;
-    }
-
-    @Override
-    public UITab setFont(MalisisFont font) {
-        this.font = font;
-        if (autoWidth) width = calcAutoWidth();
-        if (autoHeight) height = calcAutoHeight();
-        return this;
-    }
-
     @Override
     public FontRenderOptions getFontRenderOptions() {
         return fro;
-    }
-
-    @Override
-    public UITab setFontRenderOptions(FontRenderOptions fro) {
-        this.fro = fro;
-        if (autoWidth) width = calcAutoWidth();
-        if (autoHeight) height = calcAutoHeight();
-        return this;
-    }
-
-    /**
-     * Gets the active {@link FontRenderOptions}.
-     *
-     * @return the activeFro
-     */
-    public FontRenderOptions getActiveFontRendererOptions() {
-        return activeFro;
-    }
-
-    /**
-     * Sets the active {@link FontRenderOptions}.
-     *
-     * @param fro the fro
-     * @return the UI tab
-     */
-    public UITab setActiveFontRendererOptions(FontRenderOptions fro) {
-        this.activeFro = fro;
-        return this;
-    }
-
-    /**
-     * Gets the hovered {@link FontRenderOptions}.
-     *
-     * @return the hoveredFro
-     */
-    public FontRenderOptions getHoveredFontRendererOptions() {
-        return hoveredFro;
-    }
-
-    /**
-     * Sets the hovered {@link FontRenderOptions}.
-     *
-     * @param fro the fro
-     * @return the UI tab
-     */
-    public UITab setHoveredFontRendererOptions(FontRenderOptions fro) {
-        this.hoveredFro = fro;
-        return this;
-    }
-
-    /**
-     * Sets the label for this {@link UITab}.<br>
-     * Removes the image if previously set.<br>
-     * Recalculates the width if {@link #autoWidth} is true, the height if {@link #autoHeight} is true.
-     *
-     * @param label the label
-     * @return this {@link UITab}
-     */
-    public UITab setLabel(String label) {
-        this.image = null;
-        this.label = label;
-        if (autoWidth) width = calcAutoWidth();
-        if (autoHeight) height = calcAutoHeight();
-        return this;
     }
 
     /**
@@ -229,24 +130,6 @@ public class UITab extends UIComponent<UITab> implements IGuiText<UITab> {
     }
 
     /**
-     * Checks if the width is calculated automatically.
-     *
-     * @return true if the width is calculated automatically.
-     */
-    public boolean isAutoWidth() {
-        return autoWidth;
-    }
-
-    /**
-     * Checks if height is calculated automatically.
-     *
-     * @return true if the height is calculated automatically.
-     */
-    public boolean isAutoHeight() {
-        return autoHeight;
-    }
-
-    /**
      * Set the {@link UIContainer} linked with this {@link UITab}.
      *
      * @param container the container
@@ -273,22 +156,6 @@ public class UITab extends UIComponent<UITab> implements IGuiText<UITab> {
      */
     public int getBgColor() {
         return bgColor;
-    }
-
-    /**
-     * Sets the baground color for this {@link UITab}.<br>
-     * Also sets the bacground color for its {@link #container}.
-     *
-     * @param color the color
-     * @return this {@link UITab}
-     */
-    public UITab setBgColor(int color) {
-        this.bgColor = color;
-        if (parent != null) {
-            UIContainer cont = ((UITabGroup) parent).getAttachedContainer();
-            if (cont instanceof ITransformable.Color) ((Color) cont).setColor(color);
-        }
-        return this;
     }
 
     // #end Getters/Setters

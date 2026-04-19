@@ -32,14 +32,6 @@ public class UIInventory extends UIContainer<UIInventory> {
         for (int i = 0; i < inventory.getSizeInventory(); i++) addSlot(gui, inventory.getSlot(i), i);
     }
 
-    public UIInventory(MalisisGui gui, MalisisInventory inventory, int numCols) {
-        this(gui, null, inventory, numCols);
-    }
-
-    public UIInventory(MalisisGui gui, String title, MalisisInventory inventory) {
-        this(gui, title, inventory, 9);
-    }
-
     public UIInventory(MalisisGui gui, MalisisInventory inventory) {
         this(gui, null, inventory, 9);
     }

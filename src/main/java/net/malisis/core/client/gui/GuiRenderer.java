@@ -83,40 +83,12 @@ public class GuiRenderer extends MalisisRenderer {
     }
 
     /**
-     * Sets the default {@link GuiTexture} to use for this {@link GuiRenderer}.
-     *
-     * @param texture the new default texture
-     */
-    public void setDefaultTexture(GuiTexture texture) {
-        this.defaultGuiTexture = texture;
-    }
-
-    /**
      * Sets the scale factor to use for this {@link GuiRenderer}.
      *
      * @param factor the new scale factor
      */
     public void setScaleFactor(int factor) {
         scaleFactor = factor;
-    }
-
-    /**
-     * Gets the scale factor used for this {@link GuiRenderer}.
-     *
-     * @return the scale factor
-     */
-    public int getScaleFactor() {
-        return scaleFactor;
-    }
-
-    /**
-     * Sets whether to ignore default Minecraft GUI scale factor.<br>
-     * If set to true, 1 pixel size will be equal to 1 pixel on screen.
-     *
-     * @param ignore the new ignore scale
-     */
-    public void setIgnoreScale(boolean ignore) {
-        ignoreScale = ignore;
     }
 
     /**
@@ -303,28 +275,6 @@ public class GuiRenderer extends MalisisRenderer {
     }
 
     /**
-     * Draws text with default {@link MalisisFont} and {@link FontRenderOptions}.
-     *
-     * @param text the text
-     */
-    public void drawText(String text) {
-        drawText(null, text, 0, 0, 0, null, true);
-    }
-
-    /**
-     * Draws text with default {@link MalisisFont} and {@link FontRenderOptions} at the coordinates relative to
-     * {@link #currentComponent}.
-     *
-     * @param text the text
-     * @param x    the x
-     * @param y    the y
-     * @param z    the z
-     */
-    public void drawText(String text, float x, float y, float z) {
-        drawText(null, text, x, y, z, null, true);
-    }
-
-    /**
      * Draw text with specified {@link MalisisFont} with {@link FontRenderOptions}.
      *
      * @param font the font
@@ -385,17 +335,6 @@ public class GuiRenderer extends MalisisRenderer {
     }
 
     /**
-     * Draws an itemStack to the GUI at the specified coordinates.
-     *
-     * @param itemStack the item stack
-     * @param x         the x
-     * @param y         the y
-     */
-    public void drawItemStack(ItemStack itemStack, int x, int y) {
-        drawItemStack(itemStack, x, y, null, null, true);
-    }
-
-    /**
      * Draws an itemStack to the GUI at the specified coordinates with a custom format for the label.
      *
      * @param itemStack the item stack
@@ -405,18 +344,6 @@ public class GuiRenderer extends MalisisRenderer {
      */
     public void drawItemStack(ItemStack itemStack, int x, int y, EnumChatFormatting format) {
         drawItemStack(itemStack, x, y, null, format, true);
-    }
-
-    /**
-     * Draws an itemStack to the GUI at the specified coordinates with a custom label.
-     *
-     * @param itemStack the item stack
-     * @param x         the x
-     * @param y         the y
-     * @param label     the label
-     */
-    public void drawItemStack(ItemStack itemStack, int x, int y, String label) {
-        drawItemStack(itemStack, x, y, label, null, true);
     }
 
     /**

@@ -38,17 +38,6 @@ public class UIPanel extends UIContainer<UIPanel> implements ITransformable.Colo
         setSize(width, height);
     }
 
-    public UIPanel(MalisisGui gui, String title) {
-        this(gui);
-        setTitle(title);
-    }
-
-    public UIPanel(MalisisGui gui, String title, int width, int height) {
-        this(gui);
-        setTitle(title);
-        setSize(width, height);
-    }
-
     /**
      * Sets the background color for {@link UIContainer}.
      *

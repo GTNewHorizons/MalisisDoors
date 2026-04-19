@@ -51,7 +51,7 @@ public class FontGenerator {
 
     public BufferedImage generate(int size, File textureFile, File uvFile) {
         BufferedImage img = generateTexture(size, textureFile);
-        generateUVs(size, uvFile);
+        generateUVs(uvFile);
         return img;
     }
 
@@ -99,7 +99,7 @@ public class FontGenerator {
         return img;
     }
 
-    private void generateUVs(int size, File uvFile) {
+    private void generateUVs(File uvFile) {
         try {
             StringBuilder sb = new StringBuilder();
             for (CharData cd : charData) {

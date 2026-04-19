@@ -96,15 +96,6 @@ public class MalisisSlot {
     }
 
     /**
-     * Gets the {@link MalisisInventory} of this {@link MalisisSlot}.
-     *
-     * @return the inventory
-     */
-    public MalisisInventory getInventory() {
-        return inventory;
-    }
-
-    /**
      * Gets the id of the {@link MalisisInventory} of this {@link MalisisSlot} inside the
      * {@link MalisisInventoryContainer}.
      *
@@ -186,7 +177,7 @@ public class MalisisSlot {
     public boolean isItemValid(ItemStack itemStack) {
         if (inventory == null) return true;
 
-        return inventory.itemValidForSlot(this, itemStack);
+        return true;
     }
 
     /**
@@ -196,15 +187,6 @@ public class MalisisSlot {
      */
     public boolean isFull() {
         return itemStack != null && itemStack.stackSize == Math.min(itemStack.getMaxStackSize(), getSlotStackLimit());
-    }
-
-    /**
-     * Checks if this {@link MalisisSlot} is empty.
-     *
-     * @return true, if is empty
-     */
-    public boolean isEmpty() {
-        return itemStack == null || itemStack.stackSize == 0;
     }
 
     /**
@@ -220,35 +202,8 @@ public class MalisisSlot {
      * @param player    the player
      * @param itemStack the item stack
      */
-    public void onPickupFromSlot(EntityPlayer player, ItemStack itemStack) {
+    public void onPickupFromSlot() {
         onSlotChanged();
-    }
-
-    /**
-     * Sets the item stack size.
-     *
-     * @param stackSize the stack size
-     * @return the amount of items that were added to the slot.
-     */
-    public int setItemStackSize(int stackSize) {
-        if (itemStack == null) return 0;
-        if (stackSize <= 0) stackSize = 0;
-
-        int start = itemStack.stackSize;
-        itemStack.stackSize = Math.min(stackSize, Math.min(itemStack.getMaxStackSize(), getSlotStackLimit()));
-        return itemStack.stackSize - start;
-    }
-
-    /**
-     * Adds the item stack size.
-     *
-     * @param stackSize the stack size
-     * @return the amount of items that were added to the slot
-     */
-    public int addItemStackSize(int stackSize) {
-        if (itemStack == null) return 0;
-
-        return setItemStackSize(itemStack.stackSize + stackSize);
     }
 
     /**
@@ -274,17 +229,6 @@ public class MalisisSlot {
      */
     public ItemStack insert(ItemStack insert) {
         return insert(insert, insert != null ? insert.stackSize : 0, false);
-    }
-
-    /**
-     * Inserts a specified <b>amount</b> of {@link ItemStack} into this {@link MalisisSlot}.
-     *
-     * @param insert the itemStack to insert
-     * @param amount the amount to insert
-     * @return the itemStack that couldn't fit into the slot
-     */
-    public ItemStack insert(ItemStack insert, int amount) {
-        return insert(insert, amount, false);
     }
 
     /**
@@ -355,16 +299,6 @@ public class MalisisSlot {
     public void updateCache(EntityPlayer player) {
         cachedItemStacks.put(player, itemStack != null ? itemStack.copy() : null);
         cachedDraggedItemStacks.put(player, draggedItemStack != null ? draggedItemStack.copy() : null);
-    }
-
-    /**
-     * Clear cache for the {@link EntityPlayer}.
-     *
-     * @param player the player
-     */
-    public void clearCache(EntityPlayer player) {
-        cachedItemStacks.remove(player);
-        cachedDraggedItemStacks.remove(player);
     }
 
     @Override

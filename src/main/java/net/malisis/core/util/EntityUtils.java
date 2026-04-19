@@ -15,7 +15,6 @@ package net.malisis.core.util;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import net.malisis.core.MalisisCore;
 import net.minecraft.entity.Entity;
@@ -24,7 +23,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.management.PlayerManager;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
@@ -67,22 +65,6 @@ public class EntityUtils {
     }
 
     /**
-     * Finds a player by its UUID.
-     *
-     * @param uuid the uuid
-     * @return the player
-     */
-    public static EntityPlayerMP findPlayerFromUUID(UUID uuid) {
-        List<EntityPlayerMP> listPlayers = MinecraftServer.getServer()
-            .getConfigurationManager().playerEntityList;
-
-        for (EntityPlayerMP player : listPlayers) if (player.getUniqueID()
-            .equals(uuid)) return player;
-
-        return null;
-    }
-
-    /**
      * Gets the {@link ForgeDirection} the {@link Entity} is currently facing.
      *
      * @param entity the entity
@@ -119,10 +101,6 @@ public class EntityUtils {
         return player != null && player.getCurrentEquippedItem() != null
             && player.getCurrentEquippedItem()
                 .getItem() == item;
-    }
-
-    public static boolean isEquipped(EntityPlayer player, ItemStack itemStack) {
-        return isEquipped(player, itemStack != null ? itemStack.getItem() : null);
     }
 
     public static List<EntityPlayerMP> getPlayersWatchingChunk(Chunk chunk) {

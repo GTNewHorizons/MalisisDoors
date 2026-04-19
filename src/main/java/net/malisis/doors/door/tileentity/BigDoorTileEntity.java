@@ -36,7 +36,6 @@ import net.malisis.doors.door.sound.CarriageDoorSound;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
@@ -55,7 +54,7 @@ import com.google.common.base.Objects;
  * @author Ordinastie
  *
  */
-public class BigDoorTileEntity extends MultiTile implements IMultiBlock, IBluePrint {
+public class BigDoorTileEntity extends MultiTile implements IMultiBlock {
 
     private boolean delete = false;
     private boolean processed = true;
@@ -94,16 +93,6 @@ public class BigDoorTileEntity extends MultiTile implements IMultiBlock, IBluePr
     private final MultiBlueprint openBlueprint = new MultiBlueprint(openPrint, metaMap, new Vector3i(1, 0, 0));
     private BigDoor.Type type;
 
-    public BigDoorTileEntity() {
-        this.type = BigDoor.Type.DEFAULT;
-        DoorDescriptor descriptor = new DoorDescriptor();
-        descriptor.setMovement(DoorRegistry.getMovement(CarriageDoorMovement.class));
-        descriptor.setSound(DoorRegistry.getSound(CarriageDoorSound.class));
-        descriptor.setDoubleDoor(false);
-        descriptor.setOpeningTime(20);
-        setDescriptor(descriptor);
-    }
-
     public BigDoorTileEntity(BigDoor.Type type) {
         this.type = type;
         DoorDescriptor descriptor = new DoorDescriptor();
@@ -123,11 +112,6 @@ public class BigDoorTileEntity extends MultiTile implements IMultiBlock, IBluePr
         if (state != null) frameState = state;
         this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
         this.markDirty();
-    }
-
-    @Override
-    public void setFrameState(Block block) {
-        this.setFrameState(new BlockState(block));
     }
 
     @Override
@@ -165,14 +149,6 @@ public class BigDoorTileEntity extends MultiTile implements IMultiBlock, IBluePr
             return;
         }
         super.updateEntity();
-    }
-
-    public ItemStack getDroppedItemStack() {
-        ItemStack itemStack = new ItemStack(getBlockType());
-        NBTTagCompound nbt = new NBTTagCompound();
-        BlockState.toNBT(nbt, frameState);
-        itemStack.setTagCompound(nbt);
-        return itemStack;
     }
 
     @Override
@@ -395,7 +371,6 @@ public class BigDoorTileEntity extends MultiTile implements IMultiBlock, IBluePr
         this.setFrameState(BlockState.fromNBT(packetData));
     }
 
-    @Override
     public void placeBluePrint(World world, int x, int y, int z, int meta, boolean removeBlockInWay) {
         MultiBlueprint print = (meta < 4 ? this.closedBlueprint : this.openBlueprint);
         switch (meta) {
@@ -469,7 +444,6 @@ public class BigDoorTileEntity extends MultiTile implements IMultiBlock, IBluePr
         }
     }
 
-    @Override
     public void removeBluePrint(World world, int x, int y, int z, int meta, TileEntity callingBlock) {
         MultiBlueprint print = (meta < 4 ? this.closedBlueprint : this.openBlueprint);
         switch (meta) {

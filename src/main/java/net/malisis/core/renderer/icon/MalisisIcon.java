@@ -78,10 +78,6 @@ public class MalisisIcon extends TextureAtlasSprite {
         maxV = V;
     }
 
-    public MalisisIcon(IIcon icon) {
-        this(icon.getIconName(), icon.getMinU(), icon.getMinV(), icon.getMaxU(), icon.getMaxV());
-    }
-
     /**
      * Adds a {@link MalisisIcon} to be dependant on this one. Will call
      * {@link #initIcon(MalisisIcon, int, int, int, int, boolean)} when stiched to the sheet.
@@ -102,13 +98,6 @@ public class MalisisIcon extends TextureAtlasSprite {
     public void setSize(int width, int height) {
         this.width = width;
         this.height = height;
-    }
-
-    public void setUVs(float u, float v, float U, float V) {
-        minU = u;
-        minV = v;
-        maxU = U;
-        maxV = V;
     }
 
     @Override
@@ -142,20 +131,6 @@ public class MalisisIcon extends TextureAtlasSprite {
         flippedU = horizontal;
         flippedV = vertical;
         return this;
-    }
-
-    /**
-     * @return true if this {@link MalisisIcon} is flipped horizontally.
-     */
-    public boolean isFlippedU() {
-        return flippedU;
-    }
-
-    /**
-     * @return true if this {@link MalisisIcon} is flipped vertically.
-     */
-    public boolean isFlippedV() {
-        return flippedV;
     }
 
     /**
@@ -291,17 +266,6 @@ public class MalisisIcon extends TextureAtlasSprite {
         this.sheetHeight = base.sheetHeight;
         this.flippedU = base.flippedU;
         this.flippedV = base.flippedV;
-    }
-
-    /**
-     * Creates a new {@link MalisisIcon} from this <code>MalisisIcon</code>.
-     *
-     * @return the new {@link MalisisIcon}
-     */
-    public MalisisIcon copy() {
-        MalisisIcon icon = new MalisisIcon();
-        icon.copyFrom(this);
-        return icon;
     }
 
     /**
