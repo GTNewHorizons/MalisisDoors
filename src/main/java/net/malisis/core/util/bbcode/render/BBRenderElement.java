@@ -64,8 +64,8 @@ public class BBRenderElement {
     }
 
     public String getFormattedText() {
-        String str = "";
-        for (Object ecf : styles) str += ecf;
+        StringBuilder str = new StringBuilder();
+        for (Object ecf : styles) str.append(ecf);
         return str + text;
     }
 

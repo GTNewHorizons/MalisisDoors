@@ -147,10 +147,10 @@ public class BBString {
     }
 
     public String debug(BBNode node, int level) {
-        String str = Strings.repeat(' ', level * 3) + node.toString() + "\n";
-        for (BBNode n : node) str += debug(n, level + 1);
+        StringBuilder str = new StringBuilder(Strings.repeat(' ', level * 3) + node.toString() + "\n");
+        for (BBNode n : node) str.append(debug(n, level + 1));
 
-        return str;
+        return str.toString();
     }
 
     public String printTextNodes() {

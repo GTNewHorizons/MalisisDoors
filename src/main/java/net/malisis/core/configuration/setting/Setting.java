@@ -95,9 +95,9 @@ public abstract class Setting<T> {
      */
     public void load(Configuration config) {
         if (comments.length > 0) {
-            String comment = "";
-            for (String c : comments) comment += StatCollector.translateToLocal(c) + " ";
-            property = config.get(category, key, writeValue(defaultValue), comment, type);
+            StringBuilder comment = new StringBuilder();
+            for (String c : comments) comment.append(StatCollector.translateToLocal(c)).append(" ");
+            property = config.get(category, key, writeValue(defaultValue), comment.toString(), type);
         } else {
             property = config.get(category, key, writeValue(defaultValue), null, type);
         }
