@@ -469,8 +469,6 @@ public abstract class MalisisGui extends GuiScreen {
             mouseY = this.height - Mouse.getY() - 1;
         }
 
-        update(mouseX, mouseY, partialTicks);
-
         if (guiscreenBackground) drawWorldBackground(1);
 
         RenderHelper.enableGUIStandardItemLighting();
@@ -512,15 +510,6 @@ public abstract class MalisisGui extends GuiScreen {
         GL11.glEnable(GL11.GL_LIGHTING);
         GL11.glEnable(GL11.GL_DEPTH_TEST);
     }
-
-    /**
-     * Called every frame.
-     *
-     * @param mouseX      the mouse x
-     * @param mouseY      the mouse y
-     * @param partialTick the partial tick
-     */
-    public void update(int mouseX, int mouseY, float partialTick) {}
 
     /**
      * Called from TE when TE is updated. Override this method when you want to change displayed informations when the

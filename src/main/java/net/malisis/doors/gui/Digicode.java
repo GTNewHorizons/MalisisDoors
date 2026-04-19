@@ -115,9 +115,6 @@ public class Digicode extends UIContainer<Digicode> {
     }
 
     @Override
-    public void drawBackground(GuiRenderer renderer, int mouseX, int mouseY, float partialTick) {}
-
-    @Override
     public void drawForeground(GuiRenderer renderer, int mouseX, int mouseY, float partialTick) {
         super.drawForeground(renderer, mouseX, mouseY, partialTick);
 
