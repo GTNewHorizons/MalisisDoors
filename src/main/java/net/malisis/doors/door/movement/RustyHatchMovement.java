@@ -78,7 +78,6 @@ public class RustyHatchMovement implements IDoorMovement {
 
     private Transformation getDoorTransformation(DoorTileEntity tileEntity) {
         float f = -0.5F + 0.125F;
-        float offX = f;
         float offY = f;
         float toAngle = 90;
 
@@ -90,7 +89,7 @@ public class RustyHatchMovement implements IDoorMovement {
         int t = tileEntity.getDescriptor()
             .getOpeningTime() / 2;
         Rotation rotation = new Rotation(toAngle).aroundAxis(0, 0, 1)
-            .offset(offX, offY, 0)
+            .offset(f, offY, 0)
             .movement(Transformation.SINUSOIDAL);
 
         if (tileEntity.getState() == DoorState.CLOSING || tileEntity.getState() == DoorState.CLOSED)

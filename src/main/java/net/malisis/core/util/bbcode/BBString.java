@@ -159,7 +159,6 @@ public class BBString {
 
     @Override
     public String toString() {
-        String str = text + "\n" + debug(getRoot(), 0);
-        return str;
+        return text + "\n" + debug(getRoot(), 0);
     }
 }

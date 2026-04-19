@@ -869,14 +869,13 @@ public class MalisisRenderer extends TileEntitySpecialRenderer
         RenderParameters p = face.getParameters();
         if (p.direction.get() == null || p.renderAllFaces.get()) return true;
 
-        boolean b = block.shouldSideBeRendered(
+        return block.shouldSideBeRendered(
             world,
             x + p.direction.get().offsetX,
             y + p.direction.get().offsetY,
             z + p.direction.get().offsetZ,
             p.direction.get()
                 .ordinal());
-        return b;
     }
 
     /**
@@ -1038,9 +1037,7 @@ public class MalisisRenderer extends TileEntitySpecialRenderer
         for (int i = 0; i < b.length; i++)
             b[i] += getMixedBrightnessForBlock(world, x + aoMatrix[i][0], y + aoMatrix[i][1], z + aoMatrix[i][2]);
 
-        int brightness = getAoBrightness(b[0], b[1], b[2], baseBrightness);
-
-        return brightness;
+        return getAoBrightness(b[0], b[1], b[2], baseBrightness);
     }
 
     /**

@@ -194,11 +194,10 @@ public class GuiTexture {
      */
     public GuiIcon getXResizableIcon(int x, int y, int width, int height, int side) {
         int w = width - side * 2;
-        int h = height;
 
         // @formatter:off
         MalisisIcon[] icons = new MalisisIcon[] {
-            createIcon(x, y, side, h), createIcon(x + side, y, w, h), createIcon(x + side + w, y, side, h),
+            createIcon(x, y, side, height), createIcon(x + side, y, w, height), createIcon(x + side + w, y, side, height),
         };
         // @formatter:on
 
