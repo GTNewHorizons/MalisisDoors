@@ -34,7 +34,6 @@ public class MCEditor extends UIContainer<MCEditor> implements IGuiText<MCEditor
 
     private UITextField tf;
     private EcfSelect sel;
-    private UICheckBox cb;
 
     private MalisisFont font = MalisisFont.minecraftFont;
     private FontRenderOptions fro = new FontRenderOptions();
@@ -47,7 +46,7 @@ public class MCEditor extends UIContainer<MCEditor> implements IGuiText<MCEditor
 
         sel = new EcfSelect(gui, this);
 
-        cb = new UICheckBox(gui, "Use litteral formatting");
+        UICheckBox cb = new UICheckBox(gui, "Use litteral formatting");
         cb.setPosition(85, 0)
             .register(this);
 
