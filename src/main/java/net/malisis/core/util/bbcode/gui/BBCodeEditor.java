@@ -20,7 +20,6 @@ import net.malisis.core.client.gui.ComponentPosition;
 import net.malisis.core.client.gui.MalisisGui;
 import net.malisis.core.client.gui.component.container.UIContainer;
 import net.malisis.core.client.gui.component.interaction.UIButton;
-import net.malisis.core.client.gui.event.ComponentEvent;
 import net.malisis.core.util.bbcode.BBString;
 import net.malisis.core.util.bbcode.node.BBColorNode;
 import net.malisis.core.util.bbcode.node.BBItemNode;
@@ -344,10 +343,4 @@ public class BBCodeEditor extends UIContainer<BBCodeEditor> {
         return true;
     }
 
-    public static class BBCodeChangeEvent extends ComponentEvent<BBCodeEditor> {
-
-        public BBCodeChangeEvent(BBCodeEditor component) {
-            super(component);
-        }
-    }
 }

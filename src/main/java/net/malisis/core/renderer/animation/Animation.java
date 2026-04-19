@@ -37,15 +37,6 @@ public class Animation {
         this.transform = transform;
     }
 
-    public void setRender(boolean before, boolean after) {
-        renderBefore = before;
-        renderAfter = after;
-    }
-
-    public boolean isStarted() {
-        return started;
-    }
-
     public boolean isFinished() {
         return finished;
     }

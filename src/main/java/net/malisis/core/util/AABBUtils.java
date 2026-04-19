@@ -13,12 +13,8 @@
 
 package net.malisis.core.util;
 
-import net.malisis.core.block.BoundingBoxType;
-import net.malisis.core.block.MalisisBlock;
-import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 /**
@@ -36,10 +32,6 @@ public class AABBUtils {
     private static int[] cos = { 1, 0, -1, 0 };
     private static int[] sin = { 0, 1, 0, -1 };
 
-    public static AxisAlignedBB identity() {
-        return identity(0, 0, 0);
-    }
-
     public static AxisAlignedBB identity(BlockPos pos) {
         return identity(pos.getX(), pos.getY(), pos.getZ());
     }
@@ -50,10 +42,6 @@ public class AABBUtils {
 
     public static AxisAlignedBB[] identities() {
         return identities(0, 0, 0);
-    }
-
-    public static AxisAlignedBB[] identities(BlockPos pos) {
-        return identities(pos.getX(), pos.getX(), pos.getZ());
     }
 
     public static AxisAlignedBB[] identities(int x, int y, int z) {
@@ -182,33 +170,6 @@ public class AABBUtils {
     }
 
     /**
-     * Gets a {@link AxisAlignedBB} that englobes the passed {@code AxisAlignedBB}.
-     *
-     * @param aabbs the aabbs
-     * @return the axis aligned bb
-     */
-    public static AxisAlignedBB combine(AxisAlignedBB[] aabbs) {
-        AxisAlignedBB ret = AxisAlignedBB.getBoundingBox(
-            Double.MAX_VALUE,
-            Double.MAX_VALUE,
-            Double.MAX_VALUE,
-            Double.MIN_VALUE,
-            Double.MAX_VALUE,
-            Double.MAX_VALUE);
-
-        for (AxisAlignedBB aabb : aabbs) {
-            ret.minX = Math.min(aabb.minX, ret.minX);
-            ret.maxX = Math.max(aabb.maxX, ret.maxX);
-            ret.minY = Math.min(aabb.minY, ret.minY);
-            ret.maxY = Math.max(aabb.maxY, ret.maxY);
-            ret.minZ = Math.min(aabb.minZ, ret.minZ);
-            ret.maxZ = Math.max(aabb.maxZ, ret.maxZ);
-        }
-
-        return ret;
-    }
-
-    /**
      * Offsets the passed {@link AxisAlignedBB}s by the specified coordinates.
      *
      * @param x     the x
@@ -227,91 +188,4 @@ public class AABBUtils {
         return aabbs;
     }
 
-    public static boolean isColliding(AxisAlignedBB aabb, AxisAlignedBB[] aabbs) {
-        return isColliding(new AxisAlignedBB[] { aabb }, aabbs);
-    }
-
-    public static boolean isColliding(AxisAlignedBB[] aabbs, AxisAlignedBB aabb) {
-        return isColliding(aabbs, new AxisAlignedBB[] { aabb });
-    }
-
-    /**
-     * Checks if a group of {@link AxisAlignedBB} is colliding with another one.
-     *
-     * @param aabbs1 the aabbs1
-     * @param aabbs2 the aabbs2
-     * @return true, if is colliding
-     */
-    public static boolean isColliding(AxisAlignedBB[] aabbs1, AxisAlignedBB[] aabbs2) {
-        for (AxisAlignedBB aabb1 : aabbs1) {
-            if (aabb1 != null) {
-                for (AxisAlignedBB aabb2 : aabbs2) if (aabb2 != null && aabb1.intersectsWith(aabb2)) return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * Gets the collision bounding boxes.
-     *
-     * @param world the world
-     * @param block the block
-     * @param x     the x
-     * @param y     the y
-     * @param z     the z
-     * @return the collision bounding boxes
-     */
-    public static AxisAlignedBB[] getCollisionBoundingBoxes(World world, Block block, int x, int y, int z) {
-        return getCollisionBoundingBoxes(world, new BlockState(x, y, z, block), false);
-    }
-
-    /**
-     * Gets the collision bounding boxes for the block.
-     *
-     * @param world  the world
-     * @param block  the block
-     * @param x      the x
-     * @param y      the y
-     * @param z      the z
-     * @param offset if true, the boxes are offset by the coordinate
-     * @return the collision bounding boxes
-     */
-    public static AxisAlignedBB[] getCollisionBoundingBoxes(World world, Block block, int x, int y, int z,
-        boolean offset) {
-        return getCollisionBoundingBoxes(world, new BlockState(x, y, z, block), offset);
-    }
-
-    /**
-     * Gets the collision bounding boxes.
-     *
-     * @param world the world
-     * @param state the state
-     * @return the collision bounding boxes
-     */
-    public static AxisAlignedBB[] getCollisionBoundingBoxes(World world, BlockState state) {
-        return getCollisionBoundingBoxes(world, state, false);
-    }
-
-    /**
-     * Gets the collision bounding boxes for the state.
-     *
-     * @param world the world
-     * @param state the state
-     * @return the collision bounding boxes
-     */
-    public static AxisAlignedBB[] getCollisionBoundingBoxes(World world, BlockState state, boolean offset) {
-        AxisAlignedBB[] aabbs = new AxisAlignedBB[0];
-        if (state.getBlock() instanceof MalisisBlock) aabbs = ((MalisisBlock) state.getBlock())
-            .getBoundingBox(world, state.getX(), state.getY(), state.getZ(), BoundingBoxType.CHUNKCOLLISION);
-        else {
-            AxisAlignedBB aabb = state.getBlock()
-                .getCollisionBoundingBoxFromPool(world, state.getX(), state.getY(), state.getZ());
-            if (aabb != null) aabbs = new AxisAlignedBB[] { aabb.offset(-state.getX(), -state.getY(), -state.getZ()) };
-        }
-
-        if (offset) AABBUtils.offset(state.getX(), state.getY(), state.getZ(), aabbs);
-
-        return aabbs;
-    }
 }
