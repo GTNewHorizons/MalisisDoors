@@ -86,7 +86,7 @@ public class MinecraftFont extends MalisisFont {
             else mcCharWidth = (int[]) charWidthMethodHandle.invokeExact(fontRenderer);
 
             glyphWidth = fontRenderer.glyphWidth;
-            unicodePages = fontRenderer.unicodePageLocations;
+            unicodePages = FontRenderer.unicodePageLocations;
         } catch (Throwable e) {
             MalisisCore.log.error("[MinecraftFont] Failed to gets the FontRenderer fields :", e);
         }
