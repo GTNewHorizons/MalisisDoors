@@ -59,8 +59,8 @@ public class BigDoor extends MalisisBlock implements ITileEntityProvider {
         CARRIAGE("carriage_door", net.minecraft.init.Items.wooden_door),
         MEDIEVAL("medieval_door", Items.doorSpruceItem);
 
-        public String name;
-        public Item door;
+        public final String name;
+        public final Item door;
 
         private Type(String name, Item door) {
             this.name = name;

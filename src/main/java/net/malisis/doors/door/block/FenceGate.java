@@ -58,8 +58,8 @@ public class FenceGate extends BlockFenceGate implements ITileEntityProvider {
         CAMO("camoFenceGate", 0);
 
         // @formatter:on
-        private int type;
-        private String name;
+        private final int type;
+        private final String name;
 
         private Type(String name, int type) {
             this.name = name;

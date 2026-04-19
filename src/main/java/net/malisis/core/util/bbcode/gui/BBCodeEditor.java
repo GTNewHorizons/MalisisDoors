@@ -50,7 +50,7 @@ public class BBCodeEditor extends UIContainer<BBCodeEditor> {
         BGCOLOR(new BBColorNode("bgcolor")),
         ITEM(new BBItemNode(""));
 
-        public BBNode node;
+        public final BBNode node;
 
         private Tag(BBNode node) {
             this.node = node;

@@ -41,8 +41,8 @@ public class WoodTrapDoor extends TrapDoorDescriptor {
         SPRUCE("trapdoor_spruce", 1);
 
         // @formatter:on
-        private int type;
-        private String name;
+        private final int type;
+        private final String name;
 
         private Type(String name, int type) {
             this.name = name;
