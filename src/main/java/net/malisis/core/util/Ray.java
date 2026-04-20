@@ -36,17 +36,6 @@ public class Ray {
     public Vector direction;
 
     /**
-     * Instantiates a new {@link Ray}.
-     *
-     * @param p the origin {@link Point}
-     * @param v the direction {@link Vector}
-     */
-    public Ray(Point p, Vector v) {
-        origin = p;
-        direction = v;
-    }
-
-    /**
      * Instantiates a new {@link Ray} from two {@link Vec3}.
      *
      * @param src  the src

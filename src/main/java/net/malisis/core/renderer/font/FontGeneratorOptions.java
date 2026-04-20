@@ -37,7 +37,4 @@ public class FontGeneratorOptions {
     public float my = 0;
     /** Offset on the bottom of characters **/
     public float py = 0;
-
-    /** Whether to generate debug data in the texture **/
-    public boolean debug;
 }

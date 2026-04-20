@@ -189,18 +189,6 @@ public class Shape implements ITransformable.Translate, ITransformable.Rotate, I
     }
 
     /**
-     * Gets a list of {@link MergedVertex} with a base name containing {@link Face} name.
-     *
-     * @param face the face
-     * @return the merged vertexes
-     */
-    public List<MergedVertex> getMergedVertexes(Face face) {
-        if (face == null) return new ArrayList<>();
-
-        return getMergedVertexes(face.name());
-    }
-
-    /**
      * Gets a list of {@link MergedVertex} with a base name containing the {@link ForgeDirection} name.
      *
      * @param direction the direction
@@ -317,28 +305,6 @@ public class Shape implements ITransformable.Translate, ITransformable.Rotate, I
                 if ((flags & Vertex.UP) != 0) v.setY(maxY);
                 if ((flags & Vertex.NORTH) != 0) v.setZ(minZ);
                 if ((flags & Vertex.SOUTH) != 0) v.setZ(maxZ);
-            }
-        }
-        return this;
-    }
-
-    /**
-     * Limits this {@link Shape} to the bounding box passed.
-     *
-     * @param x the x
-     * @param y the y
-     * @param z the z
-     * @param X the x
-     * @param Y the y
-     * @param Z the z
-     * @return the shape
-     */
-    public Shape limit(double x, double y, double z, double X, double Y, double Z) {
-        for (Face f : faces) {
-            for (Vertex v : f.getVertexes()) {
-                v.setX(Vertex.clamp(v.getX(), x, X));
-                v.setY(Vertex.clamp(v.getY(), y, Y));
-                v.setZ(Vertex.clamp(v.getZ(), z, Z));
             }
         }
         return this;

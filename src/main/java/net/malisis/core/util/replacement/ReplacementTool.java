@@ -183,23 +183,4 @@ public class ReplacementTool {
         instance().replaceVanilla(id, name, srgFieldName, replacement, vanilla);
     }
 
-    /**
-     * Gets the original/vanilla block for the specified one.
-     *
-     * @param block the block
-     * @return the block
-     */
-    public static Block orignalBlock(Block block) {
-        return instance.originalBlocks.get(block);
-    }
-
-    /**
-     * Gets the orginal/vanilla item for the specified one.
-     *
-     * @param item the item
-     * @return the item
-     */
-    public static Item originalItem(Item item) {
-        return instance.originalItems.get(item);
-    }
 }

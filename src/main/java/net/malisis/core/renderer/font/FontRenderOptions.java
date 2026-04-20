@@ -27,9 +27,9 @@ import org.apache.commons.lang3.StringUtils;
 public class FontRenderOptions {
 
     /** Map of EnumChatFormatting **/
-    private static Map<Character, EnumChatFormatting> charFormats = new HashMap<>();
+    private static final Map<Character, EnumChatFormatting> charFormats = new HashMap<>();
     /** List of ECF colors **/
-    private static int[] colors = new int[32];
+    private static final int[] colors = new int[32];
 
     static {
         // could reflect to get EnumChatFormatting.formattingCodeMapping instead

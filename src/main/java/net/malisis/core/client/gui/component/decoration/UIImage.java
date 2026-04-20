@@ -33,8 +33,6 @@ public class UIImage extends UIComponent<UIImage> {
     private GuiTexture texture;
     /** {@link IIcon} to use for the texture. */
     private IIcon icon = null;
-    /** {@link ItemStack} to render. */
-    private ItemStack itemStack;
 
     /**
      * Instantiates a new {@link UIImage}.
@@ -59,7 +57,6 @@ public class UIImage extends UIComponent<UIImage> {
      * @return this UIImage
      */
     public UIImage setIcon(GuiTexture texture, IIcon icon) {
-        this.itemStack = null;
         this.icon = icon != null ? icon : new MalisisIcon();
         this.texture = texture;
         return this;
@@ -75,10 +72,6 @@ public class UIImage extends UIComponent<UIImage> {
      */
     @Override
     public UIImage setSize(int width, int height) {
-        if (itemStack != null) {
-            width = 16; // UIImage for itemStack have a fixed 16*16 size
-            height = 16;
-        }
         return super.setSize(width, height);
     }
 
@@ -91,14 +84,12 @@ public class UIImage extends UIComponent<UIImage> {
             rp.icon.set(icon);
             renderer.bindTexture(texture);
             renderer.drawShape(shape, rp);
-        } else if (itemStack != null) {
-            renderer.drawItemStack(itemStack);
         }
     }
 
     @Override
     public String getPropertyString() {
-        return (itemStack != null ? itemStack : ("texture : " + this.texture + ", " + " icon : " + icon))
-            + super.getPropertyString();
+        return "texture : " + this.texture + ", " + " icon : " + icon
+               + super.getPropertyString();
     }
 }
