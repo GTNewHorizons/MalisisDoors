@@ -30,48 +30,6 @@ public abstract class SpaceChangeEvent<T extends UIComponent> extends ComponentE
     }
 
     /**
-     * Fired when a {@link UIComponent} changes it's position.
-     *
-     * @author Ordinastie
-     *
-     * @param <T> the type of <code>UIComponent</code> that fired this event.
-     */
-    public static class PositionChangeEvent<T extends UIComponent> extends SpaceChangeEvent<T> {
-
-        protected int newX;
-        protected int newY;
-        protected int newAnchor;
-
-        public PositionChangeEvent(T component, int newX, int newY, int newAnchor) {
-            super(component);
-            this.newX = newX;
-            this.newY = newY;
-            this.newAnchor = newAnchor;
-        }
-
-        /**
-         * @return the new X position for the {@link UIComponent}.
-         */
-        public int getNewX() {
-            return newX;
-        }
-
-        /**
-         * @return the new Y position for the {@link UIComponent}.
-         */
-        public int getNewY() {
-            return newY;
-        }
-
-        /**
-         * @return the new anchor position for the {@link UIComponent}.
-         */
-        public int getNewAnchor() {
-            return newAnchor;
-        }
-    }
-
-    /**
      * Fired when a {@link UIComponent} changes its size.
      *
      * @author Ordinastie

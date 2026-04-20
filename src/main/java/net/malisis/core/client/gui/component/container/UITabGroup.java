@@ -21,7 +21,6 @@ import net.malisis.core.client.gui.ComponentPosition;
 import net.malisis.core.client.gui.MalisisGui;
 import net.malisis.core.client.gui.component.UIComponent;
 import net.malisis.core.client.gui.component.interaction.UITab;
-import net.malisis.core.client.gui.event.ComponentEvent;
 import net.malisis.core.client.gui.icon.GuiIcon;
 import net.malisis.core.renderer.animation.transformation.ITransformable;
 
@@ -277,34 +276,4 @@ public class UITabGroup extends UIContainer<UITabGroup> {
         return y;
     }
 
-    /**
-     * Event fired when an inactive {@link UITab} is clicked.<br>
-     * Canceling the event will keep the old tab active.
-     *
-     * @author Ordinastie
-     *
-     */
-    public static class TabChangeEvent extends ComponentEvent<UITabGroup> {
-
-        private UITab newTab;
-
-        public TabChangeEvent(UITabGroup component, UITab newTab) {
-            super(component);
-            this.newTab = newTab;
-        }
-
-        /**
-         * @return the {@link UITab} deactivated
-         */
-        public UITab getOldTab() {
-            return component.activeTab;
-        }
-
-        /**
-         * @return the {@link UITab} activated
-         */
-        public UITab getNewTab() {
-            return newTab;
-        }
-    }
 }

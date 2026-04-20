@@ -172,15 +172,6 @@ public class MalisisRenderer extends TileEntitySpecialRenderer implements ISimpl
     /**
      * Sets informations for this {@link MalisisRenderer}.
      *
-     * @param world the world
-     */
-    public void set(IBlockAccess world) {
-        this.world = world;
-    }
-
-    /**
-     * Sets informations for this {@link MalisisRenderer}.
-     *
      * @param block the block
      */
     public void set(Block block) {

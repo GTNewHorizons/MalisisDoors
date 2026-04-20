@@ -21,8 +21,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiConfirmOpenLink;
 import net.minecraft.client.gui.GuiYesNoCallback;
 
-import org.apache.commons.lang3.StringUtils;
-
 /**
  * @author Ordinastie
  *
@@ -51,36 +49,12 @@ public class Link implements GuiYesNoCallback {
         checkUrl();
     }
 
-    public Link(int index, String url, String text) {
-        this.index = index;
-        this.url = url;
-        this.text = text;
-    }
-
     private void checkUrl() {
         isValid = true;
     }
 
-    public float getWidth(MalisisFont font, FontRenderOptions fro) {
-        return font.getStringWidth(StringUtils.isEmpty(text) ? url : text, fro);
-    }
-
-    public int indexAdvance() {
-        return text != null ? url.length() + 2 : 1;
-    }
-
     public boolean isValid() {
         return isValid;
-    }
-
-    public boolean isUrl(int index) {
-        index += this.index;
-        return index >= 0 && index <= url.length();
-    }
-
-    public boolean isText(int index) {
-        index += this.index;
-        return index >= textIndex && index <= text.length();
     }
 
     public void click() {

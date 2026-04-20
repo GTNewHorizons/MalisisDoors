@@ -29,7 +29,6 @@ import net.malisis.core.client.gui.event.ComponentEvent;
 import net.malisis.core.client.gui.event.ComponentExceptionHandler;
 import net.malisis.core.client.gui.event.GuiEvent;
 import net.malisis.core.client.gui.event.component.ContentUpdateEvent;
-import net.malisis.core.client.gui.event.component.SpaceChangeEvent.PositionChangeEvent;
 import net.malisis.core.client.gui.event.component.SpaceChangeEvent.SizeChangeEvent;
 import net.malisis.core.client.gui.event.component.StateChangeEvent.DisabledStateChange;
 import net.malisis.core.client.gui.event.component.StateChangeEvent.FocusStateChange;
@@ -149,23 +148,9 @@ public abstract class UIComponent<T extends UIComponent>
      * @return this {@link UIComponent}
      */
     public T setPosition(int x, int y, int anchor) {
-        // backup values
-        int oldX = this.x;
-        int oldY = this.y;
-        int oldAnchor = this.anchor;
-
         this.x = x;
         this.y = y;
         this.anchor = anchor;
-
-        if (!fireEvent(new PositionChangeEvent(this, x, y, anchor))) {
-            // event is cancelled, restore old values
-            this.x = oldX;
-            this.y = oldY;
-            this.anchor = oldAnchor;
-            return (T) this;
-        }
-
         return (T) this;
     }
 
@@ -214,14 +199,7 @@ public abstract class UIComponent<T extends UIComponent>
      * @return this {@link UIComponent}
      */
     public T setAnchor(int anchor) {
-        int oldAnchor = this.anchor;
         this.anchor = anchor;
-
-        if (!fireEvent(new PositionChangeEvent(this, x, y, anchor))) {
-            // event is cancelled, restore old values
-            this.anchor = oldAnchor;
-            return (T) this;
-        }
         return (T) this;
     }
 

@@ -20,7 +20,6 @@ import net.malisis.core.client.gui.component.IGuiText;
 import net.malisis.core.client.gui.component.UIComponent;
 import net.malisis.core.client.gui.component.container.UIContainer;
 import net.malisis.core.client.gui.component.container.UITabGroup;
-import net.malisis.core.client.gui.component.container.UITabGroup.TabChangeEvent;
 import net.malisis.core.client.gui.component.decoration.UIImage;
 import net.malisis.core.client.gui.component.decoration.UITooltip;
 import net.malisis.core.client.gui.element.XYResizableGuiShape;
@@ -246,9 +245,6 @@ public class UITab extends UIComponent<UITab> implements IGuiText<UITab> {
     @Override
     public boolean onClick(int x, int y) {
         if (!(parent instanceof UITabGroup)) return super.onClick(x, y);
-
-        if (!fireEvent(new TabChangeEvent((UITabGroup) parent, this))) return super.onClick(x, y);
-
         ((UITabGroup) parent).setActiveTab(this);
         return true;
     }
