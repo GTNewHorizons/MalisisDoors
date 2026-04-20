@@ -93,6 +93,7 @@ public class BigDoor extends MalisisBlock implements ITileEntityProvider {
         Pair.of(createVectorHelper(0, 4, 1 - Door.DOOR_WIDTH), createVectorHelper(0, 5, 1 - Door.DOOR_WIDTH)),
         Pair.of(createVectorHelper(4, 4, 1 - Door.DOOR_WIDTH), createVectorHelper(4, 5, 1 - Door.DOOR_WIDTH)) };
 
+    public static int renderId;
     public static int renderPass = -1;
     private final AxisAlignedBB defaultBoundingBox = AxisAlignedBB.getBoundingBox(0, 0, 1 - Door.DOOR_WIDTH, 4, 5, 1);
     private final Type type;
@@ -274,6 +275,11 @@ public class BigDoor extends MalisisBlock implements ITileEntityProvider {
     @Override
     public boolean renderAsNormalBlock() {
         return false;
+    }
+
+    @Override
+    public int getRenderType() {
+        return renderId;
     }
 
     @Override
