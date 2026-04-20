@@ -23,7 +23,6 @@ import net.malisis.core.client.gui.element.XYResizableGuiShape;
 import net.malisis.core.client.gui.event.ComponentEvent;
 import net.malisis.core.client.gui.icon.GuiIcon;
 import net.malisis.core.renderer.font.FontRenderOptions;
-import net.malisis.core.renderer.font.MalisisFont;
 import net.malisis.core.renderer.font.VanillaFont;
 import net.malisis.core.util.MouseButton;
 

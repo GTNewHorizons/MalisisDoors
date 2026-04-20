@@ -21,7 +21,6 @@ import net.malisis.core.client.gui.element.SimpleGuiShape;
 import net.malisis.core.client.gui.event.ComponentEvent.ValueChange;
 import net.malisis.core.client.gui.icon.GuiIcon;
 import net.malisis.core.renderer.font.FontRenderOptions;
-import net.malisis.core.renderer.font.MalisisFont;
 import net.malisis.core.renderer.font.VanillaFont;
 import net.minecraft.client.renderer.OpenGlHelper;
 

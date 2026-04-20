@@ -40,6 +40,8 @@ import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 
+import cpw.mods.fml.common.Mod;
+
 public class ClientProxy implements IProxy {
 
     @Override

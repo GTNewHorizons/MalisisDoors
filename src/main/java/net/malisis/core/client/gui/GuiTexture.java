@@ -15,14 +15,9 @@ package net.malisis.core.client.gui;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
 
 import net.malisis.core.client.gui.icon.GuiIcon;
 import net.malisis.core.renderer.icon.MalisisIcon;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.util.ResourceLocation;
 
 /**

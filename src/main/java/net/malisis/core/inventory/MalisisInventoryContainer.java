@@ -631,8 +631,8 @@ public class MalisisInventoryContainer extends Container {
     /**
      * Handles all drag actions.
      *
-     * @param action      the action
-     * @param slot        the slot
+     * @param action the action
+     * @param slot   the slot
      * @return the item stack
      */
     private ItemStack handleDrag(ActionType action, MalisisSlot slot) {

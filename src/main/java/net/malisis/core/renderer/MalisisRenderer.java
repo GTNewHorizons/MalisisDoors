@@ -61,8 +61,7 @@ import cpw.mods.fml.client.registry.RenderingRegistry;
  * @author Ordinastie
  *
  */
-public class MalisisRenderer extends TileEntitySpecialRenderer
-    implements ISimpleBlockRenderingHandler, IItemRenderer {
+public class MalisisRenderer extends TileEntitySpecialRenderer implements ISimpleBlockRenderingHandler, IItemRenderer {
 
     // Reference to Minecraft.renderGlobal.damagedBlocks (lazy loaded)
     /** The damaged blocks. */
