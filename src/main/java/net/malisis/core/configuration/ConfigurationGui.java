@@ -39,8 +39,7 @@ import com.google.common.eventbus.Subscribe;
  */
 public class ConfigurationGui extends MalisisGui {
 
-    private Settings settings;
-    protected ArrayList<UIPanel> pannels = new ArrayList<>();
+    private final Settings settings;
     protected HashMap<UIComponent, Setting> componentSettings = new HashMap<>();
 
     protected int windowWidth = 400;

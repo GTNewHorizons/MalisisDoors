@@ -43,14 +43,6 @@ public class BlockPos {
         return z;
     }
 
-    public int chunkX() {
-        return x >> 4;
-    }
-
-    public int chunkZ() {
-        return z >> 4;
-    }
-
     /**
      * Add the given coordinates to the coordinates of this BlockPos
      *
@@ -68,90 +60,6 @@ public class BlockPos {
     }
 
     // #region Moves
-
-    /**
-     * Offset this BlockPos 1 block up
-     */
-    public BlockPos up() {
-        return this.up(1);
-    }
-
-    /**
-     * Offset this BlockPos n blocks up
-     */
-    public BlockPos up(int n) {
-        return this.offset(ForgeDirection.UP, n);
-    }
-
-    /**
-     * Offset this BlockPos 1 block down
-     */
-    public BlockPos down() {
-        return this.down(1);
-    }
-
-    /**
-     * Offset this BlockPos n blocks down
-     */
-    public BlockPos down(int n) {
-        return this.offset(ForgeDirection.DOWN, n);
-    }
-
-    /**
-     * Offset this BlockPos 1 block in northern direction
-     */
-    public BlockPos north() {
-        return this.north(1);
-    }
-
-    /**
-     * Offset this BlockPos n blocks in northern direction
-     */
-    public BlockPos north(int n) {
-        return this.offset(ForgeDirection.NORTH, n);
-    }
-
-    /**
-     * Offset this BlockPos 1 block in southern direction
-     */
-    public BlockPos south() {
-        return this.south(1);
-    }
-
-    /**
-     * Offset this BlockPos n blocks in southern direction
-     */
-    public BlockPos south(int n) {
-        return this.offset(ForgeDirection.SOUTH, n);
-    }
-
-    /**
-     * Offset this BlockPos 1 block in western direction
-     */
-    public BlockPos west() {
-        return this.west(1);
-    }
-
-    /**
-     * Offset this BlockPos n blocks in western direction
-     */
-    public BlockPos west(int n) {
-        return this.offset(ForgeDirection.WEST, n);
-    }
-
-    /**
-     * Offset this BlockPos 1 block in eastern direction
-     */
-    public BlockPos east() {
-        return this.east(1);
-    }
-
-    /**
-     * Offset this BlockPos n blocks in eastern direction
-     */
-    public BlockPos east(int n) {
-        return this.offset(ForgeDirection.EAST, n);
-    }
 
     /**
      * Offset this BlockPos 1 block in the given direction

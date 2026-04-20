@@ -13,21 +13,13 @@
 
 package net.malisis.core.util;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import net.malisis.core.MalisisCore;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.server.management.PlayerManager;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
-import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.util.ForgeDirection;
 
 /**
@@ -103,19 +95,4 @@ public class EntityUtils {
                 .getItem() == item;
     }
 
-    public static List<EntityPlayerMP> getPlayersWatchingChunk(Chunk chunk) {
-        return getPlayersWatchingChunk((WorldServer) chunk.worldObj, chunk.xPosition, chunk.zPosition);
-    }
-
-    public static List<EntityPlayerMP> getPlayersWatchingChunk(WorldServer world, int x, int z) {
-        try {
-            PlayerManager.PlayerInstance playerInstance = world.getPlayerManager()
-                .getOrCreateChunkWatcher(x, z, false);
-            if (playerInstance == null) return new ArrayList<>();
-            return playerInstance.playersWatchingChunk;
-        } catch (Throwable e) {
-            MalisisCore.log.info("Failed to get players watching chunk :", e);
-            return new ArrayList<>();
-        }
-    }
 }

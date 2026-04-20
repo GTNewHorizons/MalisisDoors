@@ -53,14 +53,6 @@ public class BlockState {
             world.getBlockMetadata(pos.getX(), pos.getY(), pos.getZ()));
     }
 
-    public BlockState(IBlockAccess world, int x, int y, int z) {
-        this(new BlockPos(x, y, z), world.getBlock(x, y, z), world.getBlockMetadata(x, y, z));
-    }
-
-    public BlockState(BlockPos pos, BlockState state) {
-        this(pos, state.getBlock(), state.getMetadata());
-    }
-
     public BlockPos getPos() {
         return pos;
     }
@@ -83,14 +75,6 @@ public class BlockState {
 
     public int getZ() {
         return pos.getZ();
-    }
-
-    public BlockState offset(BlockPos pos) {
-        return new BlockState(this.pos.add(pos), this);
-    }
-
-    public BlockState rotate(int rotation) {
-        return new BlockState(this.pos.rotate(rotation), this);
     }
 
     @Override
