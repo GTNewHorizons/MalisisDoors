@@ -93,6 +93,17 @@ public class BigDoorTileEntity extends MultiTile implements IMultiBlock {
     private final MultiBlueprint openBlueprint = new MultiBlueprint(openPrint, metaMap, new Vector3i(1, 0, 0));
     private BigDoor.Type type;
 
+    @SuppressWarnings("unused")
+    public BigDoorTileEntity() {
+        this.type = BigDoor.Type.DEFAULT;
+        DoorDescriptor descriptor = new DoorDescriptor();
+        descriptor.setMovement(DoorRegistry.getMovement(CarriageDoorMovement.class));
+        descriptor.setSound(DoorRegistry.getSound(CarriageDoorSound.class));
+        descriptor.setDoubleDoor(false);
+        descriptor.setOpeningTime(20);
+        setDescriptor(descriptor);
+    }
+
     public BigDoorTileEntity(BigDoor.Type type) {
         this.type = type;
         DoorDescriptor descriptor = new DoorDescriptor();
