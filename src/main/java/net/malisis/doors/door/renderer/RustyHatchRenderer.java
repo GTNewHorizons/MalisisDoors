@@ -43,7 +43,7 @@ public class RustyHatchRenderer extends MalisisRenderer {
     private Shape hatch;
     private Shape handle;
     private Shape ladder;
-    private AnimationRenderer ar = new AnimationRenderer();
+    private final AnimationRenderer ar = new AnimationRenderer();
     private RustyHatchTileEntity tileEntity;
 
     private boolean topBlock;
@@ -189,6 +189,12 @@ public class RustyHatchRenderer extends MalisisRenderer {
         if (direction == ForgeDirection.SOUTH) s.rotate(-90, 0, 1, 0);
         else if (direction == ForgeDirection.NORTH) s.rotate(90, 0, 1, 0);
         else if (direction == ForgeDirection.WEST) s.rotate(180, 0, 1, 0);
+    }
+
+    @Override
+    public void reset() {
+        super.reset();
+        tileEntity = null;
     }
 
     @Override

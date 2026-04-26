@@ -84,6 +84,12 @@ public class DoorRenderer extends MalisisRenderer {
         this.tileEntity = (DoorTileEntity) super.tileEntity;
     }
 
+    @Override
+    public void reset() {
+        super.reset();
+        tileEntity = null;
+    }
+
     protected void setup() {
         model.resetState();
 

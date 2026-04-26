@@ -112,6 +112,12 @@ public class ForcefieldRenderer extends MalisisRenderer {
         GL11.glDisable(GL11.GL_BLEND);
     }
 
+    @Override
+    public void reset() {
+        super.reset();
+        tileEntity = null;
+    }
+
     private void setTextureMatrix() {
         long elapsed = ar.getElapsedTime() / 50;
         int n = (int) (elapsed % 50);

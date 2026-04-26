@@ -141,6 +141,12 @@ public class CustomDoorRenderer extends DoorRenderer {
         this.tileEntity = (CustomDoorTileEntity) super.tileEntity;
     }
 
+    @Override
+    public void reset() {
+        super.reset();
+        tileEntity = null;
+    }
+
     private void setInfos(CustomDoorTileEntity te) {
         frameBlock = te.getFrame();
         topMaterialBlock = te.getTopMaterial();
