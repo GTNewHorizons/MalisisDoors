@@ -20,8 +20,6 @@ import java.awt.font.LineMetrics;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -35,10 +33,7 @@ import javax.imageio.ImageIO;
 import net.malisis.core.MalisisCore;
 import net.malisis.core.client.gui.GuiRenderer;
 import net.malisis.core.renderer.MalisisRenderer;
-import net.malisis.core.renderer.element.Face;
-import net.malisis.core.renderer.element.Shape;
 import net.malisis.core.renderer.element.Vertex;
-import net.malisis.core.renderer.element.face.SouthFace;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.DynamicTexture;
@@ -57,9 +52,7 @@ import com.google.common.io.Files;
  */
 public class MalisisFont {
 
-    public static MalisisFont minecraftFont = new VanillaFont();
-
-    private static Pattern pattern = Pattern.compile("\\{(.*?)}");
+    private static final Pattern pattern = Pattern.compile("\\{(.*?)}");
 
     /** AWT font used **/
     protected Font font;
@@ -76,20 +69,8 @@ public class MalisisFont {
     /** Whether the currently drawn text is the shadow part **/
     protected boolean drawingShadow = false;
 
-    public MalisisFont(File fontFile) {
-        this(load(fontFile, FontGeneratorOptions.DEFAULT), null);
-    }
-
-    public MalisisFont(File fontFile, FontGeneratorOptions options) {
-        this(load(fontFile, options), options);
-    }
-
     public MalisisFont(ResourceLocation fontFile) {
         this(load(fontFile, FontGeneratorOptions.DEFAULT), null);
-    }
-
-    public MalisisFont(ResourceLocation fontFile, FontGeneratorOptions options) {
-        this(load(fontFile, options), options);
     }
 
     public MalisisFont(Font font) {
@@ -106,40 +87,9 @@ public class MalisisFont {
         loadTexture(false);
     }
 
-    public ResourceLocation getResourceLocation() {
-        return textureRl;
-    }
-
-    public void generateTexture(boolean debug) {
-        this.options.debug = debug;
-        loadCharacterData();
-        loadTexture(true);
-    }
-
     public CharData getCharData(char c) {
         if (c < 0 || c > charData.length) c = '?';
         return charData[c];
-    }
-
-    public Shape getShape(String text, float fontSize) {
-        text = processString(text, null);
-        List<Face> faces = new ArrayList<>();
-        float offset = 0;
-        float factor = options.fontSize / fontSize;
-        for (int i = 0; i < text.length(); i++) {
-            CharData cd = getCharData(text.charAt(i));
-            if (cd.getChar() != ' ') {
-                Face f = new SouthFace();
-                f.factor(cd.getFullWidth(options) / factor, cd.getFullHeight(options) / factor, 0);
-                f.translate((offset - options.mx) / factor, -options.my / factor, 0);
-                f.setTexture(cd.getIcon());
-
-                faces.add(f);
-            }
-            offset += cd.getCharWidth();
-        }
-
-        return new Shape(faces).storeState();
     }
 
     // #region Prepare/Clean
@@ -183,7 +133,7 @@ public class MalisisFont {
         GL11.glDisable(GL11.GL_POLYGON_OFFSET_FILL);
     }
 
-    protected void prepareLines(MalisisRenderer renderer, FontRenderOptions fro) {
+    protected void prepareLines(MalisisRenderer renderer) {
         renderer.next();
         renderer.disableTextures();
     }
@@ -202,7 +152,7 @@ public class MalisisFont {
 
         prepare(renderer, x, y, z, fro);
 
-        text = processString(text, fro);
+        text = processString(text);
 
         if (fro.shadow) {
             prepareShadow(renderer);
@@ -212,7 +162,7 @@ public class MalisisFont {
         drawString(text, fro);
 
         if (hasLines(text, fro)) {
-            prepareLines(renderer, fro);
+            prepareLines(renderer);
             if (fro.shadow) {
                 prepareShadow(renderer);
                 drawLines(text, fro);
@@ -303,7 +253,7 @@ public class MalisisFont {
      * @param str the str
      * @return the string
      */
-    public String processString(String str, FontRenderOptions fro) {
+    public String processString(String str) {
         str = translate(str);
         // str = str.replaceAll("\r?\n", "").replaceAll("\t", " ");
         return str;
@@ -341,18 +291,6 @@ public class MalisisFont {
     /**
      * Clips a string to fit in the specified width. The string is translated before clipping.
      *
-     * @param str   the str
-     * @param width the width
-     * @param fro   the fro
-     * @return the string
-     */
-    public String clipString(String str, int width, FontRenderOptions fro) {
-        return clipString(str, width, fro, false);
-    }
-
-    /**
-     * Clips a string to fit in the specified width. The string is translated before clipping.
-     *
      * @param str           the str
      * @param width         the width
      * @param fro           the fro
@@ -360,7 +298,7 @@ public class MalisisFont {
      * @return the string
      */
     public String clipString(String str, int width, FontRenderOptions fro, boolean appendPeriods) {
-        str = processString(str, fro);
+        str = processString(str);
         if (appendPeriods) width -= 4;
 
         int pos = (int) getCharPosition(str, fro, width, 0);
@@ -393,7 +331,7 @@ public class MalisisFont {
 
         if (StringUtils.isEmpty(str)) return 0;
 
-        str = processString(str, fro);
+        str = processString(str);
         return (float) font.getStringBounds(str, frc)
             .getWidth() / options.fontSize * (fro != null ? fro.fontScale : 1) * 9;
     }
@@ -401,15 +339,6 @@ public class MalisisFont {
     public float getStringWidth(String str, FontRenderOptions fro) {
         if (StringUtils.isEmpty(str)) return 0;
         return getStringWidth(str, fro, 0, 0);
-    }
-
-    /**
-     * Gets the rendering height of strings.
-     *
-     * @return the string height
-     */
-    public float getStringHeight() {
-        return getStringHeight(null);
     }
 
     /**
@@ -423,16 +352,6 @@ public class MalisisFont {
     }
 
     /**
-     * Gets the max string width.
-     *
-     * @param strings the strings
-     * @return the max string width
-     */
-    public float getMaxStringWidth(List<String> strings) {
-        return getMaxStringWidth(strings, null);
-    }
-
-    /**
      * Gets max rendering width of an array of string.
      *
      * @param strings the strings
@@ -443,16 +362,6 @@ public class MalisisFont {
         float width = 0;
         for (String str : strings) width = Math.max(width, getStringWidth(str, fro));
         return width;
-    }
-
-    /**
-     * Gets the rendering width of a char.
-     *
-     * @param c the c
-     * @return the char width
-     */
-    public float getCharWidth(char c) {
-        return getCharWidth(c, null);
     }
 
     /**
@@ -481,24 +390,13 @@ public class MalisisFont {
     public float getCharPosition(String str, FontRenderOptions fro, int position, int charOffset) {
         if (StringUtils.isEmpty(str)) return 0;
 
-        str = processString(str, fro);
+        str = processString(str);
         // float fx = position / (fro != null ? fro.fontScale : 1); //factor the position instead of the char widths
 
         StringWalker walker = new StringWalker(str, this, fro);
         walker.startIndex(charOffset);
         walker.skipChars(true);
         return walker.walkTo(position);
-    }
-
-    /**
-     * Splits the string in multiple lines to fit in the specified maxWidth.
-     *
-     * @param text     the text
-     * @param maxWidth the max width
-     * @return list of lines that won't exceed maxWidth limit
-     */
-    public List<String> wrapText(String text, int maxWidth) {
-        return wrapText(text, maxWidth, null);
     }
 
     /**
@@ -526,7 +424,7 @@ public class MalisisFont {
         float lineWidth = 0;
         float wordWidth = 0;
 
-        str = processString(str, fro);
+        str = processString(str);
 
         StringWalker walker = new StringWalker(str, this, fro);
         walker.skipChars(false);
@@ -668,15 +566,6 @@ public class MalisisFont {
                 options);
         } catch (IOException e) {
             MalisisCore.log.error("[MalisiFont] Couldn't load font from ResourceLocation.", e);
-            return null;
-        }
-    }
-
-    public static Font load(File file, FontGeneratorOptions options) {
-        try {
-            return load(new FileInputStream(file), options);
-        } catch (FileNotFoundException e) {
-            MalisisCore.log.error("[MalisiFont] Couldn't load font from File.", e);
             return null;
         }
     }

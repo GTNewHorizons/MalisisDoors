@@ -12,10 +12,11 @@ import com.gtnewhorizon.gtnhlib.util.font.FontRendering;
 import com.gtnewhorizon.gtnhlib.util.font.IFontParameters;
 
 /**
- * A slightly simpler alternative for {@link MinecraftFont} that uses vanilla and GTNHLib methods.
  * Incompatible with some settings in {@link FontRenderOptions}, but it doesn't look like the mod uses them anyway...
  */
 public class VanillaFont extends MalisisFont {
+
+    public static final VanillaFont vanillaFont = new VanillaFont();
 
     private final FontRenderer fontRenderer;
 
@@ -25,8 +26,7 @@ public class VanillaFont extends MalisisFont {
         fontRenderer = Minecraft.getMinecraft().fontRenderer;
     }
 
-    @Override
-    public float getCharWidth(char c) {
+    private float getCharWidth(char c) {
         IFontParameters fontParams = (IFontParameters) fontRenderer;
         return fontParams.getCharWidthFine(c);
     }
@@ -45,7 +45,7 @@ public class VanillaFont extends MalisisFont {
     public float getStringWidth(String str, FontRenderOptions fro, int start, int end) {
         if (StringUtils.isEmpty(str)) return 0;
 
-        str = processString(str, null);
+        str = processString(str);
         if (start == 0 && end == 0) {
             return FontRendering.getStringWidth(str, fontRenderer);
         }

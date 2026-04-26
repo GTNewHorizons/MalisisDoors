@@ -13,9 +13,6 @@
 
 package net.malisis.core.renderer.font;
 
-import net.malisis.core.renderer.icon.MalisisIcon;
-import net.minecraft.util.IIcon;
-
 /**
  * @author Ordinastie
  *
@@ -32,7 +29,6 @@ public class CharData {
     protected float V;
 
     public CharData(char c, float ascent, float width, float height) {
-        this.c = c;
         this.c = c;
         this.ascent = ascent;
         this.width = width;
@@ -97,7 +93,4 @@ public class CharData {
         V = (y + height + options.py) / size;
     }
 
-    public IIcon getIcon() {
-        return new MalisisIcon("" + getChar(), u(), v(), U(), V());
-    }
 }

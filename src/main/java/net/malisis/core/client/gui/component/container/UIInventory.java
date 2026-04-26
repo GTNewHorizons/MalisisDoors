@@ -20,28 +20,16 @@ import net.malisis.core.inventory.MalisisSlot;
 
 public class UIInventory extends UIContainer<UIInventory> {
 
-    @SuppressWarnings("unused")
-    private MalisisInventory inventory;
-
     private int numCols;
     private boolean hasTitle;
 
     public UIInventory(MalisisGui gui, String title, MalisisInventory inventory, int numCols) {
         super(gui, title != null ? title : inventory.getInventoryName(), 0, 0);
         this.hasTitle = title != null || inventory.hasCustomInventoryName();
-        this.inventory = inventory;
         this.numCols = numCols;
         this.width = Math.min(inventory.getSizeInventory() * 18, numCols * 18);
         this.height = (int) Math.ceil((float) inventory.getSizeInventory() / numCols) * 18 + (hasTitle ? 11 : 0);
         for (int i = 0; i < inventory.getSizeInventory(); i++) addSlot(gui, inventory.getSlot(i), i);
-    }
-
-    public UIInventory(MalisisGui gui, MalisisInventory inventory, int numCols) {
-        this(gui, null, inventory, numCols);
-    }
-
-    public UIInventory(MalisisGui gui, String title, MalisisInventory inventory) {
-        this(gui, title, inventory, 9);
     }
 
     public UIInventory(MalisisGui gui, MalisisInventory inventory) {

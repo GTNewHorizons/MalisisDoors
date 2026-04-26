@@ -37,48 +37,24 @@ public class CustomDoorTileEntity extends DoorTileEntity {
         return frame;
     }
 
-    public void setFrame(Block frame) {
-        this.frame = frame;
-    }
-
     public Block getTopMaterial() {
         return topMaterial;
-    }
-
-    public void setTopMaterial(Block topMaterial) {
-        this.topMaterial = topMaterial;
     }
 
     public Block getBottomMaterial() {
         return bottomMaterial;
     }
 
-    public void setBottomMaterial(Block bottomMaterial) {
-        this.bottomMaterial = bottomMaterial;
-    }
-
     public int getFrameMetadata() {
         return frameMetadata;
-    }
-
-    public void setFrameMetadata(int frameMetadata) {
-        this.frameMetadata = frameMetadata;
     }
 
     public int getTopMaterialMetadata() {
         return topMaterialMetadata;
     }
 
-    public void setTopMaterialMetadata(int topMaterialMetadata) {
-        this.topMaterialMetadata = topMaterialMetadata;
-    }
-
     public int getBottomMaterialMetadata() {
         return bottomMaterialMetadata;
-    }
-
-    public void setBottomMaterialMetadata(int bottomMaterialMetadata) {
-        this.bottomMaterialMetadata = bottomMaterialMetadata;
     }
 
     // #end Getters/setters

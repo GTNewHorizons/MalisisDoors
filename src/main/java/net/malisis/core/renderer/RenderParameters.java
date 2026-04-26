@@ -159,11 +159,6 @@ public class RenderParameters implements ITransformable.Color, ITransformable.Al
         merge(params);
     }
 
-    private Parameter<?> getParameter(int index) {
-        if (index < 0 || index >= listParams.length) return null;
-        return listParams[index];
-    }
-
     public void init() {
         this.renderAllFaces.set(true);
         this.calculateAOColor.set(false);

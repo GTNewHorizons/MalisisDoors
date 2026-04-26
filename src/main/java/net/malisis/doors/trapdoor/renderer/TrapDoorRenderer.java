@@ -13,7 +13,6 @@
 
 package net.malisis.doors.trapdoor.renderer;
 
-import net.malisis.core.renderer.RenderParameters;
 import net.malisis.core.renderer.RenderType;
 import net.malisis.core.renderer.animation.Animation;
 import net.malisis.core.renderer.element.Face;
@@ -33,7 +32,6 @@ import net.minecraftforge.common.util.ForgeDirection;
  */
 public class TrapDoorRenderer extends DoorRenderer {
 
-    RenderParameters rpTop;
     MalisisModel trapDoorModel;
     MalisisModel slidingTrapDoorModel;
 

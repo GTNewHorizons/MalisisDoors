@@ -37,12 +37,11 @@ import org.lwjgl.opengl.GL11;
  */
 public class BigDoorRenderer extends MalisisRenderer {
 
-    private ResourceLocation rl;
     private MalisisModel model;
     private Shape frame;
     private Shape doorLeft;
     private Shape doorRight;
-    private AnimationRenderer ar = new AnimationRenderer();
+    private final AnimationRenderer ar = new AnimationRenderer();
     private BigDoorTileEntity tileEntity;
 
     private ForgeDirection direction;
@@ -53,7 +52,7 @@ public class BigDoorRenderer extends MalisisRenderer {
 
     @Override
     protected void initialize() {
-        rl = new ResourceLocation(MalisisDoors.modid, "models/big_door.obj");
+        ResourceLocation rl = new ResourceLocation(MalisisDoors.modid, "models/big_door.obj");
         model = new MalisisModel(rl);
         frame = model.getShape("Frame");
         doorLeft = model.getShape("Left");

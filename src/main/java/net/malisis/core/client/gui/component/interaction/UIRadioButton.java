@@ -26,7 +26,7 @@ import net.malisis.core.client.gui.event.ComponentEvent.ValueChange;
 import net.malisis.core.client.gui.icon.GuiIcon;
 import net.malisis.core.renderer.RenderParameters;
 import net.malisis.core.renderer.font.FontRenderOptions;
-import net.malisis.core.renderer.font.MalisisFont;
+import net.malisis.core.renderer.font.VanillaFont;
 
 import org.apache.commons.lang3.StringUtils;
 import org.lwjgl.opengl.GL11;
@@ -45,8 +45,7 @@ public class UIRadioButton extends UIComponent<UIRadioButton> implements IGuiTex
     protected GuiIcon rbChecked;
     protected GuiIcon rbHovered;
 
-    /** The {@link MalisisFont} to use for this {@link UIRadioButton}. */
-    protected MalisisFont font = MalisisFont.minecraftFont;
+    protected VanillaFont font = VanillaFont.vanillaFont;
     /** The {@link FontRenderOptions} to use for this {@link UIRadioButton}. */
     protected FontRenderOptions fro = new FontRenderOptions();
 
@@ -76,33 +75,9 @@ public class UIRadioButton extends UIComponent<UIRadioButton> implements IGuiTex
         addRadioButton(this);
     }
 
-    public UIRadioButton(MalisisGui gui, String name) {
-        this(gui, name, null);
-    }
-
-    // #region Getters/Setters
-    @Override
-    public MalisisFont getFont() {
-        return font;
-    }
-
-    @Override
-    public UIRadioButton setFont(MalisisFont font) {
-        this.font = font;
-        calculateSize();
-        return this;
-    }
-
     @Override
     public FontRenderOptions getFontRenderOptions() {
         return fro;
-    }
-
-    @Override
-    public UIRadioButton setFontRenderOptions(FontRenderOptions fro) {
-        this.fro = fro;
-        calculateSize();
-        return this;
     }
 
     /**
@@ -114,24 +89,6 @@ public class UIRadioButton extends UIComponent<UIRadioButton> implements IGuiTex
         this.text = text;
         calculateSize();
         return this;
-    }
-
-    /**
-     * Gets the text for this {@link UICheckBox}.
-     *
-     * @return the text
-     */
-    public String getText() {
-        return text;
-    }
-
-    /**
-     * Checks if this {@link UIRadioButton} is selected.
-     *
-     * @return true, if is selected
-     */
-    public boolean isSelected() {
-        return selected;
     }
 
     /**

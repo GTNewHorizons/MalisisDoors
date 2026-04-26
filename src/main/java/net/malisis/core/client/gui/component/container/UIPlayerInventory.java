@@ -26,13 +26,8 @@ public class UIPlayerInventory extends UIContainer {
     /** Height required for player inventory (including title) */
     public static final int INVENTORY_HEIGHT = 87;
 
-    /** {@link MalisisInventory} used for this {@link UIPlayerInventory} **/
-    @SuppressWarnings("unused")
-    private MalisisInventory inventory;
-
     public UIPlayerInventory(MalisisGui gui, MalisisInventory inventory) {
         super(gui, "container.inventory", INVENTORY_WIDTH, INVENTORY_HEIGHT);
-        this.inventory = inventory;
 
         for (int i = 0; i < inventory.getSizeInventory(); i++)
             addSlot(gui, (PlayerInventorySlot) inventory.getSlot(i), i);

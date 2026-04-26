@@ -21,7 +21,6 @@ import net.malisis.core.client.gui.ComponentPosition;
 import net.malisis.core.client.gui.MalisisGui;
 import net.malisis.core.client.gui.component.UIComponent;
 import net.malisis.core.client.gui.component.interaction.UITab;
-import net.malisis.core.client.gui.event.ComponentEvent;
 import net.malisis.core.client.gui.icon.GuiIcon;
 import net.malisis.core.renderer.animation.transformation.ITransformable;
 
@@ -103,55 +102,6 @@ public class UITabGroup extends UIContainer<UITabGroup> {
     public GuiIcon getIcons() {
         if (attachedContainer instanceof UIWindow) return windowIcons[tabPosition.ordinal()];
         else return panelIcons[tabPosition.ordinal()];
-    }
-
-    /**
-     * Gets the attached container for this {@link UITabGroup}.
-     *
-     * @return the attached container
-     */
-    public UIContainer getAttachedContainer() {
-        return attachedContainer;
-    }
-
-    /**
-     * Gets the offset for this {@link UITabGroup}.
-     *
-     * @return the offset
-     */
-    public int getOffset() {
-        return offset;
-    }
-
-    /**
-     * Sets the offset for this {@link UITabGroup}.
-     *
-     * @param offset the offset
-     * @return this {@link UITabGroup}
-     */
-    public UITabGroup setOffset(int offset) {
-        this.offset = offset;
-        return this;
-    }
-
-    /**
-     * Gets the spacing for this {@link UITabGroup}.
-     *
-     * @return the spacing
-     */
-    public int getSpacing() {
-        return spacing;
-    }
-
-    /**
-     * Sets the spacing for this {@link UITabGroup}.
-     *
-     * @param spacing the spacing
-     * @return this {@link UITabGroup}
-     */
-    public UITabGroup setSpacing(int spacing) {
-        this.spacing = spacing;
-        return this;
     }
 
     /**
@@ -326,34 +276,4 @@ public class UITabGroup extends UIContainer<UITabGroup> {
         return y;
     }
 
-    /**
-     * Event fired when an inactive {@link UITab} is clicked.<br>
-     * Canceling the event will keep the old tab active.
-     *
-     * @author Ordinastie
-     *
-     */
-    public static class TabChangeEvent extends ComponentEvent<UITabGroup> {
-
-        private UITab newTab;
-
-        public TabChangeEvent(UITabGroup component, UITab newTab) {
-            super(component);
-            this.newTab = newTab;
-        }
-
-        /**
-         * @return the {@link UITab} deactivated
-         */
-        public UITab getOldTab() {
-            return component.activeTab;
-        }
-
-        /**
-         * @return the {@link UITab} activated
-         */
-        public UITab getNewTab() {
-            return newTab;
-        }
-    }
 }

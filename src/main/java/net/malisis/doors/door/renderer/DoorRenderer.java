@@ -30,11 +30,8 @@ public class DoorRenderer extends MalisisRenderer {
     protected DoorTileEntity tileEntity;
     protected MalisisModel model;
     protected int direction;
-    protected boolean opened;
-    protected boolean reversed;
     protected boolean topBlock;
 
-    protected Shape shape;
     protected RenderParameters rp;
     protected AnimationRenderer ar = new AnimationRenderer();
 
@@ -50,7 +47,6 @@ public class DoorRenderer extends MalisisRenderer {
         Shape top = new Shape(bottom);
         top.translate(0, 1, 0);
 
-        shape = bottom;
         model = new MalisisModel();
         model.addShape("bottom", bottom);
         model.addShape("top", top);
@@ -77,8 +73,6 @@ public class DoorRenderer extends MalisisRenderer {
         setTileEntity();
 
         direction = tileEntity.getDirection();
-        opened = tileEntity.isOpened();
-        reversed = tileEntity.isReversed();
         topBlock = tileEntity.isTopBlock(x, y, z);
 
         rp.icon.set(null);

@@ -27,7 +27,7 @@ public enum MouseButton {
 
     public static MouseButton[] DEFAULT = { LEFT, RIGHT, MIDDLE };
 
-    private int code;
+    private final int code;
 
     private MouseButton(int code) {
         this.code = code;

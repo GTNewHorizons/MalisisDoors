@@ -51,11 +51,6 @@ public abstract class GuiShape extends Shape {
         rotate(angle, 0, 0, 1, x, y, z);
     }
 
-    public void rotate(float angle) {
-        // rotate(angle, x + (x + width) / 2, y + (y + height) / 2, 0);
-        // applyMatrix();
-    }
-
     @Override
     public void scale(float scale) {
         scale(scale, scale);
@@ -76,9 +71,5 @@ public abstract class GuiShape extends Shape {
             setStandardUV();
         }
 
-        public GuiFace(int width, int height) {
-            this();
-            factor(width, height, 0);
-        }
     }
 }

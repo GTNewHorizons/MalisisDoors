@@ -51,7 +51,7 @@ public class FontGenerator {
 
     public BufferedImage generate(int size, File textureFile, File uvFile) {
         BufferedImage img = generateTexture(size, textureFile);
-        generateUVs(size, uvFile);
+        generateUVs(uvFile);
         return img;
     }
 
@@ -71,21 +71,6 @@ public class FontGenerator {
 
             cd.setUVs(x, y, size, options);
 
-            if (options.debug) {
-                // baseLine
-                g.setColor(Color.RED);
-                g.drawLine(
-                    x,
-                    (int) (y + cd.getAscent()),
-                    (int) (x + cd.getFullWidth(options)),
-                    (int) (y + cd.getAscent()));
-
-                g.setColor(Color.MAGENTA);
-                g.drawRect(x, y, (int) (cd.getCharWidth()), (int) (cd.getCharHeight()));
-
-                g.setColor(Color.BLACK);
-            }
-
             x += cd.getFullWidth(options) + 15;
         }
 
@@ -99,7 +84,7 @@ public class FontGenerator {
         return img;
     }
 
-    private void generateUVs(int size, File uvFile) {
+    private void generateUVs(File uvFile) {
         try {
             StringBuilder sb = new StringBuilder();
             for (CharData cd : charData) {
@@ -137,19 +122,7 @@ public class FontGenerator {
 
         g.setFont(font);
 
-        if (options.debug) {
-            int color = 0x666666;
-            for (int i = 0; i < img.getWidth(); i += 25) {
-                if (i % 500 == 0) color = 0x333333;
-                else if (i % 100 == 0) color = 0x777777;
-                else color = 0xBBBBBB;
-                g.setColor(new Color(color));
-                g.drawLine(i, 0, i, img.getWidth());
-                g.drawLine(0, i, img.getHeight(), i);
-            }
-        }
-
-        g.setColor(options.debug ? Color.BLACK : Color.WHITE);
+        g.setColor(Color.WHITE);
 
         return g;
     }

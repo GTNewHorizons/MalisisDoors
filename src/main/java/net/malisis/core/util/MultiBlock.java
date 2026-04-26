@@ -55,18 +55,6 @@ public class MultiBlock {
         setWorld(world);
     }
 
-    public MultiBlock(World world, int x, int y, int z, AxisAlignedBB aabb) {
-        this(x, y, z);
-        setWorld(world);
-        setBounds(aabb);
-    }
-
-    public MultiBlock(World world, int x, int y, int z, int width, int height, int depth) {
-        this(x, y, z);
-        setWorld(world);
-        setSize(width, height, depth);
-    }
-
     public MultiBlock(NBTTagCompound tag) {
         readFromNBT(tag);
     }
@@ -128,24 +116,6 @@ public class MultiBlock {
      */
     public boolean isOrigin(int x, int y, int z) {
         return this.x == x && this.y == y && this.z == z;
-    }
-
-    /**
-     * Sets the size for this {@link MultiBlock}.
-     *
-     * @param width  the width
-     * @param height the height
-     * @param depth  the depth
-     */
-    public void setSize(int width, int height, int depth) {
-        int minX = width > 0 ? 0 : width + 1;
-        int maxX = width > 0 ? width : 1;
-        int minY = height > 0 ? 0 : height + 1;
-        int maxY = height > 0 ? height : 1;
-        int minZ = depth > 0 ? 0 : depth + 1;
-        int maxZ = depth > 0 ? depth : 1;
-
-        setBounds(AxisAlignedBB.getBoundingBox(minX, minY, minZ, maxX, maxY, maxZ));
     }
 
     /**
@@ -336,8 +306,6 @@ public class MultiBlock {
         aabb = AxisAlignedBB.getBoundingBox(0, 0, 0, 1, 1, 1);
         aabb = AABBUtils.readFromNBT(tag, aabb);
         if (tag.hasKey("direction")) direction = ForgeDirection.getOrientation(tag.getInteger("direction"));
-
-        return;
     }
 
     /**

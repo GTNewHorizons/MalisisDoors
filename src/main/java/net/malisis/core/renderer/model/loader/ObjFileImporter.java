@@ -88,15 +88,6 @@ public class ObjFileImporter implements IModelLoader {
     }
 
     /**
-     * Instantiates a new {@link ObjFileImporter} from {@link InputStream}.
-     *
-     * @param inputStream the input stream
-     */
-    public ObjFileImporter(InputStream inputStream) {
-        load(inputStream);
-    }
-
-    /**
      * Gets the shapes.
      *
      * @return the shapes
@@ -185,7 +176,7 @@ public class ObjFileImporter implements IModelLoader {
      * @param data the data
      */
     private void addVertex(String data) {
-        String coords[] = data.split("\\s+");
+        String[] coords = data.split("\\s+");
         float x = 0;
         float y = 0;
         float z = 0;
@@ -210,7 +201,7 @@ public class ObjFileImporter implements IModelLoader {
      * @param data the data
      */
     private void addUV(String data) {
-        String coords[] = data.split("\\s+");
+        String[] coords = data.split("\\s+");
         float u = 0;
         float v = 0;
         if (coords.length != 2) {
@@ -233,7 +224,7 @@ public class ObjFileImporter implements IModelLoader {
      * @param data the data
      */
     private void addNormal(String data) {
-        String coords[] = data.split("\\s+");
+        String[] coords = data.split("\\s+");
         float x = 0;
         float y = 0;
         float z = 0;

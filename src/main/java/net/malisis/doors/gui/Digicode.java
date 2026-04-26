@@ -49,10 +49,6 @@ public class Digicode extends UIContainer<Digicode> {
         this(gui, null);
     }
 
-    public String getExpectedCode() {
-        return expectedCode;
-    }
-
     public String getEnteredCode() {
         return enteredCode;
     }
@@ -113,9 +109,6 @@ public class Digicode extends UIContainer<Digicode> {
 
         return super.onKeyTyped(keyChar, keyCode);
     }
-
-    @Override
-    public void drawBackground(GuiRenderer renderer, int mouseX, int mouseY, float partialTick) {}
 
     @Override
     public void drawForeground(GuiRenderer renderer, int mouseX, int mouseY, float partialTick) {

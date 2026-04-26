@@ -81,17 +81,6 @@ public class UIContainer<T extends UIContainer> extends UIComponent<T> implement
     /**
      * Instantiates a new {@link UIContainer}.
      *
-     * @param gui   the gui
-     * @param title the title
-     */
-    public UIContainer(MalisisGui gui, String title) {
-        this(gui);
-        setTitle(title);
-    }
-
-    /**
-     * Instantiates a new {@link UIContainer}.
-     *
      * @param gui    the gui
      * @param width  the width
      * @param height the height
@@ -201,15 +190,6 @@ public class UIContainer<T extends UIContainer> extends UIComponent<T> implement
         titleLabel.setText(title);
         add(titleLabel);
         return this;
-    }
-
-    /**
-     * Gets the title.
-     *
-     * @return the title for this {@link UIContainer}.
-     */
-    public String getTitle() {
-        return titleLabel != null ? titleLabel.getText() : null;
     }
 
     // #end getters/setters

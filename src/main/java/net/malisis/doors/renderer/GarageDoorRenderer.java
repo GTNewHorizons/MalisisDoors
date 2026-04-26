@@ -39,10 +39,6 @@ import net.minecraft.client.renderer.DestroyBlockProgress;
 public class GarageDoorRenderer extends MalisisRenderer {
 
     private GarageDoorTileEntity tileEntity;
-    protected int direction;
-    protected boolean opened;
-    protected boolean reversed;
-    protected boolean topBlock;
     protected Set<GarageDoorTileEntity> childDoors = new HashSet<>();
 
     protected AnimationRenderer ar = new AnimationRenderer();
@@ -83,10 +79,6 @@ public class GarageDoorRenderer extends MalisisRenderer {
         }
 
         getBlockDamage = true;
-
-        direction = tileEntity.getDirection();
-        opened = tileEntity.isOpened();
-        reversed = tileEntity.isReversed();
 
         rp.icon.set(null);
 
@@ -168,8 +160,4 @@ public class GarageDoorRenderer extends MalisisRenderer {
         return false;
     }
 
-    @Override
-    public boolean shouldRender3DInInventory(int modelId) {
-        return true;
-    }
 }

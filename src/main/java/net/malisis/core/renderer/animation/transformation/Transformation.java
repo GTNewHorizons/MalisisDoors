@@ -13,8 +13,6 @@
 
 package net.malisis.core.renderer.animation.transformation;
 
-import java.util.List;
-
 import net.malisis.core.util.Timer;
 
 public abstract class Transformation<T extends Transformation, S extends ITransformable> {
@@ -70,23 +68,6 @@ public abstract class Transformation<T extends Transformation, S extends ITransf
 
     public long getLoopDuration() {
         return duration + loopStartDelay + loopResetDelay;
-    }
-
-    public T loop(int loops) {
-        return loop(loops, 0, 0);
-    }
-
-    public T loop(int loops, int startDelay, int resetDelay) {
-        if (loops == 0) return (T) this;
-
-        this.loops = loops;
-        this.loopStartDelay = startDelay;
-        this.loopResetDelay = resetDelay;
-        return (T) this;
-    }
-
-    public void transform(List<S> transformables, long elapsedTime) {
-        for (S transformable : transformables) transform(transformable, elapsedTime);
     }
 
     public void transform(S transformable, long elapsedTime) {

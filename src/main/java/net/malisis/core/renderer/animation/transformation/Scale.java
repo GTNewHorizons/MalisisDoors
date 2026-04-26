@@ -19,15 +19,8 @@ public class Scale extends Transformation<Scale, ITransformable.Scale> {
     protected float toX = 1, toY = 1, toZ = 1;
     protected float offsetX = 0, offsetY = 0, offsetZ = 0;
 
-    public Scale() {}
-
     public Scale(float x, float y, float z) {
         to(x, y, z);
-    }
-
-    public Scale(float fromX, float fromY, float fromZ, float toX, float toY, float toZ) {
-        from(fromX, fromY, fromZ);
-        to(toX, toY, toZ);
     }
 
     protected Scale from(float x, float y, float z) {

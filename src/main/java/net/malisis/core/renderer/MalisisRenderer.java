@@ -13,7 +13,6 @@
 
 package net.malisis.core.renderer;
 
-import java.lang.reflect.Field;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -24,15 +23,14 @@ import net.malisis.core.renderer.element.Vertex;
 import net.malisis.core.renderer.element.shape.Cube;
 import net.malisis.core.renderer.font.FontRenderOptions;
 import net.malisis.core.renderer.font.MalisisFont;
+import net.malisis.core.renderer.font.VanillaFont;
 import net.malisis.core.renderer.icon.MalisisIcon;
 import net.malisis.doors.door.tileentity.DoorTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.renderer.DestroyBlockProgress;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureMap;
@@ -47,7 +45,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.client.MinecraftForgeClient;
-import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
@@ -64,16 +61,13 @@ import cpw.mods.fml.client.registry.RenderingRegistry;
  * @author Ordinastie
  *
  */
-public class MalisisRenderer extends TileEntitySpecialRenderer
-    implements ISimpleBlockRenderingHandler, IItemRenderer, IRenderWorldLast {
+public class MalisisRenderer extends TileEntitySpecialRenderer implements ISimpleBlockRenderingHandler, IItemRenderer {
 
     // Reference to Minecraft.renderGlobal.damagedBlocks (lazy loaded)
     /** The damaged blocks. */
     private static Map damagedBlocks;
     /** The damaged icons. */
     protected static IIcon[] damagedIcons;
-    /** Reference to Tessellator.isDrawing field **/
-    private static Field isDrawingField;
     /** Whether this {@link MalisisRenderer} initialized. (initialize() already called) */
     private boolean initialized = false;
     /** Id of this {@link MalisisRenderer}. */
@@ -98,8 +92,6 @@ public class MalisisRenderer extends TileEntitySpecialRenderer
     protected ItemStack itemStack;
     /** ItemRenderType of item rendering (ITEM). */
     protected ItemRenderType itemRenderType;
-    /** RenderGlobal reference (IRWL) */
-    protected RenderGlobal renderGlobal;
     /** Type of rendering. */
     protected RenderType renderType;
     /** Mode of rendering (GL constant). */
@@ -180,27 +172,9 @@ public class MalisisRenderer extends TileEntitySpecialRenderer
     /**
      * Sets informations for this {@link MalisisRenderer}.
      *
-     * @param world the world
-     */
-    public void set(IBlockAccess world) {
-        this.world = world;
-    }
-
-    /**
-     * Sets informations for this {@link MalisisRenderer}.
-     *
      * @param block the block
      */
     public void set(Block block) {
-        set(world, block, x, y, z, blockMetadata);
-    }
-
-    /**
-     * Sets informations for this {@link MalisisRenderer}.
-     *
-     * @param blockMetadata the block metadata
-     */
-    public void set(int blockMetadata) {
         set(world, block, x, y, z, blockMetadata);
     }
 
@@ -211,17 +185,6 @@ public class MalisisRenderer extends TileEntitySpecialRenderer
      * @param blockMetadata the block metadata
      */
     public void set(Block block, int blockMetadata) {
-        set(world, block, x, y, z, blockMetadata);
-    }
-
-    /**
-     * Sets informations for this {@link MalisisRenderer}.
-     *
-     * @param x the x
-     * @param y the y
-     * @param z the z
-     */
-    public void set(int x, int y, int z) {
         set(world, block, x, y, z, blockMetadata);
     }
 
@@ -391,39 +354,6 @@ public class MalisisRenderer extends TileEntitySpecialRenderer
     }
 
     // #end TESR
-
-    // #region IRenderWorldLast
-    @Override
-    public boolean shouldSetViewportPosition() {
-        return true;
-    }
-
-    @Override
-    public boolean shouldRender(RenderWorldLastEvent event, IBlockAccess world) {
-        return true;
-    }
-
-    @Override
-    public void renderWorldLastEvent(RenderWorldLastEvent event, IBlockAccess world) {
-        set(world);
-        partialTick = event.partialTicks;
-        renderGlobal = event.context;
-        double x = 0, y = 0, z = 0;
-        if (shouldSetViewportPosition()) {
-            EntityClientPlayerMP p = Minecraft.getMinecraft().thePlayer;
-            x = -(p.lastTickPosX + (p.posX - p.lastTickPosX) * partialTick);
-            y = -(p.lastTickPosY + (p.posY - p.lastTickPosY) * partialTick);
-            z = -(p.lastTickPosZ + (p.posZ - p.lastTickPosZ) * partialTick);
-        }
-
-        prepare(RenderType.WORLD_LAST, x, y, z);
-
-        render();
-
-        clean();
-    }
-
-    // #end IRenderWorldLast
 
     // #region prepare()
     /**
@@ -621,28 +551,6 @@ public class MalisisRenderer extends TileEntitySpecialRenderer
     protected void initialize() {}
 
     /**
-     * Renders the block using the default Minecraft rendering system.
-     */
-    public void renderStandard() {
-        renderStandard(renderBlocks);
-    }
-
-    /**
-     * Renders the blocks using the default Minecraft rendering system with the specified <b>renderer</b>.
-     *
-     * @param renderer the renderer
-     */
-    public void renderStandard(RenderBlocks renderer) {
-        if (renderer == null) return;
-
-        boolean b = isShifted;
-        if (b) tessellatorUnshift();
-        renderer.setRenderBoundsFromBlock(block);
-        renderer.renderStandardBlock(block, x, y, z);
-        if (b) tessellatorShift();
-    }
-
-    /**
      * Main rendering method. Draws simple cube by default.<br>
      * Should be overridden to handle the rendering.
      */
@@ -695,15 +603,6 @@ public class MalisisRenderer extends TileEntitySpecialRenderer
 
         Tessellator tess = Tessellator.instance;
         for (Face f : s.getFaces()) drawFace(f, f.getParameters(), tess);
-    }
-
-    /**
-     * Draws a {@link Face} with its own {@link RenderParameters}.
-     *
-     * @param face the face
-     */
-    public void drawFace(Face face, Tessellator tess) {
-        drawFace(face, face.getParameters(), tess);
     }
 
     /**
@@ -798,31 +697,10 @@ public class MalisisRenderer extends TileEntitySpecialRenderer
      * @param fro  the fro
      */
     public void drawText(MalisisFont font, String text, float x, float y, float z, FontRenderOptions fro) {
-        if (font == null) font = MalisisFont.minecraftFont;
+        if (font == null) font = VanillaFont.vanillaFont;
         if (fro == null) fro = new FontRenderOptions();
 
         font.render(this, text, x, y, z, fro);
-    }
-
-    /**
-     * Gets the IIcon corresponding to the specified {@link RenderParameters}.
-     *
-     * @param params the params
-     * @return the icon
-     */
-    protected IIcon getIcon(RenderParameters params) {
-        IIcon icon = params.icon.get();
-        if (params.useCustomTexture.get()) icon = new MalisisIcon(); // use a generic icon where UVs go from 0 to 1
-        else if (overrideTexture != null) icon = overrideTexture;
-        else if (block != null && icon == null) {
-            int side = 0;
-            if (params.textureSide.get() != null) side = params.textureSide.get()
-                .ordinal();
-            if (world != null && params.useWorldSensitiveIcon.get()) icon = block.getIcon(world, x, y, z, side);
-            else icon = block.getIcon(side, blockMetadata);
-        }
-
-        return icon;
     }
 
     /**
@@ -869,25 +747,13 @@ public class MalisisRenderer extends TileEntitySpecialRenderer
         RenderParameters p = face.getParameters();
         if (p.direction.get() == null || p.renderAllFaces.get()) return true;
 
-        boolean b = block.shouldSideBeRendered(
+        return block.shouldSideBeRendered(
             world,
             x + p.direction.get().offsetX,
             y + p.direction.get().offsetY,
             z + p.direction.get().offsetZ,
             p.direction.get()
                 .ordinal());
-        return b;
-    }
-
-    /**
-     * Applies the texture to the {@link Shape}.<br>
-     * Usually necessary before some shape transformations in conjunction with {@link RenderParameters#applyTexture} set
-     * to <code>false</code> to prevent reapplying texture when rendering.
-     *
-     * @param shape the shape
-     */
-    public void applyTexture(Shape shape) {
-        applyTexture(shape, null);
     }
 
     /**
@@ -1038,9 +904,7 @@ public class MalisisRenderer extends TileEntitySpecialRenderer
         for (int i = 0; i < b.length; i++)
             b[i] += getMixedBrightnessForBlock(world, x + aoMatrix[i][0], y + aoMatrix[i][1], z + aoMatrix[i][2]);
 
-        int brightness = getAoBrightness(b[0], b[1], b[2], baseBrightness);
-
-        return brightness;
+        return getAoBrightness(b[0], b[1], b[2], baseBrightness);
     }
 
     /**
@@ -1222,10 +1086,4 @@ public class MalisisRenderer extends TileEntitySpecialRenderer
         MinecraftForgeClient.registerItemRenderer(item, this);
     }
 
-    /**
-     * Registers this {@link MalisisRenderer} to be used for {@link RenderWorldLastEvent}.
-     */
-    public void registerForRenderWorldLast() {
-        RenderWorldEventHandler.register(this);
-    }
 }

@@ -15,14 +15,9 @@ package net.malisis.core.client.gui;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
 
 import net.malisis.core.client.gui.icon.GuiIcon;
 import net.malisis.core.renderer.icon.MalisisIcon;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.util.ResourceLocation;
 
 /**
@@ -51,60 +46,6 @@ public class GuiTexture {
         this.resourceLocation = rl;
         this.width = width;
         this.height = height;
-    }
-
-    /**
-     * Instantiates a new {@link GuiTexture}. <br>
-     * Automatically determines the width and height for the {@link File}.
-     *
-     * @param file the file
-     * @throws IOException Signals that an I/O exception has occurred.
-     */
-    public GuiTexture(File file) throws IOException {
-        this(ImageIO.read(file), file.getName());
-    }
-
-    /**
-     * Instantiates a new {@link GuiTexture}.<br>
-     * Automatically determines the width and height for the {@link BufferedImage}.
-     *
-     * @param image the image
-     * @param name  the name
-     */
-    public GuiTexture(BufferedImage image, String name) {
-        DynamicTexture dynTex = new DynamicTexture(image);
-        width = image.getWidth();
-        height = image.getHeight();
-        resourceLocation = Minecraft.getMinecraft()
-            .getTextureManager()
-            .getDynamicTextureLocation(name, dynTex);
-    }
-
-    /**
-     * Instantiates a new {@link GuiTexture}.
-     *
-     * @param rl the rl
-     */
-    public GuiTexture(ResourceLocation rl) {
-        this(rl, 1, 1);
-    }
-
-    /**
-     * Gets the width of this {@link GuiTexture}.
-     *
-     * @return the width
-     */
-    public int getWidth() {
-        return width;
-    }
-
-    /**
-     * Gets the height of this {@link GuiTexture}.
-     *
-     * @return the height
-     */
-    public int getHeight() {
-        return height;
     }
 
     /**
@@ -194,21 +135,14 @@ public class GuiTexture {
      */
     public GuiIcon getXResizableIcon(int x, int y, int width, int height, int side) {
         int w = width - side * 2;
-        int h = height;
 
         // @formatter:off
         MalisisIcon[] icons = new MalisisIcon[] {
-            createIcon(x, y, side, h), createIcon(x + side, y, w, h), createIcon(x + side + w, y, side, h),
+            createIcon(x, y, side, height), createIcon(x + side, y, w, height), createIcon(x + side + w, y, side, height),
         };
         // @formatter:on
 
         return new GuiIcon(icons);
-    }
-
-    public void delete() {
-        Minecraft.getMinecraft()
-            .getTextureManager()
-            .deleteTexture(resourceLocation);
     }
 
     @Override

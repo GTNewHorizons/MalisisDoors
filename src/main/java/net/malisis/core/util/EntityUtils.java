@@ -13,23 +13,13 @@
 
 package net.malisis.core.util;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
-import net.malisis.core.MalisisCore;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.management.PlayerManager;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
-import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.util.ForgeDirection;
 
 /**
@@ -64,22 +54,6 @@ public class EntityUtils {
         entityItem.motionY = world.rand.nextGaussian() * factor + 0.2F;
         entityItem.motionZ = world.rand.nextGaussian() * factor;
         world.spawnEntityInWorld(entityItem);
-    }
-
-    /**
-     * Finds a player by its UUID.
-     *
-     * @param uuid the uuid
-     * @return the player
-     */
-    public static EntityPlayerMP findPlayerFromUUID(UUID uuid) {
-        List<EntityPlayerMP> listPlayers = MinecraftServer.getServer()
-            .getConfigurationManager().playerEntityList;
-
-        for (EntityPlayerMP player : listPlayers) if (player.getUniqueID()
-            .equals(uuid)) return player;
-
-        return null;
     }
 
     /**
@@ -121,23 +95,4 @@ public class EntityUtils {
                 .getItem() == item;
     }
 
-    public static boolean isEquipped(EntityPlayer player, ItemStack itemStack) {
-        return isEquipped(player, itemStack != null ? itemStack.getItem() : null);
-    }
-
-    public static List<EntityPlayerMP> getPlayersWatchingChunk(Chunk chunk) {
-        return getPlayersWatchingChunk((WorldServer) chunk.worldObj, chunk.xPosition, chunk.zPosition);
-    }
-
-    public static List<EntityPlayerMP> getPlayersWatchingChunk(WorldServer world, int x, int z) {
-        try {
-            PlayerManager.PlayerInstance playerInstance = world.getPlayerManager()
-                .getOrCreateChunkWatcher(x, z, false);
-            if (playerInstance == null) return new ArrayList<>();
-            return playerInstance.playersWatchingChunk;
-        } catch (Throwable e) {
-            MalisisCore.log.info("Failed to get players watching chunk :", e);
-            return new ArrayList<>();
-        }
-    }
 }

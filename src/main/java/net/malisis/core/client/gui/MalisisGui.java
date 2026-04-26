@@ -16,7 +16,6 @@ package net.malisis.core.client.gui;
 import java.io.FileDescriptor;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map.Entry;
@@ -42,19 +41,15 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.common.MinecraftForge;
 
-import org.apache.commons.lang3.StringUtils;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.InputEvent;
 
@@ -64,9 +59,6 @@ import cpw.mods.fml.common.gameevent.InputEvent;
  * @author Ordinastie
  */
 public abstract class MalisisGui extends GuiScreen {
-
-    public static GuiTexture BLOCK_TEXTURE = new GuiTexture(TextureMap.locationBlocksTexture);
-    public static GuiTexture ITEM_TEXTURE = new GuiTexture(TextureMap.locationItemsTexture);
 
     /** Whether or not to cancel the next gui close event. */
     public static boolean cancelClose = false;
@@ -144,15 +136,6 @@ public abstract class MalisisGui extends GuiScreen {
     }
 
     /**
-     * Gets the {@link GuiRenderer} for this {@link MalisisGui}.
-     *
-     * @return the renderer
-     */
-    public GuiRenderer getRenderer() {
-        return renderer;
-    }
-
-    /**
      * Sets the {@link MalisisInventoryContainer} for this {@link MalisisGui}.
      *
      * @param container the inventory container
@@ -177,15 +160,6 @@ public abstract class MalisisGui extends GuiScreen {
      */
     public GuiTexture getGuiTexture() {
         return renderer.getDefaultTexture();
-    }
-
-    /**
-     * Gets elapsed time since the GUI was opened.
-     *
-     * @return the time
-     */
-    public long getElapsedTime() {
-        return ar.getElapsedTime();
     }
 
     /**
@@ -218,35 +192,6 @@ public abstract class MalisisGui extends GuiScreen {
         height = renderer.isIgnoreScale() ? displayHeight : resolution.getScaledHeight();
 
         screen.setSize(width, height);
-    }
-
-    public void addDebug(String name, final Object... objects) {
-        Callable<String> call;
-        if (objects.length == 1 && objects[0] instanceof Callable) {
-            call = (Callable<String>) objects[0];
-        } else if (objects.length > 1 && objects[0] instanceof String) {
-            call = new Callable<String>() {
-
-                @Override
-                public String call() {
-                    return String.format((String) objects[0], Arrays.copyOfRange(objects, 1, objects.length));
-                }
-            };
-        } else {
-            call = new Callable<String>() {
-
-                @Override
-                public String call() {
-                    return StringUtils.join(objects, ',');
-                }
-            };
-        }
-
-        debugMap.put(name, call);
-    }
-
-    public void removeDebug(String name) {
-        debugMap.remove(name);
     }
 
     /**
@@ -469,8 +414,6 @@ public abstract class MalisisGui extends GuiScreen {
             mouseY = this.height - Mouse.getY() - 1;
         }
 
-        update(mouseX, mouseY, partialTicks);
-
         if (guiscreenBackground) drawWorldBackground(1);
 
         RenderHelper.enableGUIStandardItemLighting();
@@ -512,15 +455,6 @@ public abstract class MalisisGui extends GuiScreen {
         GL11.glEnable(GL11.GL_LIGHTING);
         GL11.glEnable(GL11.GL_DEPTH_TEST);
     }
-
-    /**
-     * Called every frame.
-     *
-     * @param mouseX      the mouse x
-     * @param mouseY      the mouse y
-     * @param partialTick the partial tick
-     */
-    public void update(int mouseX, int mouseY, float partialTick) {}
 
     /**
      * Called from TE when TE is updated. Override this method when you want to change displayed informations when the
@@ -573,29 +507,6 @@ public abstract class MalisisGui extends GuiScreen {
         if (this.mc.thePlayer != null) this.mc.thePlayer.closeScreen();
         this.mc.displayGuiScreen((GuiScreen) null);
         this.mc.setIngameFocus();
-        return;
-    }
-
-    public void displayOverlay() {
-        mc = Minecraft.getMinecraft();
-        isOverlay = true;
-        setWorldAndResolution(mc, 0, 0);
-
-        if (!doConstruct()) return;
-
-        MinecraftForge.EVENT_BUS.register(this);
-        FMLCommonHandler.instance()
-            .bus()
-            .register(this);
-    }
-
-    public void closeOverlay() {
-        if (mc.currentScreen == this) close();
-        MinecraftForge.EVENT_BUS.unregister(this);
-        FMLCommonHandler.instance()
-            .bus()
-            .unregister(this);
-        onGuiClosed();
     }
 
     @Override
@@ -664,13 +575,6 @@ public abstract class MalisisGui extends GuiScreen {
     }
 
     /**
-     * @return the currently hovered {@link UIComponent}. null if there is no current GUI.
-     */
-    public static UIComponent getHoveredComponent() {
-        return currentGui() != null ? currentGui().hoveredComponent : null;
-    }
-
-    /**
      * Sets the hovered state for a {@link UIComponent}. If a <code>UIComponent</code> is currently hovered, it will be
      * "unhovered" first.
      *
@@ -697,15 +601,6 @@ public abstract class MalisisGui extends GuiScreen {
         }
 
         return true;
-    }
-
-    /**
-     * Gets the currently focused {@link UIComponent}
-     *
-     * @return the component
-     */
-    public static UIComponent getFocusedComponent() {
-        return currentGui() != null ? currentGui().focusedComponent : null;
     }
 
     public static boolean setFocusedComponent(UIComponent component, boolean focused) {

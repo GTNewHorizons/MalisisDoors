@@ -128,7 +128,6 @@ public class MalisisDoors implements IMalisisMod {
         public static Block factoryDoor;
         public static Block shojiDoor;
         public static RustyHatch rustyHatch;
-        public static Block curtains;
         public static BigDoor carriageDoor;
         public static BigDoor medievalDoor;
         public static ForcefieldDoor forcefieldDoor;
@@ -155,8 +154,6 @@ public class MalisisDoors implements IMalisisMod {
         public static Item factoryDoorItem;
         public static Item shojiDoorItem;
         public static Item rustyHandle;
-        public static Item curtainsItem;
-        public static Item carriageDoorItem;
         public static ForcefieldItem forcefieldItem;
         public static Item ironTrapDoorItem;
         public static Item slidingTrapDoorItem;

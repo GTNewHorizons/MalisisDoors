@@ -19,7 +19,6 @@ import java.util.List;
 
 import net.malisis.core.renderer.animation.transformation.ITransformable;
 import net.malisis.core.renderer.animation.transformation.Transformation;
-import net.minecraft.client.Minecraft;
 
 /**
  * @author Ordinastie
@@ -45,18 +44,6 @@ public class AnimationRenderer {
         setStartTime(System.currentTimeMillis());
     }
 
-    public void setStartTick(long start) {
-        setStartTime(System.currentTimeMillis() - (getWorldTime() - start) * 1000 / 20);
-        // MalisisCore.message("%s - %s = %s > %s / %s", getWorldTime(), start, getWorldTime() - start,
-        // getElapsedTime() / 1000000000,
-        // getElapsedTicks());
-    }
-
-    public long getWorldTime() {
-        if (Minecraft.getMinecraft().theWorld != null) return Minecraft.getMinecraft().theWorld.getTotalWorldTime();
-        else return 0;
-    }
-
     public long getElapsedTime() {
         return System.currentTimeMillis() - startTime;
     }
@@ -67,14 +54,6 @@ public class AnimationRenderer {
 
     public void addAnimation(Animation animation) {
         animations.add(animation);
-    }
-
-    public void deleteAnimation(Animation animation) {
-        animations.remove(animation);
-    }
-
-    public void clearAnimations() {
-        animations.clear();
     }
 
     public void autoClearAnimations() {

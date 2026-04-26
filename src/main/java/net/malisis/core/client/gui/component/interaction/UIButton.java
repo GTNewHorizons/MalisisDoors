@@ -18,13 +18,12 @@ import net.malisis.core.client.gui.MalisisGui;
 import net.malisis.core.client.gui.component.IGuiText;
 import net.malisis.core.client.gui.component.UIComponent;
 import net.malisis.core.client.gui.component.decoration.UIImage;
-import net.malisis.core.client.gui.component.decoration.UILabel;
 import net.malisis.core.client.gui.component.decoration.UITooltip;
 import net.malisis.core.client.gui.element.XYResizableGuiShape;
 import net.malisis.core.client.gui.event.ComponentEvent;
 import net.malisis.core.client.gui.icon.GuiIcon;
 import net.malisis.core.renderer.font.FontRenderOptions;
-import net.malisis.core.renderer.font.MalisisFont;
+import net.malisis.core.renderer.font.VanillaFont;
 import net.malisis.core.util.MouseButton;
 
 /**
@@ -38,8 +37,7 @@ public class UIButton extends UIComponent<UIButton> implements IGuiText<UIButton
     protected GuiIcon iconDisabled;
     protected GuiIcon iconPressed;
 
-    /** The {@link MalisisFont} to use for this {@link UITooltip}. */
-    protected MalisisFont font = MalisisFont.minecraftFont;
+    protected VanillaFont font = VanillaFont.vanillaFont;
     /** The {@link FontRenderOptions} to use for this {@link UITooltip}. */
     protected FontRenderOptions fro = new FontRenderOptions();
     /** The {@link FontRenderOptions} to use for this {@link UITooltip} when hovered. */
@@ -93,69 +91,9 @@ public class UIButton extends UIComponent<UIButton> implements IGuiText<UIButton
         setText(text);
     }
 
-    /**
-     * Instantiates a new {@link UIButton}.
-     *
-     * @param gui   the gui
-     * @param image the image
-     */
-    public UIButton(MalisisGui gui, UIImage image) {
-        this(gui);
-        setImage(image);
-    }
-
-    // #region Getters/Setters
-    @Override
-    public MalisisFont getFont() {
-        return font;
-    }
-
-    @Override
-    public UIButton setFont(MalisisFont font) {
-        this.font = font;
-        setSize(width, height);
-        return this;
-    }
-
     @Override
     public FontRenderOptions getFontRenderOptions() {
         return fro;
-    }
-
-    @Override
-    public UIButton setFontRenderOptions(FontRenderOptions fro) {
-        this.fro = fro;
-        setSize(width, height);
-        return this;
-    }
-
-    /**
-     * Gets the {@link FontRenderOptions} used for this {@link UILabel} when hovered.
-     *
-     * @return the hoveredFro
-     */
-    public FontRenderOptions getHoveredFontRendererOptions() {
-        return hoveredFro;
-    }
-
-    /**
-     * Sets the {@link FontRenderOptions} used for this {@link UILabel} when hovered.
-     *
-     * @param hoveredFro the hoveredFro to set
-     * @return this {@link UIButton}
-     */
-    public UIButton setHoveredFontRendererOptions(FontRenderOptions hoveredFro) {
-        this.hoveredFro = hoveredFro;
-        return this;
-    }
-
-    /**
-     * Gets the text of this {@link UIButton}.
-     *
-     * @return the text of this {@link UIButton}.
-     */
-    public String getText() {
-        return text;
     }
 
     /**
@@ -169,15 +107,6 @@ public class UIButton extends UIComponent<UIButton> implements IGuiText<UIButton
         setSize(width, height);
         image = null;
         return this;
-    }
-
-    /**
-     * Gets the {@link UIImage} of this {@link UIButton}.
-     *
-     * @return the image
-     */
-    public UIImage getImage() {
-        return this.image;
     }
 
     /**
@@ -233,80 +162,6 @@ public class UIButton extends UIComponent<UIButton> implements IGuiText<UIButton
 
         return this;
     }
-
-    /**
-     * Checks if is width is automatically calculated.<br>
-     * If true, this {@link UIButton} cannot be smaller that its contents.
-     *
-     * @return the autoWidth
-     */
-    public boolean isAutoSize() {
-        return autoSize;
-    }
-
-    /**
-     * Sets whether the size of this {@link UIButton} should be calculated automatically.
-     *
-     * @param autoSize the autoSize to set
-     */
-    public UIButton setAutoSize(boolean autoSize) {
-        this.autoSize = autoSize;
-        setSize(width, height);
-        return this;
-    }
-
-    /**
-     * Gets the background color of this {@link UIButton}.
-     *
-     * @return the bg color
-     */
-    public int getBgColor() {
-        return bgColor;
-    }
-
-    /**
-     * Sets the background color of this {@link UIButton}.
-     *
-     * @param bgColor the bg color
-     * @return the UI button
-     */
-    public UIButton setBgColor(int bgColor) {
-        this.bgColor = bgColor;
-        return this;
-    }
-
-    /**
-     * Gets the text offset of this {@link UIButton}.
-     *
-     * @return the text offset x
-     */
-    public int getOffsetX() {
-        return offsetX;
-    }
-
-    /**
-     * Gets the text offset of this {@link UIButton}.
-     *
-     * @return the text offset y
-     */
-    public int getOffsetY() {
-        return offsetY;
-    }
-
-    /**
-     * Sets the text offset of this {@link UIButton}.
-     *
-     * @param x the x
-     * @param y the y
-     * @return the UI button
-     */
-    public UIButton setOffset(int x, int y) {
-        offsetX = x;
-        offsetY = y;
-        return this;
-    }
-
-    // #end Getters/Setters
 
     @Override
     public boolean onClick(int x, int y) {
@@ -384,7 +239,7 @@ public class UIButton extends UIComponent<UIButton> implements IGuiText<UIButton
     public static class ClickEvent extends ComponentEvent<UIButton> {
 
         /** Position of the mouse when clicked . */
-        private int x, y;
+        private final int x, y;
 
         /**
          * Instantiates a new {@link ClickEvent}.

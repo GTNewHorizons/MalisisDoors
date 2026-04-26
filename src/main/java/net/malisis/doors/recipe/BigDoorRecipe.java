@@ -15,7 +15,6 @@ package net.malisis.doors.recipe;
 
 import net.malisis.core.util.BlockState;
 import net.malisis.core.util.ItemUtils;
-import net.malisis.core.util.ItemUtils.ItemStackSplitter;
 import net.malisis.doors.MalisisDoors.Blocks;
 import net.malisis.doors.door.block.BigDoor;
 import net.malisis.doors.door.block.BigDoor.Type;
@@ -88,21 +87,4 @@ public class BigDoorRecipe implements IRecipe {
         return 2;
     }
 
-    // @Override
-    public ItemStack[] getRemainingItems(InventoryCrafting inv) {
-        ItemStack[] itemStacks = new ItemStack[inv.getSizeInventory()];
-        int left = 5;
-        for (int i = 0; i < inv.getSizeInventory(); i++) {
-            ItemStack itemStack = inv.getStackInSlot(i);
-            inv.setInventorySlotContents(i, null);
-            if (itemStack == null) continue;
-
-            ItemStackSplitter iss = new ItemStackSplitter(itemStack);
-            iss.split(itemStack.getItem() == type.door ? 1 : left);
-            itemStacks[i] = iss.source;
-            if (itemStack.getItem() != type.door) left -= iss.amount;
-        }
-
-        return itemStacks;
-    }
 }

@@ -86,9 +86,7 @@ public class SaloonDoorMovement implements IDoorMovement {
         // r1.reversed(tileEntity.getState() == DoorState.CLOSING || tileEntity.getState() == DoorState.CLOSED);
         r4.forTicks(t);
 
-        ChainedTransformation ct = new ChainedTransformation(r1, r2, r3, r4);
-
-        return ct;
+        return new ChainedTransformation(r1, r2, r3, r4);
     }
 
     @Override

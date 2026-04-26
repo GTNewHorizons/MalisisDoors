@@ -145,19 +145,6 @@ public class MalisisInventoryContainer extends Container {
         return nexInventoryId++;
     }
 
-    /**
-     * Removes the {@link MalisisInventory} from this {@link MalisisInventoryContainer}.
-     *
-     * @param inventory the inventory
-     */
-    public void removeInventory(MalisisInventory inventory) {
-        // do not remove player inventory
-        if (inventory == null || inventory.getInventoryId() == 0) return;
-
-        inventory.removeOpenedContainer(this);
-        inventories.remove(inventory.getInventoryId());
-    }
-
     // #region getters/setters
     /**
      * Gets the {@link MalisisInventory} of this {@link MalisisInventoryContainer} with the specified id.
@@ -234,15 +221,6 @@ public class MalisisInventoryContainer extends Container {
         if (dragType == DRAG_TYPE_ONE) return button == 0 && draggedSlots.size() > 1;
 
         return dragType != DRAG_TYPE_PICKUP;
-    }
-
-    /**
-     * Gets the dragging type.
-     *
-     * @return the current dragging type.
-     */
-    public int getDragType() {
-        return dragType;
     }
 
     // #end getters/setters
@@ -387,7 +365,7 @@ public class MalisisInventoryContainer extends Container {
             return handleDropSlot(slot, action == DROP_SLOT_STACK);
 
         // player started/ended/reset/is currently dragging
-        if (action.isDragAction()) return handleDrag(action, inventoryId, slot);
+        if (action.isDragAction()) return handleDrag(action, slot);
 
         // from this point, any action should stop the dragging
         func_94533_d();
@@ -562,7 +540,7 @@ public class MalisisInventoryContainer extends Container {
         slot.onSlotChanged();
         owner.dropPlayerItemWithRandomChoice(iss.split, true);
 
-        if (iss.amount != 0) slot.onPickupFromSlot(owner, iss.split);
+        if (iss.amount != 0) slot.onPickupFromSlot();
 
         return iss.split;
     }
@@ -653,12 +631,11 @@ public class MalisisInventoryContainer extends Container {
     /**
      * Handles all drag actions.
      *
-     * @param action      the action
-     * @param inventoryId the inventory id
-     * @param slot        the slot
+     * @param action the action
+     * @param slot   the slot
      * @return the item stack
      */
-    private ItemStack handleDrag(ActionType action, int inventoryId, MalisisSlot slot) {
+    private ItemStack handleDrag(ActionType action, MalisisSlot slot) {
         if (pickedItemStack == null) return null;
 
         if ((action == DRAG_START_LEFT_CLICK || action == DRAG_START_RIGHT_CLICK) && isDraggingItemStack()) return null;

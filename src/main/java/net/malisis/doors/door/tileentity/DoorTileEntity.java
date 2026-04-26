@@ -65,16 +65,8 @@ public class DoorTileEntity extends TileEntity {
         return state;
     }
 
-    public void setState(DoorState state) {
-        this.state = state;
-    }
-
     public boolean isMoving() {
         return moving;
-    }
-
-    public void setMoving(boolean moving) {
-        this.moving = moving;
     }
 
     public IDoorMovement getMovement() {

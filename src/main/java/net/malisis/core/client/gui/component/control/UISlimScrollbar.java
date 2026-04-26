@@ -46,10 +46,6 @@ public class UISlimScrollbar extends UIScrollBar {
         this.fade = fade;
     }
 
-    public boolean isFade() {
-        return fade;
-    }
-
     @Override
     protected void setPosition() {
         int vp = getScrollable().getVerticalPadding();
@@ -84,26 +80,6 @@ public class UISlimScrollbar extends UIScrollBar {
         int h = super.getHeight();
         if (type == Type.VERTICAL) h -= 2 * getScrollable().getVerticalPadding();
         return h;
-    }
-
-    /**
-     * Sets the color of the scroll.
-     *
-     * @param scrollColor the new color
-     */
-    public void setColor(int scrollColor) {
-        setColor(scrollColor, backgroundColor);
-    }
-
-    /**
-     * Sets the color of the scroll and the background.
-     *
-     * @param scrollColor     the scroll color
-     * @param backgroundColor the background color
-     */
-    public void setColor(int scrollColor, int backgroundColor) {
-        this.scrollColor = scrollColor;
-        this.backgroundColor = backgroundColor;
     }
 
     @Override

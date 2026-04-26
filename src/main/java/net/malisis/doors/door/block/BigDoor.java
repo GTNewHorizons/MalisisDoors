@@ -59,10 +59,10 @@ public class BigDoor extends MalisisBlock implements ITileEntityProvider {
         CARRIAGE("carriage_door", net.minecraft.init.Items.wooden_door),
         MEDIEVAL("medieval_door", Items.doorSpruceItem);
 
-        public String name;
-        public Item door;
+        public final String name;
+        public final Item door;
 
-        private Type(String name, Item door) {
+        Type(String name, Item door) {
             this.name = name;
             this.door = door;
         }
@@ -95,8 +95,8 @@ public class BigDoor extends MalisisBlock implements ITileEntityProvider {
 
     public static int renderId;
     public static int renderPass = -1;
-    private AxisAlignedBB defaultBoundingBox = AxisAlignedBB.getBoundingBox(0, 0, 1 - Door.DOOR_WIDTH, 4, 5, 1);
-    private Type type;
+    private final AxisAlignedBB defaultBoundingBox = AxisAlignedBB.getBoundingBox(0, 0, 1 - Door.DOOR_WIDTH, 4, 5, 1);
+    private final Type type;
 
     public BigDoor(Type type) {
         super(Material.wood);
@@ -280,10 +280,6 @@ public class BigDoor extends MalisisBlock implements ITileEntityProvider {
     @Override
     public int getRenderType() {
         return renderId;
-    }
-
-    public BigDoor.Type getType() {
-        return type;
     }
 
     @Override

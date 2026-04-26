@@ -68,7 +68,6 @@ public class CustomDoorItem extends DoorItem {
     @Override
     public boolean onItemUse(ItemStack itemStack, EntityPlayer player, World world, int x, int y, int z, int side,
         float par8, float par9, float par10) {
-        boolean b = super.onItemUse(itemStack, player, world, x, y, z, side, par8, par9, par10);
         // if (b)
         // {
         // DoorTileEntity te = Door.getDoor(world, x, y + 1, z);
@@ -76,7 +75,7 @@ public class CustomDoorItem extends DoorItem {
         // ((CustomDoorTileEntity) te).onBlockPlaced(itemStack);
         // }
 
-        return b;
+        return super.onItemUse(itemStack, player, world, x, y, z, side, par8, par9, par10);
     }
 
     public static ItemStack fromDoorFactory(DoorFactoryTileEntity te) {

@@ -36,11 +36,6 @@ import io.netty.buffer.ByteBuf;
 @MalisisMessage
 public class CloseInventoryMessage implements IMessageHandler<CloseInventoryMessage.Packet, IMessage> {
 
-    public enum ContainerType {
-        TYPE_TILEENTITY,
-        TYPE_ITEM;
-    }
-
     public CloseInventoryMessage() {
         MalisisCore.network.registerMessage(this, Packet.class, Side.CLIENT);
     }

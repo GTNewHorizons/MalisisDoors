@@ -29,17 +29,6 @@ public class Rotation extends Transformation<Rotation, ITransformable.Rotate> {
         to(toAngle);
     }
 
-    public Rotation(float angle, float axisX, float axisY, float axisZ) {
-        to(angle);
-        aroundAxis(axisX, axisY, axisZ);
-    }
-
-    public Rotation(float angle, float axisX, float axisY, float axisZ, float offsetX, float offsetY, float offsetZ) {
-        to(angle);
-        aroundAxis(axisX, axisY, axisZ);
-        offset(offsetX, offsetY, offsetZ);
-    }
-
     public Rotation from(float angle) {
         fromAngle = angle;
         return this;

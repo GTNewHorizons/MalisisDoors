@@ -33,7 +33,7 @@ import net.malisis.core.client.gui.element.XYResizableGuiShape;
 import net.malisis.core.client.gui.event.ComponentEvent.ValueChange;
 import net.malisis.core.client.gui.icon.GuiIcon;
 import net.malisis.core.renderer.font.FontRenderOptions;
-import net.malisis.core.renderer.font.MalisisFont;
+import net.malisis.core.renderer.font.VanillaFont;
 
 import org.apache.commons.lang3.StringUtils;
 import org.lwjgl.input.Keyboard;
@@ -53,8 +53,7 @@ import com.google.common.collect.Iterables;
 public class UISelect<T> extends UIComponent<UISelect<T>>
     implements Iterable<Option<T>>, IClipable, IGuiText<UISelect<T>>, IScrollable {
 
-    /** The {@link MalisisFont} to use for this {@link UISelect}. */
-    protected MalisisFont font = MalisisFont.minecraftFont;
+    protected VanillaFont font = VanillaFont.vanillaFont;
     /** The {@link FontRenderOptions} to use for this {@link UISelect}. */
     protected FontRenderOptions fro = new FontRenderOptions();
     /** The {@link FontRenderOptions} to use for this {@link UISelect} when option is hovered. */
@@ -110,8 +109,6 @@ public class UISelect<T> extends UIComponent<UISelect<T>>
     protected GuiShape arrowShape;
     /** Shape used to draw the {@link Option options} box */
     protected GuiShape optionsShape;
-    /** Shape used to draw the hovered {@link Option} background **/
-    protected GuiShape optionBackground;
     /** Icon used to draw this {@link UISelect}. */
     protected GuiIcon iconsSelect;
     /** Icon used to draw this {@link UISelect} when disabled. */
@@ -150,7 +147,6 @@ public class UISelect<T> extends UIComponent<UISelect<T>>
         arrowShape.setSize(7, 4);
         arrowShape.storeState();
         optionsShape = new XYResizableGuiShape(1);
-        optionBackground = new SimpleGuiShape();
 
         iconsSelect = gui.getGuiTexture()
             .getXResizableIcon(200, 30, 9, 12, 3);
@@ -162,16 +158,6 @@ public class UISelect<T> extends UIComponent<UISelect<T>>
             .getIcon(209, 48, 7, 4);
     }
 
-    /**
-     * Instantiates a new {@link UISelect}.
-     *
-     * @param gui   the gui
-     * @param width the width
-     */
-    public UISelect(MalisisGui gui, int width) {
-        this(gui, width, null);
-    }
-
     // #region Getters/Setters
     @Override
     public int getHeight() {
@@ -179,27 +165,8 @@ public class UISelect<T> extends UIComponent<UISelect<T>>
     }
 
     @Override
-    public MalisisFont getFont() {
-        return font;
-    }
-
-    @Override
-    public UISelect<T> setFont(MalisisFont font) {
-        this.font = font;
-        calcOptionsSize();
-        return this;
-    }
-
-    @Override
     public FontRenderOptions getFontRenderOptions() {
         return fro;
-    }
-
-    @Override
-    public UISelect<T> setFontRenderOptions(FontRenderOptions fro) {
-        this.fro = fro;
-        calcOptionsSize();
-        return this;
     }
 
     /**
@@ -212,34 +179,12 @@ public class UISelect<T> extends UIComponent<UISelect<T>>
     }
 
     /**
-     * Sets the selected {@link FontRenderOptions}.
-     *
-     * @param fro the fro
-     * @return this {@link UISelect}
-     */
-    public UISelect<T> setSelectedFontRendererOptions(FontRenderOptions fro) {
-        selectedFro = fro;
-        return this;
-    }
-
-    /**
      * Gets the selected {@link FontRenderOptions}.
      *
      * @return the hoveredFro
      */
     public FontRenderOptions getSelectedFontRendererOptions() {
         return selectedFro;
-    }
-
-    /**
-     * Sets the disabled {@link FontRenderOptions}.
-     *
-     * @param fro the fro
-     * @return this {@link UISelect}
-     */
-    public UISelect<T> setDisabledFontRendererOptions(FontRenderOptions fro) {
-        disabledFro = fro;
-        return this;
     }
 
     /**
@@ -251,57 +196,8 @@ public class UISelect<T> extends UIComponent<UISelect<T>>
         return disabledFro;
     }
 
-    /**
-     * Sets the hovered {@link FontRenderOptions}.
-     *
-     * @param fro the fro
-     * @return this {@link UISelect}
-     */
-    public UISelect<T> setHoveredFontRendererOptions(FontRenderOptions fro) {
-        hoveredFro = fro;
-        return this;
-    }
-
-    public int getBgColor() {
-        return bgColor;
-    }
-
-    public UISelect<T> setBgColor(int bgColor) {
-        this.bgColor = bgColor;
-        return this;
-    }
-
     public int getHoverBgColor() {
         return hoverBgColor;
-    }
-
-    public UISelect<T> setHoverBgColor(int hoverBgColor) {
-        this.hoverBgColor = hoverBgColor;
-        return this;
-    }
-
-    public UISelect<T> setColors(int bgColor, int hoverBgColor) {
-        this.bgColor = bgColor;
-        this.hoverBgColor = hoverBgColor;
-        return this;
-    }
-
-    public UISelect<T> setOptionFunction(Function<T, ? extends Option<T>> func) {
-        this.optionFunction = func;
-        return this;
-    }
-
-    public UISelect<T> setLabelFunction(Function<T, String> func) {
-        if (func == null) func = (Function<T, String>) Functions.toStringFunction();
-        this.labelFunction = func;
-        calcOptionsSize();
-        return this;
-    }
-
-    public UISelect<T> setDisablePredicate(Predicate<T> predicate) {
-        if (predicate == null) predicate = Predicates.alwaysFalse();
-        this.disablePredicate = predicate;
-        return this;
     }
 
     // #end Getters/Setters
@@ -328,39 +224,15 @@ public class UISelect<T> extends UIComponent<UISelect<T>>
     }
 
     /**
-     * Sets the max width of the option container.
-     *
-     * @param width the width
-     * @return this {@link UISelect}
-     */
-    public UISelect<T> setMaxExpandedWidth(int width) {
-        maxExpandedWidth = width;
-        calcOptionsSize();
-        return this;
-    }
-
-    /**
      * Calculates the size of this container base on the options. TODO : handle maximum display options
      */
     private void calcOptionsSize() {
         optionsWidth = getWidth() - 4;
         for (Option<?> option : this) optionsWidth = Math
-            .max(optionsWidth, (int) MalisisFont.minecraftFont.getStringWidth(option.getLabel(labelPattern)));
+            .max(optionsWidth, (int) VanillaFont.vanillaFont.getStringWidth(option.getLabel(labelPattern)));
 
         optionsWidth += 4;
         if (maxExpandedWidth > 0) optionsWidth = Math.min(maxExpandedWidth, optionsWidth);
-    }
-
-    /**
-     * Sets the maximum number of options displayed when expanded.
-     *
-     * @param amount the amount
-     * @return this {@link UISelect}
-     */
-    public UISelect<T> maxDisplayedOptions(int amount) {
-        maxDisplayedOptions = amount;
-        calcOptionsSize();
-        return this;
     }
 
     /**
@@ -773,17 +645,6 @@ public class UISelect<T> extends UIComponent<UISelect<T>>
         }
 
         /**
-         * Instantiates a new {@link Option} with a label.
-         *
-         * @param key   the key
-         * @param label the label
-         */
-        public Option(T key, String label) {
-            this.key = key;
-            this.label = label;
-        }
-
-        /**
          * Gets the key of this {@link Option}.
          *
          * @return the key
@@ -802,15 +663,6 @@ public class UISelect<T> extends UIComponent<UISelect<T>>
             if (pattern == null) return label;
 
             return String.format(pattern, label);
-        }
-
-        /**
-         * Gets the base label of this {@link Option}.
-         *
-         * @return the label
-         */
-        public String getLabel() {
-            return label;
         }
 
         /**
@@ -860,7 +712,7 @@ public class UISelect<T> extends UIComponent<UISelect<T>>
                     255);
             }
 
-            if (isTop) text = MalisisFont.minecraftFont.clipString(text, select.getWidth() - 15);
+            if (isTop) text = VanillaFont.vanillaFont.clipString(text, select.getWidth() - 15);
 
             FontRenderOptions fro = select.getFontRenderOptions();
             if (equals(select.getSelectedOption()) && !isTop) fro = select.getSelectedFontRendererOptions();

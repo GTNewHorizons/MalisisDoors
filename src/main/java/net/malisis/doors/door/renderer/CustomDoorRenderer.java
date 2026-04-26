@@ -26,7 +26,6 @@ import net.malisis.doors.door.tileentity.CustomDoorTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
 /**
@@ -45,7 +44,6 @@ public class CustomDoorRenderer extends DoorRenderer {
 
     protected CustomDoorTileEntity tileEntity;
 
-    private float width;
     private final Cube bottomR = new Cube();
     private final Cube bottomL = new Cube();
     private final Shape bottomH = new Shape(new NorthFace(), new SouthFace(), new TopFace(), new BottomFace());
@@ -61,7 +59,7 @@ public class CustomDoorRenderer extends DoorRenderer {
 
     @Override
     protected void initialize() {
-        width = 1.0F / 8.0F;
+        float width = 1.0F / 8.0F;
         /**
          * BOTTOM
          */
@@ -223,8 +221,4 @@ public class CustomDoorRenderer extends DoorRenderer {
         model.render(this, rp);
     }
 
-    @Override
-    public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
-        return true;
-    }
 }

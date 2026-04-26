@@ -6,7 +6,6 @@ import java.util.Random;
 import net.malisis.core.block.BoundingBoxType;
 import net.malisis.core.util.ComplexAxisAlignedBoundingBox;
 import net.malisis.doors.MalisisDoors;
-import net.malisis.doors.door.tileentity.BigDoorTileEntity;
 import net.malisis.doors.door.tileentity.MultiTile;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
@@ -32,8 +31,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class CollisionHelperBlock extends BlockContainer implements ITileEntityProvider {
 
-    public BigDoor.Type type;
-
     private IIcon[] fakeIcons;
 
     // This class serves at the invisible collision blocks to help BigDoor with collisions
@@ -42,7 +39,6 @@ public class CollisionHelperBlock extends BlockContainer implements ITileEntityP
         this.setHardness(1.0F);
         this.setStepSound(Block.soundTypeWood);
         this.setBlockTextureName(type.name + "_collisionHelper");
-        this.type = type;
         this.setBlockName(type.name + "_collisionHelper");
     }
 
@@ -180,11 +176,6 @@ public class CollisionHelperBlock extends BlockContainer implements ITileEntityP
     public BigDoor getMainBlock(World world, int x, int y, int z) {
         MultiTile cTE = this.getTileEntity(world, x, y, z);
         return (BigDoor) world.getBlock(cTE.mainBlockX, cTE.mainBlockY, cTE.mainBlockZ);
-    }
-
-    public BigDoorTileEntity getMainTileEntity(World world, int x, int y, int z) {
-        MultiTile cTE = this.getTileEntity(world, x, y, z);
-        return (BigDoorTileEntity) world.getTileEntity(cTE.mainBlockX, cTE.mainBlockY, cTE.mainBlockZ);
     }
 
     public MultiTile getTileEntity(World world, int x, int y, int z) {

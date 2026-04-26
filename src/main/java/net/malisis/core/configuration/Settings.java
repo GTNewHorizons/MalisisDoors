@@ -45,10 +45,6 @@ public class Settings {
         config.save();
     }
 
-    public Configuration getConfiguration() {
-        return config;
-    }
-
     public Set<String> getCategories() {
         return categorySettings.keySet();
     }
