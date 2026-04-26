@@ -42,6 +42,7 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 
@@ -461,6 +462,13 @@ public abstract class MalisisGui extends GuiScreen {
      * TileEntity changes.
      */
     public void updateGui() {}
+
+    /**
+     * Returns the tile entity associated with this MalisisGui
+     */
+    public TileEntity getTileEntity() {
+        return null;
+    }
 
     public void animate(Animation animation) {
         animate(animation, 0);

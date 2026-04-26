@@ -71,7 +71,7 @@ public class MalisisRenderer extends TileEntitySpecialRenderer implements ISimpl
     /** Whether this {@link MalisisRenderer} initialized. (initialize() already called) */
     private boolean initialized = false;
     /** Id of this {@link MalisisRenderer}. */
-    protected int renderId = -1;
+    protected final int renderId;
     /** Current world reference (ISBRH/TESR/IRWL). */
     protected IBlockAccess world;
     /** RenderBlocks reference (ISBRH). */
@@ -230,6 +230,7 @@ public class MalisisRenderer extends TileEntitySpecialRenderer implements ISimpl
         prepare(RenderType.ISBRH_INVENTORY);
         render();
         clean();
+        renderBlocks = null;
     }
 
     /**
@@ -256,6 +257,8 @@ public class MalisisRenderer extends TileEntitySpecialRenderer implements ISimpl
         if (renderer.hasOverrideBlockTexture()) overrideTexture = renderer.overrideBlockTexture;
         render();
         clean();
+        tileEntity = null;
+        renderBlocks = null;
         return vertexDrawn;
     }
 
@@ -350,6 +353,7 @@ public class MalisisRenderer extends TileEntitySpecialRenderer implements ISimpl
                 }
             }
             clean();
+            tileEntity = null;
         }
     }
 

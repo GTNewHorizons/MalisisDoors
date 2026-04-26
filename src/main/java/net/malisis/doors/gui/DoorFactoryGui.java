@@ -38,11 +38,11 @@ import net.malisis.core.client.gui.component.interaction.UITextField;
 import net.malisis.core.client.gui.event.ComponentEvent.ValueChange;
 import net.malisis.core.client.gui.event.component.StateChangeEvent.ActiveStateChange;
 import net.malisis.core.inventory.MalisisInventoryContainer;
-import net.malisis.core.util.TileEntityUtils;
 import net.malisis.doors.MalisisDoors;
 import net.malisis.doors.door.DoorRegistry;
 import net.malisis.doors.entity.DoorFactoryTileEntity;
 import net.malisis.doors.network.DoorFactoryMessage;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
@@ -84,7 +84,6 @@ public class DoorFactoryGui extends MalisisGui {
     public DoorFactoryGui(DoorFactoryTileEntity te, MalisisInventoryContainer container) {
         setInventoryContainer(container);
         tileEntity = te;
-        TileEntityUtils.linkTileEntityToGui(tileEntity, this);
     }
 
     @Override
@@ -249,6 +248,11 @@ public class DoorFactoryGui extends MalisisGui {
         dcContainer.add(digicode);
 
         return dcContainer;
+    }
+
+    @Override
+    public TileEntity getTileEntity() {
+        return this.tileEntity;
     }
 
     @Override

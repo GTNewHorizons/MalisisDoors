@@ -14,6 +14,7 @@
 package net.malisis.core.util;
 
 import net.malisis.core.client.gui.MalisisGui;
+import net.minecraft.client.Minecraft;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 
@@ -26,14 +27,6 @@ import cpw.mods.fml.relauncher.SideOnly;
  * @author Ordinastie
  */
 public class TileEntityUtils {
-
-    /** Reference to the {@link TileEntity} currently being use for current opened {@link MalisisGui}. */
-    @SideOnly(Side.CLIENT)
-    private static TileEntity currentTileEntity;
-
-    /** Reference the to currently opened {@link MalisisGui}. */
-    @SideOnly(Side.CLIENT)
-    private static MalisisGui currenGui;
 
     /**
      * Gets the {@link TileEntity} of type <b>T</b> at the specified {@link BlockPos}.<br>
@@ -80,27 +73,16 @@ public class TileEntityUtils {
     }
 
     /**
-     * Links the {@link TileEntity} to the {@link MalisisGui}.<br>
-     * Allows the TileEntity to notify the MalisisGui of updates.
-     *
-     * @param te  the TileEntity
-     * @param gui the MalisisGui
-     */
-    @SideOnly(Side.CLIENT)
-    public static void linkTileEntityToGui(TileEntity te, MalisisGui gui) {
-        currentTileEntity = te;
-        currenGui = gui;
-        // currenGui.updateGui();
-    }
-
-    /**
      * Notifies the currently opened {@link MalisisGui} to update.
      *
      * @param te the {@link TileEntity} linked to the MalisisGui
      */
     @SideOnly(Side.CLIENT)
     public static void updateGui(TileEntity te) {
-        if (te != currentTileEntity) return;
-        currenGui.updateGui();
+        if (Minecraft.getMinecraft().currentScreen instanceof MalisisGui malisisGui) {
+            if (malisisGui.getTileEntity() != null && malisisGui.getTileEntity() == te) {
+                malisisGui.updateGui();
+            }
+        }
     }
 }

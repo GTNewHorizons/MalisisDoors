@@ -15,7 +15,6 @@ package net.malisis.core.client.gui.component.control;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.WeakHashMap;
 
 import net.malisis.core.client.gui.Anchor;
 import net.malisis.core.client.gui.GuiRenderer;
@@ -31,6 +30,7 @@ import net.minecraft.client.gui.GuiScreen;
 
 import org.lwjgl.input.Keyboard;
 
+import com.google.common.collect.MapMaker;
 import com.google.common.eventbus.Subscribe;
 
 /**
@@ -45,7 +45,9 @@ public class UIScrollBar extends UIComponent<UIScrollBar> implements IControlCom
         VERTICAL
     }
 
-    private static Map<UIComponent, Map<Type, UIScrollBar>> scrollbars = new WeakHashMap();
+    private static final Map<UIComponent<?>, Map<Type, UIScrollBar>> scrollbars = new MapMaker().weakKeys()
+        .weakValues()
+        .makeMap();
 
     /** The scroll thickness (Width for vertical, height for horizontal). */
     protected int scrollThickness = 10;

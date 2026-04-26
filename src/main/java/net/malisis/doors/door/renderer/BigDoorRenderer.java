@@ -76,6 +76,12 @@ public class BigDoorRenderer extends MalisisRenderer {
         } else if (renderType == RenderType.TESR_WORLD) renderTileEntity();
     }
 
+    @Override
+    public void reset() {
+        super.reset();
+        tileEntity = null;
+    }
+
     private void renderBlock() {
         BlockState state = tileEntity.getFrameState();
         if (!state.getBlock()

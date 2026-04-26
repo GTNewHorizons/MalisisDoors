@@ -66,6 +66,12 @@ public class FenceGateRenderer extends DoorRenderer {
     }
 
     @Override
+    public void reset() {
+        super.reset();
+        tileEntity = null;
+    }
+
+    @Override
     protected void setup() {
         model.resetState();
         if (direction == Door.DIR_NORTH || direction == Door.DIR_SOUTH) model.rotate(90, 0, 1, 0, 0, 0, 0);

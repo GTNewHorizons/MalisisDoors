@@ -14,8 +14,8 @@
 package net.malisis.core.client.gui.component.interaction;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.malisis.core.client.gui.GuiRenderer;
 import net.malisis.core.client.gui.MalisisGui;
@@ -31,13 +31,17 @@ import net.malisis.core.renderer.font.VanillaFont;
 import org.apache.commons.lang3.StringUtils;
 import org.lwjgl.opengl.GL11;
 
+import com.google.common.collect.MapMaker;
+
 /**
  * @author Ordinastie
  *
  */
 public class UIRadioButton extends UIComponent<UIRadioButton> implements IGuiText<UIRadioButton> {
 
-    private static HashMap<String, List<UIRadioButton>> radioButtons = new HashMap<>();
+    private static final Map<String, List<UIRadioButton>> radioButtons = new MapMaker().weakKeys()
+        .weakValues()
+        .makeMap();
 
     protected GuiIcon bgIcon;
     protected GuiIcon bgIconDisabled;
