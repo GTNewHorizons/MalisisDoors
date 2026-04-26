@@ -27,11 +27,11 @@ import net.malisis.core.client.gui.component.interaction.UICheckBox;
 import net.malisis.core.client.gui.component.interaction.UITextField;
 import net.malisis.core.client.gui.event.ComponentEvent;
 import net.malisis.core.inventory.MalisisInventoryContainer;
-import net.malisis.core.util.TileEntityUtils;
 import net.malisis.doors.entity.VanishingDiamondTileEntity;
 import net.malisis.doors.entity.VanishingDiamondTileEntity.DirectionState;
 import net.malisis.doors.network.VanishingDiamondFrameMessage;
 import net.malisis.doors.network.VanishingDiamondFrameMessage.DataType;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.math.NumberUtils;
@@ -115,8 +115,6 @@ public class VanishingDiamondGui extends MalisisGui {
         window.add(playerInv);
 
         addToScreen(window);
-
-        TileEntityUtils.linkTileEntityToGui(tileEntity, this);
     }
 
     @Subscribe
@@ -126,6 +124,11 @@ public class VanishingDiamondGui extends MalisisGui {
         int time = event.getComponent() instanceof UITextField ? NumberUtils.toInt((String) event.getNewValue()) : 0;
         boolean checked = event.getComponent() instanceof UICheckBox ? (boolean) event.getNewValue() : false;
         VanishingDiamondFrameMessage.sendConfiguration(tileEntity, data.getLeft(), data.getRight(), time, checked);
+    }
+
+    @Override
+    public TileEntity getTileEntity() {
+        return this.tileEntity;
     }
 
     @Override
