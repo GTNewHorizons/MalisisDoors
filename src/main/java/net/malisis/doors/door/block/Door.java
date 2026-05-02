@@ -365,6 +365,8 @@ public class Door extends BlockDoor implements ITileEntityProvider, IBoundingBox
         } catch (InstantiationException | IllegalAccessException e) {
             te = new DoorTileEntity();
         }
+        boolean open = (metadata & FLAG_OPENED) != 0;
+        te.setDoorState(open ? DoorState.OPENED : DoorState.CLOSED);
         te.setDescriptor(descriptor);
         return te;
     }

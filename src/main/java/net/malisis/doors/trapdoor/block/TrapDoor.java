@@ -14,6 +14,7 @@
 package net.malisis.doors.trapdoor.block;
 
 import net.malisis.core.block.BoundingBoxType;
+import net.malisis.doors.door.DoorState;
 import net.malisis.doors.door.block.Door;
 import net.malisis.doors.door.tileentity.DoorTileEntity;
 import net.malisis.doors.trapdoor.TrapDoorDescriptor;
@@ -138,6 +139,8 @@ public class TrapDoor extends BlockTrapDoor implements ITileEntityProvider {
     @Override
     public TileEntity createNewTileEntity(World world, int metadata) {
         TrapDoorTileEntity te = new TrapDoorTileEntity();
+        boolean open = (metadata & Door.FLAG_OPENED) != 0;
+        te.setDoorState(open ? DoorState.OPENED : DoorState.CLOSED);
         te.setDescriptor(descriptor);
         return te;
     }
