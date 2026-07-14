@@ -33,6 +33,7 @@ import com.gtnewhorizon.gtnhlib.reflect.Fields;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.registry.FMLControlledNamespacedRegistry;
+import cpw.mods.fml.common.registry.RegistryDelegate.Delegate;
 import cpw.mods.fml.relauncher.ReflectionHelper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -43,24 +44,21 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public class ReplacementTool {
 
-    private static ReplacementTool instance = new ReplacementTool();
+    private static final ReplacementTool instance = new ReplacementTool();
 
     /**
      * List of original {@link Block} being replaced. The key is the replacement, the value is the Vanilla
      * {@code Block}.
      */
-    private HashMap<Block, Block> originalBlocks = new HashMap<>();
+    private final HashMap<Block, Block> originalBlocks = new HashMap<>();
     /**
      * List of original {@link Item} being replaced. The key is the replacement, the value is the Vanilla {@code Item}.
      */
-    private HashMap<Item, Item> originalItems = new HashMap<>();
+    private final HashMap<Item, Item> originalItems = new HashMap<>();
 
-    private Class[] types = { Integer.TYPE, String.class, Object.class };
-    private Method method = ReflectionHelper.findMethod(
-        FMLControlledNamespacedRegistry.class,
-        (FMLControlledNamespacedRegistry) null,
-        new String[] { "addObjectRaw" },
-        types);
+    private final Class<?>[] types = { Integer.TYPE, String.class, Object.class };
+    private final Method method = ReflectionHelper
+        .findMethod(FMLControlledNamespacedRegistry.class, null, new String[] { "addObjectRaw" }, types);
 
     private ReplacementTool() {
         new ShapedOreRecipeHandler();
@@ -117,6 +115,10 @@ public class ReplacementTool {
         ItemBlock ib = block ? (ItemBlock) Item.getItemFromBlock((Block) vanilla) : null;
         Class<?> clazz = block ? Blocks.class : Items.class;
         HashMap map = block ? originalBlocks : originalItems;
+
+        Delegate replDelegate = (Delegate) (block ? ((Block) replacement).delegate : ((Item) replacement).delegate);
+        Delegate vanDelegate = (Delegate) (block ? ((Block) vanilla).delegate : ((Item) vanilla).delegate);
+        replDelegate.setName(vanDelegate.name());
 
         try {
             method.invoke(registry, id, "minecraft:" + name, replacement);
