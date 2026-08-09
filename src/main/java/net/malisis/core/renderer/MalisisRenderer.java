@@ -35,6 +35,7 @@ import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -856,8 +857,11 @@ public class MalisisRenderer extends TileEntitySpecialRenderer implements ISimpl
             else if (block.getLightValue() != 0) return block.getLightValue() << 4;
         }
 
-        if (renderType == RenderType.ISBRH_INVENTORY || renderType == RenderType.ITEM_INVENTORY)
-            return Minecraft.getMinecraft().thePlayer.getBrightnessForRender(getPartialTick());
+        if (renderType == RenderType.ISBRH_INVENTORY || renderType == RenderType.ITEM_INVENTORY) {
+            EntityLivingBase viewEntity = Minecraft.getMinecraft().renderViewEntity;
+            if (viewEntity == null) viewEntity = Minecraft.getMinecraft().thePlayer;
+            return viewEntity.getBrightnessForRender(getPartialTick());
+        }
 
         // not in world
         if (world == null) return params.brightness.get();
