@@ -40,6 +40,12 @@ public class DoorTileEntity extends TileEntity {
     protected int lastMetadata = -1;
     protected Timer timer = new Timer();
     protected DoorState state = DoorState.CLOSED;
+
+    /**
+     * This replicates the 'powered' block-state of modern Minecraft
+     */
+    protected boolean powered;
+
     protected boolean moving;
     protected boolean centered = false;
 
@@ -250,9 +256,13 @@ public class DoorTileEntity extends TileEntity {
     }
 
     /**
-     * Change the state of this DoorTileEntity based on powered
+     * Change the state of this DoorTileEntity based on powered. This only updates the state of the door if the new
+     * powered state differs from the old powered state.
      */
     public void setPowered(boolean powered) {
+        if (this.powered == powered) return;
+        this.powered = powered;
+
         if (isOpened() == powered && !isMoving()) return;
 
         DoorTileEntity te = getDoubleDoor();
@@ -280,6 +290,7 @@ public class DoorTileEntity extends TileEntity {
         descriptor = new DoorDescriptor(nbt);
         setDoorState(DoorState.values()[nbt.getInteger("state")]);
         setCentered(nbt.getBoolean("centered"));
+        powered = nbt.getBoolean("powered");
     }
 
     @Override
@@ -288,6 +299,7 @@ public class DoorTileEntity extends TileEntity {
         if (descriptor != null) descriptor.writeNBT(nbt);
         nbt.setInteger("state", state.ordinal());
         nbt.setBoolean("centered", centered);
+        nbt.setBoolean("powered", powered);
     }
 
     @Override
