@@ -23,6 +23,7 @@ import net.minecraft.profiler.Profiler;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldSettings;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.storage.WorldInfo;
@@ -56,21 +57,23 @@ public class ProxyAccess {
         public void calculateInitialWeatherBody();
     }
 
-    public static IBlockAccess get(IBlockAccess world) {
+    public static synchronized IBlockAccess get(IBlockAccess world) {
         if (world == null) return null;
 
         IBlockAccess proxy = cache.get(world);
         if (proxy == null) {
             if (world instanceof World) {
                 if (worldInstanciationFailed) return world;
+                World previousWorld = tmpCache;
                 try {
                     tmpCache = (World) world;
                     proxy = new ProxyWorld((World) world);
-                    tmpCache = null;
                 } catch (Exception e) {
                     MalisisCore.log.error("[ProxyAccess] Proxy world instanciation failed :", e);
                     worldInstanciationFailed = true;
                     return world;
+                } finally {
+                    tmpCache = previousWorld;
                 }
             } else proxy = new ProxyBlockAccess(world);
             cache.put(world, proxy);
@@ -131,6 +134,23 @@ public class ProxyAccess {
     }
 
     /**
+     * Keeps World's constructor from registering a partially constructed proxy with the real world's provider.
+     * This provider is private to one construction and is replaced before the proxy enters the cache.
+     */
+    private static class ConstructionWorldProvider extends WorldProvider {
+
+        @Override
+        protected void registerWorldChunkManager() {
+            // A wrapper does not need to initialize terrain or another biome manager.
+        }
+
+        @Override
+        public String getDimensionName() {
+            return "ProxyWorld";
+        }
+    }
+
+    /**
      * ProxyWorld
      */
     private static class ProxyWorld extends World {
@@ -143,11 +163,10 @@ public class ProxyAccess {
                 world.getSaveHandler(),
                 "ProxyWorld",
                 new WorldSettings(world.getWorldInfo()),
-                world.provider,
+                new ConstructionWorldProvider(),
                 (Profiler) null);
             original = world;
-            // reset back the world for the provider
-            provider.worldObj = world;
+            provider = world.provider;
         }
 
         @Override
