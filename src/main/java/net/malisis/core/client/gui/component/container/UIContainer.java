@@ -258,7 +258,7 @@ public class UIContainer<T extends UIContainer> extends UIComponent<T> implement
 
         for (UIComponent c : components) {
             if (c instanceof UIContainer) {
-                UIComponent found = ((UIComponent) c).getComponent(name, true);
+                UIComponent found = ((UIContainer) c).getComponent(name, true);
                 if (found != null) return found;
             }
         }
