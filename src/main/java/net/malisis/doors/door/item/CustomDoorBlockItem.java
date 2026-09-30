@@ -11,34 +11,22 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package net.malisis.doors.trapdoor.tileentity;
+package net.malisis.doors.door.item;
 
 import net.malisis.doors.MalisisDoors;
-import net.malisis.doors.door.block.Door;
-import net.malisis.doors.door.tileentity.DoorTileEntity;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.block.Block;
+import net.minecraft.item.EnumRarity;
+import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
 
-/**
- * @author Ordinastie
- *
- */
-public class TrapDoorTileEntity extends DoorTileEntity {
+public class CustomDoorBlockItem extends ItemBlock {
 
-    @Override
-    public void updateEntity() {
-        super.updateEntity();
-        if (worldObj == null || getBlockType() != MalisisDoors.Blocks.slidingTrapDoor) return;
-
-        updateLightOpacity(1);
+    public CustomDoorBlockItem(Block block) {
+        super(block);
     }
 
     @Override
-    public boolean isTopBlock(int x, int y, int z) {
-        return (getBlockMetadata() & Door.FLAG_TOPBLOCK) != 0;
-    }
-
-    @Override
-    public AxisAlignedBB getRenderBoundingBox() {
-        return AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1);
+    public EnumRarity getRarity(ItemStack stack) {
+        return MalisisDoors.Items.customDoorItem.getRarity(stack);
     }
 }

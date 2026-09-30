@@ -15,6 +15,7 @@ package net.malisis.core.renderer;
 
 import java.util.Iterator;
 import java.util.Map;
+import java.util.WeakHashMap;
 
 import net.malisis.core.MalisisCore;
 import net.malisis.core.renderer.element.Face;
@@ -25,6 +26,7 @@ import net.malisis.core.renderer.font.FontRenderOptions;
 import net.malisis.core.renderer.font.MalisisFont;
 import net.malisis.core.renderer.font.VanillaFont;
 import net.malisis.core.renderer.icon.MalisisIcon;
+import net.malisis.core.util.Vector;
 import net.malisis.doors.door.tileentity.DoorTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -101,10 +103,13 @@ public class MalisisRenderer extends TileEntitySpecialRenderer implements ISimpl
     protected Shape shape = new Cube();
     /** Current face being rendered. */
     protected Face face;
+    /** Polygon topology is unchanged by the model's animations. */
+    private final Map<Face, int[]> polygonTriangles = new WeakHashMap<>();
+    private final Vector polygonNormal = new Vector(0, 0, 0);
     /** Current parameters for the shape being rendered. */
     protected RenderParameters rp = new RenderParameters();
     /** Current parameters for the face being rendered. */
-    protected static RenderParameters params = new RenderParameters();
+    protected final RenderParameters params = new RenderParameters();
     /** Base brightness of the block. */
     protected int baseBrightness;
     /** An override texture set by the renderer. */
@@ -332,7 +337,11 @@ public class MalisisRenderer extends TileEntitySpecialRenderer implements ISimpl
      */
     @Override
     public void renderTileEntityAt(TileEntity te, double x, double y, double z, float partialTick) {
-        if (te instanceof DoorTileEntity && ((DoorTileEntity) te).shouldRender()) {
+        if (te.isInvalid() || te.getWorldObj() == null
+            || te.getWorldObj()
+                .getBlock(te.xCoord, te.yCoord, te.zCoord) != te.getBlockType())
+            return;
+        if (!(te instanceof DoorTileEntity) || ((DoorTileEntity) te).shouldRender()) {
             set(te, partialTick);
             prepare(RenderType.TESR_WORLD, x, y, z);
             render();
@@ -342,15 +351,22 @@ public class MalisisRenderer extends TileEntitySpecialRenderer implements ISimpl
 
                     next();
 
-                    GL11.glEnable(GL11.GL_BLEND);
-                    OpenGlHelper.glBlendFunc(GL11.GL_DST_COLOR, GL11.GL_SRC_COLOR, GL11.GL_ONE, GL11.GL_ZERO);
-                    GL11.glAlphaFunc(GL11.GL_GREATER, 0);
-                    GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.5F);
+                    GL11.glPushAttrib(
+                        GL11.GL_COLOR_BUFFER_BIT | GL11.GL_CURRENT_BIT | GL11.GL_ENABLE_BIT | GL11.GL_POLYGON_BIT);
+                    try {
+                        GL11.glEnable(GL11.GL_BLEND);
+                        OpenGlHelper.glBlendFunc(GL11.GL_DST_COLOR, GL11.GL_SRC_COLOR, GL11.GL_ONE, GL11.GL_ZERO);
+                        GL11.glEnable(GL11.GL_ALPHA_TEST);
+                        GL11.glAlphaFunc(GL11.GL_GREATER, 0.1F);
+                        GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.5F);
+                        GL11.glEnable(GL11.GL_POLYGON_OFFSET_FILL);
+                        GL11.glPolygonOffset(-3.0F, -3.0F);
 
-                    Tessellator.instance.disableColor();
-                    renderDestroyProgress();
-                    next();
-                    GL11.glDisable(GL11.GL_BLEND);
+                        renderDestroyProgress();
+                        next();
+                    } finally {
+                        GL11.glPopAttrib();
+                    }
                 }
             }
             clean();
@@ -364,7 +380,8 @@ public class MalisisRenderer extends TileEntitySpecialRenderer implements ISimpl
     /**
      * Prepares the {@link Tessellator} and the GL states for the <b>renderType</b>. <b>data</b> is only used for TESR
      * and IRWL.<br>
-     * TESR and IRWL rendering are surrounded by glPushAttrib(GL_LIGHTING_BIT) and block texture sheet is bound.
+     * TESR and IRWL rendering preserve lighting, color, blending, alpha testing and enable state. The block texture
+     * sheet is bound.
      *
      * @param renderType the render type
      * @param data       the data
@@ -379,10 +396,12 @@ public class MalisisRenderer extends TileEntitySpecialRenderer implements ISimpl
             GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
             startDrawing();
         } else if (renderType == RenderType.ITEM_INVENTORY) {
-            GL11.glPushAttrib(GL11.GL_LIGHTING_BIT);
+            GL11.glPushAttrib(
+                GL11.GL_LIGHTING_BIT | GL11.GL_COLOR_BUFFER_BIT | GL11.GL_CURRENT_BIT | GL11.GL_ENABLE_BIT);
             startDrawing();
         } else if (renderType == RenderType.TESR_WORLD) {
-            GL11.glPushAttrib(GL11.GL_LIGHTING_BIT);
+            GL11.glPushAttrib(
+                GL11.GL_LIGHTING_BIT | GL11.GL_COLOR_BUFFER_BIT | GL11.GL_CURRENT_BIT | GL11.GL_ENABLE_BIT);
             RenderHelper.disableStandardItemLighting();
             GL11.glEnable(GL11.GL_COLOR_MATERIAL);
             GL11.glShadeModel(GL11.GL_SMOOTH);
@@ -394,7 +413,8 @@ public class MalisisRenderer extends TileEntitySpecialRenderer implements ISimpl
 
             startDrawing();
         } else if (renderType == RenderType.WORLD_LAST) {
-            GL11.glPushAttrib(GL11.GL_LIGHTING_BIT);
+            GL11.glPushAttrib(
+                GL11.GL_LIGHTING_BIT | GL11.GL_COLOR_BUFFER_BIT | GL11.GL_CURRENT_BIT | GL11.GL_ENABLE_BIT);
             RenderHelper.disableStandardItemLighting();
             GL11.glEnable(GL11.GL_COLOR_MATERIAL);
             GL11.glShadeModel(GL11.GL_SMOOTH);
@@ -644,12 +664,41 @@ public class MalisisRenderer extends TileEntitySpecialRenderer implements ISimpl
 
         baseBrightness = getBaseBrightness();
 
+        if (drawMode == GL11.GL_POLYGON && drawPolygonFace(face, tess)) return;
         drawVertexes(face.getVertexes(), tess);
 
         // we need to separate each face
         if (drawMode == GL11.GL_POLYGON || drawMode == GL11.GL_LINE
             || drawMode == GL11.GL_LINE_STRIP
             || drawMode == GL11.GL_LINE_LOOP) next();
+    }
+
+    /** Draws model polygons with explicit normals and primitives supported by modern renderers. */
+    private boolean drawPolygonFace(Face face, Tessellator tess) {
+        Vertex[] vertices = face.getVertexes();
+        if (vertices.length < 3) return false;
+
+        PolygonFaces.normal(vertices, polygonNormal);
+        if (polygonNormal.lengthSquared() == 0) return false;
+
+        int[] triangles = null;
+        if (vertices.length != 4) {
+            if (!polygonTriangles.containsKey(face))
+                polygonTriangles.put(face, PolygonFaces.triangulate(vertices, polygonNormal));
+            triangles = polygonTriangles.get(face);
+            if (triangles == null) return false;
+        }
+
+        next(vertices.length == 4 ? GL11.GL_QUADS : GL11.GL_TRIANGLES);
+        polygonNormal.normalize();
+        tess.setNormal((float) polygonNormal.x, (float) polygonNormal.y, (float) polygonNormal.z);
+        try {
+            if (triangles == null) drawVertexes(vertices, tess);
+            else for (int index : triangles) drawVertex(vertices[index], index, tess);
+        } finally {
+            next(GL11.GL_POLYGON);
+        }
+        return true;
     }
 
     /**
@@ -680,7 +729,8 @@ public class MalisisRenderer extends TileEntitySpecialRenderer implements ISimpl
 
         // alpha
         if (!params.usePerVertexAlpha.get()) vertex.setAlpha(params.alpha.get());
-        tess.setColorRGBA_I(vertex.getColor(), vertex.getAlpha());
+        if (renderType == RenderType.TESR_WORLD && destroyBlockProgress != null) tess.setColorRGBA_I(0xFFFFFF, 128);
+        else tess.setColorRGBA_I(vertex.getColor(), vertex.getAlpha());
         tess.setBrightness(vertex.getBrightness());
 
         if (params.useTexture.get())

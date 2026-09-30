@@ -34,6 +34,11 @@ import org.apache.commons.lang3.ArrayUtils;
 
 public class VanishingTileEntity extends TileEntity {
 
+    @Override
+    public boolean shouldRenderInPass(int pass) {
+        return pass == 0 || pass == 1;
+    }
+
     public static final int maxTransitionTime = 8;
     public static final int maxVibratingTime = 15;
 
@@ -50,6 +55,7 @@ public class VanishingTileEntity extends TileEntity {
     public int vibratingTimer;
 
     private final Random rand = new Random();
+    private int lastLightOpacity = -1;
 
     private Block[] excludes = new Block[] { MalisisDoors.Blocks.vanishingBlock, Blocks.air, Blocks.ladder,
         Blocks.stone_button, Blocks.wooden_button, Blocks.lever, Blocks.vine };
@@ -79,6 +85,7 @@ public class VanishingTileEntity extends TileEntity {
             copiedBlock = null;
             copiedMetadata = 0;
             copiedTileEntity = null;
+            updateLightOpacity();
             return true;
         }
 
@@ -91,6 +98,7 @@ public class VanishingTileEntity extends TileEntity {
         initCopiedTileEntity();
         copiedMetadata = block.onBlockPlaced(proxy, xCoord, yCoord, zCoord, side, hitX, hitY, hitZ, copiedMetadata);
         if (p != null) block.onBlockPlacedBy(proxy, xCoord, yCoord, zCoord, p, itemStack);
+        updateLightOpacity();
         return true;
     }
 
@@ -108,20 +116,32 @@ public class VanishingTileEntity extends TileEntity {
         if (powered == this.powered) return false;
 
         if (!inTransition) this.transitionTimer = powered ? 0 : duration;
+        this.transitionTimer = Math.max(0, Math.min(duration, transitionTimer));
         this.powered = powered;
         this.inTransition = true;
+        this.vibrating = false;
+        this.vibratingTimer = 0;
         worldObj.setBlockMetadataWithNotify(
             xCoord,
             yCoord,
             zCoord,
-            getBlockMetadata() | VanishingBlock.flagInTransition,
+            (worldObj.getBlockMetadata(xCoord, yCoord, zCoord) & 3) | VanishingBlock.flagInTransition
+                | (powered ? VanishingBlock.flagPowered : 0),
             2);
+        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        updateLightOpacity();
 
         return true;
     }
 
     @Override
     public void updateEntity() {
+        if (worldObj.isRemote) {
+            boolean metadataPowered = (worldObj.getBlockMetadata(xCoord, yCoord, zCoord) & VanishingBlock.flagPowered)
+                != 0;
+            if (metadataPowered != powered) return;
+        }
+
         if (!inTransition && !powered) {
             float r = rand.nextFloat();
             boolean b = r < MalisisDoorsSettings.vanishingGlitchChance.get();
@@ -132,7 +152,7 @@ public class VanishingTileEntity extends TileEntity {
                     xCoord,
                     yCoord,
                     zCoord,
-                    getBlockMetadata() | VanishingBlock.flagInTransition,
+                    worldObj.getBlockMetadata(xCoord, yCoord, zCoord) | VanishingBlock.flagInTransition,
                     2);
             }
 
@@ -143,7 +163,7 @@ public class VanishingTileEntity extends TileEntity {
                     xCoord,
                     yCoord,
                     zCoord,
-                    getBlockMetadata() & ~VanishingBlock.flagInTransition,
+                    worldObj.getBlockMetadata(xCoord, yCoord, zCoord) & ~VanishingBlock.flagInTransition,
                     2);
             }
 
@@ -155,13 +175,14 @@ public class VanishingTileEntity extends TileEntity {
             {
                 transitionTimer++;
                 if (transitionTimer >= duration) {
+                    transitionTimer = duration;
                     inTransition = false;
                     worldObj.spawnParticle("smoke", xCoord + 0.5F, yCoord + 0.5F, zCoord + 0.5F, 0.0F, 0.0F, 0.0F);
                     worldObj.setBlockMetadataWithNotify(
                         xCoord,
                         yCoord,
                         zCoord,
-                        getBlockMetadata() & ~VanishingBlock.flagInTransition,
+                        worldObj.getBlockMetadata(xCoord, yCoord, zCoord) & ~VanishingBlock.flagInTransition,
                         2);
                 }
             } else
@@ -169,22 +190,40 @@ public class VanishingTileEntity extends TileEntity {
             {
                 transitionTimer--;
                 if (transitionTimer <= 0) {
+                    transitionTimer = 0;
                     inTransition = false;
                     worldObj.setBlockMetadataWithNotify(
                         xCoord,
                         yCoord,
                         zCoord,
-                        getBlockMetadata() & ~VanishingBlock.flagInTransition,
+                        worldObj.getBlockMetadata(xCoord, yCoord, zCoord) & ~VanishingBlock.flagInTransition,
                         2);
                 }
             }
         }
+        updateLightOpacity();
+    }
+
+    private void updateLightOpacity() {
+        if (worldObj == null) return;
+        Block block = worldObj.getBlock(xCoord, yCoord, zCoord);
+        if (!(block instanceof VanishingBlock)) return;
+        int opacity = block.getLightOpacity(worldObj, xCoord, yCoord, zCoord);
+        if (opacity == lastLightOpacity) return;
+        lastLightOpacity = opacity;
+
+        worldObj.getChunkFromBlockCoords(xCoord, zCoord)
+            .relightBlock(xCoord & 15, yCoord + 1, zCoord & 15);
+        worldObj.func_147451_t(xCoord, yCoord, zCoord);
     }
 
     @Override
     public void readFromNBT(NBTTagCompound nbt) {
         super.readFromNBT(nbt);
         int blockID = nbt.getInteger("BlockID");
+        copiedBlock = null;
+        copiedMetadata = 0;
+        copiedTileEntity = null;
         if (blockID != 0) {
             copiedBlock = Block.getBlockById(blockID);
             copiedMetadata = nbt.getInteger("BlockMetadata");
@@ -233,5 +272,13 @@ public class VanishingTileEntity extends TileEntity {
     @Override
     public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet) {
         this.readFromNBT(packet.func_148857_g());
+        updateLightOpacity();
+        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+    }
+
+    @Override
+    public boolean shouldRefresh(Block oldBlock, Block newBlock, int oldMeta, int newMeta, World world, int x, int y,
+        int z) {
+        return oldBlock != newBlock;
     }
 }

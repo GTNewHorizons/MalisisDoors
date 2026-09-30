@@ -37,7 +37,6 @@ import org.apache.commons.lang3.ArrayUtils;
 public class DoorTileEntity extends TileEntity {
 
     protected DoorDescriptor descriptor;
-    protected int lastMetadata = -1;
     protected Timer timer = new Timer();
     protected DoorState state = DoorState.CLOSED;
 
@@ -48,6 +47,7 @@ public class DoorTileEntity extends TileEntity {
 
     protected boolean moving;
     protected boolean centered = false;
+    private int lastLightOpacity = -1;
 
     // #region Getter/Setter
     public DoorDescriptor getDescriptor() {
@@ -93,11 +93,7 @@ public class DoorTileEntity extends TileEntity {
 
     @Override
     public int getBlockMetadata() {
-        if (lastMetadata != blockMetadata || blockMetadata == -1 && getBlockType() != null) {
-            blockMetadata = Door.fullMetadata(worldObj, xCoord, yCoord, zCoord);
-            lastMetadata = blockMetadata;
-        }
-
+        if (worldObj != null) return Door.fullMetadata(worldObj, xCoord, yCoord, zCoord);
         return blockMetadata;
     }
 
@@ -276,10 +272,22 @@ public class DoorTileEntity extends TileEntity {
 
     @Override
     public void updateEntity() {
-        if (!moving) return;
-
-        if (timer.elapsedTick() > descriptor.getOpeningTime())
+        if (moving && timer.elapsedTick() > descriptor.getOpeningTime())
             setDoorState(state == DoorState.CLOSING ? DoorState.CLOSED : DoorState.OPENED);
+
+        if (worldObj != null && getBlockType() instanceof Door door && door.blocksLightWhenClosed())
+            updateLightOpacity(2);
+    }
+
+    protected void updateLightOpacity(int height) {
+        if (worldObj == null) return;
+        int opacity = getBlockType().getLightOpacity(worldObj, xCoord, yCoord, zCoord);
+        if (opacity == lastLightOpacity) return;
+        lastLightOpacity = opacity;
+
+        worldObj.getChunkFromBlockCoords(xCoord, zCoord)
+            .relightBlock(xCoord & 15, yCoord + height, zCoord & 15);
+        for (int dy = 0; dy < height; dy++) worldObj.func_147451_t(xCoord, yCoord + dy, zCoord);
     }
 
     // #region NBT/Network

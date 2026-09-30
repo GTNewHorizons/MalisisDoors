@@ -18,6 +18,7 @@ import net.malisis.doors.door.DoorState;
 import net.malisis.doors.door.block.Door;
 import net.malisis.doors.door.tileentity.DoorTileEntity;
 import net.malisis.doors.trapdoor.TrapDoorDescriptor;
+import net.malisis.doors.trapdoor.descriptor.SlidingTrapDoor;
 import net.malisis.doors.trapdoor.tileentity.TrapDoorTileEntity;
 import net.minecraft.block.BlockTrapDoor;
 import net.minecraft.block.ITileEntityProvider;
@@ -84,6 +85,12 @@ public class TrapDoor extends BlockTrapDoor implements ITileEntityProvider {
     public void func_150120_a(World world, int x, int y, int z, boolean opening) {
         DoorTileEntity te = Door.getDoor(world, x, y, z);
         if (te != null) te.setPowered(opening);
+    }
+
+    @Override
+    public int getLightOpacity(IBlockAccess world, int x, int y, int z) {
+        if (!(descriptor instanceof SlidingTrapDoor)) return super.getLightOpacity(world, x, y, z);
+        return (world.getBlockMetadata(x, y, z) & Door.FLAG_OPENED) == 0 ? 255 : 0;
     }
 
     // #region BoundingBox

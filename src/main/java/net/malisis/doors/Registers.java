@@ -29,6 +29,7 @@ import net.malisis.doors.door.DoorDescriptor;
 import net.malisis.doors.door.block.BigDoor;
 import net.malisis.doors.door.block.CollisionHelperBlock;
 import net.malisis.doors.door.block.CustomDoor;
+import net.malisis.doors.door.block.CustomDoorCollisionBlock;
 import net.malisis.doors.door.block.FenceGate;
 import net.malisis.doors.door.block.FenceGate.Type;
 import net.malisis.doors.door.block.ForcefieldDoor;
@@ -43,10 +44,13 @@ import net.malisis.doors.door.descriptor.SaloonDoor;
 import net.malisis.doors.door.descriptor.ShojiDoor;
 import net.malisis.doors.door.descriptor.VanillaDoor;
 import net.malisis.doors.door.descriptor.WoodDoor;
+import net.malisis.doors.door.item.BigDoorItem;
+import net.malisis.doors.door.item.CustomDoorBlockItem;
 import net.malisis.doors.door.item.CustomDoorItem;
 import net.malisis.doors.door.item.DoorItem;
 import net.malisis.doors.door.item.ForcefieldItem;
 import net.malisis.doors.door.tileentity.BigDoorTileEntity;
+import net.malisis.doors.door.tileentity.CustomDoorCollisionTileEntity;
 import net.malisis.doors.door.tileentity.CustomDoorTileEntity;
 import net.malisis.doors.door.tileentity.DoorTileEntity;
 import net.malisis.doors.door.tileentity.FenceGateTileEntity;
@@ -390,15 +394,15 @@ public class Registers {
 
     private static void registerCustomDoor() {
         customDoor = new CustomDoor();
-        GameRegistry.registerBlock(
-            customDoor,
-            customDoor.getUnlocalizedName()
-                .substring(5));
+        GameRegistry.registerBlock(customDoor, CustomDoorBlockItem.class, "null");
 
         customDoorItem = new CustomDoorItem();
         GameRegistry.registerItem(customDoorItem, customDoorItem.getUnlocalizedName());
 
         GameRegistry.registerTileEntity(CustomDoorTileEntity.class, "customDoorTileEntity");
+        customDoorCollision = new CustomDoorCollisionBlock();
+        GameRegistry.registerBlock(customDoorCollision, null, "custom_door_collision");
+        GameRegistry.registerTileEntity(CustomDoorCollisionTileEntity.class, "customDoorCollisionTileEntity");
     }
 
     private static void registerRustyHatch() {
@@ -428,10 +432,10 @@ public class Registers {
 
     private static void registerBigDoors() {
         carriageDoor = new BigDoor(BigDoor.Type.CARRIAGE);
-        carriageDoor.register();
+        carriageDoor.register(BigDoorItem.class);
 
         medievalDoor = new BigDoor(BigDoor.Type.MEDIEVAL);
-        medievalDoor.register();
+        medievalDoor.register(BigDoorItem.class);
 
         GameRegistry
             .registerTileEntityWithAlternatives(BigDoorTileEntity.class, "bigDoorTileEntity", "carriageDoorTileEntity");

@@ -16,6 +16,7 @@ package net.malisis.doors.door.tileentity;
 import net.malisis.core.util.BlockPos;
 import net.malisis.core.util.BlockState;
 import net.malisis.core.util.TileEntityUtils;
+import net.malisis.doors.MalisisDoors;
 import net.malisis.doors.door.DoorDescriptor;
 import net.malisis.doors.door.DoorRegistry;
 import net.malisis.doors.door.block.Door;
@@ -36,7 +37,7 @@ import org.apache.commons.lang3.tuple.Pair;
 public class FenceGateTileEntity extends DoorTileEntity {
 
     private BlockState camoState;
-    private int camoColor;
+    private int camoColor = 0xFFFFFF;
     private boolean isWall;
 
     public FenceGateTileEntity() {
@@ -45,16 +46,34 @@ public class FenceGateTileEntity extends DoorTileEntity {
         setDescriptor(descriptor);
     }
 
+    public int getCamoRenderPass() {
+        if (getBlockType() != MalisisDoors.Blocks.camoFenceGate) return 0;
+        if (camoState == null) updateAll();
+        return camoState != null && camoState.getBlock()
+            .getRenderBlockPass() == 1 ? 1 : 0;
+    }
+
+    @Override
+    public boolean shouldRenderInPass(int pass) {
+        return pass == getCamoRenderPass();
+    }
+
     public int getCamoColor() {
+        if (camoState == null) updateAll();
         return camoColor;
     }
 
     public boolean isWall() {
+        if (camoState == null) updateAll();
         return isWall;
     }
 
     public void updateAll() {
-        if (!worldObj.isRemote) return;
+        if (worldObj == null) return;
+        if (!worldObj.isRemote) {
+            worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+            return;
+        }
 
         Pair<BlockState, Integer> pair = updateCamo();
         camoState = pair.getLeft();
@@ -87,7 +106,7 @@ public class FenceGateTileEntity extends DoorTileEntity {
         BlockState state2 = new BlockState(worldObj, p);
         int color2 = state2.getBlock()
             .colorMultiplier(worldObj, p.getX(), p.getY(), p.getZ());
-        if (state1.getBlock()
+        if (state2.getBlock()
             .isAir(worldObj, p.getX(), p.getY(), p.getZ())) return Pair.of(new BlockState(worldObj, pos), -1);
 
         if (state1.getBlock() != state2.getBlock() || state1.getMetadata() != state2.getMetadata() || color1 != color2)
@@ -109,10 +128,11 @@ public class FenceGateTileEntity extends DoorTileEntity {
     }
 
     public IIcon getCamoIcon() {
+        if (camoState == null) updateAll();
         if (camoState == null) return getBlockType().getIcon(0, 0);
 
         return camoState.getBlock()
-            .getIcon(0, 0);
+            .getIcon(0, camoState.getMetadata());
     }
 
     /**
