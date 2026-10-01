@@ -176,6 +176,8 @@ public class BigDoorRenderer extends MalisisRenderer {
         if (world == null || (renderType != RenderType.ISBRH_WORLD && renderType != RenderType.TESR_WORLD))
             return super.calcVertexBrightness(vertex, aoMatrix);
 
+        if (block.getLightValue(world, x, y, z) != 0) return super.calcVertexBrightness(vertex, aoMatrix);
+
         double sampleX = x + vertex.getX() + faceNormal.x * 0.5 - 0.5;
         double sampleY = y + vertex.getY() + faceNormal.y * 0.5 - 0.5;
         double sampleZ = z + vertex.getZ() + faceNormal.z * 0.5 - 0.5;
