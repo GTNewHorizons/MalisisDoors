@@ -93,7 +93,7 @@ public class DoorTileEntity extends TileEntity {
 
     @Override
     public int getBlockMetadata() {
-        if (worldObj != null) return Door.fullMetadata(worldObj, xCoord, yCoord, zCoord);
+        if (worldObj != null) blockMetadata = Door.fullMetadata(worldObj, xCoord, yCoord, zCoord);
         return blockMetadata;
     }
 
