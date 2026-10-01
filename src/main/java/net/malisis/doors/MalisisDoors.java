@@ -36,7 +36,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
     modid = MalisisDoors.modid,
     name = MalisisDoors.modname,
     version = VERSION,
-    dependencies = "required-after:malisiscore")
+    dependencies = "required-after:malisiscore;after:angelica")
 public class MalisisDoors implements IMalisisMod {
 
     @SidedProxy(clientSide = "net.malisis.doors.proxy.ClientProxy", serverSide = "net.malisis.doors.proxy.ServerProxy")

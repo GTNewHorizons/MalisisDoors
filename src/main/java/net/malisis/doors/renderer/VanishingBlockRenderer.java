@@ -23,6 +23,8 @@ import net.malisis.core.renderer.element.shape.Cube;
 import net.malisis.doors.MalisisDoorsSettings;
 import net.malisis.doors.ProxyAccess;
 import net.malisis.doors.block.VanishingBlock;
+import net.malisis.doors.compat.RenderCompatibility;
+import net.malisis.doors.compat.RenderCompatibility.Scope;
 import net.malisis.doors.entity.VanishingTileEntity;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
@@ -56,7 +58,7 @@ public class VanishingBlockRenderer extends MalisisRenderer {
                 renderBlocks.renderAllFaces = true;
                 try {
                     if (te.copiedBlock.canRenderInPass(((VanishingBlock) block).renderPass))
-                        vertexDrawn = renderBlocks.renderBlockByRenderType(te.copiedBlock, x, y, z);
+                        vertexDrawn = renderCopiedBlock(renderBlocks, te);
                 } catch (Exception e) {
 
                     tessellatorShift();
@@ -133,7 +135,7 @@ public class VanishingBlockRenderer extends MalisisRenderer {
                     renderBlocks.overrideBlockTexture = block.getIcon(0, blockMetadata);
                     for (int pass = 0; pass <= 1; pass++) {
                         if (!te.copiedBlock.canRenderInPass(pass)) continue;
-                        rendered |= renderBlocks.renderBlockByRenderType(te.copiedBlock, x, y, z);
+                        rendered |= renderCopiedBlock(renderBlocks, te);
                         next();
                     }
                     renderBlocks.overrideBlockTexture = null;
@@ -142,12 +144,12 @@ public class VanishingBlockRenderer extends MalisisRenderer {
                 if (renderOpaque && te.copiedBlock.canRenderInPass(0)) {
                     GL11.glBlendFunc(GL11.GL_CONSTANT_ALPHA, GL11.GL_ONE_MINUS_CONSTANT_ALPHA);
                     GL14.glBlendColor(0, 0, 0, scale);
-                    rendered |= renderBlocks.renderBlockByRenderType(te.copiedBlock, x, y, z);
+                    rendered |= renderCopiedBlock(renderBlocks, te);
                     next();
                 }
                 if (renderTranslucent && te.copiedBlock.canRenderInPass(1)) {
                     GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-                    rendered |= renderBlocks.renderBlockByRenderType(te.copiedBlock, x, y, z);
+                    rendered |= renderCopiedBlock(renderBlocks, te);
                     next();
                 }
 
@@ -172,11 +174,27 @@ public class VanishingBlockRenderer extends MalisisRenderer {
         } else if (renderTranslucent) drawShape(shape, rp);
     }
 
+    private boolean renderCopiedBlock(RenderBlocks renderer, VanishingTileEntity te) {
+        if (renderer.hasOverrideBlockTexture()
+            || renderType != RenderType.ISBRH_WORLD && renderType != RenderType.TESR_WORLD) {
+            return renderer.renderBlockByRenderType(te.copiedBlock, x, y, z);
+        }
+        int metadata = renderer.blockAccess.getBlockMetadata(x, y, z);
+        try (Scope ignored = renderType == RenderType.ISBRH_WORLD
+            ? RenderCompatibility.instance.beginChunkMaterial(te.copiedBlock, metadata)
+            : RenderCompatibility.instance
+                .beginMaterial(this::next, te.copiedBlock, metadata, block, blockMetadata, false)) {
+            return renderer.renderBlockByRenderType(te.copiedBlock, x, y, z);
+        }
+    }
+
     private void renderCopiedTileEntity(VanishingTileEntity te) {
         int pass = MinecraftForgeClient.getRenderPass();
         if (te.copiedTileEntity == null || pass >= 0 && !te.copiedTileEntity.shouldRenderInPass(pass)) return;
         clean();
-        TileEntityRendererDispatcher.instance.renderTileEntity(te.copiedTileEntity, partialTick);
+        try (Scope ignored = RenderCompatibility.instance.beginCopiedTileEntity()) {
+            TileEntityRendererDispatcher.instance.renderTileEntity(te.copiedTileEntity, partialTick);
+        }
     }
 
 }

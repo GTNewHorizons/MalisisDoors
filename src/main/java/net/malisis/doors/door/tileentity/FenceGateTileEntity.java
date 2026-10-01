@@ -46,6 +46,11 @@ public class FenceGateTileEntity extends DoorTileEntity {
         setDescriptor(descriptor);
     }
 
+    public BlockState getCamoState() {
+        if (camoState == null) updateAll();
+        return camoState;
+    }
+
     public int getCamoRenderPass() {
         if (getBlockType() != MalisisDoors.Blocks.camoFenceGate) return 0;
         if (camoState == null) updateAll();

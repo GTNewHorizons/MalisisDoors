@@ -27,6 +27,8 @@ import net.malisis.core.renderer.font.MalisisFont;
 import net.malisis.core.renderer.font.VanillaFont;
 import net.malisis.core.renderer.icon.MalisisIcon;
 import net.malisis.core.util.Vector;
+import net.malisis.doors.compat.RenderCompatibility;
+import net.malisis.doors.compat.RenderCompatibility.Scope;
 import net.malisis.doors.door.tileentity.DoorTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -326,6 +328,8 @@ public class MalisisRenderer extends TileEntitySpecialRenderer implements ISimpl
     // #end IItemRenderer
 
     // #region TESR
+    private boolean drawingShaderTerrain;
+
     /**
      * Renders a {@link TileEntitySpecialRenderer}.
      *
@@ -337,40 +341,47 @@ public class MalisisRenderer extends TileEntitySpecialRenderer implements ISimpl
      */
     @Override
     public void renderTileEntityAt(TileEntity te, double x, double y, double z, float partialTick) {
-        if (te.isInvalid() || te.getWorldObj() == null
-            || te.getWorldObj()
-                .getBlock(te.xCoord, te.yCoord, te.zCoord) != te.getBlockType())
-            return;
-        if (!(te instanceof DoorTileEntity) || ((DoorTileEntity) te).shouldRender()) {
-            set(te, partialTick);
-            prepare(RenderType.TESR_WORLD, x, y, z);
-            render();
-            if (getBlockDamage) {
-                destroyBlockProgress = getBlockDestroyProgress();
-                if (destroyBlockProgress != null) {
+        boolean previousTerrain = drawingShaderTerrain;
+        drawingShaderTerrain = RenderCompatibility.instance.isTerrainTileEntity(te);
+        try (Scope ignored = RenderCompatibility.instance.beginTileEntity(te)) {
+            if (te.isInvalid() || te.getWorldObj() == null
+                || te.getWorldObj()
+                    .getBlock(te.xCoord, te.yCoord, te.zCoord) != te.getBlockType())
+                return;
+            if (!(te instanceof DoorTileEntity) || ((DoorTileEntity) te).shouldRender()) {
+                set(te, partialTick);
+                prepare(RenderType.TESR_WORLD, x, y, z);
+                render();
+                if (getBlockDamage) {
+                    destroyBlockProgress = getBlockDestroyProgress();
+                    if (destroyBlockProgress != null) {
 
-                    next();
-
-                    GL11.glPushAttrib(
-                        GL11.GL_COLOR_BUFFER_BIT | GL11.GL_CURRENT_BIT | GL11.GL_ENABLE_BIT | GL11.GL_POLYGON_BIT);
-                    try {
-                        GL11.glEnable(GL11.GL_BLEND);
-                        OpenGlHelper.glBlendFunc(GL11.GL_DST_COLOR, GL11.GL_SRC_COLOR, GL11.GL_ONE, GL11.GL_ZERO);
-                        GL11.glEnable(GL11.GL_ALPHA_TEST);
-                        GL11.glAlphaFunc(GL11.GL_GREATER, 0.1F);
-                        GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.5F);
-                        GL11.glEnable(GL11.GL_POLYGON_OFFSET_FILL);
-                        GL11.glPolygonOffset(-3.0F, -3.0F);
-
-                        renderDestroyProgress();
                         next();
-                    } finally {
-                        GL11.glPopAttrib();
+
+                        GL11.glPushAttrib(
+                            GL11.GL_COLOR_BUFFER_BIT | GL11.GL_CURRENT_BIT | GL11.GL_ENABLE_BIT | GL11.GL_POLYGON_BIT);
+                        try {
+                            GL11.glEnable(GL11.GL_BLEND);
+                            OpenGlHelper.glBlendFunc(GL11.GL_DST_COLOR, GL11.GL_SRC_COLOR, GL11.GL_ONE, GL11.GL_ZERO);
+                            GL11.glEnable(GL11.GL_ALPHA_TEST);
+                            GL11.glAlphaFunc(GL11.GL_GREATER, 0.1F);
+                            GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.5F);
+                            GL11.glEnable(GL11.GL_POLYGON_OFFSET_FILL);
+                            GL11.glPolygonOffset(-3.0F, -3.0F);
+
+                            renderDestroyProgress();
+                            next();
+                        } finally {
+                            GL11.glPopAttrib();
+                        }
                     }
                 }
+                clean();
+                tileEntity = null;
             }
-            clean();
-            tileEntity = null;
+
+        } finally {
+            drawingShaderTerrain = previousTerrain;
         }
     }
 
@@ -880,7 +891,9 @@ public class MalisisRenderer extends TileEntitySpecialRenderer implements ISimpl
         }
 
         // apply face dependent shading
-        factor *= params.colorFactor.get();
+        float directionalShade = params.colorFactor.get();
+        factor *= drawingShaderTerrain ? RenderCompatibility.instance.directionalShade(directionalShade)
+            : directionalShade;
 
         int r = (int) ((color >> 16 & 255) * factor);
         int g = (int) ((color >> 8 & 255) * factor);

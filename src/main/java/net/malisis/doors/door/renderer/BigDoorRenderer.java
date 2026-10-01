@@ -16,7 +16,6 @@ package net.malisis.doors.door.renderer;
 import java.util.IdentityHashMap;
 import java.util.Map;
 
-import net.malisis.core.renderer.MalisisRenderer;
 import net.malisis.core.renderer.RenderParameters;
 import net.malisis.core.renderer.RenderType;
 import net.malisis.core.renderer.animation.Animation;
@@ -33,6 +32,7 @@ import net.malisis.doors.door.block.CollisionHelperBlock;
 import net.malisis.doors.door.block.Door;
 import net.malisis.doors.door.tileentity.BigDoorTileEntity;
 import net.malisis.doors.door.tileentity.MultiTile;
+import net.malisis.doors.renderer.CopiedBlockRenderer;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.DestroyBlockProgress;
 import net.minecraft.client.renderer.Tessellator;
@@ -47,7 +47,7 @@ import org.lwjgl.opengl.GL11;
  * @author Ordinastie
  *
  */
-public class BigDoorRenderer extends MalisisRenderer {
+public class BigDoorRenderer extends CopiedBlockRenderer {
 
     private MalisisModel model;
     private Shape frame;

@@ -15,7 +15,6 @@ package net.malisis.doors.renderer;
 
 import java.util.List;
 
-import net.malisis.core.renderer.MalisisRenderer;
 import net.malisis.core.renderer.RenderParameters;
 import net.malisis.core.renderer.RenderType;
 import net.malisis.core.renderer.element.Face;
@@ -36,7 +35,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.apache.commons.lang3.ArrayUtils;
 import org.lwjgl.opengl.GL11;
 
-public class MixedBlockRenderer extends MalisisRenderer {
+public class MixedBlockRenderer extends CopiedBlockRenderer {
 
     private int mixedBlockMetadata;
     private Shape simpleShape;

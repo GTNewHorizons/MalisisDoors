@@ -18,6 +18,7 @@ import java.util.List;
 
 import net.malisis.core.util.AABBUtils;
 import net.malisis.doors.MalisisDoors;
+import net.malisis.doors.compat.RenderCompatibility;
 import net.malisis.doors.door.DoorState;
 import net.malisis.doors.door.block.CustomDoor;
 import net.malisis.doors.door.block.Door;
@@ -39,7 +40,8 @@ import net.minecraft.util.MathHelper;
 public class CustomDoorTileEntity extends DoorTileEntity {
 
     public int getMaterialRenderPass(Block material) {
-        return material != null && material.getRenderBlockPass() == 1 ? 1 : 0;
+        int pass = material != null && material.getRenderBlockPass() == 1 ? 1 : 0;
+        return RenderCompatibility.instance.materialRenderPass(material, pass);
     }
 
     @Override
@@ -115,7 +117,8 @@ public class CustomDoorTileEntity extends DoorTileEntity {
                 && z == partner.zCoord
                 && (y == partner.yCoord || y == partner.yCoord + 1)) continue;
             TileEntity tile = worldObj.getTileEntity(x, y, z);
-            if (block == MalisisDoors.Blocks.customDoorCollision && tile instanceof CustomDoorCollisionTileEntity helper) {
+            if (block == MalisisDoors.Blocks.customDoorCollision
+                && tile instanceof CustomDoorCollisionTileEntity helper) {
                 if (helper.belongsTo(this) || partner != null && helper.belongsTo(partner)) continue;
             }
             AxisAlignedBB box = block.getCollisionBoundingBoxFromPool(worldObj, x, y, z);

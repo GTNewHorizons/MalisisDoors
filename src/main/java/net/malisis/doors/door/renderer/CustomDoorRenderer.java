@@ -13,6 +13,7 @@
 
 package net.malisis.doors.door.renderer;
 
+import net.malisis.core.renderer.RenderParameters;
 import net.malisis.core.renderer.RenderType;
 import net.malisis.core.renderer.element.Face;
 import net.malisis.core.renderer.element.Shape;
@@ -22,12 +23,15 @@ import net.malisis.core.renderer.element.face.SouthFace;
 import net.malisis.core.renderer.element.face.TopFace;
 import net.malisis.core.renderer.element.shape.Cube;
 import net.malisis.core.renderer.model.MalisisModel;
+import net.malisis.doors.compat.RenderCompatibility;
+import net.malisis.doors.compat.RenderCompatibility.MaterialBatch;
 import net.malisis.doors.door.block.Door;
 import net.malisis.doors.door.movement.VanishingDoorMovement;
 import net.malisis.doors.door.tileentity.CustomDoorCollisionTileEntity;
 import net.malisis.doors.door.tileentity.CustomDoorTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.DestroyBlockProgress;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
@@ -42,6 +46,7 @@ import org.lwjgl.opengl.GL11;
  */
 public class CustomDoorRenderer extends DoorRenderer {
 
+    private MaterialBatch materialBatch;
     private int materialRenderPass = -1;
     private Block frameBlock;
     private Block topMaterialBlock;
@@ -222,6 +227,40 @@ public class CustomDoorRenderer extends DoorRenderer {
         // reset the values to default as rp is used for the whole shape
         rp.icon.reset();
         rp.colorMultiplier.reset();
+    }
+
+    @Override
+    public void drawShape(Shape shape, RenderParameters parameters) {
+        if (renderType != RenderType.TESR_WORLD || destroyBlockProgress != null || overrideTexture != null) {
+            super.drawShape(shape, parameters);
+            return;
+        }
+
+        MaterialBatch previous = materialBatch;
+        try (MaterialBatch batch = RenderCompatibility.instance.beginMaterials(this::next, block, blockMetadata)) {
+            materialBatch = batch;
+            super.drawShape(shape, parameters);
+        } finally {
+            materialBatch = previous;
+        }
+    }
+
+    @Override
+    protected void drawFace(Face face, RenderParameters parameters, Tessellator tessellator) {
+        if (materialBatch != null && face != null) {
+            Block material = block;
+            int metadata = blockMetadata;
+            if ("frame".equals(face.name())) {
+                material = frameBlock;
+                metadata = frameMetadata;
+            } else if ("material".equals(face.name())) {
+                boolean upperPanel = shape == top;
+                material = upperPanel ? topMaterialBlock : bottomMaterialBlock;
+                metadata = upperPanel ? topMaterialMetadata : bottomMaterialMetadata;
+            }
+            materialBatch.setMaterial(material, metadata);
+        }
+        super.drawFace(face, parameters, tessellator);
     }
 
     @Override
