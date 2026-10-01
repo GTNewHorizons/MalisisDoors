@@ -17,10 +17,12 @@ import net.malisis.core.util.BlockPos;
 import net.malisis.core.util.BlockState;
 import net.malisis.core.util.TileEntityUtils;
 import net.malisis.doors.MalisisDoors;
+import net.malisis.doors.compat.RenderCompatibility;
 import net.malisis.doors.door.DoorDescriptor;
 import net.malisis.doors.door.DoorRegistry;
 import net.malisis.doors.door.block.Door;
 import net.malisis.doors.door.movement.FenceGateMovement;
+import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
@@ -54,8 +56,9 @@ public class FenceGateTileEntity extends DoorTileEntity {
     public int getCamoRenderPass() {
         if (getBlockType() != MalisisDoors.Blocks.camoFenceGate) return 0;
         if (camoState == null) updateAll();
-        return camoState != null && camoState.getBlock()
-            .getRenderBlockPass() == 1 ? 1 : 0;
+        Block material = camoState != null ? camoState.getBlock() : null;
+        int pass = material != null && material.getRenderBlockPass() == 1 ? 1 : 0;
+        return RenderCompatibility.instance.materialRenderPass(material, pass);
     }
 
     @Override
