@@ -15,6 +15,7 @@ package net.malisis.doors.door.block;
 
 import java.util.ArrayList;
 
+import net.malisis.core.block.BoundingBoxType;
 import net.malisis.doors.door.item.CustomDoorItem;
 import net.malisis.doors.door.tileentity.CustomDoorTileEntity;
 import net.malisis.doors.door.tileentity.DoorTileEntity;
@@ -27,6 +28,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
@@ -44,6 +46,7 @@ public class CustomDoor extends Door {
 
     public CustomDoor() {
         super(Material.wood);
+        setBlockName("custom_door");
         setHardness(3.0F);
         setStepSound(soundTypeWood);
     }
@@ -54,6 +57,15 @@ public class CustomDoor extends Door {
     @Override
     public IIcon getIcon(int side, int metadata) {
         return null;
+    }
+
+    @Override
+    public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
+        AxisAlignedBB bounds = null;
+        for (AxisAlignedBB box : getBoundingBox(world, x, y, z, BoundingBoxType.COLLISION)) {
+            if (box != null) bounds = bounds == null ? box : bounds.func_111270_a(box);
+        }
+        return bounds == null ? null : bounds.offset(x, y, z);
     }
 
     @Override
@@ -71,16 +83,76 @@ public class CustomDoor extends Door {
         return CustomDoorItem.fromTileEntity((CustomDoorTileEntity) te);
     }
 
+    @Override
+    public void onBlockHarvested(World world, int x, int y, int z, int metadata, EntityPlayer player) {}
+
     @SuppressWarnings("deprecation")
     @Override
     public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z) {
-        if (!player.capabilities.isCreativeMode) {
-            DoorTileEntity te = Door.getDoor(world, x, y, z);
-            if (!(te instanceof CustomDoorTileEntity)) return true;
-            if (!te.isTopBlock(x, y, z))
-                dropBlockAsItem(world, x, y, z, CustomDoorItem.fromTileEntity((CustomDoorTileEntity) te));
+        DoorTileEntity tile = Door.getDoor(world, x, y, z);
+        if (!(tile instanceof CustomDoorTileEntity)) return super.removedByPlayer(world, player, x, y, z);
+        removeDoors(world, (CustomDoorTileEntity) tile, !player.capabilities.isCreativeMode);
+        return true;
+    }
+
+    public CustomDoorTileEntity getPairedDoor(World world, CustomDoorTileEntity door) {
+        if (door.getDescriptor() == null || !door.getDescriptor()
+            .isDoubleDoor()) return null;
+        ForgeDirection facing = Door.intToDir(door.getDirection());
+        int sign = door.isReversed() ? 1 : -1;
+        int x = door.xCoord - facing.offsetZ * sign;
+        int z = door.zCoord + facing.offsetX * sign;
+        if (!world.blockExists(x, door.yCoord, z) || world.getBlock(x, door.yCoord, z) != this) return null;
+        TileEntity tile = world.getTileEntity(x, door.yCoord, z);
+        if (!(tile instanceof CustomDoorTileEntity partner)) return null;
+        return !partner.isRemoving() && partner.getDescriptor() != null
+            && partner.getDescriptor()
+                .isDoubleDoor()
+            && partner.getDirection() == door.getDirection()
+            && partner.isReversed() != door.isReversed()
+            && partner.getMovement() == door.getMovement() ? partner : null;
+    }
+
+    private void removeDoors(World world, CustomDoorTileEntity door, boolean dropItems) {
+        if (door.isRemoving()) return;
+        CustomDoorTileEntity partner = getPairedDoor(world, door);
+        CustomDoorTileEntity[] doors = partner == null ? new CustomDoorTileEntity[] { door }
+            : new CustomDoorTileEntity[] { door, partner };
+        ItemStack[] drops = new ItemStack[doors.length];
+        for (int i = 0; i < doors.length; i++) {
+            if (dropItems && !world.isRemote) drops[i] = CustomDoorItem.fromTileEntity(doors[i]);
         }
-        return super.removedByPlayer(world, player, x, y, z);
+        for (CustomDoorTileEntity leaf : doors) leaf.beginRemoval();
+        for (CustomDoorTileEntity leaf : doors) leaf.removeCollisionHelpers();
+        for (int i = 0; i < doors.length; i++) {
+            CustomDoorTileEntity leaf = doors[i];
+            int x = leaf.xCoord, y = leaf.yCoord, z = leaf.zCoord;
+            if (world.getBlock(x, y + 1, z) == this && (world.getBlockMetadata(x, y + 1, z) & FLAG_TOPBLOCK) != 0)
+                world.setBlockToAir(x, y + 1, z);
+            if (world.getBlock(x, y, z) == this && world.getTileEntity(x, y, z) == leaf) world.setBlockToAir(x, y, z);
+            if (drops[i] != null) dropBlockAsItem(world, x, y, z, drops[i]);
+        }
+    }
+
+    @Override
+    public void onBlockPreDestroy(World world, int x, int y, int z, int metadata) {
+        DoorTileEntity tile = Door.getDoor(world, x, y, z);
+        if (tile instanceof CustomDoorTileEntity) removeDoors(world, (CustomDoorTileEntity) tile, true);
+        super.onBlockPreDestroy(world, x, y, z, metadata);
+    }
+
+    @Override
+    public void onNeighborBlockChange(World world, int x, int y, int z, Block neighbor) {
+        DoorTileEntity tile = Door.getDoor(world, x, y, z);
+        if (tile instanceof CustomDoorTileEntity door) {
+            if (door.isRemoving()) return;
+            if (world.getBlock(door.xCoord, door.yCoord + 1, door.zCoord) != this
+                || !World.doesBlockHaveSolidTopSurface(world, door.xCoord, door.yCoord - 1, door.zCoord)) {
+                removeDoors(world, door, true);
+                return;
+            }
+        }
+        super.onNeighborBlockChange(world, x, y, z, neighbor);
     }
 
     @Override

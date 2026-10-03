@@ -42,7 +42,10 @@ public class SlidingUpDoorMovement implements IDoorMovement {
             if (tileEntity.isOpened()) aabb.offset(0, 1, 0);
         }
 
-        if (tileEntity.isOpened()) aabb.offset(0, 1 - DOOR_WIDTH, 0);
+        if (tileEntity.isOpened()) {
+            if (type != BoundingBoxType.SELECTION) aabb.maxY++;
+            aabb.offset(0, 1 - DOOR_WIDTH, 0);
+        }
 
         return aabb;
     }

@@ -49,9 +49,6 @@ public class VanishingDiamondBlock extends VanishingBlock {
         if (te == null) return;
 
         te.setPowerState(powered);
-
-        if (powered) world.setBlockMetadataWithNotify(x, y, z, te.blockMetadata | flagPowered, 2);
-        else world.setBlockMetadataWithNotify(x, y, z, te.blockMetadata & ~flagPowered, 2);
     }
 
     @Override

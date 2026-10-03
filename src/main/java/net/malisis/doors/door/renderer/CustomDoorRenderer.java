@@ -13,7 +13,9 @@
 
 package net.malisis.doors.door.renderer;
 
+import net.malisis.core.renderer.RenderParameters;
 import net.malisis.core.renderer.RenderType;
+import net.malisis.core.renderer.element.Face;
 import net.malisis.core.renderer.element.Shape;
 import net.malisis.core.renderer.element.face.BottomFace;
 import net.malisis.core.renderer.element.face.NorthFace;
@@ -21,12 +23,22 @@ import net.malisis.core.renderer.element.face.SouthFace;
 import net.malisis.core.renderer.element.face.TopFace;
 import net.malisis.core.renderer.element.shape.Cube;
 import net.malisis.core.renderer.model.MalisisModel;
+import net.malisis.doors.compat.RenderCompatibility;
+import net.malisis.doors.compat.RenderCompatibility.MaterialBatch;
 import net.malisis.doors.door.block.Door;
+import net.malisis.doors.door.movement.VanishingDoorMovement;
+import net.malisis.doors.door.tileentity.CustomDoorCollisionTileEntity;
 import net.malisis.doors.door.tileentity.CustomDoorTileEntity;
 import net.minecraft.block.Block;
+import net.minecraft.client.renderer.DestroyBlockProgress;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.client.MinecraftForgeClient;
+
+import org.lwjgl.opengl.GL11;
 
 /**
  * @author Ordinastie
@@ -34,6 +46,8 @@ import net.minecraft.nbt.NBTTagCompound;
  */
 public class CustomDoorRenderer extends DoorRenderer {
 
+    private MaterialBatch materialBatch;
+    private int materialRenderPass = -1;
     private Block frameBlock;
     private Block topMaterialBlock;
     private Block bottomMaterialBlock;
@@ -194,7 +208,7 @@ public class CustomDoorRenderer extends DoorRenderer {
     }
 
     private void setupParams(boolean topBlock) {
-        // reset alpha before so it doesn't bleed to the shapes
+        // Reset the shared animation alpha before configuring this door.
         rp.alpha.reset();
 
         Shape s = model.getShape(topBlock ? "top" : "bottom");
@@ -208,9 +222,92 @@ public class CustomDoorRenderer extends DoorRenderer {
         rp.colorMultiplier.set(getColor(block));
         s.setParameters("material", rp, true);
 
+        for (Face face : s.getFaces()) face.getParameters().alpha.set(null);
+
         // reset the values to default as rp is used for the whole shape
         rp.icon.reset();
         rp.colorMultiplier.reset();
+    }
+
+    @Override
+    public void drawShape(Shape shape, RenderParameters parameters) {
+        if (renderType != RenderType.TESR_WORLD || destroyBlockProgress != null || overrideTexture != null) {
+            super.drawShape(shape, parameters);
+            return;
+        }
+
+        MaterialBatch previous = materialBatch;
+        try (MaterialBatch batch = RenderCompatibility.instance.beginMaterials(this::next, block, blockMetadata)) {
+            materialBatch = batch;
+            super.drawShape(shape, parameters);
+        } finally {
+            materialBatch = previous;
+        }
+    }
+
+    @Override
+    protected void drawFace(Face face, RenderParameters parameters, Tessellator tessellator) {
+        if (materialBatch != null && face != null) {
+            Block material = block;
+            int metadata = blockMetadata;
+            if ("frame".equals(face.name())) {
+                material = frameBlock;
+                metadata = frameMetadata;
+            } else if ("material".equals(face.name())) {
+                boolean upperPanel = shape == top;
+                material = upperPanel ? topMaterialBlock : bottomMaterialBlock;
+                metadata = upperPanel ? topMaterialMetadata : bottomMaterialMetadata;
+            }
+            materialBatch.setMaterial(material, metadata);
+        }
+        super.drawFace(face, parameters, tessellator);
+    }
+
+    @Override
+    protected boolean isCurrentBlockDestroyProgress(DestroyBlockProgress dbp) {
+        if (super.isCurrentBlockDestroyProgress(dbp)) return true;
+        if (tileEntity == null) return false;
+        TileEntity helper = world.getTileEntity(dbp.getPartialBlockX(), dbp.getPartialBlockY(), dbp.getPartialBlockZ());
+        return helper instanceof CustomDoorCollisionTileEntity
+            && ((CustomDoorCollisionTileEntity) helper).getOwner(world) == tileEntity;
+    }
+
+    @Override
+    protected boolean needsBlending() {
+        return materialRenderPass == 1
+            || tileEntity != null && tileEntity.isMoving() && tileEntity.getMovement() instanceof VanishingDoorMovement;
+    }
+
+    @Override
+    protected boolean shouldRenderFace(Face face) {
+        if (!super.shouldRenderFace(face)) return false;
+        if (materialRenderPass < 0) return true;
+        Block material = "frame".equals(face.name()) ? frameBlock
+            : shape == top ? topMaterialBlock : bottomMaterialBlock;
+        if (material == null) return false;
+        int pass = renderType == RenderType.TESR_WORLD ? tileEntity.getMaterialRenderPass(material)
+            : material.getRenderBlockPass();
+        return materialRenderPass == pass;
+    }
+
+    @Override
+    protected void renderTileEntity() {
+        int pass = MinecraftForgeClient.getRenderPass();
+        try {
+            for (int current = 0; current <= 1; current++) {
+                if (pass >= 0 && pass != current) continue;
+                materialRenderPass = current;
+                next();
+                if (destroyBlockProgress == null) {
+                    if (needsBlending()) enableBlending();
+                    else GL11.glDisable(GL11.GL_BLEND);
+                }
+                super.renderTileEntity();
+                next();
+            }
+        } finally {
+            materialRenderPass = -1;
+        }
     }
 
     private int getColor(Block block) {
@@ -220,11 +317,18 @@ public class CustomDoorRenderer extends DoorRenderer {
 
     private void renderInventory() {
         bindTexture(TextureMap.locationBlocksTexture);
-        enableBlending();
-
-        setup();
-
-        model.render(this, rp);
+        try {
+            for (int pass = 0; pass <= 1; pass++) {
+                materialRenderPass = pass;
+                setup();
+                if (pass == 1) enableBlending();
+                else GL11.glDisable(GL11.GL_BLEND);
+                model.render(this, rp);
+                next();
+            }
+        } finally {
+            materialRenderPass = -1;
+        }
     }
 
 }

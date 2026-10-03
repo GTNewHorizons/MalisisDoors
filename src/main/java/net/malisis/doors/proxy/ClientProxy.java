@@ -9,6 +9,7 @@ import net.malisis.doors.block.MixedBlock;
 import net.malisis.doors.block.RustyLadder;
 import net.malisis.doors.block.VanishingBlock;
 import net.malisis.doors.block.VanishingDiamondBlock;
+import net.malisis.doors.compat.AngelicaCompatibility;
 import net.malisis.doors.door.block.BigDoor;
 import net.malisis.doors.door.block.FenceGate;
 import net.malisis.doors.door.block.RustyHatch;
@@ -40,10 +41,16 @@ import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 
+import cpw.mods.fml.common.Loader;
+
 public class ClientProxy implements IProxy {
 
     @Override
     public void initRenderers() {
+        if (Loader.isModLoaded("angelica")) {
+            AngelicaCompatibility.initialize();
+        }
+
         // doors
         new DoorRenderer().registerFor(DoorTileEntity.class);
 

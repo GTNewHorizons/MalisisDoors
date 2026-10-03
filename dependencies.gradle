@@ -1,4 +1,15 @@
+def angelicaDevJar = providers.gradleProperty('angelicaDevJar').orNull
+def angelicaVersion = providers.gradleProperty('angelicaVersion').getOrElse('2.2.26')
+
 dependencies {
+    if (angelicaDevJar != null) {
+        compileOnly files(angelicaDevJar)
+    } else {
+        compileOnly("com.github.GTNewHorizons:Angelica:${angelicaVersion}:dev") {
+            transitive = false
+        }
+    }
+
     compileOnly 'org.projectlombok:lombok:1.18.24'
     annotationProcessor 'org.projectlombok:lombok:1.18.24'
 

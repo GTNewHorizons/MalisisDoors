@@ -6,6 +6,7 @@ import java.util.Random;
 import net.malisis.core.block.BoundingBoxType;
 import net.malisis.core.util.ComplexAxisAlignedBoundingBox;
 import net.malisis.doors.MalisisDoors;
+import net.malisis.doors.door.renderer.DoorParticles;
 import net.malisis.doors.door.tileentity.MultiTile;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
@@ -19,7 +20,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
@@ -31,11 +31,12 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class CollisionHelperBlock extends BlockContainer implements ITileEntityProvider {
 
-    private IIcon[] fakeIcons;
+    private final BigDoor.Type type;
 
     // This class serves at the invisible collision blocks to help BigDoor with collisions
     public CollisionHelperBlock(BigDoor.Type type) {
         super(Material.wood);
+        this.type = type;
         this.setHardness(1.0F);
         this.setStepSound(Block.soundTypeWood);
         this.setBlockTextureName(type.name + "_collisionHelper");
@@ -45,20 +46,7 @@ public class CollisionHelperBlock extends BlockContainer implements ITileEntityP
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister register) {
-        this.fakeIcons = new IIcon[2];
-        this.fakeIcons[0] = register.registerIcon(MalisisDoors.modid + ":" + BigDoor.Type.CARRIAGE);
-        this.fakeIcons[1] = register.registerIcon(MalisisDoors.modid + ":" + BigDoor.Type.MEDIEVAL);
-
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int side, int meta) {
-        return switch (meta) {
-            case 0 -> this.fakeIcons[0];
-            case 1 -> this.fakeIcons[1];
-            default -> this.fakeIcons[0];
-        };
+        blockIcon = register.registerIcon(MalisisDoors.modid + ":" + type.name);
     }
 
     @Override
@@ -201,6 +189,15 @@ public class CollisionHelperBlock extends BlockContainer implements ITileEntityP
     }
 
     @Override
+    public int getLightOpacity(IBlockAccess world, int x, int y, int z) {
+        TileEntity tile = world.getTileEntity(x, y, z);
+        if (!(tile instanceof MultiTile part) || !part.mainBlockSet) return 0;
+        Block mainBlock = world.getBlock(part.mainBlockX, part.mainBlockY, part.mainBlockZ);
+        if (!(mainBlock instanceof BigDoor)) return 0;
+        return mainBlock.getLightOpacity(world, part.mainBlockX, part.mainBlockY, part.mainBlockZ);
+    }
+
+    @Override
     public int quantityDropped(Random par1Random) {
         return 0;
     }
@@ -257,19 +254,8 @@ public class CollisionHelperBlock extends BlockContainer implements ITileEntityP
 
     @SideOnly(Side.CLIENT)
     @Override
-    public boolean addDestroyEffects(World world, int x, int y, int z, int meta, EffectRenderer effectRenderer) {
-        final TileEntity tileEntity = world.getTileEntity(x, y, z);
-        if (tileEntity instanceof MultiTile multiTileEntity) {
-            if (multiTileEntity.mainBlockSet) {
-                final Block mainBlock = world
-                    .getBlock(multiTileEntity.mainBlockX, multiTileEntity.mainBlockY, multiTileEntity.mainBlockZ);
-                if (Blocks.air != mainBlock) {
-                    return world
-                        .getBlock(multiTileEntity.mainBlockX, multiTileEntity.mainBlockY, multiTileEntity.mainBlockZ)
-                        .addDestroyEffects(world, x, y, z, meta, effectRenderer);
-                }
-            }
-        }
-        return super.addDestroyEffects(world, x, y, z, meta, effectRenderer);
+    public boolean addHitEffects(World world, MovingObjectPosition target, EffectRenderer effectRenderer) {
+        DoorParticles.addHitEffects(world, target, this, effectRenderer);
+        return true;
     }
 }

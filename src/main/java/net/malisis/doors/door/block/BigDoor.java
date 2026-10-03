@@ -25,11 +25,14 @@ import net.malisis.core.util.EntityUtils;
 import net.malisis.core.util.TileEntityUtils;
 import net.malisis.doors.MalisisDoors;
 import net.malisis.doors.MalisisDoors.Items;
+import net.malisis.doors.door.DoorState;
+import net.malisis.doors.door.renderer.DoorParticles;
 import net.malisis.doors.door.tileentity.BigDoorTileEntity;
 import net.malisis.doors.door.tileentity.IMultiBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
@@ -40,6 +43,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -47,11 +51,22 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.tuple.Pair;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 /**
  * @author Ordinastie
  *
  */
 public class BigDoor extends MalisisBlock implements ITileEntityProvider {
+
+    @Override
+    public int getLightOpacity(IBlockAccess world, int x, int y, int z) {
+        TileEntity tile = world.getTileEntity(x, y, z);
+        // Big doors update their collision layout at the start of opening; their metadata changes later.
+        if (tile instanceof BigDoorTileEntity door) return door.getState() == DoorState.CLOSED ? 255 : 0;
+        return (world.getBlockMetadata(x, y, z) & Door.FLAG_OPENED) == 0 ? 255 : 0;
+    }
 
     public enum Type {
 
@@ -154,7 +169,8 @@ public class BigDoor extends MalisisBlock implements ITileEntityProvider {
         }
     }
 
-    private boolean checkAreaClearForDoor(World world, int x, int y, int z, int meta) {
+    public boolean checkAreaClearForDoor(World world, int x, int y, int z, int meta) {
+        if (y < 0 || y > world.getHeight() - 6) return false;
         boolean validSpot = true;
         boolean widthDirectionFlag = meta % 2 == 0;
         int xStep = meta == 3 ? -1 : 1;
@@ -167,8 +183,7 @@ public class BigDoor extends MalisisBlock implements ITileEntityProvider {
                 for (int zLoc = 0; abs(zLoc) < zMax; zLoc += zStep) {
                     if (!(yLoc == 0 && zLoc == 0 && xLoc == 0)) {
                         final Block potentialSpot = world.getBlock(x + xLoc, y + yLoc, z + zLoc);
-                        if (!potentialSpot.getMaterial()
-                            .isReplaceable()) {
+                        if (!potentialSpot.isReplaceable(world, x + xLoc, y + yLoc, z + zLoc)) {
                             validSpot = false;
                         }
                     }
@@ -180,15 +195,25 @@ public class BigDoor extends MalisisBlock implements ITileEntityProvider {
 
     @Override
     public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
-        final int buildHeight = world.getHeight() - 6; // No reason to have the door right at world height
-        if (y > buildHeight) {
-            return;
-        }
         TileEntity tileEntity = world.getTileEntity(x, y, z);
         if (tileEntity instanceof IMultiBlock) {
             ((IMultiBlock) tileEntity).onDestroy(tileEntity, meta);
         }
         super.breakBlock(world, x, y, z, block, meta);
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public boolean addHitEffects(World world, MovingObjectPosition target, EffectRenderer effectRenderer) {
+        DoorParticles.addHitEffects(world, target, this, effectRenderer);
+        return true;
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public boolean addDestroyEffects(World world, int x, int y, int z, int meta, EffectRenderer effectRenderer) {
+        DoorParticles.addDestroyEffects(world, x, y, z, this, meta, effectRenderer);
+        return true;
     }
 
     @Override

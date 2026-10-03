@@ -19,6 +19,7 @@ import net.malisis.core.renderer.RenderType;
 import net.malisis.core.renderer.animation.Animation;
 import net.malisis.core.renderer.animation.AnimationRenderer;
 import net.malisis.core.renderer.element.Shape;
+import net.malisis.core.renderer.element.Vertex;
 import net.malisis.core.renderer.model.MalisisModel;
 import net.malisis.core.util.MultiBlock;
 import net.malisis.doors.MalisisDoors;
@@ -27,6 +28,8 @@ import net.malisis.doors.door.tileentity.RustyHatchTileEntity;
 import net.minecraft.client.renderer.DestroyBlockProgress;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -189,6 +192,31 @@ public class RustyHatchRenderer extends MalisisRenderer {
         if (direction == ForgeDirection.SOUTH) s.rotate(-90, 0, 1, 0);
         else if (direction == ForgeDirection.NORTH) s.rotate(90, 0, 1, 0);
         else if (direction == ForgeDirection.WEST) s.rotate(180, 0, 1, 0);
+    }
+
+    @Override
+    protected int getBaseBrightness() {
+        if (renderType != RenderType.TESR_WORLD || block != MalisisDoors.Blocks.rustyHatch
+            || tileEntity == null
+            || tileEntity.getMultiBlock() == null) return super.getBaseBrightness();
+
+        params.calculateBrightness.set(false);
+        params.calculateAOColor.set(false);
+
+        double centerX = 0;
+        double centerZ = 0;
+        Vertex[] vertices = face.getVertexes();
+        for (Vertex vertex : vertices) {
+            centerX += vertex.getX();
+            centerZ += vertex.getZ();
+        }
+        MultiBlock multiBlock = tileEntity.getMultiBlock();
+        AxisAlignedBB bounds = multiBlock.getWorldBounds();
+        int lightX = MathHelper.floor_double(
+            MathHelper.clamp_double(x + centerX / vertices.length, bounds.minX + 0.001, bounds.maxX - 0.001));
+        int lightZ = MathHelper.floor_double(
+            MathHelper.clamp_double(z + centerZ / vertices.length, bounds.minZ + 0.001, bounds.maxZ - 0.001));
+        return DoorLighting.sample(world, lightX, multiBlock.getY(), lightZ, face.calculateNormal(null));
     }
 
     @Override

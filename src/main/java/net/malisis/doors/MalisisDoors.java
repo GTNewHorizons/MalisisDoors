@@ -36,7 +36,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
     modid = MalisisDoors.modid,
     name = MalisisDoors.modname,
     version = VERSION,
-    dependencies = "required-after:malisiscore")
+    dependencies = "required-after:malisiscore;after:angelica")
 public class MalisisDoors implements IMalisisMod {
 
     @SidedProxy(clientSide = "net.malisis.doors.proxy.ClientProxy", serverSide = "net.malisis.doors.proxy.ServerProxy")
@@ -124,6 +124,7 @@ public class MalisisDoors implements IMalisisMod {
         public static Block jailDoor;
         public static DoorFactory doorFactory;
         public static Block customDoor;
+        public static Block customDoorCollision;
         public static Block laboratoryDoor;
         public static Block factoryDoor;
         public static Block shojiDoor;
