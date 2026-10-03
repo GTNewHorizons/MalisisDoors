@@ -1,5 +1,5 @@
 def angelicaDevJar = providers.gradleProperty('angelicaDevJar').orNull
-def angelicaVersion = providers.gradleProperty('angelicaVersion').getOrElse('2.2.25')
+def angelicaVersion = providers.gradleProperty('angelicaVersion').getOrElse('2.2.26')
 
 dependencies {
     if (angelicaDevJar != null) {
