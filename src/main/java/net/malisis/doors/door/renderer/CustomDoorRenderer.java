@@ -22,11 +22,14 @@ import net.malisis.core.renderer.element.face.TopFace;
 import net.malisis.core.renderer.element.shape.Cube;
 import net.malisis.core.renderer.model.MalisisModel;
 import net.malisis.doors.door.block.Door;
+import net.malisis.doors.door.tileentity.CustomDoorCollisionTileEntity;
 import net.malisis.doors.door.tileentity.CustomDoorTileEntity;
 import net.minecraft.block.Block;
+import net.minecraft.client.renderer.DestroyBlockProgress;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 
 /**
  * @author Ordinastie
@@ -145,6 +148,15 @@ public class CustomDoorRenderer extends DoorRenderer {
     public void reset() {
         super.reset();
         tileEntity = null;
+    }
+
+    @Override
+    protected boolean isCurrentBlockDestroyProgress(DestroyBlockProgress dbp) {
+        if (super.isCurrentBlockDestroyProgress(dbp)) return true;
+        if (tileEntity == null) return false;
+        TileEntity helper = world.getTileEntity(dbp.getPartialBlockX(), dbp.getPartialBlockY(), dbp.getPartialBlockZ());
+        return helper instanceof CustomDoorCollisionTileEntity
+            && ((CustomDoorCollisionTileEntity) helper).getOwner(world) == tileEntity;
     }
 
     private void setInfos(CustomDoorTileEntity te) {

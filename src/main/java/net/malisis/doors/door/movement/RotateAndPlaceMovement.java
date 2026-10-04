@@ -36,18 +36,20 @@ public class RotateAndPlaceMovement implements IDoorMovement {
 
     @Override
     public AxisAlignedBB getBoundingBox(DoorTileEntity tileEntity, boolean topBlock, BoundingBoxType type) {
-        AxisAlignedBB aabb = AxisAlignedBB.getBoundingBox(0, 0, 0, 1, 1, DOOR_WIDTH);
+        AxisAlignedBB aabb = tileEntity.isOpened() ? getOpenBoundingBox(tileEntity)
+            : AxisAlignedBB.getBoundingBox(0, 0, 0, 1, 1, DOOR_WIDTH);
         if (type == BoundingBoxType.SELECTION) {
             if (!topBlock) aabb.maxY++;
             else aabb.minY--;
         }
 
-        if (tileEntity.isOpened()) {
-            AABBUtils.rotate(aabb, tileEntity.isReversed() ? -1 : 1);
-            aabb.offset(0, 0, -.5F);
-        }
-
         return aabb;
+    }
+
+    public AxisAlignedBB getOpenBoundingBox(DoorTileEntity tileEntity) {
+        AxisAlignedBB aabb = AxisAlignedBB.getBoundingBox(0, 0, 0, 1, 1, DOOR_WIDTH);
+        AABBUtils.rotate(aabb, tileEntity.isReversed() ? -1 : 1);
+        return aabb.offset(0, 0, -.5F);
     }
 
     private Transformation getTransformation(DoorTileEntity tileEntity) {

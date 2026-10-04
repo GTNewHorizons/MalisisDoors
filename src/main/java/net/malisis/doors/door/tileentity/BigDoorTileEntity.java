@@ -330,7 +330,7 @@ public class BigDoorTileEntity extends MultiTile implements IMultiBlock {
     // to try to use the meta. Use this.state instead.
     @Override
     public void onDestroy(TileEntity callingBlock, int meta) {
-        if (!this.changingState) {
+        if (this.mainBlockSet && !this.changingState) {
             int metaToUse = meta;
             if ((this.state == DoorState.OPENING || this.state == DoorState.CLOSING || this.state == DoorState.OPENED)
                 && metaToUse < 4) {
@@ -445,7 +445,8 @@ public class BigDoorTileEntity extends MultiTile implements IMultiBlock {
                                     this.getBlockMetadata());
                         }
                     } else if (print.bluePrint[j][i][k] == Integer.MIN_VALUE && removeBlockInWay) {
-                        world.setBlockToAir(
+                        removeOwnedHelper(
+                            world,
                             x - mainBlockRelativeX + i,
                             y - mainBlockRelativeY + j,
                             z + mainBlockRelativeZ - k);
@@ -479,6 +480,17 @@ public class BigDoorTileEntity extends MultiTile implements IMultiBlock {
         }
     }
 
+    private void removeOwnedHelper(World world, int x, int y, int z) {
+        if (!(world.getBlock(x, y, z) instanceof CollisionHelperBlock)) return;
+        TileEntity tile = world.getTileEntity(x, y, z);
+        if (tile instanceof MultiTile part && part.mainBlockSet
+            && part.mainBlockX == xCoord
+            && part.mainBlockY == yCoord
+            && part.mainBlockZ == zCoord) {
+            world.setBlockToAir(x, y, z);
+        }
+    }
+
     private void bluePrintRemovalHelper(World world, int x, int y, int z, MultiBlueprint print,
         TileEntity callingBlock) {
 
@@ -495,9 +507,13 @@ public class BigDoorTileEntity extends MultiTile implements IMultiBlock {
                 {
                     if (print.bluePrint[j][i][k] == MB) {
                         ((MultiTile) callingBlock).dropMainBlockAtLocation(blockToDrop);
-                    }
-                    if (print.bluePrint[j][i][k] > -1) {
-                        world.setBlockToAir(
+                        if (world.getTileEntity(xCoord, yCoord, zCoord) == this
+                            && world.getBlock(xCoord, yCoord, zCoord) == blockToDrop) {
+                            world.setBlockToAir(xCoord, yCoord, zCoord);
+                        }
+                    } else if (print.bluePrint[j][i][k] > -1) {
+                        removeOwnedHelper(
+                            world,
                             x - mainBlockRelativeX + i,
                             y - mainBlockRelativeY + j,
                             z + mainBlockRelativeZ - k);

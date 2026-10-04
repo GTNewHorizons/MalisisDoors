@@ -105,9 +105,6 @@ public class VanishingBlock extends BlockContainer {
         if (te == null) return;
         te.setPowerState(powered);
 
-        if (powered) world.setBlockMetadataWithNotify(x, y, z, te.blockMetadata | flagPowered, 2);
-        else world.setBlockMetadataWithNotify(x, y, z, te.blockMetadata & ~flagPowered, 2);
-
         world.scheduleBlockUpdate(x, y, z, this, 1);
     }
 

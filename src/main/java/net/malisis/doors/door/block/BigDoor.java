@@ -154,7 +154,8 @@ public class BigDoor extends MalisisBlock implements ITileEntityProvider {
         }
     }
 
-    private boolean checkAreaClearForDoor(World world, int x, int y, int z, int meta) {
+    public boolean checkAreaClearForDoor(World world, int x, int y, int z, int meta) {
+        if (y < 0 || y > world.getHeight() - 6) return false;
         boolean validSpot = true;
         boolean widthDirectionFlag = meta % 2 == 0;
         int xStep = meta == 3 ? -1 : 1;
@@ -167,8 +168,7 @@ public class BigDoor extends MalisisBlock implements ITileEntityProvider {
                 for (int zLoc = 0; abs(zLoc) < zMax; zLoc += zStep) {
                     if (!(yLoc == 0 && zLoc == 0 && xLoc == 0)) {
                         final Block potentialSpot = world.getBlock(x + xLoc, y + yLoc, z + zLoc);
-                        if (!potentialSpot.getMaterial()
-                            .isReplaceable()) {
+                        if (!potentialSpot.isReplaceable(world, x + xLoc, y + yLoc, z + zLoc)) {
                             validSpot = false;
                         }
                     }
@@ -180,10 +180,6 @@ public class BigDoor extends MalisisBlock implements ITileEntityProvider {
 
     @Override
     public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
-        final int buildHeight = world.getHeight() - 6; // No reason to have the door right at world height
-        if (y > buildHeight) {
-            return;
-        }
         TileEntity tileEntity = world.getTileEntity(x, y, z);
         if (tileEntity instanceof IMultiBlock) {
             ((IMultiBlock) tileEntity).onDestroy(tileEntity, meta);

@@ -124,6 +124,7 @@ public class MalisisDoors implements IMalisisMod {
         public static Block jailDoor;
         public static DoorFactory doorFactory;
         public static Block customDoor;
+        public static Block customDoorCollision;
         public static Block laboratoryDoor;
         public static Block factoryDoor;
         public static Block shojiDoor;

@@ -42,15 +42,21 @@ public class DoubleRotateMovement implements IDoorMovement {
 
     @Override
     public AxisAlignedBB getBoundingBox(DoorTileEntity tileEntity, boolean topBlock, BoundingBoxType type) {
-        if ((tileEntity.isReversed() != rightDirection) && tileEntity.isOpened()) return null;
-
-        AxisAlignedBB aabb = AxisAlignedBB.getBoundingBox(0, 0, 0, 1, 1, DOOR_WIDTH);
+        AxisAlignedBB aabb = tileEntity.isOpened() ? getOpenBoundingBox(tileEntity)
+            : AxisAlignedBB.getBoundingBox(0, 0, 0, 1, 1, DOOR_WIDTH);
         if (type == BoundingBoxType.SELECTION) {
             if (!topBlock) aabb.maxY++;
             else aabb.minY--;
         }
 
-        if (tileEntity.isOpened()) AABBUtils.rotate(aabb, rightDirection ? -1 : 1);
+        return aabb;
+    }
+
+    public AxisAlignedBB getOpenBoundingBox(DoorTileEntity tileEntity) {
+        AxisAlignedBB aabb = AxisAlignedBB.getBoundingBox(0, 0, 0, 1, 1, DOOR_WIDTH);
+        AABBUtils.rotate(aabb, tileEntity.isReversed() ? -1 : 1);
+        if (tileEntity.isReversed() != rightDirection)
+            aabb.offset(rightDirection ? DOOR_WIDTH - 2 : 2 - DOOR_WIDTH, 0, 0);
         return aabb;
     }
 
