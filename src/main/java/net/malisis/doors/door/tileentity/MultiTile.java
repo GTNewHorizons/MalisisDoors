@@ -18,6 +18,12 @@ public class MultiTile extends DoorTileEntity {
     public int mainBlockMeta;
     public boolean mainBlockSet;
 
+    @Override
+    public void updateEntity() {
+        super.updateEntity();
+        if (mainBlockSet) updateLightOpacity(1);
+    }
+
     public void setMainBlock(int x, int y, int z) {
         this.mainBlockX = x;
         this.mainBlockY = y;

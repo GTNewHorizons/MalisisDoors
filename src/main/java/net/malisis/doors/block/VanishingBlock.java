@@ -191,6 +191,16 @@ public class VanishingBlock extends BlockContainer {
     // #end Events
 
     @Override
+    public int getLightOpacity(IBlockAccess world, int x, int y, int z) {
+        VanishingTileEntity te = TileEntityUtils.getTileEntity(VanishingTileEntity.class, world, x, y, z);
+        if (te == null || te.powered
+            || te.inTransition
+            || te.copiedBlock == null
+            || te.copiedBlock instanceof VanishingBlock) return 0;
+        return te.copiedBlock.getLightOpacity(ProxyAccess.get(world), x, y, z);
+    }
+
+    @Override
     public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side) {
         return false;
     }

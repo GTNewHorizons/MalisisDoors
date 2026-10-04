@@ -21,9 +21,18 @@ import net.malisis.core.renderer.animation.AnimationRenderer;
 import net.malisis.core.renderer.element.Shape;
 import net.malisis.core.renderer.element.shape.Cube;
 import net.malisis.core.renderer.model.MalisisModel;
+import net.malisis.core.util.Vector;
+import net.malisis.doors.MalisisDoors;
 import net.malisis.doors.door.block.Door;
+import net.malisis.doors.door.descriptor.ShojiDoor;
+import net.malisis.doors.door.movement.VanishingDoorMovement;
 import net.malisis.doors.door.tileentity.DoorTileEntity;
+import net.minecraft.block.Block;
 import net.minecraft.client.renderer.DestroyBlockProgress;
+import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.world.IBlockAccess;
+
+import org.lwjgl.opengl.GL11;
 
 public class DoorRenderer extends MalisisRenderer {
 
@@ -67,6 +76,17 @@ public class DoorRenderer extends MalisisRenderer {
     }
 
     @Override
+    public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId,
+        RenderBlocks renderer) {
+        return false;
+    }
+
+    protected boolean needsBlending() {
+        return tileEntity != null && tileEntity.getMovement() instanceof VanishingDoorMovement
+            || block instanceof Door && ((Door) block).getDescriptor() instanceof ShojiDoor;
+    }
+
+    @Override
     public void render() {
         if (renderType == RenderType.ISBRH_WORLD) return;
 
@@ -76,6 +96,12 @@ public class DoorRenderer extends MalisisRenderer {
         topBlock = tileEntity.isTopBlock(x, y, z);
 
         rp.icon.set(null);
+        rp.alpha.reset();
+        if (destroyBlockProgress == null) {
+            GL11.glDisable(GL11.GL_BLEND);
+            GL11.glEnable(GL11.GL_ALPHA_TEST);
+            GL11.glAlphaFunc(GL11.GL_GREATER, 0.1F);
+        }
 
         renderTileEntity();
     }
@@ -88,6 +114,12 @@ public class DoorRenderer extends MalisisRenderer {
     public void reset() {
         super.reset();
         tileEntity = null;
+        if (rp != null) {
+            rp.colorMultiplier.reset();
+            rp.brightness.reset();
+            rp.alpha.reset();
+            rp.icon.reset();
+        }
     }
 
     protected void setup() {
@@ -101,7 +133,7 @@ public class DoorRenderer extends MalisisRenderer {
     }
 
     protected void renderTileEntity() {
-        enableBlending();
+        if (destroyBlockProgress == null && needsBlending()) enableBlending();
         ar.setStartTime(
             tileEntity.getTimer()
                 .getStart());
@@ -114,15 +146,33 @@ public class DoorRenderer extends MalisisRenderer {
             ar.animate(anims);
         }
 
-        // model.render(this, rp);
-        rp.brightness.set(block.getMixedBrightnessForBlock(world, x, y, z));
-        drawShape(model.getShape("bottom"), rp);
+        int metadata = blockMetadata;
+        int bottomY = y;
+        boolean worldSensitiveIcon = rp.useWorldSensitiveIcon.get();
+        rp.useWorldSensitiveIcon.set(false);
+        try {
+            blockMetadata = metadata & ~Door.FLAG_TOPBLOCK;
+            rp.brightness.set(block.getMixedBrightnessForBlock(world, x, y, z));
+            drawShape(model.getShape("bottom"), rp);
 
-        blockMetadata |= Door.FLAG_TOPBLOCK;
-        y++;
-        rp.brightness.set(block.getMixedBrightnessForBlock(world, x, y, z));
-        drawShape(model.getShape("top"), rp);
-        y--;
+            blockMetadata = metadata | Door.FLAG_TOPBLOCK;
+            y++;
+            rp.brightness.set(block.getMixedBrightnessForBlock(world, x, y, z));
+            drawShape(model.getShape("top"), rp);
+        } finally {
+            y = bottomY;
+            blockMetadata = metadata;
+            rp.useWorldSensitiveIcon.set(worldSensitiveIcon);
+        }
+    }
+
+    @Override
+    protected int getBaseBrightness() {
+        if (renderType != RenderType.TESR_WORLD || !((block instanceof Door door && door.blocksLightWhenClosed())
+            || block == MalisisDoors.Blocks.slidingTrapDoor)) return super.getBaseBrightness();
+
+        Vector normal = face.calculateNormal(null);
+        return DoorLighting.sample(world, x, y, z, normal);
     }
 
     @Override

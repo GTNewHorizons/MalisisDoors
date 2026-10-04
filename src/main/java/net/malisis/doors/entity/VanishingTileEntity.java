@@ -34,6 +34,11 @@ import org.apache.commons.lang3.ArrayUtils;
 
 public class VanishingTileEntity extends TileEntity {
 
+    @Override
+    public boolean shouldRenderInPass(int pass) {
+        return pass == 0 || pass == 1;
+    }
+
     public static final int maxTransitionTime = 8;
     public static final int maxVibratingTime = 15;
 
@@ -50,6 +55,7 @@ public class VanishingTileEntity extends TileEntity {
     public int vibratingTimer;
 
     private final Random rand = new Random();
+    private int lastLightOpacity = -1;
 
     private Block[] excludes = new Block[] { MalisisDoors.Blocks.vanishingBlock, Blocks.air, Blocks.ladder,
         Blocks.stone_button, Blocks.wooden_button, Blocks.lever, Blocks.vine };
@@ -79,6 +85,7 @@ public class VanishingTileEntity extends TileEntity {
             copiedBlock = null;
             copiedMetadata = 0;
             copiedTileEntity = null;
+            updateLightOpacity();
             return true;
         }
 
@@ -91,6 +98,7 @@ public class VanishingTileEntity extends TileEntity {
         initCopiedTileEntity();
         copiedMetadata = block.onBlockPlaced(proxy, xCoord, yCoord, zCoord, side, hitX, hitY, hitZ, copiedMetadata);
         if (p != null) block.onBlockPlacedBy(proxy, xCoord, yCoord, zCoord, p, itemStack);
+        updateLightOpacity();
         return true;
     }
 
@@ -117,6 +125,7 @@ public class VanishingTileEntity extends TileEntity {
             getBlockMetadata() | VanishingBlock.flagInTransition,
             2);
 
+        updateLightOpacity();
         return true;
     }
 
@@ -179,6 +188,20 @@ public class VanishingTileEntity extends TileEntity {
                 }
             }
         }
+        updateLightOpacity();
+    }
+
+    private void updateLightOpacity() {
+        if (worldObj == null) return;
+        Block block = worldObj.getBlock(xCoord, yCoord, zCoord);
+        if (!(block instanceof VanishingBlock)) return;
+        int opacity = block.getLightOpacity(worldObj, xCoord, yCoord, zCoord);
+        if (opacity == lastLightOpacity) return;
+        lastLightOpacity = opacity;
+
+        worldObj.getChunkFromBlockCoords(xCoord, zCoord)
+            .relightBlock(xCoord & 15, yCoord + 1, zCoord & 15);
+        worldObj.func_147451_t(xCoord, yCoord, zCoord);
     }
 
     @Override
@@ -233,5 +256,7 @@ public class VanishingTileEntity extends TileEntity {
     @Override
     public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet) {
         this.readFromNBT(packet.func_148857_g());
+        updateLightOpacity();
+        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
 }

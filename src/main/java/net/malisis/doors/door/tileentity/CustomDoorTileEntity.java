@@ -13,6 +13,7 @@
 
 package net.malisis.doors.door.tileentity;
 
+import net.malisis.doors.compat.RenderCompatibility;
 import net.malisis.doors.door.block.Door;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
@@ -58,6 +59,18 @@ public class CustomDoorTileEntity extends DoorTileEntity {
     }
 
     // #end Getters/setters
+
+    public int getMaterialRenderPass(Block material) {
+        int pass = material != null && material.getRenderBlockPass() == 1 ? 1 : 0;
+        return RenderCompatibility.instance.materialRenderPass(material, pass);
+    }
+
+    @Override
+    public boolean shouldRenderInPass(int pass) {
+        return frame != null && getMaterialRenderPass(frame) == pass
+            || topMaterial != null && getMaterialRenderPass(topMaterial) == pass
+            || bottomMaterial != null && getMaterialRenderPass(bottomMaterial) == pass;
+    }
 
     @Override
     public void onBlockPlaced(Door door, ItemStack itemStack) {

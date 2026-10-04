@@ -25,11 +25,14 @@ import net.malisis.core.util.EntityUtils;
 import net.malisis.core.util.TileEntityUtils;
 import net.malisis.doors.MalisisDoors;
 import net.malisis.doors.MalisisDoors.Items;
+import net.malisis.doors.door.DoorState;
+import net.malisis.doors.door.renderer.DoorParticles;
 import net.malisis.doors.door.tileentity.BigDoorTileEntity;
 import net.malisis.doors.door.tileentity.IMultiBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
@@ -40,6 +43,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -47,11 +51,22 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.tuple.Pair;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 /**
  * @author Ordinastie
  *
  */
 public class BigDoor extends MalisisBlock implements ITileEntityProvider {
+
+    @Override
+    public int getLightOpacity(IBlockAccess world, int x, int y, int z) {
+        TileEntity tile = world.getTileEntity(x, y, z);
+        // Big doors update their collision layout at the start of opening; their metadata changes later.
+        if (tile instanceof BigDoorTileEntity door) return door.getState() == DoorState.CLOSED ? 255 : 0;
+        return (world.getBlockMetadata(x, y, z) & Door.FLAG_OPENED) == 0 ? 255 : 0;
+    }
 
     public enum Type {
 
@@ -189,6 +204,20 @@ public class BigDoor extends MalisisBlock implements ITileEntityProvider {
             ((IMultiBlock) tileEntity).onDestroy(tileEntity, meta);
         }
         super.breakBlock(world, x, y, z, block, meta);
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public boolean addHitEffects(World world, MovingObjectPosition target, EffectRenderer effectRenderer) {
+        DoorParticles.addHitEffects(world, target, this, effectRenderer);
+        return true;
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public boolean addDestroyEffects(World world, int x, int y, int z, int meta, EffectRenderer effectRenderer) {
+        DoorParticles.addDestroyEffects(world, x, y, z, this, meta, effectRenderer);
+        return true;
     }
 
     @Override
