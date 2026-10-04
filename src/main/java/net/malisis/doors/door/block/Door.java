@@ -26,6 +26,9 @@ import net.malisis.core.util.TileEntityUtils;
 import net.malisis.doors.MalisisDoors;
 import net.malisis.doors.door.DoorDescriptor;
 import net.malisis.doors.door.DoorState;
+import net.malisis.doors.door.descriptor.Curtain;
+import net.malisis.doors.door.descriptor.FactoryDoor;
+import net.malisis.doors.door.descriptor.LaboratoryDoor;
 import net.malisis.doors.door.tileentity.DoorTileEntity;
 import net.malisis.doors.gui.DigicodeGui;
 import net.minecraft.block.Block;
@@ -95,6 +98,17 @@ public class Door extends BlockDoor implements ITileEntityProvider, IBoundingBox
 
     public DoorDescriptor getDescriptor() {
         return descriptor;
+    }
+
+    public boolean blocksLightWhenClosed() {
+        return descriptor instanceof Curtain || descriptor instanceof LaboratoryDoor
+            || descriptor instanceof FactoryDoor;
+    }
+
+    @Override
+    public int getLightOpacity(IBlockAccess world, int x, int y, int z) {
+        if (!blocksLightWhenClosed()) return super.getLightOpacity(world, x, y, z);
+        return (fullMetadata(world, x, y, z) & FLAG_OPENED) == 0 ? 255 : 0;
     }
 
     // #region Icons

@@ -95,7 +95,7 @@ public class FenceGateRenderer extends DoorRenderer {
 
     @Override
     protected void renderTileEntity() {
-        enableBlending();
+        if (destroyBlockProgress == null && tileEntity.getCamoRenderPass() == 1) enableBlending();
         ar.setStartTime(
             tileEntity.getTimer()
                 .getStart());

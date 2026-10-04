@@ -15,7 +15,6 @@ package net.malisis.doors.renderer;
 
 import java.util.List;
 
-import net.malisis.core.renderer.MalisisRenderer;
 import net.malisis.core.renderer.RenderParameters;
 import net.malisis.core.renderer.RenderType;
 import net.malisis.core.renderer.element.Face;
@@ -25,6 +24,7 @@ import net.malisis.core.renderer.element.shape.Cube;
 import net.malisis.core.util.TileEntityUtils;
 import net.malisis.doors.MalisisDoors;
 import net.malisis.doors.MalisisDoorsSettings;
+import net.malisis.doors.block.MixedBlock;
 import net.malisis.doors.entity.MixedBlockTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockGrass;
@@ -35,7 +35,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.apache.commons.lang3.ArrayUtils;
 import org.lwjgl.opengl.GL11;
 
-public class MixedBlockRenderer extends MalisisRenderer {
+public class MixedBlockRenderer extends CopiedBlockRenderer {
 
     private int mixedBlockMetadata;
     private Shape simpleShape;
@@ -168,20 +168,24 @@ public class MixedBlockRenderer extends MalisisRenderer {
         Block b = reversed ? block2 : block1;
         int m = reversed ? metadata2 : metadata1;
         set(b, m);
+        shape = simpleShape;
         setColor();
 
         simpleShape.resetState()
             .setSize(width, height, depth);
-        drawShape(simpleShape, rp);
+        if (renderType != RenderType.ISBRH_WORLD || block.getRenderBlockPass() == MixedBlock.getRenderPass())
+            drawShape(simpleShape, rp);
 
         b = reversed ? block1 : block2;
         m = reversed ? metadata1 : metadata2;
         set(b, m);
+        shape = simpleShape;
         setColor();
         simpleShape.resetState()
             .setSize(width, height, depth)
             .translate(offsetX, offestY, offsetZ);
-        drawShape(simpleShape, rp);
+        if (renderType != RenderType.ISBRH_WORLD || block.getRenderBlockPass() == MixedBlock.getRenderPass())
+            drawShape(simpleShape, rp);
     }
 
     private void drawPass(boolean firstBlock) {
@@ -191,7 +195,11 @@ public class MixedBlockRenderer extends MalisisRenderer {
         shape = shapes[firstBlock && renderType == RenderType.ISBRH_WORLD ? 1 : 0][dir.ordinal()];
         shape.resetState();
 
-        if (shouldShadeFace(firstBlock)) {
+        boolean shaded = shouldShadeFace(firstBlock);
+        int pass = shaded || block.getRenderBlockPass() == 1 ? 1 : 0;
+        if (renderType == RenderType.ISBRH_WORLD && pass != MixedBlock.getRenderPass()) return;
+
+        if (shaded) {
             List<MergedVertex> vertexes = shape.getMergedVertexes(dir);
             for (MergedVertex v : vertexes) v.setAlpha(0);
         }

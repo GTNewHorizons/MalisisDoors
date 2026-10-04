@@ -36,7 +36,6 @@ public class SaloonDoorRenderer extends DoorRenderer {
 
     @Override
     protected void renderTileEntity() {
-        enableBlending();
         ar.setStartTime(
             tileEntity.getTimer()
                 .getStart());

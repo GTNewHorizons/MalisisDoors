@@ -140,6 +140,14 @@ public class RustyHatch extends MalisisBlock implements ITileEntityProvider {
     }
 
     @Override
+    public int getLightOpacity(IBlockAccess world, int x, int y, int z) {
+        MultiBlock mb = MultiBlock.getMultiBlock(world, x, y, z);
+        if (mb == null || y != mb.getY() || world.getBlock(mb.getX(), mb.getY(), mb.getZ()) != this) return 0;
+        int metadata = world.getBlockMetadata(mb.getX(), mb.getY(), mb.getZ());
+        return (metadata & Door.FLAG_OPENED) == 0 ? 255 : 0;
+    }
+
+    @Override
     public boolean isOpaqueCube() {
         return false;
     }
