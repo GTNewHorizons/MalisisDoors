@@ -13,6 +13,7 @@
 
 package net.malisis.doors.trapdoor.tileentity;
 
+import net.malisis.doors.MalisisDoors;
 import net.malisis.doors.door.block.Door;
 import net.malisis.doors.door.tileentity.DoorTileEntity;
 import net.minecraft.util.AxisAlignedBB;
@@ -22,6 +23,14 @@ import net.minecraft.util.AxisAlignedBB;
  *
  */
 public class TrapDoorTileEntity extends DoorTileEntity {
+
+    @Override
+    public void updateEntity() {
+        super.updateEntity();
+        if (worldObj == null || getBlockType() != MalisisDoors.Blocks.slidingTrapDoor) return;
+
+        updateLightOpacity(1);
+    }
 
     @Override
     public boolean isTopBlock(int x, int y, int z) {

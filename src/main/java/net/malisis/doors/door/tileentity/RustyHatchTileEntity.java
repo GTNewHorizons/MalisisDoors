@@ -100,6 +100,14 @@ public class RustyHatchTileEntity extends DoorTileEntity implements MultiBlock.I
     }
 
     @Override
+    public void updateEntity() {
+        super.updateEntity();
+        if (worldObj == null || multiBlock == null || yCoord != multiBlock.getY()) return;
+
+        updateLightOpacity(1);
+    }
+
+    @Override
     public void setMultiBlock(MultiBlock multiBlock) {
         this.multiBlock = multiBlock;
     }

@@ -43,6 +43,17 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class MixedBlock extends Block implements ITileEntityProvider {
 
     public static int renderId = -1;
+    private static final ThreadLocal<Integer> renderPass = ThreadLocal.withInitial(() -> 0);
+
+    public static int getRenderPass() {
+        return renderPass.get();
+    }
+
+    @Override
+    public boolean canRenderInPass(int pass) {
+        renderPass.set(pass);
+        return pass == 0 || pass == 1;
+    }
 
     public MixedBlock() {
         super(Material.rock);

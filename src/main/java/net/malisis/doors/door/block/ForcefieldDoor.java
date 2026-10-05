@@ -19,11 +19,13 @@ import net.malisis.core.util.MultiBlock;
 import net.malisis.core.util.TileEntityUtils;
 import net.malisis.doors.MalisisDoors;
 import net.malisis.doors.MalisisDoors.Items;
+import net.malisis.doors.door.renderer.DoorParticles;
 import net.malisis.doors.door.tileentity.DoorTileEntity;
 import net.malisis.doors.door.tileentity.ForcefieldTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -147,6 +149,20 @@ public class ForcefieldDoor extends Block implements ITileEntityProvider {
         if (aabb == null) return null;
 
         return setBlockBounds(aabb);
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public boolean addHitEffects(World world, MovingObjectPosition target, EffectRenderer effectRenderer) {
+        DoorParticles.addHitEffects(world, target, this, effectRenderer);
+        return true;
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public boolean addDestroyEffects(World world, int x, int y, int z, int meta, EffectRenderer effectRenderer) {
+        DoorParticles.addDestroyEffects(world, x, y, z, this, meta, effectRenderer);
+        return true;
     }
 
     @Override
