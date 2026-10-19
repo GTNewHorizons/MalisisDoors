@@ -257,8 +257,8 @@ public class UIContainer<T extends UIContainer> extends UIComponent<T> implement
         if (!recursive) return null;
 
         for (UIComponent c : components) {
-            if (c instanceof UIContainer) {
-                UIComponent found = ((UIContainer) c).getComponent(name, true);
+            if (c instanceof UIContainer container) {
+                UIComponent found = container.getComponent(name, true);
                 if (found != null) return found;
             }
         }
